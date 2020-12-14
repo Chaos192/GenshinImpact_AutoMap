@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1321
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenshinImpact_AutoMap", "GenshinImpact_AutoMap\GenshinImpact_AutoMap.vcxproj", "{CCBAE52E-A530-413D-93A8-5C71E12AA50E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CCBAE52E-A530-413D-93A8-5C71E12AA50E}.Debug|x64.ActiveCfg = Debug|x64
+		{CCBAE52E-A530-413D-93A8-5C71E12AA50E}.Debug|x64.Build.0 = Debug|x64
+		{CCBAE52E-A530-413D-93A8-5C71E12AA50E}.Release|x64.ActiveCfg = Release|x64
+		{CCBAE52E-A530-413D-93A8-5C71E12AA50E}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {92C8FFF5-B795-4B73-BB70-9E09A87BFE70}
+	EndGlobalSection
+EndGlobal

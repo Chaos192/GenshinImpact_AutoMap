@@ -1,0 +1,28 @@
+<UI version="4.0" >
+ <class>GenshinImpact_AutoMapClass</class>
+ <widget class="QMainWindow" name="GenshinImpact_AutoMapClass" >
+  <property name="objectName" >
+   <string notr="true">GenshinImpact_AutoMapClass</string>
+  </property>
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>GenshinImpact_AutoMap</string>
+  </property>  <widget class="QMenuBar" name="menuBar" />
+  <widget class="QToolBar" name="mainToolBar" />
+  <widget class="QWidget" name="centralWidget" />
+  <widget class="QStatusBar" name="statusBar" />
+ </widget>
+ <layoutDefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
+ <resources>
+   <include location="GenshinImpact_AutoMap.qrc"/>
+ </resources>
+ <connections/>
+</UI>
