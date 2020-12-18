@@ -26,20 +26,27 @@ bool giam::GenshinImpact_AutoMap::run()
 	if (!isInit) { init(); }
 	while (isRun)
 	{
+
 		if (giIsRunning())
 		{
-			putText(autoMapMat, "Game Running", Point(10, 100), 1, 1, Scalar(0, 255, 0));
+			std::cout << "Run ";
+
 			//genshin is Running
-			if (giIsTop())
+			//putText(autoMapMat, "Game Running", Point(10, 100), 1, 1, Scalar(0, 255, 0));
+			if (giIsDisplay())
 			{
 				//genshin is Top Windows
+				std::cout << "is top " ;
+
 				if (giIsZoomed())
 				{
 					//
+					std::cout << "is Zoom ";
 				}
 				else
 				{
-
+					//
+					std::cout << "is not Zoom ";
 				}
 			}
 			else
@@ -50,8 +57,11 @@ bool giam::GenshinImpact_AutoMap::run()
 		else
 		{
 			//genshin not Run
-			putText(autoMapMat, "Not Run!", Point(10, 100), 1, 1, Scalar(0, 0, 255));
+			//putText(autoMapMat, "Not Run!", Point(10, 100), 1, 1, Scalar(0, 0, 255));
 		}
+
+		std::cout<<endl;
+
 		mapShow();
 		waitKey(33);
 	}
@@ -66,25 +76,7 @@ bool giam::GenshinImpact_AutoMap::exit()
 
 bool giam::GenshinImpact_AutoMap::giIsRunning()
 {
-	if (AT.s())
-	{
-		//AutoTest Work Is On
-		return AT.t;
-	}
-	else
-	{
-		handle = FindWindow(NULL, "原神");
-		if (handle == NULL)
-			return false;
-		else
-			return true;
-	}
-	return false;
-}
-
-bool giam::GenshinImpact_AutoMap::giIsTop()
-{
-	if (AT.s())
+	if (AT)
 	{
 		//AutoTest Work Is On
 		return AT.t;
@@ -92,13 +84,36 @@ bool giam::GenshinImpact_AutoMap::giIsTop()
 	else
 	{
 		//
+		handle = FindWindow(NULL, "原神");
+		if (handle != NULL)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool giam::GenshinImpact_AutoMap::giIsDisplay()
+{
+	if (AT)
+	{
+		//AutoTest Work Is On
+		return AT.t;
+	}
+	else
+	{
+		//
+		if (handle != NULL)
+		{
+			return !IsIconic(handle);
+		}
 	}
 	return false;
 }
 
 bool giam::GenshinImpact_AutoMap::giIsZoomed()
 {
-	if (AT.s())
+	if (AT)
 	{
 		//AutoTest Work Is On
 		return AT.f;
@@ -106,6 +121,10 @@ bool giam::GenshinImpact_AutoMap::giIsZoomed()
 	else
 	{
 		//
+		if (handle != NULL)
+		{
+			return IsZoomed(handle);
+		}
 	}
 	return false;
 }

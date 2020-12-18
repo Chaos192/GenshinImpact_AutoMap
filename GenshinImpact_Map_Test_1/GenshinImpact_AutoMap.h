@@ -16,6 +16,7 @@ public:
 public:
 	AutoTest(bool flag) :state(flag) {};
 	bool operator==(const AutoTest& AT) { return AT.state; };
+	operator bool() { return state; };
 public:
 	//公共变量
 	bool state=false;
@@ -61,7 +62,7 @@ namespace giam
 	public:
 		//实现类函数
 		bool giIsRunning();
-		bool giIsTop();
+		bool giIsDisplay();
 		bool giIsZoomed();
 	private:
 		//类内实现函数
