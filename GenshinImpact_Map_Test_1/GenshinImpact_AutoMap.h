@@ -29,6 +29,46 @@ public:
 
 };
 
+class FrameRateLock
+{
+public:
+	FrameRateLock():FrameRateLock(30){};
+	~FrameRateLock() {};
+public:
+	FrameRateLock(int f) :_fps(f){};
+public:
+	//公共变量
+	double runningTime=0;
+	double absClock0 = (double)getTickCount();
+	double absClock1 = (double)getTickCount();
+private:
+	//私有变量
+	int _fps = 30;
+	double _s = 0.0323f;
+public:
+	//框架类函数
+	void fps(int f) { _fps = f; _s = 1.0 / _fps-0.001; };
+	int fps() { return _fps; };
+	void Wait()
+	{
+		absClock1 = (double)getTickCount();
+		runningTime = (absClock1 - absClock0) / getTickFrequency();
+		if (runningTime < _s)
+		{
+			if (runningTime >= 0)
+			{
+				waitKey((int)((_s - runningTime)*1000)+1);
+			}
+			else
+			{
+				waitKey((int)(_s*1000));
+			}
+		}
+		absClock0 = absClock1;
+	};
+};
+
+
 namespace giam
 {
 	class GenshinImpact_AutoMap
@@ -40,6 +80,8 @@ namespace giam
 	public:
 		//公共变量
 		AutoTest AT;
+		FrameRateLock FRL;
+
 	private:
 		//私有变量
 		bool isInit = false;
@@ -68,6 +110,7 @@ namespace giam
 		void giIsDisplay();
 		void giIsZoomed();
 		void giCheckWindows();
+		void mapUpdata();
 		void mapShow();
 
 	};

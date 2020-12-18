@@ -26,13 +26,8 @@ bool giam::GenshinImpact_AutoMap::run()
 	if (!isInit) { init(); }
 	while (isRun)
 	{
-
-		giCheckWindows();
-
-
-
+		mapUpdata();
 		mapShow();
-		waitKey(33);
 	}
 	exit();
 	return false;
@@ -113,8 +108,14 @@ void giam::GenshinImpact_AutoMap::giCheckWindows()
 	giIsZoomed();
 }
 
+void giam::GenshinImpact_AutoMap::mapUpdata()
+{
+	giCheckWindows();
+
+}
+
 void giam::GenshinImpact_AutoMap::mapShow()
 {
 	imshow(autoMapWindowsName, autoMapMat);
-
+	FRL.Wait();
 }
