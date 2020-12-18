@@ -27,40 +27,9 @@ bool giam::GenshinImpact_AutoMap::run()
 	while (isRun)
 	{
 
-		if (giIsRunning())
-		{
-			std::cout << "Run ";
+		giCheckWindows();
 
-			//genshin is Running
-			//putText(autoMapMat, "Game Running", Point(10, 100), 1, 1, Scalar(0, 255, 0));
-			if (giIsDisplay())
-			{
-				//genshin is Top Windows
-				std::cout << "is top " ;
 
-				if (giIsZoomed())
-				{
-					//
-					std::cout << "is Zoom ";
-				}
-				else
-				{
-					//
-					std::cout << "is not Zoom ";
-				}
-			}
-			else
-			{
-				//genshin is Iconic
-			}
-		}
-		else
-		{
-			//genshin not Run
-			//putText(autoMapMat, "Not Run!", Point(10, 100), 1, 1, Scalar(0, 0, 255));
-		}
-
-		std::cout<<endl;
 
 		mapShow();
 		waitKey(33);
@@ -74,12 +43,13 @@ bool giam::GenshinImpact_AutoMap::exit()
 	return false;
 }
 
-bool giam::GenshinImpact_AutoMap::giIsRunning()
+void giam::GenshinImpact_AutoMap::giIsRunning()
 {
 	if (AT)
 	{
 		//AutoTest Work Is On
-		return AT.t;
+		giIsRunningFlag = AT;
+		return;
 	}
 	else
 	{
@@ -87,46 +57,60 @@ bool giam::GenshinImpact_AutoMap::giIsRunning()
 		handle = FindWindow(NULL, "Ô­Éñ");
 		if (handle != NULL)
 		{
-			return true;
+			giIsRunningFlag= true;
+			return;
 		}
 	}
-	return false;
+	giIsRunningFlag= false;
 }
 
-bool giam::GenshinImpact_AutoMap::giIsDisplay()
+void giam::GenshinImpact_AutoMap::giIsDisplay()
 {
 	if (AT)
 	{
 		//AutoTest Work Is On
-		return AT.t;
+		giIsDisplayFlag = AT;
+		return;
 	}
 	else
 	{
 		//
 		if (handle != NULL)
 		{
-			return !IsIconic(handle);
+			giIsDisplayFlag= !IsIconic(handle);
+			return;
 		}
 	}
-	return false;
+	giIsDisplayFlag= false;
 }
 
-bool giam::GenshinImpact_AutoMap::giIsZoomed()
+void giam::GenshinImpact_AutoMap::giIsZoomed()
 {
 	if (AT)
 	{
 		//AutoTest Work Is On
-		return AT.f;
+		giIsZoomedFlag = !AT;
+		return;
 	}
 	else
 	{
 		//
 		if (handle != NULL)
 		{
-			return IsZoomed(handle);
+			//WindowFromPoint();
+			giIsZoomedFlag=IsZoomed(handle);
+			return;
 		}
 	}
-	return false;
+	giIsZoomedFlag = false;
+	return;
+}
+
+void giam::GenshinImpact_AutoMap::giCheckWindows()
+{
+	giIsRunning();
+	giIsDisplay();
+	giIsZoomed();
 }
 
 void giam::GenshinImpact_AutoMap::mapShow()
