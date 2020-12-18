@@ -87,15 +87,29 @@ namespace giam
 		bool isInit = false;
 		bool isRun = false;
 
-		HWND handle;
+		HWND giHandle;
 
 		bool giIsRunningFlag = false;
 		bool giIsDisplayFlag = false;
 		bool giIsZoomedFlag = false;
 
-		Size autoMapSize=Size(250,200);
+		struct HUD
+		{
+			string runState = "";
+			Scalar runTextColor=Scalar(255,0,0);
+			Scalar displayFlagColor = Scalar(255, 0, 0);
+
+		}giHUD;
+
+		Mat mapMat=imread("Map.bmp");
 		Mat autoMapMat;
 		String autoMapWindowsName = "Genshin Impact Auto Map";
+
+		Size autoMapSize = Size(450, 400);
+		Size mapSize= Size(mapMat.cols, mapMat.rows);
+		Point zerosMinMap = mapSize/2;
+
+		Mat giFrame;
 	public:
 		//框架类函数
 		bool init();
@@ -103,13 +117,17 @@ namespace giam
 		bool exit();
 	public:
 		//实现类函数
-
+		Mat getMinMap();
 	private:
 		//类内实现函数
 		void giIsRunning();
 		void giIsDisplay();
 		void giIsZoomed();
 		void giCheckWindows();
+		void giGetScreen();
+		void setHUD();
+		void addHUD(Mat img);
+
 		void mapUpdata();
 		void mapShow();
 

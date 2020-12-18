@@ -227,6 +227,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GenshinImpact_AutoMap.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GenshinImpact_Map_Test_1.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Map.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
