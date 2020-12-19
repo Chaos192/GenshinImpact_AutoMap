@@ -66,6 +66,7 @@ public:
 		}
 		absClock0 = absClock1;
 	};
+
 };
 
 
@@ -88,6 +89,7 @@ namespace giam
 		bool isRun = false;
 
 		HWND giHandle;
+		HWND thisHandle;
 
 		bool giIsRunningFlag = false;
 		bool giIsDisplayFlag = false;
@@ -95,13 +97,16 @@ namespace giam
 
 		struct HUD
 		{
-			string runState = "";
+			
+			String runState = "";
 			Scalar runTextColor=Scalar(255,0,0);
 			Scalar displayFlagColor = Scalar(255, 0, 0);
+			Scalar minBackgroundColo = Scalar(255, 255, 0, 0);
+			Scalar minStarColor = Scalar(255, 255, 0, 128);
 
 		}giHUD;
 
-		Mat mapMat=imread("Map.bmp");
+		Mat mapMat=imread("Map.png", IMREAD_UNCHANGED);
 		Mat autoMapMat;
 		String autoMapWindowsName = "Genshin Impact Auto Map";
 
@@ -128,8 +133,13 @@ namespace giam
 		void setHUD();
 		void addHUD(Mat img);
 
+		void customProcess();
+
 		void mapUpdata();
 		void mapShow();
+
+		static void on_MouseHandle(int event, int x, int y, int flags, void *parm);
+
 
 	};
 

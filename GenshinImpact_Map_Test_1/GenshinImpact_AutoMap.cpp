@@ -15,9 +15,12 @@ bool giam::GenshinImpact_AutoMap::init()
 	isInit = true;
 	isRun = true;
 	
-	autoMapMat = Mat(autoMapSize, CV_8UC3, Scalar(200, 200, 200));
+	autoMapMat = Mat(autoMapSize, CV_8UC4, Scalar(200, 200, 200, 255));
 
 	namedWindow(autoMapWindowsName);
+	setMouseCallback(autoMapWindowsName, on_MouseHandle, (void*)this);
+	thisHandle = FindWindow(NULL, autoMapWindowsName.c_str());
+
 	imshow(autoMapWindowsName, autoMapMat);
 	return false;
 }
@@ -27,7 +30,7 @@ bool giam::GenshinImpact_AutoMap::run()
 	if (!isInit) { init(); }
 	while (isRun)
 	{
-		zerosMinMap.x++;
+		customProcess();
 		mapUpdata();
 		mapShow();
 	}
@@ -200,9 +203,56 @@ void giam::GenshinImpact_AutoMap::setHUD()
 
 void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 {
+	Mat blueRect(30, autoMapSize.width, CV_8UC4, Scalar(255, 0, 0, 255));
+	Mat tmp = img(Rect(0,0, autoMapSize.width, 30));
+	addWeighted(tmp, 0.5, blueRect, 0.5, 0, tmp);
+
+	Mat star;
+	img(Rect(autoMapSize.width / 2 - 5, autoMapSize.height / 2 - 5, 11, 11)).copyTo(star);
+
+	tmp = img(Rect(autoMapSize.width / 2 - 5, autoMapSize.height / 2 - 5, 11, 11));
+
+	circle(star, Point(5, 5), 4, giHUD.minStarColor, 2, LINE_AA);
+
+	addWeighted(tmp, 0.5, star, 0.5, 0, tmp);
+
+
+
 	circle(img, Point(12, 12), 8, giHUD.displayFlagColor, -1);
-	putText(img, giHUD.runState, Point(28, 20), FONT_HERSHEY_COMPLEX_SMALL, 1, giHUD.runTextColor, 1);
-	circle(img, autoMapSize / 2, 3, Scalar(0, 0, 255));
+
+	putText(img, giHUD.runState, Point(28, 20), FONT_HERSHEY_COMPLEX_SMALL, 1, giHUD.runTextColor, 2);
+
+	putText(img, to_string(FRL.runningTime*1000), Point(50, 50), FONT_HERSHEY_COMPLEX_SMALL, 1, giHUD.runTextColor, 2);
+
+}
+
+void giam::GenshinImpact_AutoMap::customProcess()
+{
+	switch ((rand()%3))
+	{
+	case 0:
+		zerosMinMap.x = zerosMinMap.x + 30;
+		break;
+	case 1:
+		break;
+	case 2:
+		zerosMinMap.x = zerosMinMap.x - 30;
+	default:
+		break;
+	}
+
+	switch ((rand() % 3))
+	{
+	case 0:
+		zerosMinMap.y = zerosMinMap.y + 30;
+		break;
+	case 1:
+		break;
+	case 2:
+		zerosMinMap.y = zerosMinMap.y - 30;
+	default:
+		break;
+	}
 }
 
 void giam::GenshinImpact_AutoMap::mapUpdata()
@@ -225,6 +275,18 @@ void giam::GenshinImpact_AutoMap::mapUpdata()
 
 void giam::GenshinImpact_AutoMap::mapShow()
 {
-	imshow(autoMapWindowsName, autoMapMat);
-	FRL.Wait();
+	if (IsWindow(thisHandle))
+	{
+		imshow(autoMapWindowsName, autoMapMat);
+		FRL.Wait();
+	}
+	else
+	{
+		isRun = false;
+	}
+}
+
+void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int flags, void * parm)
+{
+
 }

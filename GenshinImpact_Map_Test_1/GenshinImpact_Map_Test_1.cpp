@@ -1,4 +1,6 @@
-﻿#include<iostream>
+﻿#pragma comment(linker, "/subsystem:windows /ENTRY:mainCRTStartup")
+
+#include<iostream>
 #include<Windows.h>
 #include<opencv2/opencv.hpp>
 #include<opencv2\imgproc\types_c.h>
@@ -11,6 +13,7 @@ int main()
 {
 	giam::giAM Amap;
 	Amap.run();
-    std::cout << "Hello World!\n";
+
+	return 0;
 }
 
