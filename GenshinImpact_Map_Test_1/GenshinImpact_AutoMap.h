@@ -171,26 +171,6 @@ namespace giam
 
 		static void on_MouseHandle(int event, int x, int y, int flags, void *parm);
 
-
-		void mouse_E_M(int x, int y);
-		void mouse_E_LBD(int x, int y);
-		void mouse_E_RBD(int x, int y);
-		void mouse_E_MBD(int x, int y);
-		void mouse_E_LBU(int x, int y);
-		void mouse_E_RBU(int x, int y);
-		void mouse_E_MBU(int x, int y);
-		void mouse_E_LBB(int x, int y);
-		void mouse_E_RBB(int x, int y);
-		void mouse_E_MBB(int x, int y);
-		void mouse_E_W(int x, int y);
-		void mouse_E_HW(int x, int y);
-		void mouse_F_L(int x, int y);
-		void mouse_F_R(int x, int y);
-		void mouse_F_M(int x, int y);
-		void mouse_F_CK(int x, int y);
-		void mouse_F_SK(int x, int y);
-		void mouse_F_AK(int x, int y);
-
 	};
 
 	typedef GenshinImpact_AutoMap giAM;
