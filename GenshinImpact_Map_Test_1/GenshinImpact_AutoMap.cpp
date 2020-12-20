@@ -45,7 +45,11 @@ Mat giam::GenshinImpact_AutoMap::getMinMap()
 
 	Point minMapPoint = Point(0, 0);
 
-	Size R = autoMapSize / 2;
+	Size reMapSize = autoMapSize;
+	reMapSize.width = (int)(reMapSize.width * giMEF.scale);
+	reMapSize.height = (int)(reMapSize.height * giMEF.scale);
+
+	Size R = reMapSize / 2;
 
 	Point LT = zerosMinMap - Point(R);
 	Point RB = zerosMinMap + Point(R);
@@ -62,14 +66,15 @@ Mat giam::GenshinImpact_AutoMap::getMinMap()
 	}
 	if (RB.x > mapSize.width)
 	{
-		minMapPoint.x = mapSize.width- autoMapSize.width;
+		minMapPoint.x = mapSize.width- reMapSize.width;
 	}
 	if (RB.y > mapSize.height)
 	{
-		minMapPoint.y = mapSize.height - autoMapSize.height;
+		minMapPoint.y = mapSize.height - reMapSize.height;
 	}
 
-	minMap = mapMat(Rect(minMapPoint, autoMapSize));
+	resize(mapMat(Rect(minMapPoint, reMapSize)), minMap, autoMapSize);
+	//minMap = mapMat(Rect(minMapPoint, reMapSize));
 
 	return minMap;
 }
@@ -215,7 +220,7 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 
 	putText(img, giHUD.runState, Point(28, 20), FONT_HERSHEY_COMPLEX_SMALL, 1, giHUD.runTextColor, 1);
 
-	//putText(img, to_string(FRL.runningTime*1000), Point(50, 50), FONT_HERSHEY_COMPLEX_SMALL, 1, giHUD.runTextColor, 2);
+	putText(img, to_string(giMEF.scale), Point(50, 50), FONT_HERSHEY_COMPLEX_SMALL, 1, giHUD.runTextColor, 2);
 
 }
 
@@ -283,6 +288,8 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 {
 	GenshinImpact_AutoMap& gi = *(giam::GenshinImpact_AutoMap*) parm;
 
+	gi.giMEF.value = flags;
+
 	switch (event)	
 	{
 	case EVENT_MOUSEMOVE: 
@@ -330,6 +337,23 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 	}
 	case EVENT_MOUSEWHEEL:
 	{
+		gi.giMEF.value = getMouseWheelDelta(flags);
+
+			if (gi.giMEF.value > 0)
+			{
+				if(gi.giMEF.scale < 6)
+				{
+					gi.giMEF.scale *= 1.2;
+				}
+			}
+			else if (gi.giMEF.value < 0)
+			{
+				if (gi.giMEF.scale >0.5)
+				{
+					gi.giMEF.scale /= 1.2;
+				}
+			}
+
 		break;
 	}
 	case EVENT_MOUSEHWHEEL:
@@ -347,7 +371,7 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 		gi.giMEF.dx = x - gi.giMEF.x0;
 		gi.giMEF.dy = y - gi.giMEF.y0;
 
-		gi.zerosMinMap = gi.giMEF.p0 - Point(gi.giMEF.dx, gi.giMEF.dy);
+		gi.zerosMinMap = gi.giMEF.p0 - Point((int)(gi.giMEF.dx*gi.giMEF.scale), (int)(gi.giMEF.dy*gi.giMEF.scale));
 		break;
 	}
 	case EVENT_FLAG_RBUTTON:

@@ -132,9 +132,8 @@ namespace giam
 			int dx = 0;
 			int dy = 0;
 			Point p0 = Point(0, 0);
-			Point p1 = Point(0, 0);
-			Point dp = Point(0, 0);
-
+			double value = 0.0;
+			double scale = 1.0;
 		}giMEF;
 
 		Mat mapMat=imread("Map.png", IMREAD_UNCHANGED);
