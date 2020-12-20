@@ -8,6 +8,7 @@
 using namespace cv;
 using namespace std;
 
+//自动测试
 class AutoTest
 {
 public:
@@ -29,6 +30,7 @@ public:
 
 };
 
+//帧率锁定
 class FrameRateLock
 {
 public:
@@ -106,6 +108,18 @@ namespace giam
 
 		}giHUD;
 
+		struct MEF
+		{
+			int x0 = 0;
+			int y0 = 0;
+			int dx = 0;
+			int dy = 0;
+			Point p0 = Point(0, 0);
+			Point p1 = Point(0, 0);
+			Point dp = Point(0, 0);
+
+		}giMEF;
+
 		Mat mapMat=imread("Map.png", IMREAD_UNCHANGED);
 		Mat autoMapMat;
 		String autoMapWindowsName = "Genshin Impact Auto Map";
@@ -139,6 +153,25 @@ namespace giam
 		void mapShow();
 
 		static void on_MouseHandle(int event, int x, int y, int flags, void *parm);
+
+		void mapMouseE_MM();
+		void mapMouseE_LBD();
+		void mapMouseE_RBD();
+		void mapMouseE_MBD();
+		void mapMouseE_LBU();
+		void mapMouseE_RBU();
+		void mapMouseE_MBU();
+		void mapMouseE_LBB();
+		void mapMouseE_RBB();
+		void mapMouseE_MBB();
+		void mapMouseE_MW();
+		void mapMouseE_MHW();
+		void mapMouseF_L();
+		void mapMouseF_R();
+		void mapMouseF_M();
+		void mapMouseF_CK();
+		void mapMouseF_SK();
+		void mapMouseF_AK();
 
 
 	};

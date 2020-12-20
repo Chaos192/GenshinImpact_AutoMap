@@ -30,7 +30,7 @@ bool giam::GenshinImpact_AutoMap::run()
 	if (!isInit) { init(); }
 	while (isRun)
 	{
-		customProcess();
+		//customProcess();
 		mapUpdata();
 		mapShow();
 	}
@@ -285,15 +285,131 @@ void giam::GenshinImpact_AutoMap::mapShow()
 
 void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int flags, void * parm)
 {
-	GenshinImpact_AutoMap& gm = *(giam::GenshinImpact_AutoMap*) parm;
+	GenshinImpact_AutoMap& gi = *(giam::GenshinImpact_AutoMap*) parm;
 
 	switch (event)	
 	{
-	case EVENT_LBUTTONDOWN:
-		break;
-	case EVENT_LBUTTONUP:
-		break;
+	case EVENT_MOUSEMOVE: 
+	{
+		//!< indicates that the mouse pointer has moved over the window.
 
+		break;
+	}
+	case EVENT_LBUTTONDOWN: 
+	{
+		//!< indicates that the left mouse button is pressed.
+		gi.giMEF.x0 = x;
+		gi.giMEF.y0 = y;
+		gi.giMEF.p0 = gi.zerosMinMap;
+		break;
+	}
+	case EVENT_RBUTTONDOWN:
+	{
+		//!< indicates that the right mouse button is pressed.
+
+		break;
+	}
+	case EVENT_MBUTTONDOWN: 
+	{
+		//!< indicates that the middle mouse button is pressed.
+
+		break;
+	}
+	case EVENT_LBUTTONUP: 
+	{
+		//!< indicates that left mouse button is released.
+
+		break;
+	}
+	case EVENT_RBUTTONUP: 
+	{
+		//!< indicates that right mouse button is released.
+
+		break;
+	}
+	case EVENT_MBUTTONUP: 
+	{
+		//!< indicates that middle mouse button is released.
+
+		break;
+	}
+	case EVENT_LBUTTONDBLCLK: 
+	{
+		//!< indicates that left mouse button is double clicked.
+
+		break;
+	}
+	case EVENT_RBUTTONDBLCLK: 
+	{
+		//!< indicates that right mouse button is double clicked.
+
+		break;
+	}
+	case EVENT_MBUTTONDBLCLK:
+	{
+		//!< indicates that middle mouse button is double clicked.
+
+		break;
+	}
+	case EVENT_MOUSEWHEEL:
+
+	{
+		//!< positive and negative values mean forward and backward scrolling, respectively.
+
+		break;
+	}
+	case EVENT_MOUSEHWHEEL:
+	{
+		//!< positive and negative values mean right and left scrolling, respectively.
+
+		break;
+	}
+	default:
+		break;
+	}
+
+	switch (flags)
+	{
+	case EVENT_FLAG_LBUTTON:
+	{
+		//!< indicates that the left mouse button is down.
+		gi.giMEF.dx = x - gi.giMEF.x0;
+		gi.giMEF.dy = y - gi.giMEF.y0;
+
+		gi.zerosMinMap = gi.giMEF.p0 - Point(gi.giMEF.dx, gi.giMEF.dy);
+
+		break;
+	}
+	case EVENT_FLAG_RBUTTON:
+	{
+		//!< indicates that the right mouse button is down.
+
+		break;
+	}
+	case EVENT_FLAG_MBUTTON:
+	{
+		//!< indicates that the middle mouse button is down.
+
+		break;
+	}
+	case EVENT_FLAG_CTRLKEY:
+	{
+		//!< indicates that CTRL Key is pressed.
+
+		break;
+	}
+	case EVENT_FLAG_SHIFTKEY:
+	{
+		//!< indicates that SHIFT Key is pressed.
+
+		break;
+	}
+	case EVENT_FLAG_ALTKEY:
+	{
+		//!< indicates that ALT Key is pressed.
+
+		break;
+	}
 	default:
 		break;
 	}
