@@ -209,11 +209,8 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 
 	Mat star;
 	img(Rect(autoMapSize.width / 2 - 5, autoMapSize.height / 2 - 5, 11, 11)).copyTo(star);
-
 	tmp = img(Rect(autoMapSize.width / 2 - 5, autoMapSize.height / 2 - 5, 11, 11));
-
 	circle(star, Point(5, 5), 4, giHUD.minStarColor, 2, LINE_AA);
-
 	addWeighted(tmp, 0.5, star, 0.5, 0, tmp);
 
 
@@ -288,5 +285,16 @@ void giam::GenshinImpact_AutoMap::mapShow()
 
 void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int flags, void * parm)
 {
+	GenshinImpact_AutoMap& gm = *(giam::GenshinImpact_AutoMap*) parm;
 
+	switch (event)	
+	{
+	case EVENT_LBUTTONDOWN:
+		break;
+	case EVENT_LBUTTONUP:
+		break;
+
+	default:
+		break;
+	}
 }
