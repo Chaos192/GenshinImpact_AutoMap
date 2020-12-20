@@ -71,6 +71,23 @@ public:
 
 };
 
+class MessBox
+{
+
+};
+
+class Popup
+{
+public:
+	Popup():Popup(""){};
+	~Popup() {};
+public:
+	Popup(std::string text) :Popup("", text) {};
+	Popup(std::string title,std::string text):Popup(title,text,false){};
+	Popup(std::string title, std::string text,bool isReturn) {};
+	
+
+};
 
 namespace giam
 {
@@ -154,25 +171,25 @@ namespace giam
 
 		static void on_MouseHandle(int event, int x, int y, int flags, void *parm);
 
-		void mapMouseE_MM();
-		void mapMouseE_LBD();
-		void mapMouseE_RBD();
-		void mapMouseE_MBD();
-		void mapMouseE_LBU();
-		void mapMouseE_RBU();
-		void mapMouseE_MBU();
-		void mapMouseE_LBB();
-		void mapMouseE_RBB();
-		void mapMouseE_MBB();
-		void mapMouseE_MW();
-		void mapMouseE_MHW();
-		void mapMouseF_L();
-		void mapMouseF_R();
-		void mapMouseF_M();
-		void mapMouseF_CK();
-		void mapMouseF_SK();
-		void mapMouseF_AK();
 
+		void mouse_E_M(int x, int y);
+		void mouse_E_LBD(int x, int y);
+		void mouse_E_RBD(int x, int y);
+		void mouse_E_MBD(int x, int y);
+		void mouse_E_LBU(int x, int y);
+		void mouse_E_RBU(int x, int y);
+		void mouse_E_MBU(int x, int y);
+		void mouse_E_LBB(int x, int y);
+		void mouse_E_RBB(int x, int y);
+		void mouse_E_MBB(int x, int y);
+		void mouse_E_W(int x, int y);
+		void mouse_E_HW(int x, int y);
+		void mouse_F_L(int x, int y);
+		void mouse_F_R(int x, int y);
+		void mouse_F_M(int x, int y);
+		void mouse_F_CK(int x, int y);
+		void mouse_F_SK(int x, int y);
+		void mouse_F_AK(int x, int y);
 
 	};
 

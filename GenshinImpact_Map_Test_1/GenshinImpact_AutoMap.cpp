@@ -1,16 +1,12 @@
 #include "GenshinImpact_AutoMap.h"
 
-giam::GenshinImpact_AutoMap::GenshinImpact_AutoMap()
-{
-}
+giam::GenshinImpact_AutoMap::GenshinImpact_AutoMap(){}
 
-giam::GenshinImpact_AutoMap::~GenshinImpact_AutoMap()
-{
-}
+giam::GenshinImpact_AutoMap::~GenshinImpact_AutoMap(){}
 
 bool giam::GenshinImpact_AutoMap::init()
 {
-	AT.on();
+	//AT.on();
 	
 	isInit = true;
 	isRun = true;
@@ -217,9 +213,9 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 
 	circle(img, Point(12, 12), 8, giHUD.displayFlagColor, -1);
 
-	putText(img, giHUD.runState, Point(28, 20), FONT_HERSHEY_COMPLEX_SMALL, 1, giHUD.runTextColor, 2);
+	putText(img, giHUD.runState, Point(28, 20), FONT_HERSHEY_COMPLEX_SMALL, 1, giHUD.runTextColor, 1);
 
-	putText(img, to_string(FRL.runningTime*1000), Point(50, 50), FONT_HERSHEY_COMPLEX_SMALL, 1, giHUD.runTextColor, 2);
+	//putText(img, to_string(FRL.runningTime*1000), Point(50, 50), FONT_HERSHEY_COMPLEX_SMALL, 1, giHUD.runTextColor, 2);
 
 }
 
@@ -292,76 +288,74 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 	case EVENT_MOUSEMOVE: 
 	{
 		//!< indicates that the mouse pointer has moved over the window.
-
+		gi.mouse_E_M(x, y);
 		break;
 	}
 	case EVENT_LBUTTONDOWN: 
 	{
 		//!< indicates that the left mouse button is pressed.
-		gi.giMEF.x0 = x;
-		gi.giMEF.y0 = y;
-		gi.giMEF.p0 = gi.zerosMinMap;
+		gi.mouse_E_LBD(x, y);
 		break;
 	}
 	case EVENT_RBUTTONDOWN:
 	{
 		//!< indicates that the right mouse button is pressed.
-
+		gi.mouse_E_RBD(x, y);
 		break;
 	}
 	case EVENT_MBUTTONDOWN: 
 	{
 		//!< indicates that the middle mouse button is pressed.
-
+		gi.mouse_E_MBD(x, y);
 		break;
 	}
 	case EVENT_LBUTTONUP: 
 	{
 		//!< indicates that left mouse button is released.
-
+		gi.mouse_E_LBU(x, y);
 		break;
 	}
 	case EVENT_RBUTTONUP: 
 	{
 		//!< indicates that right mouse button is released.
-
+		gi.mouse_E_RBU(x, y);
 		break;
 	}
 	case EVENT_MBUTTONUP: 
 	{
 		//!< indicates that middle mouse button is released.
-
+		gi.mouse_E_MBU(x, y);
 		break;
 	}
 	case EVENT_LBUTTONDBLCLK: 
 	{
 		//!< indicates that left mouse button is double clicked.
-
+		gi.mouse_E_LBB(x, y);
 		break;
 	}
 	case EVENT_RBUTTONDBLCLK: 
 	{
 		//!< indicates that right mouse button is double clicked.
-
+		gi.mouse_E_RBB(x, y);
 		break;
 	}
 	case EVENT_MBUTTONDBLCLK:
 	{
 		//!< indicates that middle mouse button is double clicked.
-
+		gi.mouse_E_MBB(x, y);
 		break;
 	}
 	case EVENT_MOUSEWHEEL:
 
 	{
 		//!< positive and negative values mean forward and backward scrolling, respectively.
-
+		gi.mouse_E_W(x, y);
 		break;
 	}
 	case EVENT_MOUSEHWHEEL:
 	{
 		//!< positive and negative values mean right and left scrolling, respectively.
-
+		gi.mouse_E_HW(x, y);
 		break;
 	}
 	default:
@@ -373,44 +367,118 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 	case EVENT_FLAG_LBUTTON:
 	{
 		//!< indicates that the left mouse button is down.
-		gi.giMEF.dx = x - gi.giMEF.x0;
-		gi.giMEF.dy = y - gi.giMEF.y0;
-
-		gi.zerosMinMap = gi.giMEF.p0 - Point(gi.giMEF.dx, gi.giMEF.dy);
-
+		gi.mouse_F_L(x, y);
 		break;
 	}
 	case EVENT_FLAG_RBUTTON:
 	{
 		//!< indicates that the right mouse button is down.
-
+		gi.mouse_F_R(x, y);
 		break;
 	}
 	case EVENT_FLAG_MBUTTON:
 	{
 		//!< indicates that the middle mouse button is down.
-
+		gi.mouse_F_M(x, y);
 		break;
 	}
 	case EVENT_FLAG_CTRLKEY:
 	{
 		//!< indicates that CTRL Key is pressed.
-
+		gi.mouse_F_CK(x, y);
 		break;
 	}
 	case EVENT_FLAG_SHIFTKEY:
 	{
 		//!< indicates that SHIFT Key is pressed.
-
+		gi.mouse_F_SK(x, y);
 		break;
 	}
 	case EVENT_FLAG_ALTKEY:
 	{
 		//!< indicates that ALT Key is pressed.
-
+		gi.mouse_F_AK(x, y);
 		break;
 	}
 	default:
 		break;
 	}
+}
+
+void giam::GenshinImpact_AutoMap::mouse_E_M(int x, int y) 
+{
+
+}
+void giam::GenshinImpact_AutoMap::mouse_E_LBD(int x, int y) 
+{
+	giMEF.x0 = x;
+	giMEF.y0 = y;
+	giMEF.p0 = zerosMinMap;
+}
+void giam::GenshinImpact_AutoMap::mouse_E_RBD(int x, int y)
+{
+
+}
+void giam::GenshinImpact_AutoMap::mouse_E_MBD(int x, int y)
+{
+
+}
+void giam::GenshinImpact_AutoMap::mouse_E_LBU(int x, int y)
+{
+
+}
+void giam::GenshinImpact_AutoMap::mouse_E_RBU(int x, int y)
+{
+
+}
+void giam::GenshinImpact_AutoMap::mouse_E_MBU(int x, int y)
+{
+
+}
+void giam::GenshinImpact_AutoMap::mouse_E_LBB(int x, int y)
+{
+
+}
+void giam::GenshinImpact_AutoMap::mouse_E_RBB(int x, int y)
+{
+
+}
+void giam::GenshinImpact_AutoMap::mouse_E_MBB(int x, int y)
+{
+
+}
+void giam::GenshinImpact_AutoMap::mouse_E_W(int x, int y)
+{
+ 
+}
+void giam::GenshinImpact_AutoMap::mouse_E_HW(int x, int y)
+{
+ 
+}
+void giam::GenshinImpact_AutoMap::mouse_F_L(int x, int y)
+{
+	giMEF.dx = x - giMEF.x0;
+	giMEF.dy = y - giMEF.y0;
+
+	zerosMinMap = giMEF.p0 - Point(giMEF.dx, giMEF.dy);
+}
+void giam::GenshinImpact_AutoMap::mouse_F_R(int x, int y)
+{
+ 
+}
+void giam::GenshinImpact_AutoMap::mouse_F_M(int x, int y)
+{
+ 
+}
+void giam::GenshinImpact_AutoMap::mouse_F_CK(int x, int y)
+{
+ 
+}
+void giam::GenshinImpact_AutoMap::mouse_F_SK(int x, int y)
+{
+ 
+}
+void giam::GenshinImpact_AutoMap::mouse_F_AK(int x, int y)
+{
+ 
 }
