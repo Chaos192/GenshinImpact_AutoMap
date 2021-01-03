@@ -38,7 +38,7 @@ bool giam::GenshinImpact_AutoMap::run()
 	//运行循环
 	while (isRun)
 	{
-		//customProcess();
+		customProcess();
 		//地图图标文字等更新
 		mapUpdata();
 		//显示
@@ -96,24 +96,29 @@ Mat giam::GenshinImpact_AutoMap::getMinMap()
 	return minMap;
 }
 
-//原神是否运行
-void giam::GenshinImpact_AutoMap::giIsRunning()
+//判断RECT是否相等
+bool giam::GenshinImpact_AutoMap::isEqual(RECT & r1, RECT & r2)
 {
-	if (AT)
+	if (r1.bottom != r2.bottom || r1.left != r2.left || r1.right != r2.right || r1.top != r2.top)
 	{
-		//AutoTest Work Is On
-		giIsRunningFlag = AT;
-		return;
+		return false;
 	}
 	else
 	{
-		//
-		giHandle = FindWindow(NULL, "原神");
-		if (giHandle != NULL)
-		{
-			giIsRunningFlag= true;
-			return;
-		}
+		return true;
+	}
+	return false;
+}
+
+//原神是否运行
+void giam::GenshinImpact_AutoMap::giIsRunning()
+{
+	//尝试获取原神句柄
+	giHandle = FindWindow(NULL, "原神");
+	if (giHandle != NULL)
+	{
+		giIsRunningFlag = true;
+		return;
 	}
 	giIsRunningFlag= false;
 }
@@ -121,46 +126,25 @@ void giam::GenshinImpact_AutoMap::giIsRunning()
 //原神是否可见
 void giam::GenshinImpact_AutoMap::giIsDisplay()
 {
-	if (AT)
+	if (giHandle != NULL)
 	{
-		//AutoTest Work Is On
-		giIsDisplayFlag = AT;
+		giIsDisplayFlag = !IsIconic(giHandle);
 		return;
 	}
-	else
-	{
-		//
-		if (giHandle != NULL)
-		{
-			giIsDisplayFlag= !IsIconic(giHandle);
-			return;
-		}
-	}
-	giIsDisplayFlag= false;
+	giIsDisplayFlag = false;
 }
 
 //原神是否最大化
 void giam::GenshinImpact_AutoMap::giIsZoomed()
 {
-	if (AT)
+	if (giHandle != NULL)
 	{
-		//AutoTest Work Is On
-		giIsZoomedFlag = !AT;
+		giIsZoomedFlag = IsZoomed(giHandle);
+		//获取原神窗口区域
+		GetWindowRect(giHandle, &giRect);
 		return;
 	}
-	else
-	{
-		//
-		if (giHandle != NULL)
-		{
-			//WindowFromPoint();
-			giIsZoomedFlag=IsZoomed(giHandle);
-			GetWindowRect(giHandle, &giRect);
-			return;
-		}
-	}
 	giIsZoomedFlag = false;
-	return;
 }
 
 //检查原神窗口状态
@@ -229,16 +213,21 @@ void giam::GenshinImpact_AutoMap::setHUD()
 //绘制HUD
 void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 {
-	Mat blueRect(20, autoMapSize.width, CV_8UC4, Scalar(200, 200,200, 255));
-	Mat tmp = img(Rect(0,0, autoMapSize.width, 20));
-	addWeighted(tmp, 0.5, blueRect, 0.5, 0, tmp);
+	Mat tmp;
 
+	//绘制背景条
+	Mat backRect(20, autoMapSize.width, CV_8UC4, Scalar(200, 200,200, 255));
+	tmp = img(Rect(0,0, autoMapSize.width, 20));
+	addWeighted(tmp, 0.6, backRect, 0.4, 0, tmp);
+
+	//绘制中心光标
 	//Mat star;
 	//img(Rect(autoMapSize.width / 2 - 5, autoMapSize.height / 2 - 5, 11, 11)).copyTo(star);
 	//tmp = img(Rect(autoMapSize.width / 2 - 5, autoMapSize.height / 2 - 5, 11, 11));
 	//circle(star, Point(5, 5), 4, giHUD.minStarColor, 2, LINE_AA);
 	//addWeighted(tmp, 0.5, star, 0.5, 0, tmp);
 
+	//绘制小图标
 	Mat backgound;
 	tmp = img(Rect(30, 0, giTab.pngA.cols, giTab.pngA.rows));
 	tmp.copyTo(backgound);
@@ -246,14 +235,14 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 
 	if (!giFlag.isShow[0])
 	{
+		//小图标半隐藏
 		addWeighted(tmp, 0.5, backgound, 0.5, 0, tmp);
 
 	}
 	
-
-	circle(img, Point(10, 10), 4, giHUD.displayFlagColor, -1);
-
-	circle(img, Point(20, 10), 4, giHUD.runTextColor, -1);
+	//圆点显示原神状态
+	//circle(img, Point(10, 10), 4, giHUD.displayFlagColor, -1);
+	//circle(img, Point(20, 10), 4, giHUD.runTextColor, -1);
 
 	//putText(img, giHUD.runState, Point(24, 12), FONT_HERSHEY_COMPLEX_SMALL, 0.4, giHUD.runTextColor, 1);
 
@@ -267,7 +256,7 @@ void giam::GenshinImpact_AutoMap::setFLAG()
 	// mouse click change giFlag.isShow[] state
 
 	/*Test*/
-	//giFlag.isShow[0] = true;
+	giFlag.isShow[0] = true;
 }
 
 //在地图上绘制标记
@@ -288,81 +277,70 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 //测试用
 void giam::GenshinImpact_AutoMap::customProcess()
 {
-	switch ((rand()%3))
-	{
-	case 0:
-		zerosMinMap.x = zerosMinMap.x + 30;
-		break;
-	case 1:
-		break;
-	case 2:
-		zerosMinMap.x = zerosMinMap.x - 30;
-	default:
-		break;
-	}
 
-	switch ((rand() % 3))
-	{
-	case 0:
-		zerosMinMap.y = zerosMinMap.y + 30;
-		break;
-	case 1:
-		break;
-	case 2:
-		zerosMinMap.y = zerosMinMap.y - 30;
-	default:
-		break;
-	}
 }
 
 //地图数据状态更新
 void giam::GenshinImpact_AutoMap::mapUpdata()
 {
+	//更新用
 	Mat tmpMap;
 
-
+	//更新原神窗口状态
 	giCheckWindows();
-
+	//获取原神窗口截屏
 	giGetScreen();
 
-	//
+	//截取地图
 	getMinMap().copyTo(tmpMap);
+
+	//设置显示HUD
 	setHUD();
 	addHUD(tmpMap);
-
+	//设置显示标记
 	setFLAG();
 	addFLAG(tmpMap);
 
+	//将加工好的画面赋给显示变量
 	autoMapMat = tmpMap;
-	//tmpMap
 }
 
 //地图显示刷新
 void giam::GenshinImpact_AutoMap::mapShow()
 {
+	//如果悬浮窗窗口不存在，停止运行并退出
 	if (IsWindow(thisHandle))
 	{
+		//如果窗口处于最小化状态，不对画面进行更新
 		if (!IsIconic(thisHandle))
 		{
 			imshow(autoMapWindowsName, autoMapMat);
 		}
+		//如果原神正在运行
 		if (giIsRunningFlag)
 		{
+			//并且处于可见状态
 			if (giIsDisplayFlag)
 			{
+				//如果悬浮窗处于最小化，则恢复悬浮窗
 				if (IsIconic(thisHandle))
 				{
 					ShowWindow(thisHandle, SW_RESTORE);
-					//ShowWindow(thisHandle, SW_MAXIMIZE);
 				}
-				SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + 250, giRect.top + 100, 0, 0, SWP_NOSIZE);
+				//如果原神窗口有移动，悬浮窗随之移动
+				if (isEqual(giRect, giRectTmp))
+				{
+					SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + 250, giRect.top + 100, 0, 0, SWP_NOSIZE);
+					giRectTmp = giRect;
+				}
 			}
 			else
 			{
+				//处于不可见状态则令悬浮窗进行最小化
 				ShowWindow(thisHandle, SW_MINIMIZE);
 			}
 		}
-		
+		//等待显示更新
 		FRL.Wait();
 	}
 	else

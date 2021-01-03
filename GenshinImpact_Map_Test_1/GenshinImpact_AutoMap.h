@@ -101,7 +101,7 @@ namespace giam
 		//公共变量
 
 		//测试用
-		AutoTest AT;
+		//AutoTest AT;
 
 		//图像更新帧率锁定
 		FrameRateLock FRL;
@@ -119,6 +119,8 @@ namespace giam
 		HWND thisHandle;
 		//原神窗口区域
 		RECT giRect;
+		//原神窗口区域保存对比用
+		RECT giRectTmp;
 
 		//原神是否正在运行标志
 		bool giIsRunningFlag = false;
@@ -181,7 +183,7 @@ namespace giam
 		}giFlag;
 
 		//完整地图源备份
-		Mat mapMatSource = imread("Map.png", IMREAD_UNCHANGED);
+		//Mat mapMatSource = imread("Map.png", IMREAD_UNCHANGED);
 		//完整地图 应用
 		Mat mapMat = imread("Map.png", IMREAD_UNCHANGED);
 		//悬浮窗显示窗口
@@ -211,6 +213,9 @@ namespace giam
 
 		//从大地图中截取显示区域
 		Mat getMinMap();
+		//判断RECT是否相等
+		bool isEqual(RECT &r1, RECT &r2);
+
 	private:
 		//类内实现函数
 
