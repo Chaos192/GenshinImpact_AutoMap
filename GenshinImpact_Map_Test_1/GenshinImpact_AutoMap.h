@@ -141,6 +141,7 @@ namespace giam
 		{
 			//string pngA = "f_t_c_1_1.png";
 			Mat pngA = imread("f_t_c_1_1.png", IMREAD_UNCHANGED);
+			Mat pngAMask = imread("f_t_c_1_1_mask.bmp",0);
 			Mat pngB = imread("f_t_c_1_1.png", IMREAD_UNCHANGED);
 			Mat pngC = imread("f_t_c_1_1.png", IMREAD_UNCHANGED);
 

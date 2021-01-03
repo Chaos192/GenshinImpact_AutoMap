@@ -219,6 +219,16 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 	//circle(star, Point(5, 5), 4, giHUD.minStarColor, 2, LINE_AA);
 	//addWeighted(tmp, 0.5, star, 0.5, 0, tmp);
 
+	Mat backgound;
+	tmp = img(Rect(30, 0, giTab.pngA.cols, giTab.pngA.rows));
+	tmp.copyTo(backgound);
+	giTab.pngA.copyTo(tmp, giTab.pngAMask);
+
+	if (!giFlag.isShow[0])
+	{
+		addWeighted(tmp, 0.5, backgound, 0.5, 0, tmp);
+
+	}
 	
 
 	circle(img, Point(10, 10), 4, giHUD.displayFlagColor, -1);
@@ -236,7 +246,7 @@ void giam::GenshinImpact_AutoMap::setFLAG()
 	// mouse click change giFlag.isShow[] state
 
 	/*Test*/
-	giFlag.isShow[0] = true;
+	//giFlag.isShow[0] = true;
 }
 
 void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
@@ -304,19 +314,25 @@ void giam::GenshinImpact_AutoMap::mapShow()
 {
 	if (IsWindow(thisHandle))
 	{
-		imshow(autoMapWindowsName, autoMapMat);
-		if (giIsDisplayFlag)
+		if (!IsIconic(thisHandle))
 		{
-			if (IsIconic(thisHandle))
-			{
-				ShowWindow(thisHandle, SW_RESTORE);
-				//ShowWindow(thisHandle, SW_MAXIMIZE);
-			}
-			SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left+250, giRect.top+100, 0, 0,  SWP_NOSIZE);
+			imshow(autoMapWindowsName, autoMapMat);
 		}
-		else
+		if (giIsRunningFlag)
 		{
-			ShowWindow(thisHandle, SW_MINIMIZE);
+			if (giIsDisplayFlag)
+			{
+				if (IsIconic(thisHandle))
+				{
+					ShowWindow(thisHandle, SW_RESTORE);
+					//ShowWindow(thisHandle, SW_MAXIMIZE);
+				}
+				SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + 250, giRect.top + 100, 0, 0, SWP_NOSIZE);
+			}
+			else
+			{
+				ShowWindow(thisHandle, SW_MINIMIZE);
+			}
 		}
 		
 		FRL.Wait();
