@@ -18,11 +18,11 @@ bool giam::GenshinImpact_AutoMap::init()
 	//设置回调
 	setMouseCallback(autoMapWindowsName, on_MouseHandle, (void*)this);
 	//获取悬浮窗句柄
-	thisHandle = FindWindow(NULL, autoMapWindowsName.c_str());
+	thisHandle = FindWindowA(NULL, autoMapWindowsName.c_str());
 	//初始化绘图
 	imshow(autoMapWindowsName, autoMapMat);
 	//设置窗口位置
-	SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + 250, giRect.top + 100, autoMapSize.width, autoMapSize.height, 0);
+	SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + 250, giRect.top + 100, autoMapSize.width, autoMapSize.height, SWP_NOMOVE);
 	//设置窗口为无边框
 	SetWindowLong(thisHandle, GWL_STYLE, GetWindowLong(thisHandle, GWL_EXSTYLE | WS_EX_TOPMOST)); //改变窗口风格
 	ShowWindow(thisHandle, SW_SHOW);
@@ -114,7 +114,7 @@ bool giam::GenshinImpact_AutoMap::isEqual(RECT & r1, RECT & r2)
 void giam::GenshinImpact_AutoMap::giIsRunning()
 {
 	//尝试获取原神句柄
-	giHandle = FindWindow(NULL, "原神");
+	giHandle = FindWindowA(NULL, "原神");
 	if (giHandle != NULL)
 	{
 		giIsRunningFlag = true;
@@ -161,27 +161,39 @@ void giam::GenshinImpact_AutoMap::giGetScreen()
 	HBITMAP	hBmp;
 	RECT rc;
 	BITMAP bmp;
+
+	if (giHandle == NULL)return;
+
 	//获取目标句柄的窗口大小RECT
 	GetWindowRect(giHandle, &rc);
+
 	//获取目标句柄的DC
 	HDC hScreen = GetDC(giHandle);
 	HDC	hCompDC = CreateCompatibleDC(hScreen);
+
 	//获取目标句柄的宽度和高度
 	int	nWidth = rc.right - rc.left;
 	int	nHeight = rc.bottom - rc.top;
+
 	//创建Bitmap对象
 	hBmp = CreateCompatibleBitmap(hScreen, nWidth, nHeight);//得到位图
+
 	SelectObject(hCompDC, hBmp); //不写就全黑
 	BitBlt(hCompDC, 0, 0, nWidth, nHeight, hScreen, 0, 0, SRCCOPY);
+
 	//释放对象
 	DeleteDC(hScreen);
 	DeleteDC(hCompDC);
+
 	//类型转换
 	GetObject(hBmp, sizeof(BITMAP), &bmp);
+
 	int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
 	int depth = bmp.bmBitsPixel == 1 ? IPL_DEPTH_1U : IPL_DEPTH_8U;
+
 	//mat操作
-	giFrame.create(cvSize(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8U, nChannels));
+	giFrame.create(cv::Size(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8U, nChannels));
+	
 	GetBitmapBits(hBmp, bmp.bmHeight*bmp.bmWidth*nChannels, giFrame.data);
 }
 
@@ -239,7 +251,18 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 		addWeighted(tmp, 0.5, backgound, 0.5, 0, tmp);
 
 	}
-	
+	tmp.release();
+	tmp = img(Rect(autoMapSize.width- giTab.sysIcon1.cols-10- giTab.sysIcon2.cols, 0, giTab.sysIcon2.cols, giTab.sysIcon2.rows));
+	//tmp.copyTo(backgound);
+	giTab.sysIcon2.copyTo(tmp, giTab.sysIcon2Mask);
+	//addWeighted(tmp, 0.5, giTab.sysIcon1, 0.5, 0, tmp);
+
+	tmp.release();
+	tmp = img(Rect(autoMapSize.width - giTab.sysIcon1.cols , 0, giTab.sysIcon1.cols, giTab.sysIcon1.rows));
+	//tmp.copyTo(backgound);
+	giTab.sysIcon1.copyTo(tmp, giTab.sysIcon1Mask);
+
+
 	//圆点显示原神状态
 	//circle(img, Point(10, 10), 4, giHUD.displayFlagColor, -1);
 	//circle(img, Point(20, 10), 4, giHUD.runTextColor, -1);
@@ -289,7 +312,7 @@ void giam::GenshinImpact_AutoMap::mapUpdata()
 	//更新原神窗口状态
 	giCheckWindows();
 	//获取原神窗口截屏
-	giGetScreen();
+	//giGetScreen();
 
 	//截取地图
 	getMinMap().copyTo(tmpMap);
@@ -328,7 +351,7 @@ void giam::GenshinImpact_AutoMap::mapShow()
 					ShowWindow(thisHandle, SW_RESTORE);
 				}
 				//如果原神窗口有移动，悬浮窗随之移动
-				if (isEqual(giRect, giRectTmp))
+				if (!isEqual(giRect, giRectTmp))
 				{
 					SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + 250, giRect.top + 100, 0, 0, SWP_NOSIZE);
 					giRectTmp = giRect;
@@ -367,6 +390,7 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 		gi.giMEF.x0 = x;
 		gi.giMEF.y0 = y;
 		gi.giMEF.p0 = gi.zerosMinMap;
+
 		break;
 	}
 	case EVENT_RBUTTONDOWN:
@@ -379,6 +403,7 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 	}
 	case EVENT_LBUTTONUP: 
 	{
+		
 		break;
 	}
 	case EVENT_RBUTTONUP: 

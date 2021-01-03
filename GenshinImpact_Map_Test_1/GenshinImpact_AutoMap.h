@@ -151,17 +151,22 @@ namespace giam
 			Point p0 = Point(0, 0);
 			double value = 0.0;
 			double scale = 1.0;
+
+			bool bLC = false;
 		}giMEF;
 
 		//地图标记对应图标
 		struct TAB
 		{
 			//string pngA = "f_t_c_1_1.png";
-			Mat pngA = imread("f_t_c_1_1.png", IMREAD_UNCHANGED);
-			Mat pngAMask = imread("f_t_c_1_1_mask.bmp",0);
-			Mat pngB = imread("f_t_c_1_1.png", IMREAD_UNCHANGED);
-			Mat pngC = imread("f_t_c_1_1.png", IMREAD_UNCHANGED);
-
+			Mat pngA = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/f_t_c_1_1.png", IMREAD_UNCHANGED);
+			Mat pngAMask = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/f_t_c_1_1_mask.bmp", IMREAD_UNCHANGED);
+			Mat pngB = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/f_t_c_1_1.png", IMREAD_UNCHANGED);
+			Mat pngC = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/f_t_c_1_1.png", IMREAD_UNCHANGED);
+			Mat sysIcon1 = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/sysIcon_1.png", IMREAD_UNCHANGED);
+			Mat sysIcon1Mask = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/sysIcon_1_mask.bmp", IMREAD_UNCHANGED);
+			Mat sysIcon2 = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/sysIcon_2.png", IMREAD_UNCHANGED);
+			Mat sysIcon2Mask = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/sysIcon_2_mask.bmp", IMREAD_UNCHANGED);
 		}giTab;
 
 		//地图标记相关记录
@@ -185,7 +190,7 @@ namespace giam
 		//完整地图源备份
 		//Mat mapMatSource = imread("Map.png", IMREAD_UNCHANGED);
 		//完整地图 应用
-		Mat mapMat = imread("Map.png", IMREAD_UNCHANGED);
+		Mat mapMat = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/Map.png", IMREAD_UNCHANGED);
 		//悬浮窗显示窗口
 		Mat autoMapMat;
 		//悬浮窗窗口标题
