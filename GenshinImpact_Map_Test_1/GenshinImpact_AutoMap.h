@@ -109,6 +109,7 @@ namespace giam
 
 		HWND giHandle;
 		HWND thisHandle;
+		RECT giRect;
 
 		bool giIsRunningFlag = false;
 		bool giIsDisplayFlag = false;
@@ -136,15 +137,31 @@ namespace giam
 			double scale = 1.0;
 		}giMEF;
 
+		struct TAB
+		{
+			//string pngA = "f_t_c_1_1.png";
+			Mat pngA = imread("f_t_c_1_1.png", IMREAD_UNCHANGED);
+			Mat pngB = imread("f_t_c_1_1.png", IMREAD_UNCHANGED);
+			Mat pngC = imread("f_t_c_1_1.png", IMREAD_UNCHANGED);
+
+		}giTab;
+
+		struct FLAG
+		{
+			int max = 3;
+			bool isShow[3] = { false };
+		}giFlag;
+
 		Mat mapMat=imread("Map.png", IMREAD_UNCHANGED);
 		Mat autoMapMat;
 		String autoMapWindowsName = "Genshin Impact Auto Map";
 
-		Size autoMapSize = Size(450, 400);
+		Size autoMapSize = Size(250, 200);
 		Size mapSize= Size(mapMat.cols, mapMat.rows);
 		Point zerosMinMap = mapSize/2;
 
 		Mat giFrame;
+
 	public:
 		//¿ò¼ÜÀàº¯Êý
 		bool init();
@@ -162,6 +179,8 @@ namespace giam
 		void giGetScreen();
 		void setHUD();
 		void addHUD(Mat img);
+		void setFLAG();
+		void addFLAG(Mat img);
 
 		void customProcess();
 

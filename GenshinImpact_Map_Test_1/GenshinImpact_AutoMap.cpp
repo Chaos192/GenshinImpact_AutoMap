@@ -12,12 +12,16 @@ bool giam::GenshinImpact_AutoMap::init()
 	isRun = true;
 	
 	autoMapMat = Mat(autoMapSize, CV_8UC4, Scalar(200, 200, 200, 255));
-
+	
 	namedWindow(autoMapWindowsName);
 	setMouseCallback(autoMapWindowsName, on_MouseHandle, (void*)this);
 	thisHandle = FindWindow(NULL, autoMapWindowsName.c_str());
-
 	imshow(autoMapWindowsName, autoMapMat);
+
+	SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + 250, giRect.top + 100, autoMapSize.width, autoMapSize.height, 0);
+	SetWindowLong(thisHandle, GWL_STYLE, GetWindowLong(thisHandle, GWL_EXSTYLE | WS_EX_TOPMOST)); //改变窗口风格
+	ShowWindow(thisHandle, SW_SHOW);
+
 	return false;
 }
 
@@ -135,6 +139,7 @@ void giam::GenshinImpact_AutoMap::giIsZoomed()
 		{
 			//WindowFromPoint();
 			giIsZoomedFlag=IsZoomed(giHandle);
+			GetWindowRect(giHandle, &giRect);
 			return;
 		}
 	}
@@ -204,24 +209,45 @@ void giam::GenshinImpact_AutoMap::setHUD()
 
 void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 {
-	Mat blueRect(30, autoMapSize.width, CV_8UC4, Scalar(255, 0, 0, 255));
-	Mat tmp = img(Rect(0,0, autoMapSize.width, 30));
+	Mat blueRect(20, autoMapSize.width, CV_8UC4, Scalar(200, 200,200, 255));
+	Mat tmp = img(Rect(0,0, autoMapSize.width, 20));
 	addWeighted(tmp, 0.5, blueRect, 0.5, 0, tmp);
 
-	Mat star;
-	img(Rect(autoMapSize.width / 2 - 5, autoMapSize.height / 2 - 5, 11, 11)).copyTo(star);
-	tmp = img(Rect(autoMapSize.width / 2 - 5, autoMapSize.height / 2 - 5, 11, 11));
-	circle(star, Point(5, 5), 4, giHUD.minStarColor, 2, LINE_AA);
-	addWeighted(tmp, 0.5, star, 0.5, 0, tmp);
+	//Mat star;
+	//img(Rect(autoMapSize.width / 2 - 5, autoMapSize.height / 2 - 5, 11, 11)).copyTo(star);
+	//tmp = img(Rect(autoMapSize.width / 2 - 5, autoMapSize.height / 2 - 5, 11, 11));
+	//circle(star, Point(5, 5), 4, giHUD.minStarColor, 2, LINE_AA);
+	//addWeighted(tmp, 0.5, star, 0.5, 0, tmp);
 
+	
 
+	circle(img, Point(10, 10), 4, giHUD.displayFlagColor, -1);
 
-	circle(img, Point(12, 12), 8, giHUD.displayFlagColor, -1);
+	circle(img, Point(20, 10), 4, giHUD.runTextColor, -1);
 
-	putText(img, giHUD.runState, Point(28, 20), FONT_HERSHEY_COMPLEX_SMALL, 1, giHUD.runTextColor, 1);
+	//putText(img, giHUD.runState, Point(24, 12), FONT_HERSHEY_COMPLEX_SMALL, 0.4, giHUD.runTextColor, 1);
 
-	putText(img, to_string(giMEF.scale), Point(50, 50), FONT_HERSHEY_COMPLEX_SMALL, 1, giHUD.runTextColor, 2);
+	//putText(img, to_string(giMEF.scale), Point(30, 14), FONT_HERSHEY_COMPLEX_SMALL, 0.4, giHUD.runTextColor, 1);
 
+}
+
+void giam::GenshinImpact_AutoMap::setFLAG()
+{
+	// mouse click change giFlag.isShow[] state
+
+	/*Test*/
+	giFlag.isShow[0] = true;
+}
+
+void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
+{
+	for (int i = 0; i < giFlag.max; i++)
+	{
+		if (giFlag.isShow[i])
+		{
+			;
+		}
+	}
 }
 
 void giam::GenshinImpact_AutoMap::customProcess()
@@ -267,6 +293,9 @@ void giam::GenshinImpact_AutoMap::mapUpdata()
 	setHUD();
 	addHUD(tmpMap);
 
+	setFLAG();
+	addFLAG(tmpMap);
+
 	autoMapMat = tmpMap;
 	//tmpMap
 }
@@ -276,6 +305,20 @@ void giam::GenshinImpact_AutoMap::mapShow()
 	if (IsWindow(thisHandle))
 	{
 		imshow(autoMapWindowsName, autoMapMat);
+		if (giIsDisplayFlag)
+		{
+			if (IsIconic(thisHandle))
+			{
+				ShowWindow(thisHandle, SW_RESTORE);
+				//ShowWindow(thisHandle, SW_MAXIMIZE);
+			}
+			SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left+250, giRect.top+100, 0, 0,  SWP_NOSIZE);
+		}
+		else
+		{
+			ShowWindow(thisHandle, SW_MINIMIZE);
+		}
+		
 		FRL.Wait();
 	}
 	else
@@ -339,14 +382,14 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 	{
 		gi.giMEF.value = getMouseWheelDelta(flags);
 
-			if (gi.giMEF.value > 0)
+			if (gi.giMEF.value < 0)
 			{
 				if(gi.giMEF.scale < 6)
 				{
 					gi.giMEF.scale *= 1.2;
 				}
 			}
-			else if (gi.giMEF.value < 0)
+			else if (gi.giMEF.value > 0)
 			{
 				if (gi.giMEF.scale >0.5)
 				{
