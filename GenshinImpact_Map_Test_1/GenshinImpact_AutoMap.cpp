@@ -4,45 +4,58 @@ giam::GenshinImpact_AutoMap::GenshinImpact_AutoMap(){}
 
 giam::GenshinImpact_AutoMap::~GenshinImpact_AutoMap(){}
 
+//初始化
 bool giam::GenshinImpact_AutoMap::init()
 {
 	//AT.on();
 	
-	isInit = true;
+	isInit = false;
 	isRun = true;
-	
+	//初始化背景
 	autoMapMat = Mat(autoMapSize, CV_8UC4, Scalar(200, 200, 200, 255));
-	
+	//创建窗口
 	namedWindow(autoMapWindowsName);
+	//设置回调
 	setMouseCallback(autoMapWindowsName, on_MouseHandle, (void*)this);
+	//获取悬浮窗句柄
 	thisHandle = FindWindow(NULL, autoMapWindowsName.c_str());
+	//初始化绘图
 	imshow(autoMapWindowsName, autoMapMat);
-
+	//设置窗口位置
 	SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + 250, giRect.top + 100, autoMapSize.width, autoMapSize.height, 0);
+	//设置窗口为无边框
 	SetWindowLong(thisHandle, GWL_STYLE, GetWindowLong(thisHandle, GWL_EXSTYLE | WS_EX_TOPMOST)); //改变窗口风格
 	ShowWindow(thisHandle, SW_SHOW);
 
 	return false;
 }
 
+//运行
 bool giam::GenshinImpact_AutoMap::run()
 {
-	if (!isInit) { init(); }
+	//运行框架
+	if (isInit) { init(); }
+	//运行循环
 	while (isRun)
 	{
 		//customProcess();
+		//地图图标文字等更新
 		mapUpdata();
+		//显示
 		mapShow();
 	}
+	//退出处理
 	exit();
 	return false;
 }
 
+//退出
 bool giam::GenshinImpact_AutoMap::exit()
 {
 	return false;
 }
 
+//从大地图中截取显示区域
 Mat giam::GenshinImpact_AutoMap::getMinMap()
 {
 	Mat minMap;
@@ -83,6 +96,7 @@ Mat giam::GenshinImpact_AutoMap::getMinMap()
 	return minMap;
 }
 
+//原神是否运行
 void giam::GenshinImpact_AutoMap::giIsRunning()
 {
 	if (AT)
@@ -104,6 +118,7 @@ void giam::GenshinImpact_AutoMap::giIsRunning()
 	giIsRunningFlag= false;
 }
 
+//原神是否可见
 void giam::GenshinImpact_AutoMap::giIsDisplay()
 {
 	if (AT)
@@ -124,6 +139,7 @@ void giam::GenshinImpact_AutoMap::giIsDisplay()
 	giIsDisplayFlag= false;
 }
 
+//原神是否最大化
 void giam::GenshinImpact_AutoMap::giIsZoomed()
 {
 	if (AT)
@@ -147,6 +163,7 @@ void giam::GenshinImpact_AutoMap::giIsZoomed()
 	return;
 }
 
+//检查原神窗口状态
 void giam::GenshinImpact_AutoMap::giCheckWindows()
 {
 	giIsRunning();
@@ -154,6 +171,7 @@ void giam::GenshinImpact_AutoMap::giCheckWindows()
 	giIsZoomed();
 }
 
+//获取原神画面
 void giam::GenshinImpact_AutoMap::giGetScreen()
 {
 	HBITMAP	hBmp;
@@ -183,6 +201,7 @@ void giam::GenshinImpact_AutoMap::giGetScreen()
 	GetBitmapBits(hBmp, bmp.bmHeight*bmp.bmWidth*nChannels, giFrame.data);
 }
 
+//设置HUD
 void giam::GenshinImpact_AutoMap::setHUD()
 {
 	if (giIsRunningFlag)
@@ -207,6 +226,7 @@ void giam::GenshinImpact_AutoMap::setHUD()
 
 }
 
+//绘制HUD
 void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 {
 	Mat blueRect(20, autoMapSize.width, CV_8UC4, Scalar(200, 200,200, 255));
@@ -241,6 +261,7 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 
 }
 
+//设置标记是否显示
 void giam::GenshinImpact_AutoMap::setFLAG()
 {
 	// mouse click change giFlag.isShow[] state
@@ -249,17 +270,22 @@ void giam::GenshinImpact_AutoMap::setFLAG()
 	//giFlag.isShow[0] = true;
 }
 
+//在地图上绘制标记
 void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 {
 	for (int i = 0; i < giFlag.max; i++)
 	{
 		if (giFlag.isShow[i])
 		{
-			;
+			for (int j = 0; j < giFlag.numFlag[i]; j++)
+			{
+				
+			}
 		}
 	}
 }
 
+//测试用
 void giam::GenshinImpact_AutoMap::customProcess()
 {
 	switch ((rand()%3))
@@ -289,6 +315,7 @@ void giam::GenshinImpact_AutoMap::customProcess()
 	}
 }
 
+//地图数据状态更新
 void giam::GenshinImpact_AutoMap::mapUpdata()
 {
 	Mat tmpMap;
@@ -310,6 +337,7 @@ void giam::GenshinImpact_AutoMap::mapUpdata()
 	//tmpMap
 }
 
+//地图显示刷新
 void giam::GenshinImpact_AutoMap::mapShow()
 {
 	if (IsWindow(thisHandle))
@@ -343,6 +371,7 @@ void giam::GenshinImpact_AutoMap::mapShow()
 	}
 }
 
+//鼠标回调
 void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int flags, void * parm)
 {
 	GenshinImpact_AutoMap& gi = *(giam::GenshinImpact_AutoMap*) parm;

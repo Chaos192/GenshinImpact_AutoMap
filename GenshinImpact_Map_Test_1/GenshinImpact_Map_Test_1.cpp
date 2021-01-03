@@ -11,7 +11,9 @@
 
 int main()
 {
+	//创建地图对象
 	giam::giAM Amap;
+	//运行地图
 	Amap.run();
 
 	return 0;
