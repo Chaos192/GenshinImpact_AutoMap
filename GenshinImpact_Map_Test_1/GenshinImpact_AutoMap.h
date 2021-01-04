@@ -5,6 +5,8 @@
 #include<opencv2/xfeatures2d.hpp>
 #include<opencv2/xfeatures2d/nonfree.hpp>
 
+#include "GenshinImpact_AutoMap_Objects.h"
+
 using namespace cv;
 using namespace std;
 
@@ -148,11 +150,15 @@ namespace giam
 			int y0 = 0;
 			int dx = 0;
 			int dy = 0;
+			int x1 = 0;
+			int y1 = 0;
 			Point p0 = Point(0, 0);
+			Point p1 = Point(0, 0);
 			double value = 0.0;
 			double scale = 1.0;
 
-			bool bLC = false;
+			bool bLCD = false;
+			bool bLCU = false;
 		}giMEF;
 
 		//地图标记对应图标
@@ -172,6 +178,7 @@ namespace giam
 		//地图标记相关记录
 		struct FLAG
 		{
+			bool isUpdata = true;
 			int max;
 			bool *isShow;
 			int numFlag[3] = {73,10,19};//[66,131,80];
@@ -187,6 +194,43 @@ namespace giam
 
 		}giFlag;
 
+		struct Location2d
+		{
+			int x;
+			int y;
+			Location2d() :Location2d(0, 0) {}
+			Location2d(int _x, int _y) :x(_x), y(_y) {}
+		};
+
+		struct OBJECT
+		{
+			string name;
+			unsigned char klass;
+			int orderNum;
+			Location2d p;
+			OBJECT(){}
+			OBJECT(string _name, unsigned char _klass, int _orderNum, int _x, int _y) :OBJECT(_name, _klass, _orderNum, Location2d(_x, _y)) {}
+			OBJECT(string _name, unsigned char _klass, int _orderNum, Location2d _p) :name(_name), klass(_klass), orderNum(_orderNum), p(_p) {}
+		};
+		struct OBJECTS :OBJECT
+		{
+
+		};
+
+		struct FLAG_ICON_T_1
+		{
+
+		};
+
+		struct obj
+		{
+			giAMO obj1;
+			obj()
+			{
+				obj1.initCSD();
+			}
+		}OBJ;
+
 		//完整地图源备份
 		//Mat mapMatSource = imread("Map.png", IMREAD_UNCHANGED);
 		//完整地图 应用
@@ -201,6 +245,10 @@ namespace giam
 		Size mapSize= Size(mapMat.cols, mapMat.rows);
 		//悬浮窗中心所对大地图位置
 		Point zerosMinMap = Point(1466,3272);
+		//悬浮窗相对原神窗口位置
+		Point offGiMinMap = Point(250, 100);
+		//悬浮窗相对原神窗口位置对比用
+		Point offGiMinMapTmp = Point(250, 100);
 		//原神游戏窗口截图
 		Mat giFrame;
 
@@ -220,7 +268,7 @@ namespace giam
 		Mat getMinMap();
 		//判断RECT是否相等
 		bool isEqual(RECT &r1, RECT &r2);
-
+		
 	private:
 		//类内实现函数
 

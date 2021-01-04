@@ -365,10 +365,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GenshinImpact_AutoMap.cpp" />
+    <ClCompile Include="GenshinImpact_AutoMap_Objects.cpp" />
     <ClCompile Include="GenshinImpact_Map_Test_1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GenshinImpact_AutoMap.h" />
+    <ClInclude Include="GenshinImpact_AutoMap_Objects.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

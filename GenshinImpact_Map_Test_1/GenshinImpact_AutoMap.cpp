@@ -22,7 +22,7 @@ bool giam::GenshinImpact_AutoMap::init()
 	//初始化绘图
 	imshow(autoMapWindowsName, autoMapMat);
 	//设置窗口位置
-	SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + 250, giRect.top + 100, autoMapSize.width, autoMapSize.height, SWP_NOMOVE);
+	SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + offGiMinMap.x, giRect.top + offGiMinMap.y, autoMapSize.width, autoMapSize.height, SWP_NOMOVE);
 	//设置窗口为无边框
 	SetWindowLong(thisHandle, GWL_STYLE, GetWindowLong(thisHandle, GWL_EXSTYLE | WS_EX_TOPMOST)); //改变窗口风格
 	ShowWindow(thisHandle, SW_SHOW);
@@ -278,23 +278,37 @@ void giam::GenshinImpact_AutoMap::setFLAG()
 {
 	// mouse click change giFlag.isShow[] state
 
-	/*Test*/
 	giFlag.isShow[0] = true;
+
 }
 
 //在地图上绘制标记
 void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 {
-	for (int i = 0; i < giFlag.max; i++)
+	//for (int i = 0; i < giFlag.max; i++)
+	//{
+	//	if (giFlag.isShow[i])
+	//	{
+	//		for (int j = 0; j < giFlag.numFlag[i]; j++)
+	//		{
+	//			
+	//		}
+	//	}
+	//}
+
+	if (giFlag.isUpdata)
 	{
-		if (giFlag.isShow[i])
+		for (int i = 0; i < 3/*OBJ.obj1.object.*/; i++)
 		{
-			for (int j = 0; j < giFlag.numFlag[i]; j++)
-			{
-				
-			}
+			int x = OBJ.obj1.at(i).x;
+			int y = OBJ.obj1.at(i).y;
+			Mat rect;
+			rect = mapMat(Rect(x, y, giTab.pngA.cols, giTab.pngA.rows));
+			giTab.pngA.copyTo(rect, giTab.pngAMask);
 		}
+		giFlag.isUpdata = false;
 	}
+
 }
 
 //测试用
@@ -314,15 +328,16 @@ void giam::GenshinImpact_AutoMap::mapUpdata()
 	//获取原神窗口截屏
 	//giGetScreen();
 
+	//设置显示标记
+	setFLAG();
+	addFLAG(tmpMap);
+
 	//截取地图
 	getMinMap().copyTo(tmpMap);
 
 	//设置显示HUD
 	setHUD();
 	addHUD(tmpMap);
-	//设置显示标记
-	setFLAG();
-	addFLAG(tmpMap);
 
 	//将加工好的画面赋给显示变量
 	autoMapMat = tmpMap;
@@ -338,7 +353,14 @@ void giam::GenshinImpact_AutoMap::mapShow()
 		if (!IsIconic(thisHandle))
 		{
 			imshow(autoMapWindowsName, autoMapMat);
+			if (offGiMinMap != offGiMinMapTmp)
+			{
+				SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + offGiMinMap.x, giRect.top + offGiMinMap.y, 0, 0, SWP_NOSIZE);
+				offGiMinMapTmp = offGiMinMap;
+
+			}
 		}
+
 		//如果原神正在运行
 		if (giIsRunningFlag)
 		{
@@ -351,10 +373,11 @@ void giam::GenshinImpact_AutoMap::mapShow()
 					ShowWindow(thisHandle, SW_RESTORE);
 				}
 				//如果原神窗口有移动，悬浮窗随之移动
-				if (!isEqual(giRect, giRectTmp))
+				if (!isEqual(giRect, giRectTmp)|| offGiMinMap != offGiMinMapTmp)
 				{
-					SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + 250, giRect.top + 100, 0, 0, SWP_NOSIZE);
+					SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + offGiMinMap.x, giRect.top + offGiMinMap.y, 0, 0, SWP_NOSIZE);
 					giRectTmp = giRect;
+					offGiMinMapTmp = offGiMinMap;
 				}
 			}
 			else
@@ -390,7 +413,6 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 		gi.giMEF.x0 = x;
 		gi.giMEF.y0 = y;
 		gi.giMEF.p0 = gi.zerosMinMap;
-
 		break;
 	}
 	case EVENT_RBUTTONDOWN:
@@ -399,11 +421,15 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 	}
 	case EVENT_MBUTTONDOWN: 
 	{
+		gi.giMEF.x1 = x;
+		gi.giMEF.y1 = y;
+		gi.giMEF.p1 = Point(gi.offGiMinMap.x - x, gi.offGiMinMap.y - y);
 		break;
 	}
 	case EVENT_LBUTTONUP: 
 	{
-		
+
+
 		break;
 	}
 	case EVENT_RBUTTONUP: 
@@ -412,14 +438,25 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 	}
 	case EVENT_MBUTTONUP: 
 	{
+		//if (x > gi.autoMapSize.width - gi.giTab.sysIcon1.cols - 10 - gi.giTab.sysIcon2.cols&&x < gi.autoMapSize.width - gi.giTab.sysIcon2.cols - 10 && y < gi.giTab.sysIcon1.rows&&y>0)
+		{
+			gi.giMEF.dx = x - gi.giMEF.x0;
+			gi.giMEF.dy = y - gi.giMEF.y0;
+			gi.offGiMinMap = gi.giMEF.p1 + Point(gi.giMEF.dx, gi.giMEF.dy);
+		}
 		break;
 	}
 	case EVENT_LBUTTONDBLCLK: 
 	{
+		if (x > gi.autoMapSize.width - gi.giTab.sysIcon1.cols&&y <= gi.giTab.sysIcon1.rows)
+		{
+			gi.isRun = false;
+		}
 		break;
 	}
 	case EVENT_RBUTTONDBLCLK: 
 	{
+
 		break;
 	}
 	case EVENT_MBUTTONDBLCLK:
@@ -459,10 +496,20 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 	{
 	case EVENT_FLAG_LBUTTON:
 	{
-		gi.giMEF.dx = x - gi.giMEF.x0;
-		gi.giMEF.dy = y - gi.giMEF.y0;
+		if (x > gi.autoMapSize.width - gi.giTab.sysIcon1.cols - 10 - gi.giTab.sysIcon2.cols&&x < gi.autoMapSize.width - gi.giTab.sysIcon2.cols - 10 && y < gi.giTab.sysIcon1.rows&&y>0)
+		{
+			//gi.giMEF.dx = x - gi.giMEF.x0;
+			//gi.giMEF.dy = y - gi.giMEF.y0;
+			//gi.offGiMinMap = gi.giMEF.p1 + Point(gi.giMEF.dx, gi.giMEF.dy);
+		}
+		else
+		{
+			gi.giMEF.dx = x - gi.giMEF.x0;
+			gi.giMEF.dy = y - gi.giMEF.y0;
+			gi.zerosMinMap = gi.giMEF.p0 - Point((int)(gi.giMEF.dx*gi.giMEF.scale), (int)(gi.giMEF.dy*gi.giMEF.scale));
 
-		gi.zerosMinMap = gi.giMEF.p0 - Point((int)(gi.giMEF.dx*gi.giMEF.scale), (int)(gi.giMEF.dy*gi.giMEF.scale));
+		}
+
 		break;
 	}
 	case EVENT_FLAG_RBUTTON:
