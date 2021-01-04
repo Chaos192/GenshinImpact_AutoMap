@@ -111,6 +111,8 @@ namespace giam
 	private:
 		//私有变量
 
+		//循环计数
+		long int _count = 0;
 		//是否初始化
 		bool isInit = true;
 		//是否运行
@@ -180,6 +182,8 @@ namespace giam
 		struct FLAG
 		{
 			bool isUpdata = true;
+			bool isGetMap = true;
+			bool isUpHUD = true;
 			int max;
 			bool *isShow;
 			int numFlag[3] = {73,10,19};//[66,131,80];

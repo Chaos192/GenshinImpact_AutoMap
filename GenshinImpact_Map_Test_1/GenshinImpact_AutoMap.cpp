@@ -308,15 +308,13 @@ void giam::GenshinImpact_AutoMap::setFLAG()
 {
 	// mouse click change giFlag.isShow[] state
 
-	
-
 }
 
 //在地图上绘制标记
 void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 {
 	//更新Flag为真
-	if (giFlag.isUpdata)
+	if (giFlag.isUpdata||giFlag.isGetMap)
 	{
 		for (int i = 0; i < giFlag.max; i++)
 		{
@@ -352,7 +350,7 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 
 
 		
-		//giFlag.isUpdata = false;
+		giFlag.isUpdata = false;
 	}
 
 }
@@ -360,14 +358,14 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 //测试用
 void giam::GenshinImpact_AutoMap::customProcess()
 {
-
+	_count++;
 }
 
 //地图数据状态更新
 void giam::GenshinImpact_AutoMap::mapUpdata()
 {
 	//更新用
-	static Mat tmpMap;
+	 Mat tmpMap;
 
 	//更新原神窗口状态
 	giCheckWindows();
@@ -375,8 +373,12 @@ void giam::GenshinImpact_AutoMap::mapUpdata()
 	//giGetScreen();
 
 	//截取地图
-	//if(giFlag.isUpdata)
-	getMinMap().copyTo(tmpMap);
+	if (giFlag.isGetMap)
+	{
+		getMinMap().copyTo(tmpMap);
+		giFlag.isGetMap = false;
+		giFlag.isUpHUD = true;
+	}
 
 	//设置显示标记
 	setFLAG();
@@ -386,10 +388,16 @@ void giam::GenshinImpact_AutoMap::mapUpdata()
 
 	//设置显示HUD
 	setHUD();
-	addHUD(tmpMap);
+	if (giFlag.isUpHUD)
+	{
+		addHUD(tmpMap);
 
-	//将加工好的画面赋给显示变量
-	tmpMap.copyTo(autoMapMat);
+		//将加工好的画面赋给显示变量
+		tmpMap.copyTo(autoMapMat);
+		giFlag.isUpHUD = false;
+
+	}
+
 }
 
 //地图显示刷新
@@ -487,6 +495,7 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 		{
 			gi.giFlag.isShow[0] = !gi.giFlag.isShow[0];
 			gi.giFlag.isUpdata = true;
+			gi.giFlag.isGetMap = true;
 		}
 
 		break;
@@ -534,6 +543,7 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 					gi.giMEF.scale /= 1.2;
 				}
 			}
+			gi.giFlag.isGetMap = true;
 			gi.giFlag.isUpdata = true;
 		break;
 	}
@@ -560,7 +570,8 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 			gi.giMEF.dx = x - gi.giMEF.x0;
 			gi.giMEF.dy = y - gi.giMEF.y0;
 			gi.zerosMinMap = gi.giMEF.p0 - Point((int)(gi.giMEF.dx*gi.giMEF.scale), (int)(gi.giMEF.dy*gi.giMEF.scale));
-
+			gi.giFlag.isUpdata = true;
+			gi.giFlag.isGetMap = true;
 		}
 
 		break;
