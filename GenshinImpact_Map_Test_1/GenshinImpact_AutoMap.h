@@ -173,6 +173,7 @@ namespace giam
 			Mat sysIcon1Mask = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/sysIcon_1_mask.bmp", IMREAD_UNCHANGED);
 			Mat sysIcon2 = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/sysIcon_2.png", IMREAD_UNCHANGED);
 			Mat sysIcon2Mask = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/sysIcon_2_mask.bmp", IMREAD_UNCHANGED);
+			Rect pngARect = Rect(30, 0, pngA.cols, pngA.rows);
 		}giTab;
 
 		//地图标记相关记录
@@ -249,6 +250,8 @@ namespace giam
 		Point offGiMinMap = Point(250, 100);
 		//悬浮窗相对原神窗口位置对比用
 		Point offGiMinMapTmp = Point(250, 100);
+		//
+		Rect minMapRect;
 		//原神游戏窗口截图
 		Mat giFrame;
 
@@ -268,7 +271,9 @@ namespace giam
 		Mat getMinMap();
 		//判断RECT是否相等
 		bool isEqual(RECT &r1, RECT &r2);
-		
+		bool isContains(RECT &r, Point &p);
+		bool isContains(Rect &r, Point &p);
+
 	private:
 		//类内实现函数
 

@@ -67,8 +67,8 @@ void GenshinImpact_AutoMap_Objects::initCSD()
 	object = new GenshinImpact_AutoMap_Object("´«ËÍµã", 1, 3);
 	
 
-	(*object).add(1869,2056);
-	(*object).add(1845, 1904);
+	(*object).add(1869,2046);
+	(*object).add(1833, 1887);
 	(*object).add(1466, 3272);
 	isLock = true;
 }

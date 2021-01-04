@@ -89,8 +89,9 @@ Mat giam::GenshinImpact_AutoMap::getMinMap()
 	{
 		minMapPoint.y = mapSize.height - reMapSize.height;
 	}
+	minMapRect = Rect(minMapPoint, reMapSize);
 
-	resize(mapMat(Rect(minMapPoint, reMapSize)), minMap, autoMapSize);
+	resize(mapMat(minMapRect), minMap, autoMapSize);
 	//minMap = mapMat(Rect(minMapPoint, reMapSize));
 
 	return minMap;
@@ -100,6 +101,35 @@ Mat giam::GenshinImpact_AutoMap::getMinMap()
 bool giam::GenshinImpact_AutoMap::isEqual(RECT & r1, RECT & r2)
 {
 	if (r1.bottom != r2.bottom || r1.left != r2.left || r1.right != r2.right || r1.top != r2.top)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+	return false;
+}
+
+//判断RECT是否包含Point
+bool giam::GenshinImpact_AutoMap::isContains(RECT & r, Point & p)
+{
+	if (p.x<r.left || p.x>r.right||p.y<r.top||p.y>r.bottom)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+
+	return false;
+}
+
+//判断Rect是否包含Point
+bool giam::GenshinImpact_AutoMap::isContains(Rect & r, Point & p)
+{
+	if (p.x<r.x || p.x>(r.x+r.width) || p.y<r.y || p.y>(r.y+r.height))
 	{
 		return false;
 	}
@@ -241,7 +271,7 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 
 	//绘制小图标
 	Mat backgound;
-	tmp = img(Rect(30, 0, giTab.pngA.cols, giTab.pngA.rows));
+	tmp = img(giTab.pngARect);//Rect(30, 0, giTab.pngA.cols, giTab.pngA.rows)
 	tmp.copyTo(backgound);
 	giTab.pngA.copyTo(tmp, giTab.pngAMask);
 
@@ -278,35 +308,51 @@ void giam::GenshinImpact_AutoMap::setFLAG()
 {
 	// mouse click change giFlag.isShow[] state
 
-	giFlag.isShow[0] = true;
+	
 
 }
 
 //在地图上绘制标记
 void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 {
-	//for (int i = 0; i < giFlag.max; i++)
-	//{
-	//	if (giFlag.isShow[i])
-	//	{
-	//		for (int j = 0; j < giFlag.numFlag[i]; j++)
-	//		{
-	//			
-	//		}
-	//	}
-	//}
-
+	//更新Flag为真
 	if (giFlag.isUpdata)
 	{
-		for (int i = 0; i < 3/*OBJ.obj1.object.*/; i++)
+		for (int i = 0; i < giFlag.max; i++)
 		{
-			int x = OBJ.obj1.at(i).x;
-			int y = OBJ.obj1.at(i).y;
-			Mat rect;
-			rect = mapMat(Rect(x, y, giTab.pngA.cols, giTab.pngA.rows));
-			giTab.pngA.copyTo(rect, giTab.pngAMask);
+			//显示Flag为真
+			if (giFlag.isShow[i])
+			{
+				for (int j = 0; j < 3/*OBJ.obj1.object.*/; j++)
+				{
+
+					Point p = Point(OBJ.obj1.at(j).x, OBJ.obj1.at(j).y);
+					//目标点在小地图显示区域内
+					if (isContains(minMapRect, p))
+					{
+						Mat r;
+						int x = (int)((p.x - minMapRect.x) / giMEF.scale);
+						int y = (int)((p.y - minMapRect.y) / giMEF.scale);
+						//该x，y左下角要有足够的空间来填充图标
+						if (x + giTab.pngA.cols > autoMapSize.width || y + giTab.pngA.rows > autoMapSize.height)
+						{
+							;
+						}
+						else
+						{
+							r = img(Rect(x, y, giTab.pngA.cols, giTab.pngA.rows));
+							giTab.pngA.copyTo(r, giTab.pngAMask);
+						}
+
+					}
+
+				}
+			}
 		}
-		giFlag.isUpdata = false;
+
+
+		
+		//giFlag.isUpdata = false;
 	}
 
 }
@@ -321,26 +367,29 @@ void giam::GenshinImpact_AutoMap::customProcess()
 void giam::GenshinImpact_AutoMap::mapUpdata()
 {
 	//更新用
-	Mat tmpMap;
+	static Mat tmpMap;
 
 	//更新原神窗口状态
 	giCheckWindows();
 	//获取原神窗口截屏
 	//giGetScreen();
 
+	//截取地图
+	//if(giFlag.isUpdata)
+	getMinMap().copyTo(tmpMap);
+
 	//设置显示标记
 	setFLAG();
 	addFLAG(tmpMap);
 
-	//截取地图
-	getMinMap().copyTo(tmpMap);
+
 
 	//设置显示HUD
 	setHUD();
 	addHUD(tmpMap);
 
 	//将加工好的画面赋给显示变量
-	autoMapMat = tmpMap;
+	tmpMap.copyTo(autoMapMat);
 }
 
 //地图显示刷新
@@ -423,12 +472,22 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 	{
 		gi.giMEF.x1 = x;
 		gi.giMEF.y1 = y;
-		gi.giMEF.p1 = Point(gi.offGiMinMap.x - x, gi.offGiMinMap.y - y);
+		gi.giMEF.p1 = gi.offGiMinMap;//Point(gi.offGiMinMap.x - x, gi.offGiMinMap.y - y);
 		break;
 	}
 	case EVENT_LBUTTONUP: 
 	{
+		Rect& r = gi.giTab.pngARect;
 
+		if (x<r.x || x>(r.x + r.width) || y<r.y || y>(r.y + r.height))
+		{
+			
+		}
+		else
+		{
+			gi.giFlag.isShow[0] = !gi.giFlag.isShow[0];
+			gi.giFlag.isUpdata = true;
+		}
 
 		break;
 	}
@@ -438,12 +497,6 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 	}
 	case EVENT_MBUTTONUP: 
 	{
-		//if (x > gi.autoMapSize.width - gi.giTab.sysIcon1.cols - 10 - gi.giTab.sysIcon2.cols&&x < gi.autoMapSize.width - gi.giTab.sysIcon2.cols - 10 && y < gi.giTab.sysIcon1.rows&&y>0)
-		{
-			gi.giMEF.dx = x - gi.giMEF.x0;
-			gi.giMEF.dy = y - gi.giMEF.y0;
-			gi.offGiMinMap = gi.giMEF.p1 + Point(gi.giMEF.dx, gi.giMEF.dy);
-		}
 		break;
 	}
 	case EVENT_LBUTTONDBLCLK: 
@@ -481,7 +534,7 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 					gi.giMEF.scale /= 1.2;
 				}
 			}
-
+			gi.giFlag.isUpdata = true;
 		break;
 	}
 	case EVENT_MOUSEHWHEEL:
@@ -498,8 +551,8 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 	{
 		if (x > gi.autoMapSize.width - gi.giTab.sysIcon1.cols - 10 - gi.giTab.sysIcon2.cols&&x < gi.autoMapSize.width - gi.giTab.sysIcon2.cols - 10 && y < gi.giTab.sysIcon1.rows&&y>0)
 		{
-			//gi.giMEF.dx = x - gi.giMEF.x0;
-			//gi.giMEF.dy = y - gi.giMEF.y0;
+			//gi.giMEF.dx = x - gi.giMEF.x1;
+			//gi.giMEF.dy = y - gi.giMEF.y1;
 			//gi.offGiMinMap = gi.giMEF.p1 + Point(gi.giMEF.dx, gi.giMEF.dy);
 		}
 		else
@@ -518,6 +571,10 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 	}
 	case EVENT_FLAG_MBUTTON:
 	{
+		//gi.giMEF.dx = x - gi.giMEF.x1;
+		//gi.giMEF.dy = y - gi.giMEF.y1;
+		gi.offGiMinMap = gi.giMEF.p1 + Point(x - gi.giMEF.x1, y - gi.giMEF.y1);
+
 		break;
 	}
 	case EVENT_FLAG_CTRLKEY:
