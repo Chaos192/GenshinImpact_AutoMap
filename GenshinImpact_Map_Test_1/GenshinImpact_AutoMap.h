@@ -4,7 +4,7 @@
 #include <opencv2\imgproc\types_c.h>
 #include<opencv2/xfeatures2d.hpp>
 #include<opencv2/xfeatures2d/nonfree.hpp>
-
+#include "resource.h"
 #include "GenshinImpact_AutoMap_Objects.h"
 
 using namespace cv;
@@ -166,7 +166,10 @@ namespace giam
 		//地图标记对应图标
 		struct TAB
 		{
+			
+			HBITMAP aa;// = (HBITMAP)LoadImage(GetModuleHandle(0), MAKEINTRESOURCE(IDB_PNG1), IDB_PNG1, 0, 0, LR_LOADFROMFILE);//LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_PNG1));;
 			//string pngA = "f_t_c_1_1.png";
+			Mat png;
 			Mat pngA = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/f_t_c_1_1.png", IMREAD_UNCHANGED);
 			Mat pngAMask = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/f_t_c_1_1_mask.bmp", IMREAD_UNCHANGED);
 			Mat pngB = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/f_t_c_1_1.png", IMREAD_UNCHANGED);
@@ -176,6 +179,30 @@ namespace giam
 			Mat sysIcon2 = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/sysIcon_2.png", IMREAD_UNCHANGED);
 			Mat sysIcon2Mask = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/sysIcon_2_mask.bmp", IMREAD_UNCHANGED);
 			Rect pngARect = Rect(30, 0, pngA.cols, pngA.rows);
+			TAB()
+			{
+				//aa = LoadBitmap(, MAKEINTRESOURCE(IDB_BITMAP1));
+			}
+			TAB(HWND handle)
+			{
+				//HBITMAP hBitmap = (HBITMAP)LoadImage(GetModuleHandle(0),m_SPath + _T("top_btn.bmp"),IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+				HBitmap2Mat(aa, png);
+			}
+			BOOL HBitmap2Mat(HBITMAP& _hBmp, Mat& _mat)
+			{
+				//BITMAP操作
+				BITMAP bmp;
+				GetObject(_hBmp, sizeof(BITMAP), &bmp);
+				int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
+				int depth = bmp.bmBitsPixel == 1 ? IPL_DEPTH_1U : IPL_DEPTH_8U;
+				//mat操作
+				Mat v_mat;
+				v_mat.create(cvSize(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8U, nChannels));
+				GetBitmapBits(_hBmp, bmp.bmHeight*bmp.bmWidth*nChannels, v_mat.data);
+				_mat = v_mat;
+				return TRUE;
+			}
+
 		}giTab;
 
 		//地图标记相关记录

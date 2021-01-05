@@ -359,6 +359,8 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 void giam::GenshinImpact_AutoMap::customProcess()
 {
 	_count++;
+	giTab.HBitmap2Mat(giTab.aa, giTab.png);
+
 }
 
 //地图数据状态更新

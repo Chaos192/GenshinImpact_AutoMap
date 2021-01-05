@@ -45,5 +45,53 @@
     <Image Include="Map.bmp">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="ICO.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="ICO_8.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="ICO_16.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="ICO_32.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="ICO_64.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="ICO_128.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="ICO_256.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="ICO_512.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="icon1.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="sysIcon_1.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="sysIcon_1_mask.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="sysIcon_2.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="sysIcon_2_mask.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="f_t_c_1_1.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="f_t_c_1_1_mask.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
