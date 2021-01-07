@@ -11,6 +11,7 @@ bool giam::GenshinImpact_AutoMap::init()
 	
 	isInit = false;
 	isRun = true;
+
 	//初始化背景
 	autoMapMat = Mat(autoMapSize, CV_8UC4, Scalar(200, 200, 200, 255));
 	//创建窗口
@@ -21,6 +22,10 @@ bool giam::GenshinImpact_AutoMap::init()
 	thisHandle = FindWindowA(NULL, autoMapWindowsName.c_str());
 	//初始化绘图
 	imshow(autoMapWindowsName, autoMapMat);
+	//获取原神窗口状态
+	giCheckWindows();
+	//如果全屏，调整悬浮窗初始位置
+	if (giIsFullScreenFlag)offGiMinMap = Point(288, 82);
 	//设置窗口位置
 	SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + offGiMinMap.x, giRect.top + offGiMinMap.y, autoMapSize.width, autoMapSize.height, SWP_NOMOVE);
 	//设置窗口为无边框
@@ -177,12 +182,29 @@ void giam::GenshinImpact_AutoMap::giIsZoomed()
 	giIsZoomedFlag = false;
 }
 
+//原神是否全屏
+void giam::GenshinImpact_AutoMap::giIsFullScreen()
+{
+	if (giHandle != NULL)
+	{
+		static RECT rcDesk;
+		GetWindowRect(GetDesktopWindow(), &rcDesk);
+		if (giRect.left <= rcDesk.left&& giRect.top <= rcDesk.top&& giRect.right >= rcDesk.right&& giRect.bottom >= rcDesk.bottom)
+		{
+			giIsFullScreenFlag = true;
+			return;
+		}
+	}
+	giIsZoomedFlag = false;
+}
+
 //检查原神窗口状态
 void giam::GenshinImpact_AutoMap::giCheckWindows()
 {
 	giIsRunning();
 	giIsDisplay();
 	giIsZoomed();
+	giIsFullScreen();
 }
 
 //获取原神画面
