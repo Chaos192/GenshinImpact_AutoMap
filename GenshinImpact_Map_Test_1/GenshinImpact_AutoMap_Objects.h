@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <vector>
 
 struct Location2d
 {
@@ -47,7 +48,10 @@ private:
 	bool isLock;
 
 public:
+	//´«ËÍµã
 	void initCSD();
+	//ç³ºìÓñËè
+	void initFHYS();
 	Location2d at(int n);
 };
 

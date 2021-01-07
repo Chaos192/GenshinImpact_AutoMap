@@ -275,6 +275,8 @@ namespace giam
 		Size autoMapSize = Size(250, 200);
 		//完整地图大小
 		Size mapSize= Size(mapMat.cols, mapMat.rows);
+		//完整地图世界中心，相对原点
+		Point mapWorldCenter = Point(1416, 3306);
 		//悬浮窗中心所对大地图位置
 		Point zerosMinMap = Point(1466,3272);
 		//悬浮窗相对原神窗口位置

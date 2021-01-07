@@ -281,6 +281,11 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 		addWeighted(tmp, 0.5, backgound, 0.5, 0, tmp);
 
 	}
+	else
+	{
+		addWeighted(tmp, 0.7, backgound, 0.2, 0, tmp);
+
+	}
 	tmp.release();
 	tmp = img(Rect(autoMapSize.width- giTab.sysIcon1.cols-10- giTab.sysIcon2.cols, 0, giTab.sysIcon2.cols, giTab.sysIcon2.rows));
 	//tmp.copyTo(backgound);
@@ -359,7 +364,7 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 void giam::GenshinImpact_AutoMap::customProcess()
 {
 	_count++;
-	giTab.HBitmap2Mat(giTab.aa, giTab.png);
+	//giTab.HBitmap2Mat(giTab.aa, giTab.png);
 
 }
 

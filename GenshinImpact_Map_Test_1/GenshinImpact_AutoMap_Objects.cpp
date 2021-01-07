@@ -73,6 +73,17 @@ void GenshinImpact_AutoMap_Objects::initCSD()
 	isLock = true;
 }
 
+void GenshinImpact_AutoMap_Objects::initFHYS()
+{
+	if (isLock)throw"Cann't Change!";
+	object = new GenshinImpact_AutoMap_Object("Á≥∫Ï”ÒÀË", 2, 80);//66+14
+
+	std::vector<Location2d> pList;
+	pList.push_back(Location2d(10,20));
+
+	//£®*object).add();
+}
+
 Location2d GenshinImpact_AutoMap_Objects::at(int n)
 {
 	return (*object).at(n);
