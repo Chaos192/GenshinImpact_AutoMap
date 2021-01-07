@@ -132,6 +132,8 @@ namespace giam
 		bool giIsDisplayFlag = false;
 		//原神是否最大化标志
 		bool giIsZoomedFlag = false;
+		//原神是否全屏标志
+		bool giIsFullScreenFlag = false;
 
 		//HUD参数
 		struct HUD
@@ -316,6 +318,8 @@ namespace giam
 		void giIsDisplay();
 		//原神是否最大化
 		void giIsZoomed();
+		//原神是否全屏
+		void giIsFullScreen();
 		//检查原神窗口状态
 		void giCheckWindows();
 		//获取原神画面
