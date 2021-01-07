@@ -53,6 +53,8 @@ public:
 	//ç³ºìÓñËè
 	void initFHYS();
 	Location2d at(int n);
+
+	void add(int x,int y);
 };
 
 typedef GenshinImpact_AutoMap_Objects giAMO;
