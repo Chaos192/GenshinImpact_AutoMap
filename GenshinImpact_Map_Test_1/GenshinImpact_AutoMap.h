@@ -6,6 +6,7 @@
 #include<opencv2/xfeatures2d/nonfree.hpp>
 #include "resource.h"
 #include "GenshinImpact_AutoMap_Objects.h"
+#include "GenshinImpact_AutoMap_Matchs.h"
 
 using namespace cv;
 using namespace std;
@@ -134,16 +135,19 @@ namespace giam
 		bool giIsZoomedFlag = false;
 		//原神是否全屏标志
 		bool giIsFullScreenFlag = false;
+		//原神是否派蒙可见，即在主画面
+		bool giIsPaimonVisibleFlag = false;
 
 		//HUD参数
 		struct HUD
 		{
 			
 			String runState = "";
-			Scalar runTextColor=Scalar(255,0,0);
+			Scalar runTextColor = Scalar(255, 0, 0);
 			Scalar displayFlagColor = Scalar(255, 0, 0);
-			Scalar minBackgroundColo = Scalar(255, 255, 0, 0);
-			Scalar minStarColor = Scalar(255, 255, 0, 128);
+			Scalar minBackgroundColo = Scalar(255, 255, 0);
+			Scalar minStarColor = Scalar(255, 255, 0);
+			Scalar PaimonFlagColor = Scalar(255, 255, 0);
 
 		}giHUD;
 
@@ -269,6 +273,8 @@ namespace giam
 		//Mat mapMatSource = imread("Map.png", IMREAD_UNCHANGED);
 		//完整地图 应用
 		Mat mapMat = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/Map.png", IMREAD_UNCHANGED);
+		//Paimon
+		Mat matPaimon = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/Paimon2.bmp", IMREAD_UNCHANGED);
 		//悬浮窗显示窗口
 		Mat autoMapMat;
 		//悬浮窗窗口标题
@@ -289,6 +295,12 @@ namespace giam
 		Rect minMapRect;
 		//原神游戏窗口截图
 		Mat giFrame;
+		//原神游戏窗口截图有效区域
+		Mat giFrameROI;
+		//
+		Mat giFrameRect;
+		//
+		Mat giFramePaimon;
 
 	public:
 		//框架类函数
@@ -320,10 +332,19 @@ namespace giam
 		void giIsZoomed();
 		//原神是否全屏
 		void giIsFullScreen();
+		//原神是否派蒙可见，即在主画面
+		void giIsPaimonVisible();
 		//检查原神窗口状态
 		void giCheckWindows();
 		//获取原神画面
 		void giGetScreen();
+		//原神画面处理
+		void giScreenROI();
+		//
+		void giGetPaimon();
+		
+		
+
 
 		//设置HUD
 		void setHUD();

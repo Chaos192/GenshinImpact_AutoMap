@@ -24,6 +24,9 @@
     <ClCompile Include="GenshinImpact_AutoMap_Objects.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="GenshinImpact_AutoMap_Matchs.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GenshinImpact_AutoMap.h">
@@ -33,6 +36,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="GenshinImpact_AutoMap_Objects.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GenshinImpact_AutoMap_Matchs.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
