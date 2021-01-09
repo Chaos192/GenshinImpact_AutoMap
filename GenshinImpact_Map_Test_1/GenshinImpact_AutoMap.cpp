@@ -217,11 +217,13 @@ void giam::GenshinImpact_AutoMap::giIsPaimonVisible()
 	{
 		if (giIsPaimonVisibleFlag)giFlag.isUpHUD = true;
 		giIsPaimonVisibleFlag = false;
+
 	}
 	else
 	{
 		if (!giIsPaimonVisibleFlag)giFlag.isUpHUD = true;
 		giIsPaimonVisibleFlag = true;
+		giGetMap();
 	}
 }
 
@@ -286,7 +288,7 @@ void giam::GenshinImpact_AutoMap::giScreenROI()
 	}
 	else
 	{
-		giFrameROI = giFrame(Rect(0, 0, 285, 240));
+		giFrameROI = giFrame(Rect(0, 0, 250, 210));
 		//giFrame(Rect(0, 0, 250, 210)).copyTo(giFrameRect);
 		cvtColor(giFrameROI, giFrameRect, CV_RGB2GRAY);
 	}
@@ -304,6 +306,18 @@ void giam::GenshinImpact_AutoMap::giGetPaimon()
 	{
 		giFrameRect(Rect(23, 11, 59, 67)).copyTo(giFramePaimon);
 		//giFrameRect(Rect(0, 0, 82, 78)).copyTo(giFramePaimon);
+	}
+}
+
+void giam::GenshinImpact_AutoMap::giGetMap()
+{
+	if (giIsFullScreenFlag)
+	{
+		giFrameRect(Rect(62, 19, 212, 212)).copyTo(giFrameMap);
+	}
+	else
+	{
+		giFrameRect(Rect(54, 17, 185, 185)).copyTo(giFrameMap);
 	}
 }
 
@@ -335,7 +349,7 @@ void giam::GenshinImpact_AutoMap::setHUD()
 	}
 	else
 	{
-		giHUD.PaimonFlagColor = Scalar(0, 0, 255);
+		giHUD.PaimonFlagColor = Scalar(255, 0, 0);
 
 	}
 }
@@ -349,13 +363,6 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 	Mat backRect(20, autoMapSize.width, CV_8UC4, Scalar(200, 200,200, 255));
 	tmp = img(Rect(0,0, autoMapSize.width, 20));
 	addWeighted(tmp, 0.6, backRect, 0.4, 0, tmp);
-
-	//绘制中心光标
-	//Mat star;
-	//img(Rect(autoMapSize.width / 2 - 5, autoMapSize.height / 2 - 5, 11, 11)).copyTo(star);
-	//tmp = img(Rect(autoMapSize.width / 2 - 5, autoMapSize.height / 2 - 5, 11, 11));
-	//circle(star, Point(5, 5), 4, giHUD.minStarColor, 2, LINE_AA);
-	//addWeighted(tmp, 0.5, star, 0.5, 0, tmp);
 
 	//绘制小图标
 	Mat backgound;
@@ -392,7 +399,7 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 
 	//putText(img, giHUD.runState, Point(24, 12), FONT_HERSHEY_COMPLEX_SMALL, 0.4, giHUD.runTextColor, 1);
 
-	putText(img, to_string(FRL.runningTime), Point(30, 14), FONT_HERSHEY_COMPLEX_SMALL, 0.4, giHUD.runTextColor, 1);
+	//putText(img, to_string(FRL.runningTime), Point(30, 14), FONT_HERSHEY_COMPLEX_SMALL, 0.4, giHUD.runTextColor, 1);
 
 }
 
@@ -453,18 +460,13 @@ void giam::GenshinImpact_AutoMap::customProcess()
 {
 	_count++;
 	//giTab.HBitmap2Mat(giTab.aa, giTab.png);
-	//Mat image_matched;
-
-	//cv::matchTemplate(matPaimon, giFramePaimon, image_matched, cv::TM_CCOEFF_NORMED);
-
-	//double minVal, maxVal;
-	//cv::Point minLoc, maxLoc;
-	////寻找最佳匹配位置
-	//cv::minMaxLoc(image_matched, &minVal, &maxVal, &minLoc, &maxLoc);
-	//putText(giFramePaimon, to_string(minVal), Point(0, 10), FONT_HERSHEY_COMPLEX_SMALL, 0.5, giHUD.runTextColor, 1);
-	//putText(giFramePaimon, to_string(maxVal), Point(0, 30), FONT_HERSHEY_COMPLEX_SMALL, 0.5, giHUD.runTextColor, 1);
-	//namedWindow("1", WINDOW_FREERATIO);
-	//imshow("1", giFramePaimon);
+	if (giIsPaimonVisibleFlag)
+	{
+		//Mat img_scene = matMatchMap;
+		giMatch.setObject(giFrameMap);
+		giMatch.test();
+		
+	}
 }
 
 //地图数据状态更新
