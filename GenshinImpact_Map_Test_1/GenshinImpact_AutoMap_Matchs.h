@@ -28,7 +28,7 @@ public:
 	Point getLocation();
 
 	void test();
-
+	
 private:
 	bool isObjectExist = false;
 	bool isTargetExist = false;
@@ -36,6 +36,7 @@ private:
 	Mat target;
 	//0:SURF
 	int mode = 0;
+	Point p;
 
 	//int minHessian = 200;
 	//float ratio_thresh = 0.7f;
@@ -48,7 +49,7 @@ private:
 	//vector<Point2d> off_obj;
 	//vector<Point2d> off_sce;
 	int minHessian = 400;
-	float ratio_thresh = 0.5f;
+	float ratio_thresh = 0.66f;
 	Ptr<cv::xfeatures2d::SURF> detector;
 	std::vector<KeyPoint> keypoints_object, keypoints_scene;
 	Mat descriptors_object, descriptors_scene;

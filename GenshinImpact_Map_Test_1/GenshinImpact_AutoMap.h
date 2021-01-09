@@ -151,7 +151,8 @@ namespace giam
 			Scalar displayFlagColor = Scalar(255, 0, 0);
 			Scalar minBackgroundColo = Scalar(255, 255, 0);
 			Scalar minStarColor = Scalar(255, 255, 0);
-			Scalar PaimonFlagColor = Scalar(255, 255, 0);
+			Scalar paimonFlagColor = Scalar(255, 255, 0);
+			Scalar autoMoveFlagColor = Scalar(255, 255, 0);
 
 		}giHUD;
 
@@ -223,6 +224,7 @@ namespace giam
 			bool isUpHUD = true;
 			int max;
 			bool *isShow;
+			bool isAutoMove=false;
 			int numFlag[3] = {73,10,19};//[66,131,80];
 
 			FLAG() :FLAG(3) {};

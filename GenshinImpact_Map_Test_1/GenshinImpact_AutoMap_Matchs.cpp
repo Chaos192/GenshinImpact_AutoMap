@@ -46,7 +46,7 @@ void GenshinImpact_AutoMap_Matchs::onMatch()
 
 Point GenshinImpact_AutoMap_Matchs::getLocation()
 {
-	return Point();
+	return p;
 }
 
 void GenshinImpact_AutoMap_Matchs::test()
@@ -74,15 +74,32 @@ void GenshinImpact_AutoMap_Matchs::test()
 		if (knn_matches[i][0].distance < ratio_thresh * knn_matches[i][1].distance)
 		{
 			good_matches.push_back(knn_matches[i][0]);
+
 		}
 	}
-
+	int k = good_matches.size();
+	static double x = 0;
+	static double y = 0;
+	for (size_t i = 0; i < k; i++)
+	{
+		//size/2-obj+sce
+		if (i == 0) 
+		{
+			x = 0;
+			y = 0;
+		}
+		x = x + (92.5 - keypoints_object[good_matches[i].queryIdx].pt.x + keypoints_scene[good_matches[i].trainIdx].pt.x) / k;
+		y = y + (92.5 - keypoints_object[good_matches[i].queryIdx].pt.y + keypoints_scene[good_matches[i].trainIdx].pt.y) / k;
+	}
+	
+	p = Point(x, y);
 	//-- Draw matches
-	Mat img_matches;
-	drawMatches(img_object, keypoints_object, target, keypoints_scene, good_matches, img_matches, Scalar::all(-1),
-		Scalar::all(-1), std::vector<char>(), DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS);
-	namedWindow("1", WINDOW_FREERATIO);
-	imshow("1", img_matches);
+
+	//Mat img_matches;
+	//drawMatches(img_object, keypoints_object, target, keypoints_scene, good_matches, img_matches, Scalar::all(-1),
+	//	Scalar::all(-1), std::vector<char>(), DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS);
+	//namedWindow("1", WINDOW_FREERATIO);
+	//imshow("1", img_matches);
 }
 
 void GenshinImpact_AutoMap_Matchs::getObjectKeyPoints()
