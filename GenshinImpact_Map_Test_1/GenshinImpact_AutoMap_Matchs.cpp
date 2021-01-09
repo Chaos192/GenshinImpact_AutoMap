@@ -102,6 +102,42 @@ void GenshinImpact_AutoMap_Matchs::test()
 	//imshow("1", img_matches);
 }
 
+void GenshinImpact_AutoMap_Matchs::test()
+{
+	Mat img_scene = target;
+	Mat img_object = object;
+
+
+	detector->detectAndCompute(img_object, noArray(), keypoints_object, descriptors_object);
+
+
+	//-- Step 2: Matching descriptor vectors with a FLANN based matcher
+	// Since SURF is a floating-point descriptor NORM_L2 is used
+	Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
+	std::vector< std::vector<DMatch> > knn_matches;
+	matcher->knnMatch(descriptors_object, descriptors_scene, knn_matches, 2);
+
+
+
+	//-- Filter matches using the Lowe's ratio test
+	//const float ratio_thresh = 0.8f;
+	std::vector<DMatch> good_matches;
+	for (size_t i = 0; i < knn_matches.size(); i++)
+	{
+		if (knn_matches[i][0].distance < ratio_thresh * knn_matches[i][1].distance)
+		{
+			good_matches.push_back(knn_matches[i][0]);
+		}
+	}
+
+	//-- Draw matches
+	Mat img_matches;
+	drawMatches(img_object, keypoints_object, target, keypoints_scene, good_matches, img_matches, Scalar::all(-1),
+		Scalar::all(-1), std::vector<char>(), DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS);
+	namedWindow("1", WINDOW_FREERATIO);
+	imshow("1", img_matches);
+}
+
 void GenshinImpact_AutoMap_Matchs::getObjectKeyPoints()
 {
 
