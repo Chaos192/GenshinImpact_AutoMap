@@ -345,12 +345,19 @@ void giam::GenshinImpact_AutoMap::setHUD()
 	}
 	if (giIsPaimonVisibleFlag)
 	{
-		giHUD.PaimonFlagColor = Scalar(0, 255, 0);
+		giHUD.paimonFlagColor = Scalar(0, 255, 0);
 	}
 	else
 	{
-		giHUD.PaimonFlagColor = Scalar(255, 0, 0);
-
+		giHUD.paimonFlagColor = Scalar(128, 128, 128);
+	}
+	if (giFlag.isAutoMove)
+	{
+		giHUD.autoMoveFlagColor = Scalar(0, 255, 0);
+	}
+	else
+	{
+		giHUD.autoMoveFlagColor = Scalar(128, 128, 128);
 	}
 }
 
@@ -394,8 +401,8 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 
 
 	//圆点显示原神状态
-	circle(img, Point(10, 10), 4, giHUD.PaimonFlagColor, -1);
-	//circle(img, Point(20, 10), 4, giHUD.runTextColor, -1);
+	circle(img, Point(6, 10), 4, giHUD.paimonFlagColor, -1);
+	circle(img, Point(16, 10), 4, giHUD.autoMoveFlagColor, -1);
 
 	//putText(img, giHUD.runState, Point(24, 12), FONT_HERSHEY_COMPLEX_SMALL, 0.4, giHUD.runTextColor, 1);
 
@@ -460,12 +467,18 @@ void giam::GenshinImpact_AutoMap::customProcess()
 {
 	_count++;
 	//giTab.HBitmap2Mat(giTab.aa, giTab.png);
-	if (giIsPaimonVisibleFlag)
+	if (giIsPaimonVisibleFlag&&giFlag.isAutoMove)
 	{
-		//Mat img_scene = matMatchMap;
+		static Point tmp;
 		giMatch.setObject(giFrameMap);
 		giMatch.test();
-		
+		zerosMinMap = giMatch.getLocation();
+		//cout << zerosMinMap << endl;
+		if (zerosMinMap != tmp)
+		{
+			tmp = zerosMinMap;
+			giFlag.isGetMap = true;
+		}
 	}
 }
 
@@ -624,6 +637,12 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 		if (x > gi.autoMapSize.width - gi.giTab.sysIcon1.cols&&y <= gi.giTab.sysIcon1.rows)
 		{
 			gi.isRun = false;
+		}
+		else
+		{
+			gi.giFlag.isAutoMove = !gi.giFlag.isAutoMove;
+			gi.giFlag.isUpdata = true;
+
 		}
 		break;
 	}
