@@ -58,7 +58,7 @@ public:
 	{
 		absClock1 = (double)getTickCount();
 		runningTime = (absClock1 - absClock0) / getTickFrequency();
-		if (runningTime < _s)
+		if (runningTime < _s - 0.001)
 		{
 			if (runningTime >= 0)
 			{
@@ -68,6 +68,10 @@ public:
 			{
 				waitKey((int)(_s * 1000));
 			}
+		}
+		else
+		{
+			waitKey(1);
 		}
 		absClock0 = absClock1;
 	};
@@ -273,6 +277,8 @@ namespace giam
 		//Mat mapMatSource = imread("Map.png", IMREAD_UNCHANGED);
 		//完整地图 应用
 		Mat mapMat = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/Map.png", IMREAD_UNCHANGED);
+		//
+		Mat matMatchMap = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/MatchMap.bmp", IMREAD_UNCHANGED);
 		//Paimon
 		Mat matPaimon = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/Paimon2.bmp", IMREAD_UNCHANGED);
 		//悬浮窗显示窗口
@@ -301,6 +307,10 @@ namespace giam
 		Mat giFrameRect;
 		//
 		Mat giFramePaimon;
+		//
+		Mat giFrameMap;
+
+		giAMM giMatch = giAMM(matMatchMap);
 
 	public:
 		//框架类函数
@@ -342,6 +352,8 @@ namespace giam
 		void giScreenROI();
 		//
 		void giGetPaimon();
+		//
+		void giGetMap();
 		
 		
 
