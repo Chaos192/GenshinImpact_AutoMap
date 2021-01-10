@@ -280,6 +280,7 @@ void giam::GenshinImpact_AutoMap::giGetScreen()
 
 void giam::GenshinImpact_AutoMap::giScreenROI()
 {
+	if (!giIsDisplayFlag)return;
 	if (giIsFullScreenFlag)
 	{
 		giFrameROI = giFrame(Rect(0, 0, 285, 240)); 
@@ -548,23 +549,34 @@ void giam::GenshinImpact_AutoMap::mapShow()
 			//并且处于可见状态
 			if (giIsDisplayFlag)
 			{
-				//如果悬浮窗处于最小化，则恢复悬浮窗
-				if (IsIconic(thisHandle))
+				if (!giIsPaimonVisibleFlag&&giFlag.isAutoMove)
 				{
-					ShowWindow(thisHandle, SW_RESTORE);
+					ShowWindow(thisHandle, SW_MINIMIZE);
 				}
-				//如果原神窗口有移动，悬浮窗随之移动
-				if (!isEqual(giRect, giRectTmp)|| offGiMinMap != offGiMinMapTmp)
+				else
 				{
-					SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + offGiMinMap.x, giRect.top + offGiMinMap.y, 0, 0, SWP_NOSIZE);
-					giRectTmp = giRect;
-					offGiMinMapTmp = offGiMinMap;
+					//如果悬浮窗处于最小化，则恢复悬浮窗
+					if (IsIconic(thisHandle))
+					{
+							ShowWindow(thisHandle, SW_RESTORE);
+					}
+					//如果原神窗口有移动，悬浮窗随之移动
+					if (!isEqual(giRect, giRectTmp) || offGiMinMap != offGiMinMapTmp)
+					{
+						SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + offGiMinMap.x, giRect.top + offGiMinMap.y, 0, 0, SWP_NOSIZE);
+						giRectTmp = giRect;
+						offGiMinMapTmp = offGiMinMap;
+					}
 				}
+
 			}
 			else
 			{
-				//处于不可见状态则令悬浮窗进行最小化
-				ShowWindow(thisHandle, SW_MINIMIZE);
+				if (!IsIconic(thisHandle))
+				{
+					//处于不可见状态则令悬浮窗进行最小化
+					ShowWindow(thisHandle, SW_MINIMIZE);
+				}
 			}
 		}
 		//等待显示更新
