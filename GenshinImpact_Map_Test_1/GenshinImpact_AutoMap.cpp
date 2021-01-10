@@ -294,6 +294,7 @@ void giam::GenshinImpact_AutoMap::giGetScreen()
 
 void giam::GenshinImpact_AutoMap::giScreenROI()
 {
+	if (!giIsDisplayFlag)return;
 	if (giIsFullScreenFlag)
 	{
 		giFrameROI = giFrame(Rect(0, 0, 285, 240)); 
