@@ -445,6 +445,7 @@
     <ResourceCompile Include="GenshinImpact_Map_Test_1.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="bitmap5.bmp" />
     <Image Include="f_t_c_1_1.png" />
     <Image Include="f_t_c_1_1_mask.bmp" />
     <Image Include="ICO.ico" />
@@ -457,10 +458,13 @@
     <Image Include="ICO_64.ico" />
     <Image Include="ICO_8.ico" />
     <Image Include="Map.bmp" />
+    <Image Include="Paimon2.bmp" />
     <Image Include="sysIcon_1.png" />
     <Image Include="sysIcon_1_mask.bmp" />
     <Image Include="sysIcon_2.png" />
     <Image Include="sysIcon_2_mask.bmp" />
+    <Image Include="test.bmp" />
+    <Image Include="test32.bmp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

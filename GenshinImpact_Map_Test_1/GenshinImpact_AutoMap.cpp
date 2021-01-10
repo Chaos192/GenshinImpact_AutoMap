@@ -467,10 +467,12 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 void giam::GenshinImpact_AutoMap::customProcess()
 {
 	_count++;
-	//giTab.HBitmap2Mat(giTab.aa, giTab.png);
+	giTab.HBitmap2Mat(giTab.aa, giTab.png);
+
 	if (giIsPaimonVisibleFlag&&giFlag.isAutoMove)
 	{
 		static Point tmp;
+		giMatch.init();
 		giMatch.setObject(giFrameMap);
 		giMatch.test();
 		zerosMinMap = giMatch.getLocation();

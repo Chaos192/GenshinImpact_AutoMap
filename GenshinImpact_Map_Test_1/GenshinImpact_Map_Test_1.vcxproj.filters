@@ -96,6 +96,18 @@
     <Image Include="f_t_c_1_1_mask.bmp">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="Paimon2.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="bitmap5.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="test.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="test32.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
