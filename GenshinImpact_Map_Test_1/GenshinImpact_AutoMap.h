@@ -1,9 +1,10 @@
-#include<iostream>
-#include<Windows.h>
-#include<opencv2/opencv.hpp>
+#include <iostream>
+#include <Windows.h>
+#include <opencv2/opencv.hpp>
 #include <opencv2\imgproc\types_c.h>
-#include<opencv2/xfeatures2d.hpp>
-#include<opencv2/xfeatures2d/nonfree.hpp>
+#include <opencv2/xfeatures2d.hpp>
+#include <opencv2/xfeatures2d/nonfree.hpp>
+#include <opencv2/imgproc/imgproc_c.h>
 #include "resource.h"
 #include "GenshinImpact_AutoMap_Objects.h"
 #include "GenshinImpact_AutoMap_Matchs.h"
@@ -182,14 +183,14 @@ namespace giam
 			BITMAP bb;
 																																  //string pngA = "f_t_c_1_1.png";
 			Mat png;
-			Mat pngA = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/f_t_c_1_1.png", IMREAD_UNCHANGED);
-			Mat pngAMask = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/f_t_c_1_1_mask.bmp", IMREAD_UNCHANGED);
-			Mat pngB = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/f_t_c_1_1.png", IMREAD_UNCHANGED);
-			Mat pngC = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/f_t_c_1_1.png", IMREAD_UNCHANGED);
-			Mat sysIcon1 = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/sysIcon_1.png", IMREAD_UNCHANGED);
-			Mat sysIcon1Mask = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/sysIcon_1_mask.bmp", IMREAD_UNCHANGED);
-			Mat sysIcon2 = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/sysIcon_2.png", IMREAD_UNCHANGED);
-			Mat sysIcon2Mask = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/sysIcon_2_mask.bmp", IMREAD_UNCHANGED);
+			Mat pngA = imread("./f_t_c_1_1.png", IMREAD_UNCHANGED);
+			Mat pngAMask = imread("./f_t_c_1_1_mask.bmp", IMREAD_UNCHANGED);
+			Mat pngB = imread("./f_t_c_1_1.png", IMREAD_UNCHANGED);
+			Mat pngC = imread("./f_t_c_1_1.png", IMREAD_UNCHANGED);
+			Mat sysIcon1 = imread("./sysIcon_1.png", IMREAD_UNCHANGED);
+			Mat sysIcon1Mask = imread("./sysIcon_1_mask.bmp", IMREAD_UNCHANGED);
+			Mat sysIcon2 = imread("./sysIcon_2.png", IMREAD_UNCHANGED);
+			Mat sysIcon2Mask = imread("./sysIcon_2_mask.bmp", IMREAD_UNCHANGED);
 			Rect pngARect = Rect(30, 0, pngA.cols, pngA.rows);
 			TAB()
 			{
@@ -252,7 +253,7 @@ namespace giam
 				typedef HWND(WINAPI *PROCGETCONSOLEWINDOW)();
 				PROCGETCONSOLEWINDOW GetConsoleWindow;
 
-				HMODULE hKernel32 = GetModuleHandle("kernel32");
+				HMODULE hKernel32 = GetModuleHandle((LPCWSTR)"kernel32");
 				GetConsoleWindow = (PROCGETCONSOLEWINDOW)GetProcAddress(hKernel32, "GetConsoleWindow");
 				HWND cmd = GetConsoleWindow();
 				HDC dc = GetDC(cmd);
@@ -328,11 +329,12 @@ namespace giam
 		//完整地图源备份
 		//Mat mapMatSource = imread("Map.png", IMREAD_UNCHANGED);
 		//完整地图 应用
-		Mat mapMat = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/Map.png", IMREAD_UNCHANGED);
+		Mat mapMat = imread("./Map.png", IMREAD_UNCHANGED);
 		//
-		Mat matMatchMap = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/MatchMap.bmp", IMREAD_UNCHANGED);
+		Mat matMatchMap = imread("./MatchMap.bmp", IMREAD_UNCHANGED);
 		//Paimon
-		Mat matPaimon = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/Paimon2.bmp", IMREAD_UNCHANGED);
+		Mat matPaimon1 = imread("./Paimon1.bmp", IMREAD_UNCHANGED);
+		Mat matPaimon2 = imread("./Paimon2.bmp", IMREAD_UNCHANGED);
 		//悬浮窗显示窗口
 		Mat autoMapMat;
 		//悬浮窗窗口标题
