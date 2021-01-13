@@ -34,8 +34,11 @@ public:
 	bool keySave();
 	bool keyLoad();
 
+	void setCout(bool _isCout);
+
 private:
 	bool isInit = false;
+	bool isCout = false;
 	bool isObjectExist = false;
 	bool isTargetExist = false;
 	Mat object;
