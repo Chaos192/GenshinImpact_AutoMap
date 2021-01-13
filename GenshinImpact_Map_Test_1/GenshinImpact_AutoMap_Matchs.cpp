@@ -74,9 +74,12 @@ void GenshinImpact_AutoMap_Matchs::testSURF()
 	Mat img_scene = target;
 	Mat img_object = object;
 
-	t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-	cout << "SURF Start time:" << t << "s" << endl;
-	t = (double)cv::getTickCount();
+	if (isCout)
+	{
+		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+		cout << "SURF Start time:" << t << "s" << endl;
+		t = (double)cv::getTickCount();
+	}
 
 	detector->detectAndCompute(img_object, noArray(), keypoints_object, descriptors_object);
 
@@ -114,10 +117,12 @@ void GenshinImpact_AutoMap_Matchs::testSURF()
 		x = x + (92.5 - keypoints_object[good_matches[i].queryIdx].pt.x + keypoints_scene[good_matches[i].trainIdx].pt.x) / k;
 		y = y + (92.5 - keypoints_object[good_matches[i].queryIdx].pt.y + keypoints_scene[good_matches[i].trainIdx].pt.y) / k;
 	}
-	t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-	cout << "SURF End time:" << t << "s" << endl;
-	t = (double)cv::getTickCount();
-
+	if (isCout)
+	{
+		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+		cout << "SURF End time:" << t << "s" << endl;
+		t = (double)cv::getTickCount();
+	}
 	p = Point(x, y);
 	//-- Draw matches
 
@@ -142,17 +147,23 @@ void GenshinImpact_AutoMap_Matchs::testORB()
 	//resize(tem, tem, Size(), 1.5, 1.5);
 	Mat test = target;
 
-	t = ((double)cv::getTickCount() - t) / cv::getTickFrequency() ;
-	cout << "ORB Start time:" << t << "s"<< endl;
-	t = (double)cv::getTickCount();
+	if (isCout)
+	{
+		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+		cout << "ORB Start time:" << t << "s" << endl;
+		t = (double)cv::getTickCount();
+	}
+
 
 	//FAST_SCORE
 
 	orb->detectAndCompute(tem, Mat(), keyPoints_tem, descriptors_tem, false);
-
-	t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-	cout << "ORB detectAndCompute time:" << t << "s" << endl;
-	t = (double)cv::getTickCount();
+	if (isCout)
+	{
+		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+		cout << "ORB detectAndCompute time:" << t << "s" << endl;
+		t = (double)cv::getTickCount();
+	}
 
 	//特征匹配是通过使用合适的相似度度量比较特征描述子来执行的。
 	//定义特征描述子匹配器
@@ -164,10 +175,12 @@ void GenshinImpact_AutoMap_Matchs::testORB()
 	matcher->match(descriptors_tem, descriptors_test, matches, Mat());
 
 
-
-	t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-	cout << "ORB BRUTEFORCE time:" << t << "s" << endl;
-	t = (double)cv::getTickCount();
+	if (isCout)
+	{
+		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+		cout << "ORB BRUTEFORCE time:" << t << "s" << endl;
+		t = (double)cv::getTickCount();
+	}
 
 	float maxdist = 0;
 	for (int i = 0; i < matches.size(); i++)
@@ -186,10 +199,12 @@ void GenshinImpact_AutoMap_Matchs::testORB()
 		}
 	}
 
-
-	t = ((double)cv::getTickCount() - t) / cv::getTickFrequency() ;
-	cout << "ORB End time:" << t << "s" << endl;
-	t = (double)cv::getTickCount();
+	if (isCout)
+	{
+		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+		cout << "ORB End time:" << t << "s" << endl;
+		t = (double)cv::getTickCount();
+	}
 
 	//将两幅图像之间的高度匹配的对应特征点使用连线绘制出来，输出一幅将两幅图像拼接起来再进行连线的图像
 	//Scalar::all(-1)是选择随机颜色
@@ -210,6 +225,11 @@ bool GenshinImpact_AutoMap_Matchs::keySave()
 bool GenshinImpact_AutoMap_Matchs::keyLoad()
 {
 	return false;
+}
+
+void GenshinImpact_AutoMap_Matchs::setCout(bool _isCout)
+{
+	isCout = _isCout;
 }
 
 void GenshinImpact_AutoMap_Matchs::getObjectKeyPoints()

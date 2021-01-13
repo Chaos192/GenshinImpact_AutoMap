@@ -52,6 +52,11 @@ Location2d GenshinImpact_AutoMap_Object::at(int n)
 	}
 }
 
+int GenshinImpact_AutoMap_Object::size()
+{
+	return order;
+}
+
 GenshinImpact_AutoMap_Objects::GenshinImpact_AutoMap_Objects()
 {
 	
@@ -78,8 +83,9 @@ void GenshinImpact_AutoMap_Objects::initFHYS()
 {
 	if (isLock)throw"Cann't Change!";
 	object = new GenshinImpact_AutoMap_Object("ç³ºìÓñËè", 2, 80);//66+14
-	add(1203,2322);
 
+	add(1203,2322);
+	add(1506, 3300);
 
 	isLock = true;
 }
@@ -92,4 +98,10 @@ Location2d GenshinImpact_AutoMap_Objects::at(int n)
 void GenshinImpact_AutoMap_Objects::add(int x, int y)
 {
 	(*object).add(x, y);
+}
+
+int GenshinImpact_AutoMap_Objects::size()
+{
+	if (!isLock)return 0;
+	return object->size();
 }

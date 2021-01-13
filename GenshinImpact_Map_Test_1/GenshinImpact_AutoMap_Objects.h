@@ -33,6 +33,7 @@ public:
 	void add(int x,int y);
 	//void del(int n);
 	Location2d at(int n);
+	int size();
 };
 
 class GenshinImpact_AutoMap_Objects
@@ -45,7 +46,7 @@ public:
 	GenshinImpact_AutoMap_Object *object;
 
 private:
-	bool isLock;
+	bool isLock = false;
 
 public:
 	//´«ËÍµã
@@ -55,6 +56,7 @@ public:
 	Location2d at(int n);
 
 	void add(int x,int y);
+	int size();
 };
 
 typedef GenshinImpact_AutoMap_Objects giAMO;
