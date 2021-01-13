@@ -374,41 +374,40 @@ void giam::GenshinImpact_AutoMap::setHUD()
 //绘制HUD
 void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 {
-	Mat tmp,tmp1,tmp2, backgound;
+	Mat tmp;
 
 	//绘制背景条
 	Mat backRect(20, autoMapSize.width, CV_8UC4, Scalar(200, 200,200, 255));
 	tmp = img(Rect(0,0, autoMapSize.width, 20));
 	addWeighted(tmp, 0.6, backRect, 0.4, 0, tmp);
-
+	
 	//绘制小图标
-	tmp1 = img(giTab.pngARect);//Rect(30, 0, giTab.pngA.cols, giTab.pngA.rows)
-	tmp2 = img(giTab.pngBRect);//Rect(30, 0, giTab.pngA.cols, giTab.pngA.rows)
-
-	tmp1.copyTo(backgound);
-	giTab.pngA.copyTo(tmp1, giTab.pngAMask);
+	Mat backgound;
+	tmp = img(giTab.pngARect);//Rect(30, 0, giTab.pngA.cols, giTab.pngA.rows)
+	tmp.copyTo(backgound);
+	giTab.pngA.copyTo(tmp, giTab.pngAMask);
 	if (!giFlag.isShow[0])
 	{
 		//小图标半隐藏
-		addWeighted(tmp1, 0.5, backgound, 0.5, 0, tmp1);
+		addWeighted(tmp, 0.5, backgound, 0.5, 0, tmp);
 	}
 	else
 	{
-		addWeighted(tmp1, 0.7, backgound, 0.2, 0, tmp1);
+		addWeighted(tmp, 0.7, backgound, 0.2, 0, tmp);
 	}
 
-	
-	tmp2.copyTo(backgound);
-	giTab.pngB.copyTo(tmp2, giTab.pngBMask);
+	tmp = img(giTab.pngBRect);//Rect(30, 0, giTab.pngA.cols, giTab.pngA.rows)
+	tmp.copyTo(backgound);
+	giTab.pngB.copyTo(tmp, giTab.pngBMask);
 
 	if (!giFlag.isShow[1])
 	{
 		//小图标半隐藏
-		addWeighted(tmp2, 0.5, backgound, 0.5, 0, tmp2);
+		addWeighted(tmp, 0.5, backgound, 0.5, 0, tmp);
 	}
 	else
 	{
-		addWeighted(tmp2, 0.7, backgound, 0.2, 0, tmp2);
+		addWeighted(tmp, 0.7, backgound, 0.2, 0, tmp);
 	}
 
 
