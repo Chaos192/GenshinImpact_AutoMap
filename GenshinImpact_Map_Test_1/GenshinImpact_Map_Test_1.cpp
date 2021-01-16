@@ -2,7 +2,7 @@
 #include<Windows.h>
 
 #include"GenshinImpact_AutoMap.h"
-
+//
 //#pragma comment(linker, "/subsystem:windows /ENTRY:mainCRTStartup")
 int main()
 {
