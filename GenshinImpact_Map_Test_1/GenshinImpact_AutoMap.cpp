@@ -64,7 +64,7 @@ bool giam::GenshinImpact_AutoMap::exit()
 //从大地图中截取显示区域
 Mat giam::GenshinImpact_AutoMap::getMinMap()
 {
-	Mat minMap;
+	static Mat minMap;
 
 	Point minMapPoint = Point(0, 0);
 
@@ -207,8 +207,8 @@ void giam::GenshinImpact_AutoMap::giIsFullScreen()
 
 void giam::GenshinImpact_AutoMap::giIsPaimonVisible()
 {
-	Mat tmp;
-	Mat matPaimon;
+	static Mat tmp;
+	static Mat matPaimon;
 	if (giIsFullScreenFlag)
 	{
 		matPaimon = matPaimon1;
@@ -249,9 +249,12 @@ void giam::GenshinImpact_AutoMap::giCheckWindows()
 //获取原神画面
 void giam::GenshinImpact_AutoMap::giGetScreen()
 {
-	HBITMAP	hBmp;
+	
+	static HBITMAP	hBmp;
 	RECT rc;
 	BITMAP bmp;
+
+	DeleteObject(hBmp);
 
 	if (giHandle == NULL)return;
 
@@ -260,7 +263,7 @@ void giam::GenshinImpact_AutoMap::giGetScreen()
 
 	//获取目标句柄的DC
 	HDC hScreen = GetDC(giHandle);
-	HDC	hCompDC = CreateCompatibleDC(hScreen);
+	HDC hCompDC = CreateCompatibleDC(hScreen);
 
 	//获取目标句柄的宽度和高度
 	int	nWidth = rc.right - rc.left;
@@ -286,6 +289,7 @@ void giam::GenshinImpact_AutoMap::giGetScreen()
 	giFrame.create(cv::Size(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8U, nChannels));
 	
 	GetBitmapBits(hBmp, bmp.bmHeight*bmp.bmWidth*nChannels, giFrame.data);
+	
 }
 
 void giam::GenshinImpact_AutoMap::giScreenROI()
@@ -422,6 +426,8 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 	//tmp.copyTo(backgound);
 	giTab.sysIcon1.copyTo(tmp, giTab.sysIcon1Mask);
 
+	tmp.release();
+
 
 	//圆点显示原神状态
 	circle(img, Point(6, 10), 4, giHUD.paimonFlagColor, -1);
@@ -429,7 +435,7 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 
 	//putText(img, giHUD.runState, Point(24, 12), FONT_HERSHEY_COMPLEX_SMALL, 0.4, giHUD.runTextColor, 1);
 
-	//putText(img, to_string(FRL.runningTime), Point(30, 14), FONT_HERSHEY_COMPLEX_SMALL, 0.4, giHUD.runTextColor, 1);
+	putText(img, to_string((int)(1.0/FRL.runningTime)), Point(10, 40), FONT_HERSHEY_COMPLEX_SMALL, 1, giHUD.runTextColor, 1);
 
 }
 
@@ -498,7 +504,7 @@ void giam::GenshinImpact_AutoMap::customProcess()
 	{
 		if (k == 1)
 		{
-			imwrite("output.png", giFrame);
+			//imwrite("output.png", giFrame);
 			k = 0;
 		}
 		static Point tmp;
@@ -519,7 +525,7 @@ void giam::GenshinImpact_AutoMap::customProcess()
 void giam::GenshinImpact_AutoMap::mapUpdata()
 {
 	//更新用
-	 Mat tmpMap;
+	 static Mat tmpMap;
 
 	//更新原神窗口状态
 	giCheckWindows();
@@ -548,7 +554,7 @@ void giam::GenshinImpact_AutoMap::mapUpdata()
 		//将加工好的画面赋给显示变量
 		tmpMap.copyTo(autoMapMat);
 		giFlag.isUpHUD = false;
-
+		tmpMap.release();
 	}
 
 }
