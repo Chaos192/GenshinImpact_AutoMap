@@ -78,7 +78,7 @@ void GenshinImpact_AutoMap_Objects::initFHYS()
 {
 	if (isLock)throw"Cann't Change!";
 	object = new GenshinImpact_AutoMap_Object("Á≥∫Ï”ÒÀË", 2, 80);//66+14
-
+	add(1203,2322);
 
 
 	isLock = true;

@@ -259,3 +259,8 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+*.psd
+/GenshinImpact_Map_Test_1/Img/output (2).png
+/GenshinImpact_Map_Test_1/Img/output.png
+/GenshinImpact_Map_Test_1/Img/output (3).png
+/GenshinImpact_Map_Test_1/output.png

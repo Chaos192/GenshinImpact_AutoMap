@@ -17,6 +17,7 @@ public:
 	GenshinImpact_AutoMap_Matchs(Mat _target);
 
 public:
+	void init();
 	void setMode(int flag);
 
 	//匹配对象，包含要匹配的的图像
@@ -27,9 +28,14 @@ public:
 	void onMatch();
 	Point getLocation();
 
+	void testSURF();
 	void test();
-	
+	void testORB();
+	bool keySave();
+	bool keyLoad();
+
 private:
+	bool isInit = false;
 	bool isObjectExist = false;
 	bool isTargetExist = false;
 	Mat object;
@@ -37,7 +43,7 @@ private:
 	//0:SURF
 	int mode = 0;
 	Point p;
-
+	double t = 0;
 	//int minHessian = 200;
 	//float ratio_thresh = 0.7f;
 	//Ptr<cv::xfeatures2d::SURF> detector;
@@ -53,6 +59,9 @@ private:
 	Ptr<cv::xfeatures2d::SURF> detector;
 	std::vector<KeyPoint> keypoints_object, keypoints_scene;
 	Mat descriptors_object, descriptors_scene;
+	Ptr<ORB> orb;
+	vector<KeyPoint> keyPoints_tem, keyPoints_test;
+	Mat descriptors_tem, descriptors_test;
 private:
 	void getObjectKeyPoints();
 	void getTargetKeyPoints();
