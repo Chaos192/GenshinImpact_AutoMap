@@ -429,6 +429,7 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 	tmp.release();
 
 
+
 	//圆点显示原神状态
 	circle(img, Point(6, 10), 4, giHUD.paimonFlagColor, -1);
 	circle(img, Point(16, 10), 4, giHUD.autoMoveFlagColor, -1);
