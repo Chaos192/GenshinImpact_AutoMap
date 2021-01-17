@@ -11,10 +11,8 @@ GenshinImpact_AutoMap_Matchs::~GenshinImpact_AutoMap_Matchs()
 
 GenshinImpact_AutoMap_Matchs::GenshinImpact_AutoMap_Matchs(Mat _target)
 {
-	target = _target;
-	detector = cv::xfeatures2d::SURF::create(minHessian);
+	setTarget(_target);
 
-	detector->detectAndCompute(target, noArray(), keypoints_scene, descriptors_scene);
 
 	//orb = ORB::create(10000, 1.6, 8, 31, 0, 2, ORB::HARRIS_SCORE, 31, 20);
 	//通过ORB算法检测两幅图像中的特征点，并计算各自的二值描述子
@@ -25,6 +23,17 @@ GenshinImpact_AutoMap_Matchs::GenshinImpact_AutoMap_Matchs(Mat _target)
 	namedWindow("2", 256);
 	imshow("2", descriptors_scene);
 #endif
+}
+
+void GenshinImpact_AutoMap_Matchs::init()
+{
+	if (isInit) return;
+
+	detector = cv::xfeatures2d::SURF::create(minHessian);
+
+	detector->detectAndCompute(target, noArray(), keypoints_scene, descriptors_scene);
+
+	isInit = true;
 }
 
 void GenshinImpact_AutoMap_Matchs::setMode(int flag)

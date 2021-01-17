@@ -1,9 +1,10 @@
-#include<iostream>
-#include<Windows.h>
-#include<opencv2/opencv.hpp>
+#include <iostream>
+#include <Windows.h>
+#include <opencv2/opencv.hpp>
 #include <opencv2\imgproc\types_c.h>
-#include<opencv2/xfeatures2d.hpp>
-#include<opencv2/xfeatures2d/nonfree.hpp>
+#include <opencv2/xfeatures2d.hpp>
+#include <opencv2/xfeatures2d/nonfree.hpp>
+#include <opencv2/imgproc/imgproc_c.h>
 #include "resource.h"
 #include "GenshinImpact_AutoMap_Objects.h"
 #include "GenshinImpact_AutoMap_Matchs.h"
@@ -178,26 +179,35 @@ namespace giam
 		struct TAB
 		{
 			
-			HBITMAP aa;// = (HBITMAP)LoadImage(GetModuleHandle(0), MAKEINTRESOURCE(IDB_PNG1), IDB_PNG1, 0, 0, LR_LOADFROMFILE);//LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_PNG1));;
-			//string pngA = "f_t_c_1_1.png";
+			HBITMAP aa = (HBITMAP)LoadImage(GetModuleHandle(0), MAKEINTRESOURCE(IDB_BITMAP4), IDB_BITMAP4, 0, 0, LR_LOADFROMFILE);//LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_PNG1));;
+			BITMAP bb;
+																																  //string pngA = "f_t_c_1_1.png";
 			Mat png;
-			Mat pngA = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/f_t_c_1_1.png", IMREAD_UNCHANGED);
-			Mat pngAMask = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/f_t_c_1_1_mask.bmp", IMREAD_UNCHANGED);
-			Mat pngB = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/f_t_c_1_1.png", IMREAD_UNCHANGED);
-			Mat pngC = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/f_t_c_1_1.png", IMREAD_UNCHANGED);
-			Mat sysIcon1 = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/sysIcon_1.png", IMREAD_UNCHANGED);
-			Mat sysIcon1Mask = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/sysIcon_1_mask.bmp", IMREAD_UNCHANGED);
-			Mat sysIcon2 = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/sysIcon_2.png", IMREAD_UNCHANGED);
-			Mat sysIcon2Mask = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/sysIcon_2_mask.bmp", IMREAD_UNCHANGED);
+			Mat pngA = imread("./f_t_c_1_1.png", IMREAD_UNCHANGED);
+			Mat pngAMask = imread("./f_t_c_1_1_mask.bmp", IMREAD_UNCHANGED);
+			Mat pngB = imread("./f_t_c_1_1.png", IMREAD_UNCHANGED);
+			Mat pngC = imread("./f_t_c_1_1.png", IMREAD_UNCHANGED);
+			Mat sysIcon1 = imread("./sysIcon_1.png", IMREAD_UNCHANGED);
+			Mat sysIcon1Mask = imread("./sysIcon_1_mask.bmp", IMREAD_UNCHANGED);
+			Mat sysIcon2 = imread("./sysIcon_2.png", IMREAD_UNCHANGED);
+			Mat sysIcon2Mask = imread("./sysIcon_2_mask.bmp", IMREAD_UNCHANGED);
 			Rect pngARect = Rect(30, 0, pngA.cols, pngA.rows);
 			TAB()
 			{
 				//aa = LoadBitmap(, MAKEINTRESOURCE(IDB_BITMAP1));
+				//aa = LoadImage(GetModuleHandle(0), MAKEINTRESOURCE(IDB_BITMAP4), IDB_BITMAP4, 0, 0, LR_LOADFROMFILE);
+				aa = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_BITMAP6));
 			}
 			TAB(HWND handle)
 			{
 				//HBITMAP hBitmap = (HBITMAP)LoadImage(GetModuleHandle(0),m_SPath + _T("top_btn.bmp"),IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 				HBitmap2Mat(aa, png);
+			}
+			BITMAP HBitmap2Bitmap(HBITMAP hBitmap)
+			{
+				BITMAP bm;
+				::GetObject(hBitmap, sizeof(bm), &bm);
+				return bm;
 			}
 			BOOL HBitmap2Mat(HBITMAP& _hBmp, Mat& _mat)
 			{
@@ -208,12 +218,53 @@ namespace giam
 				int depth = bmp.bmBitsPixel == 1 ? IPL_DEPTH_1U : IPL_DEPTH_8U;
 				//mat操作
 				Mat v_mat;
-				v_mat.create(cvSize(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8U, nChannels));
+				v_mat.create(cvSize(bmp.bmWidth, bmp.bmHeight), CV_16UC3);
+				//v_mat.create(cvSize(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8UC3, nChannels));
 				GetBitmapBits(_hBmp, bmp.bmHeight*bmp.bmWidth*nChannels, v_mat.data);
 				_mat = v_mat;
+				te();
+				
 				return TRUE;
 			}
+			IplImage* hBitmap2Ipl(HBITMAP hBmp)
+			{
+				
+				BITMAP bmp;
+				::GetObject(hBmp, sizeof(BITMAP), &bmp);//hBmp-->bmp
+				int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
+				int depth = bmp.bmBitsPixel == 1 ? IPL_DEPTH_1U : IPL_DEPTH_8U;
+				IplImage* img = cvCreateImage(cvSize(bmp.bmWidth, bmp.bmHeight), depth, nChannels); //cvCreateImageHeader
+				//pBuffer = (char*)malloc(bmp.bmHeight*bmp.bmWidth*nChannels*sizeof(char));
+				memcpy(img->imageData, (char*)(bmp.bmBits), bmp.bmHeight*bmp.bmWidth*nChannels);
+				IplImage *dst = cvCreateImage(cvGetSize(img), img->depth, 3);
+				//cv(img, dst, CV_BGRA2BGR);
+				cvReleaseImage(&img);
+				return dst;
+	
+			}
+			Mat Ipl2Mat(IplImage iplImg)
+			{
+				/*IplImage *iplImg = ("greatwave.jpg", 1);
+				Mat mtx(,);*/
+			}
+			void te()
+			{
+				//图片可见
+				typedef HWND(WINAPI *PROCGETCONSOLEWINDOW)();
+				PROCGETCONSOLEWINDOW GetConsoleWindow;
 
+				HMODULE hKernel32 = GetModuleHandle((LPCWSTR)"kernel32");
+				GetConsoleWindow = (PROCGETCONSOLEWINDOW)GetProcAddress(hKernel32, "GetConsoleWindow");
+				HWND cmd = GetConsoleWindow();
+				HDC dc = GetDC(cmd);
+				HBITMAP hBitmap;
+				hBitmap = aa;
+				HDC cmdmem = CreateCompatibleDC(dc);
+				SelectObject(cmdmem, hBitmap);
+				BitBlt(dc, 250, 250, 500, 500, cmdmem, 0, 0, SRCCOPY);
+				ReleaseDC(cmd, dc);
+				ReleaseDC(cmd, cmdmem);
+			}
 		}giTab;
 
 		//地图标记相关记录
@@ -278,11 +329,12 @@ namespace giam
 		//完整地图源备份
 		//Mat mapMatSource = imread("Map.png", IMREAD_UNCHANGED);
 		//完整地图 应用
-		Mat mapMat = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/Map.png", IMREAD_UNCHANGED);
+		Mat mapMat = imread("./Map.png", IMREAD_UNCHANGED);
 		//
-		Mat matMatchMap = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/MatchMap.bmp", IMREAD_UNCHANGED);
+		Mat matMatchMap = imread("./MatchMap.bmp", IMREAD_UNCHANGED);
 		//Paimon
-		Mat matPaimon = imread("C:/Users/GengG/source/repos/GenshinImpact_AutoMap/GenshinImpact_Map_Test_1/Paimon2.bmp", IMREAD_UNCHANGED);
+		Mat matPaimon1 = imread("./Paimon1.bmp", IMREAD_UNCHANGED);
+		Mat matPaimon2 = imread("./Paimon2.bmp", IMREAD_UNCHANGED);
 		//悬浮窗显示窗口
 		Mat autoMapMat;
 		//悬浮窗窗口标题
