@@ -17,6 +17,7 @@ public:
 	GenshinImpact_AutoMap_Matchs(Mat _target);
 
 public:
+	void init();
 	void setMode(int flag);
 
 	//匹配对象，包含要匹配的的图像
@@ -34,6 +35,7 @@ public:
 	bool keyLoad();
 
 private:
+	bool isInit = false;
 	bool isObjectExist = false;
 	bool isTargetExist = false;
 	Mat object;

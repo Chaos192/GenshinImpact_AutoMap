@@ -162,11 +162,9 @@ void giam::GenshinImpact_AutoMap::giIsRunning()
 //原神是否可见
 void giam::GenshinImpact_AutoMap::giIsDisplay()
 {
-	if (giHandle != NULL)
+	if (giHandle != NULL && giIsRunningFlag)
 	{
 		giIsDisplayFlag = !IsIconic(giHandle);
-		giGetScreen();
-		giScreenROI();
 		return;
 	}
 	giIsDisplayFlag = false;
@@ -175,12 +173,15 @@ void giam::GenshinImpact_AutoMap::giIsDisplay()
 //原神是否最大化
 void giam::GenshinImpact_AutoMap::giIsZoomed()
 {
-	if (giHandle != NULL)
+	if (giHandle != NULL&& giIsDisplayFlag)
 	{
+		giGetScreen();
+		giScreenROI();
+		giGetPaimon();
+
 		giIsZoomedFlag = IsZoomed(giHandle);
 		//获取原神窗口区域
 		GetWindowRect(giHandle, &giRect);
-		giGetPaimon();
 		return;
 	}
 	giIsZoomedFlag = false;
@@ -189,9 +190,10 @@ void giam::GenshinImpact_AutoMap::giIsZoomed()
 //原神是否全屏
 void giam::GenshinImpact_AutoMap::giIsFullScreen()
 {
-	if (giHandle != NULL)
+	if (giHandle != NULL&& giIsDisplayFlag)
 	{
 		giIsPaimonVisible();
+
 		static RECT rcDesk;
 		GetWindowRect(GetDesktopWindow(), &rcDesk);
 		if (giRect.left <= rcDesk.left&& giRect.top <= rcDesk.top&& giRect.right >= rcDesk.right&& giRect.bottom >= rcDesk.bottom)
@@ -206,7 +208,15 @@ void giam::GenshinImpact_AutoMap::giIsFullScreen()
 void giam::GenshinImpact_AutoMap::giIsPaimonVisible()
 {
 	Mat tmp;
-
+	Mat matPaimon;
+	if (giIsFullScreenFlag)
+	{
+		matPaimon = matPaimon1;
+	}
+	else
+	{
+		matPaimon = matPaimon2;
+	}
 	cv::matchTemplate(matPaimon, giFramePaimon, tmp, cv::TM_CCOEFF_NORMED);
 
 	double minVal, maxVal;
@@ -280,7 +290,6 @@ void giam::GenshinImpact_AutoMap::giGetScreen()
 
 void giam::GenshinImpact_AutoMap::giScreenROI()
 {
-	if (!giIsDisplayFlag)return;
 	if (giIsFullScreenFlag)
 	{
 		giFrameROI = giFrame(Rect(0, 0, 285, 240)); 
@@ -468,9 +477,21 @@ void giam::GenshinImpact_AutoMap::customProcess()
 {
 	_count++;
 	//giTab.HBitmap2Mat(giTab.aa, giTab.png);
+	//IplImage img=*giTab.hBitmap2Ipl(giTab.aa);
+	//Mat iasd=Mat(img,0);
+	
+	static int k = 1;
+
+
 	if (giIsPaimonVisibleFlag&&giFlag.isAutoMove)
 	{
+		if (k == 1)
+		{
+			imwrite("output.png", giFrame);
+			k = 0;
+		}
 		static Point tmp;
+		giMatch.init();
 		giMatch.setObject(giFrameMap);
 		giMatch.test();
 		zerosMinMap = giMatch.getLocation();
@@ -563,6 +584,7 @@ void giam::GenshinImpact_AutoMap::mapShow()
 					//如果原神窗口有移动，悬浮窗随之移动
 					if (!isEqual(giRect, giRectTmp) || offGiMinMap != offGiMinMapTmp)
 					{
+						
 						SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + offGiMinMap.x, giRect.top + offGiMinMap.y, 0, 0, SWP_NOSIZE);
 						giRectTmp = giRect;
 						offGiMinMapTmp = offGiMinMap;
