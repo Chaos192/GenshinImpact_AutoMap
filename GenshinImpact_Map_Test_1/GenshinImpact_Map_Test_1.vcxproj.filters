@@ -48,68 +48,29 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Map.bmp">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="ICO.ico">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="ICO_8.ico">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="ICO_16.ico">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="ICO_32.ico">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="ICO_64.ico">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="ICO_128.ico">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="ICO_256.ico">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="ICO_512.ico">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="icon1.ico">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="sysIcon_1.png">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="sysIcon_1_mask.bmp">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="sysIcon_2.png">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="sysIcon_2_mask.bmp">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="f_t_c_1_1.png">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="f_t_c_1_1_mask.bmp">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="Paimon2.bmp">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="bitmap5.bmp">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="test.bmp">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="test32.bmp">
-      <Filter>资源文件</Filter>
-    </Image>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
+    <Image Include="Res\ICO_8.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="Res\ICO_16.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="Res\ICO_32.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="Res\ICO_64.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="Res\ICO_128.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="Res\ICO_256.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="Res\ICO_512.ico">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
 </Project>

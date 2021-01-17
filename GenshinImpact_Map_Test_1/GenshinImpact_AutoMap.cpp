@@ -11,6 +11,8 @@ bool giam::GenshinImpact_AutoMap::init()
 	
 	isInit = false;
 	isRun = true;
+	
+	cvtColor(matMap, matMatchMap, CV_RGB2GRAY);
 
 	//≥ı ºªØ±≥æ∞
 	autoMapMat = Mat(autoMapSize, CV_8UC4, Scalar(200, 200, 200, 255));
@@ -97,8 +99,8 @@ Mat giam::GenshinImpact_AutoMap::getMinMap()
 	}
 	minMapRect = Rect(minMapPoint, reMapSize);
 
-	resize(mapMat(minMapRect), minMap, autoMapSize);
-	//minMap = mapMat(Rect(minMapPoint, reMapSize));
+	resize(matMap(minMapRect), minMap, autoMapSize);
+	//minMap = matMap(Rect(minMapPoint, reMapSize));
 
 	return minMap;
 }
@@ -414,17 +416,11 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 		addWeighted(tmp, 0.7, backgound, 0.2, 0, tmp);
 	}
 
-
-	//tmp.release();
-	//tmp = img(Rect(autoMapSize.width- giTab.sysIcon1.cols-10- giTab.sysIcon2.cols, 0, giTab.sysIcon2.cols, giTab.sysIcon2.rows));
-	////tmp.copyTo(backgound);
-	//giTab.sysIcon2.copyTo(tmp, giTab.sysIcon2Mask);
-	////addWeighted(tmp, 0.5, giTab.sysIcon1, 0.5, 0, tmp);
-
 	tmp.release();
 	tmp = img(Rect(autoMapSize.width - giTab.sysIcon1.cols , 0, giTab.sysIcon1.cols, giTab.sysIcon1.rows));
-	//tmp.copyTo(backgound);
+	tmp.copyTo(backgound);
 	giTab.sysIcon1.copyTo(tmp, giTab.sysIcon1Mask);
+	addWeighted(tmp, 0.5, backgound, 0.5, 0, tmp);
 
 	tmp.release();
 
@@ -708,22 +704,22 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 	{
 		gi.giMEF.value = getMouseWheelDelta(flags);
 
-			if (gi.giMEF.value < 0)
+		if (gi.giMEF.value < 0)
+		{
+			if (gi.giMEF.scale < 6)
 			{
-				if(gi.giMEF.scale < 6)
-				{
-					gi.giMEF.scale *= 1.2;
-				}
+				gi.giMEF.scale *= 1.2;
 			}
-			else if (gi.giMEF.value > 0)
+		}
+		else if (gi.giMEF.value > 0)
+		{
+			if (gi.giMEF.scale > 0.5)
 			{
-				if (gi.giMEF.scale >0.5)
-				{
-					gi.giMEF.scale /= 1.2;
-				}
+				gi.giMEF.scale /= 1.2;
 			}
-			gi.giFlag.isGetMap = true;
-			gi.giFlag.isUpdata = true;
+		}
+		gi.giFlag.isGetMap = true;
+		gi.giFlag.isUpdata = true;
 		break;
 	}
 	case EVENT_MOUSEHWHEEL:
@@ -738,7 +734,7 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 	{
 	case EVENT_FLAG_LBUTTON:
 	{
-		if (x > gi.autoMapSize.width - gi.giTab.sysIcon1.cols - 10 - gi.giTab.sysIcon2.cols&&x < gi.autoMapSize.width - gi.giTab.sysIcon2.cols - 10 && y < gi.giTab.sysIcon1.rows&&y>0)
+		if (x > gi.autoMapSize.width - gi.giTab.sysIcon1.cols&&x < gi.autoMapSize.width && y < gi.giTab.sysIcon1.rows&&y>0)
 		{
 			//gi.giMEF.dx = x - gi.giMEF.x1;
 			//gi.giMEF.dy = y - gi.giMEF.y1;

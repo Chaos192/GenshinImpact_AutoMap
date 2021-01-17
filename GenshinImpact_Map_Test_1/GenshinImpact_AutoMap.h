@@ -44,7 +44,7 @@ public:
 	FrameRateLock(int f) :_fps(f){};
 public:
 	//公共变量
-	double runningTime=0;
+	double runningTime = 1;
 	double absClock0 = (double)getTickCount();
 	double absClock1 = (double)getTickCount();
 private:
@@ -179,7 +179,7 @@ namespace giam
 		struct TAB
 		{
 			
-			HBITMAP aa = (HBITMAP)LoadImage(GetModuleHandle(0), MAKEINTRESOURCE(IDB_BITMAP4), IDB_BITMAP4, 0, 0, LR_LOADFROMFILE);//LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_PNG1));;
+			HBITMAP aa;// = (HBITMAP)LoadImage(GetModuleHandle(0), MAKEINTRESOURCE(IDB_BITMAP4), IDB_BITMAP4, 0, 0, LR_LOADFROMFILE);//LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_PNG1));;
 			BITMAP bb;
 																																  //string pngA = "f_t_c_1_1.png";
 			Mat png;
@@ -191,8 +191,7 @@ namespace giam
 			Mat pngCMask = imread("./Res/f_t_c_1_1_mask.bmp", IMREAD_UNCHANGED);
 			Mat sysIcon1 = imread("./Res/sysIcon_1.png", IMREAD_UNCHANGED);
 			Mat sysIcon1Mask = imread("./Res/sysIcon_1_mask.bmp", IMREAD_UNCHANGED);
-			Mat sysIcon2 = imread("./Res/sysIcon_2.png", IMREAD_UNCHANGED);
-			Mat sysIcon2Mask = imread("./Res/sysIcon_2_mask.bmp", IMREAD_UNCHANGED);
+
 			Rect pngARect = Rect(30, 0, pngA.cols, pngA.rows);
 			Rect pngBRect = Rect(44, 0, pngB.cols, pngB.rows);
 			Rect pngCRect = Rect(68, 0, pngC.cols, pngC.rows);
@@ -213,7 +212,7 @@ namespace giam
 				lisRect[2] = pngCRect;
 				//aa = LoadBitmap(, MAKEINTRESOURCE(IDB_BITMAP1));
 				//aa = LoadImage(GetModuleHandle(0), MAKEINTRESOURCE(IDB_BITMAP4), IDB_BITMAP4, 0, 0, LR_LOADFROMFILE);
-				aa = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_BITMAP6));
+				//aa = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_BITMAP6));
 			}
 			TAB(HWND handle)
 			{
@@ -235,7 +234,7 @@ namespace giam
 				int depth = bmp.bmBitsPixel == 1 ? IPL_DEPTH_1U : IPL_DEPTH_8U;
 				//mat操作
 				Mat v_mat;
-				v_mat.create(cvSize(bmp.bmWidth, bmp.bmHeight), CV_16UC3);
+				v_mat.create(cvSize(bmp.bmWidth, bmp.bmHeight), CV_8UC3);
 				//v_mat.create(cvSize(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8UC3, nChannels));
 				GetBitmapBits(_hBmp, bmp.bmHeight*bmp.bmWidth*nChannels, v_mat.data);
 				_mat = v_mat;
@@ -350,9 +349,9 @@ namespace giam
 		//完整地图源备份
 		//Mat mapMatSource = imread("Map.png", IMREAD_UNCHANGED);
 		//完整地图 应用
-		Mat mapMat = imread("./Res/Map.png", IMREAD_UNCHANGED);
+		Mat matMap = imread("./Res/Map.png", IMREAD_UNCHANGED);
 		//
-		Mat matMatchMap = imread("./Res/MatchMap.bmp", IMREAD_UNCHANGED);
+		Mat matMatchMap;// = imread("./Res/MatchMap.bmp", IMREAD_UNCHANGED);
 		//Paimon
 		Mat matPaimon1 = imread("./Res/Paimon1.bmp", IMREAD_UNCHANGED);
 		Mat matPaimon2 = imread("./Res/Paimon2.bmp", IMREAD_UNCHANGED);
@@ -363,7 +362,7 @@ namespace giam
 		//悬浮窗大小
 		Size autoMapSize = Size(250, 200);
 		//完整地图大小
-		Size mapSize= Size(mapMat.cols, mapMat.rows);
+		Size mapSize= Size(matMap.cols, matMap.rows);
 		//完整地图世界中心，相对原点
 		Point mapWorldCenter = Point(1416, 3306);
 		//悬浮窗中心所对大地图位置
