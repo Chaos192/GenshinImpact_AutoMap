@@ -64,7 +64,7 @@ bool giam::GenshinImpact_AutoMap::exit()
 //从大地图中截取显示区域
 Mat giam::GenshinImpact_AutoMap::getMinMap()
 {
-	Mat minMap;
+	static Mat minMap;
 
 	Point minMapPoint = Point(0, 0);
 
@@ -207,8 +207,8 @@ void giam::GenshinImpact_AutoMap::giIsFullScreen()
 
 void giam::GenshinImpact_AutoMap::giIsPaimonVisible()
 {
-	Mat tmp;
-	Mat matPaimon;
+	static Mat tmp;
+	static Mat matPaimon;
 	if (giIsFullScreenFlag)
 	{
 		matPaimon = matPaimon1;
@@ -249,9 +249,12 @@ void giam::GenshinImpact_AutoMap::giCheckWindows()
 //获取原神画面
 void giam::GenshinImpact_AutoMap::giGetScreen()
 {
-	HBITMAP	hBmp;
+	
+	static HBITMAP	hBmp;
 	RECT rc;
 	BITMAP bmp;
+
+	DeleteObject(hBmp);
 
 	if (giHandle == NULL)return;
 
@@ -260,7 +263,7 @@ void giam::GenshinImpact_AutoMap::giGetScreen()
 
 	//获取目标句柄的DC
 	HDC hScreen = GetDC(giHandle);
-	HDC	hCompDC = CreateCompatibleDC(hScreen);
+	HDC hCompDC = CreateCompatibleDC(hScreen);
 
 	//获取目标句柄的宽度和高度
 	int	nWidth = rc.right - rc.left;
@@ -286,6 +289,7 @@ void giam::GenshinImpact_AutoMap::giGetScreen()
 	giFrame.create(cv::Size(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8U, nChannels));
 	
 	GetBitmapBits(hBmp, bmp.bmHeight*bmp.bmWidth*nChannels, giFrame.data);
+	
 }
 
 void giam::GenshinImpact_AutoMap::giScreenROI()
@@ -380,34 +384,49 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 	Mat backRect(20, autoMapSize.width, CV_8UC4, Scalar(200, 200,200, 255));
 	tmp = img(Rect(0,0, autoMapSize.width, 20));
 	addWeighted(tmp, 0.6, backRect, 0.4, 0, tmp);
-
+	
 	//绘制小图标
 	Mat backgound;
 	tmp = img(giTab.pngARect);//Rect(30, 0, giTab.pngA.cols, giTab.pngA.rows)
 	tmp.copyTo(backgound);
 	giTab.pngA.copyTo(tmp, giTab.pngAMask);
-
 	if (!giFlag.isShow[0])
 	{
 		//小图标半隐藏
 		addWeighted(tmp, 0.5, backgound, 0.5, 0, tmp);
-
 	}
 	else
 	{
 		addWeighted(tmp, 0.7, backgound, 0.2, 0, tmp);
-
 	}
-	tmp.release();
-	tmp = img(Rect(autoMapSize.width- giTab.sysIcon1.cols-10- giTab.sysIcon2.cols, 0, giTab.sysIcon2.cols, giTab.sysIcon2.rows));
-	//tmp.copyTo(backgound);
-	giTab.sysIcon2.copyTo(tmp, giTab.sysIcon2Mask);
-	//addWeighted(tmp, 0.5, giTab.sysIcon1, 0.5, 0, tmp);
+
+	tmp = img(giTab.pngBRect);//Rect(30, 0, giTab.pngA.cols, giTab.pngA.rows)
+	tmp.copyTo(backgound);
+	giTab.pngB.copyTo(tmp, giTab.pngBMask);
+
+	if (!giFlag.isShow[1])
+	{
+		//小图标半隐藏
+		addWeighted(tmp, 0.5, backgound, 0.5, 0, tmp);
+	}
+	else
+	{
+		addWeighted(tmp, 0.7, backgound, 0.2, 0, tmp);
+	}
+
+
+	//tmp.release();
+	//tmp = img(Rect(autoMapSize.width- giTab.sysIcon1.cols-10- giTab.sysIcon2.cols, 0, giTab.sysIcon2.cols, giTab.sysIcon2.rows));
+	////tmp.copyTo(backgound);
+	//giTab.sysIcon2.copyTo(tmp, giTab.sysIcon2Mask);
+	////addWeighted(tmp, 0.5, giTab.sysIcon1, 0.5, 0, tmp);
 
 	tmp.release();
 	tmp = img(Rect(autoMapSize.width - giTab.sysIcon1.cols , 0, giTab.sysIcon1.cols, giTab.sysIcon1.rows));
 	//tmp.copyTo(backgound);
 	giTab.sysIcon1.copyTo(tmp, giTab.sysIcon1Mask);
+
+	tmp.release();
 
 
 	//圆点显示原神状态
@@ -416,7 +435,7 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 
 	//putText(img, giHUD.runState, Point(24, 12), FONT_HERSHEY_COMPLEX_SMALL, 0.4, giHUD.runTextColor, 1);
 
-	//putText(img, to_string(FRL.runningTime), Point(30, 14), FONT_HERSHEY_COMPLEX_SMALL, 0.4, giHUD.runTextColor, 1);
+	putText(img, to_string((int)(1.0/FRL.runningTime)), Point(10, 40), FONT_HERSHEY_COMPLEX_SMALL, 1, giHUD.runTextColor, 1);
 
 }
 
@@ -433,15 +452,15 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 	//更新Flag为真
 	if (giFlag.isUpdata||giFlag.isGetMap)
 	{
-		for (int i = 0; i < giFlag.max; i++)
+		for (int i = 0; i < min(giFlag.max, OBJ.num); i++)
 		{
 			//显示Flag为真
 			if (giFlag.isShow[i])
 			{
-				for (int j = 0; j < 3/*OBJ.obj1.object.*/; j++)
+				for (int j = 0; j < OBJ.o[i].size(); j++)
 				{
 
-					Point p = Point(OBJ.obj1.at(j).x, OBJ.obj1.at(j).y);
+					Point p = Point(OBJ.o[i].at(j).x, OBJ.o[i].at(j).y);
 					//目标点在小地图显示区域内
 					if (isContains(minMapRect, p))
 					{
@@ -449,14 +468,14 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 						int x = (int)((p.x - minMapRect.x) / giMEF.scale);
 						int y = (int)((p.y - minMapRect.y) / giMEF.scale);
 						//该x，y左下角要有足够的空间来填充图标
-						if (x + giTab.pngA.cols > autoMapSize.width || y + giTab.pngA.rows > autoMapSize.height)
+						if (x + giTab.lis[i].cols > autoMapSize.width || y + giTab.lis[i].rows > autoMapSize.height)
 						{
 							;
 						}
 						else
 						{
-							r = img(Rect(x, y, giTab.pngA.cols, giTab.pngA.rows));
-							giTab.pngA.copyTo(r, giTab.pngAMask);
+							r = img(Rect(x, y, giTab.lis[i].cols, giTab.lis[i].rows));
+							giTab.lis[i].copyTo(r, giTab.lisMask[i]);
 						}
 
 					}
@@ -464,8 +483,6 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 				}
 			}
 		}
-
-
 		
 		giFlag.isUpdata = false;
 	}
@@ -487,7 +504,7 @@ void giam::GenshinImpact_AutoMap::customProcess()
 	{
 		if (k == 1)
 		{
-			imwrite("output.png", giFrame);
+			//imwrite("output.png", giFrame);
 			k = 0;
 		}
 		static Point tmp;
@@ -508,7 +525,7 @@ void giam::GenshinImpact_AutoMap::customProcess()
 void giam::GenshinImpact_AutoMap::mapUpdata()
 {
 	//更新用
-	 Mat tmpMap;
+	 static Mat tmpMap;
 
 	//更新原神窗口状态
 	giCheckWindows();
@@ -516,8 +533,6 @@ void giam::GenshinImpact_AutoMap::mapUpdata()
 	//giGetScreen();
 	//giScreenROI();
 	//giGetPaimon();
-
-
 	//截取地图
 	if (giFlag.isGetMap|| giFlag.isUpHUD)
 	{
@@ -530,8 +545,6 @@ void giam::GenshinImpact_AutoMap::mapUpdata()
 	setFLAG();
 	addFLAG(tmpMap);
 
-
-
 	//设置显示HUD
 	setHUD();
 	if (giFlag.isUpHUD)
@@ -541,7 +554,7 @@ void giam::GenshinImpact_AutoMap::mapUpdata()
 		//将加工好的画面赋给显示变量
 		tmpMap.copyTo(autoMapMat);
 		giFlag.isUpHUD = false;
-
+		tmpMap.release();
 	}
 
 }
@@ -590,7 +603,6 @@ void giam::GenshinImpact_AutoMap::mapShow()
 						offGiMinMapTmp = offGiMinMap;
 					}
 				}
-
 			}
 			else
 			{
@@ -643,19 +655,21 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 	}
 	case EVENT_LBUTTONUP: 
 	{
-		Rect& r = gi.giTab.pngARect;
-
-		if (x<r.x || x>(r.x + r.width) || y<r.y || y>(r.y + r.height))
+		for (int i = 0; i < gi.OBJ.num; i++)
 		{
-			
-		}
-		else
-		{
-			gi.giFlag.isShow[0] = !gi.giFlag.isShow[0];
-			gi.giFlag.isUpdata = true;
-			gi.giFlag.isGetMap = true;
-		}
+			Rect& r = gi.giTab.lisRect[i];
 
+			if (x<r.x || x>(r.x + r.width) || y<r.y || y>(r.y + r.height))
+			{
+
+			}
+			else
+			{
+				gi.giFlag.isShow[i] = !gi.giFlag.isShow[i];
+				gi.giFlag.isUpdata = true;
+				gi.giFlag.isGetMap = true;
+			}
+		}
 		break;
 	}
 	case EVENT_RBUTTONUP: 

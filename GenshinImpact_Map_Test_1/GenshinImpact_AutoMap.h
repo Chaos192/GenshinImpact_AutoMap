@@ -183,17 +183,34 @@ namespace giam
 			BITMAP bb;
 																																  //string pngA = "f_t_c_1_1.png";
 			Mat png;
-			Mat pngA = imread("./f_t_c_1_1.png", IMREAD_UNCHANGED);
-			Mat pngAMask = imread("./f_t_c_1_1_mask.bmp", IMREAD_UNCHANGED);
-			Mat pngB = imread("./f_t_c_1_1.png", IMREAD_UNCHANGED);
-			Mat pngC = imread("./f_t_c_1_1.png", IMREAD_UNCHANGED);
-			Mat sysIcon1 = imread("./sysIcon_1.png", IMREAD_UNCHANGED);
-			Mat sysIcon1Mask = imread("./sysIcon_1_mask.bmp", IMREAD_UNCHANGED);
-			Mat sysIcon2 = imread("./sysIcon_2.png", IMREAD_UNCHANGED);
-			Mat sysIcon2Mask = imread("./sysIcon_2_mask.bmp", IMREAD_UNCHANGED);
+			Mat pngA = imread("./Res/f_t_c_1_1.png", IMREAD_UNCHANGED);
+			Mat pngAMask = imread("./Res/f_t_c_1_1_mask.bmp", IMREAD_UNCHANGED);
+			Mat pngB = imread("./Res/f_t_t_1_1.png", IMREAD_UNCHANGED);
+			Mat pngBMask = imread("./Res/f_t_t_1_1_mask.bmp", IMREAD_UNCHANGED);
+			Mat pngC = imread("./Res/f_t_c_1_1.png", IMREAD_UNCHANGED);
+			Mat pngCMask = imread("./Res/f_t_c_1_1_mask.bmp", IMREAD_UNCHANGED);
+			Mat sysIcon1 = imread("./Res/sysIcon_1.png", IMREAD_UNCHANGED);
+			Mat sysIcon1Mask = imread("./Res/sysIcon_1_mask.bmp", IMREAD_UNCHANGED);
+			Mat sysIcon2 = imread("./Res/sysIcon_2.png", IMREAD_UNCHANGED);
+			Mat sysIcon2Mask = imread("./Res/sysIcon_2_mask.bmp", IMREAD_UNCHANGED);
 			Rect pngARect = Rect(30, 0, pngA.cols, pngA.rows);
+			Rect pngBRect = Rect(44, 0, pngB.cols, pngB.rows);
+			Rect pngCRect = Rect(68, 0, pngC.cols, pngC.rows);
+
+			Mat *lis = new Mat[3];
+			Mat *lisMask = new Mat[3];
+			Rect *lisRect = new Rect[3];
 			TAB()
 			{
+				lis[0] = pngA;
+				lis[1] = pngB;
+				lis[2] = pngC;
+				lisMask[0] = pngAMask;
+				lisMask[1] = pngBMask;
+				lisMask[2] = pngCMask;
+				lisRect[0] = pngARect;
+				lisRect[1] = pngBRect;
+				lisRect[2] = pngCRect;
 				//aa = LoadBitmap(, MAKEINTRESOURCE(IDB_BITMAP1));
 				//aa = LoadImage(GetModuleHandle(0), MAKEINTRESOURCE(IDB_BITMAP4), IDB_BITMAP4, 0, 0, LR_LOADFROMFILE);
 				aa = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_BITMAP6));
@@ -319,22 +336,26 @@ namespace giam
 
 		struct obj
 		{
-			giAMO obj1;
-			obj()
+			int num = 0;
+			giAMO *o;
+			obj(int k)
 			{
-				obj1.initCSD();
+				num = k;
+				o = new giAMO[k];
+				o[0].initCSD();
+				o[1].initFHYS();
 			}
-		}OBJ;
+		}OBJ=obj(2);
 
 		//完整地图源备份
 		//Mat mapMatSource = imread("Map.png", IMREAD_UNCHANGED);
 		//完整地图 应用
-		Mat mapMat = imread("./Map.png", IMREAD_UNCHANGED);
+		Mat mapMat = imread("./Res/Map.png", IMREAD_UNCHANGED);
 		//
-		Mat matMatchMap = imread("./MatchMap.bmp", IMREAD_UNCHANGED);
+		Mat matMatchMap = imread("./Res/MatchMap.bmp", IMREAD_UNCHANGED);
 		//Paimon
-		Mat matPaimon1 = imread("./Paimon1.bmp", IMREAD_UNCHANGED);
-		Mat matPaimon2 = imread("./Paimon2.bmp", IMREAD_UNCHANGED);
+		Mat matPaimon1 = imread("./Res/Paimon1.bmp", IMREAD_UNCHANGED);
+		Mat matPaimon2 = imread("./Res/Paimon2.bmp", IMREAD_UNCHANGED);
 		//悬浮窗显示窗口
 		Mat autoMapMat;
 		//悬浮窗窗口标题
