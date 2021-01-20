@@ -1,6 +1,12 @@
 #include "GenshinImpact_AutoMap.h"
 
-giam::GenshinImpact_AutoMap::GenshinImpact_AutoMap(){}
+giam::GenshinImpact_AutoMap::GenshinImpact_AutoMap()
+{
+	//init();
+	cvtColor(matMap, matMatchMap, CV_RGB2GRAY);
+	giMatch = giAMM(matMatchMap);
+
+}
 
 giam::GenshinImpact_AutoMap::~GenshinImpact_AutoMap(){}
 
@@ -12,7 +18,6 @@ bool giam::GenshinImpact_AutoMap::init()
 	isInit = false;
 	isRun = true;
 	
-	cvtColor(matMap, matMatchMap, CV_RGB2GRAY);
 
 	//初始化背景
 	autoMapMat = Mat(autoMapSize, CV_8UC4, Scalar(200, 200, 200, 255));
@@ -337,6 +342,11 @@ void giam::GenshinImpact_AutoMap::giGetMap()
 	}
 }
 
+void giam::GenshinImpact_AutoMap::thisIsIconic()
+{
+	thisIsIconicFlag = IsIconic(thisHandle);
+}
+
 //设置HUD
 void giam::GenshinImpact_AutoMap::setHUD()
 {
@@ -526,6 +536,7 @@ void giam::GenshinImpact_AutoMap::mapUpdata()
 
 	//更新原神窗口状态
 	giCheckWindows();
+
 	//获取原神窗口截屏
 	//giGetScreen();
 	//giScreenROI();
@@ -559,6 +570,7 @@ void giam::GenshinImpact_AutoMap::mapUpdata()
 //地图显示刷新
 void giam::GenshinImpact_AutoMap::mapShow()
 {
+	thisIsIconic();
 	//如果悬浮窗窗口不存在，停止运行并退出
 	if (IsWindow(thisHandle))
 	{
@@ -580,30 +592,42 @@ void giam::GenshinImpact_AutoMap::mapShow()
 			//并且处于可见状态
 			if (giIsDisplayFlag)
 			{
-				if (!giIsPaimonVisibleFlag&&giFlag.isAutoMove)
+				if (giFlag.isAutoMove)
 				{
-					ShowWindow(thisHandle, SW_MINIMIZE);
+					//处于主界面且悬浮窗处于最小化，恢复悬浮窗
+					if (giIsPaimonVisibleFlag && thisIsIconicFlag)
+					{
+						ShowWindow(thisHandle, SW_RESTORE);
+						SetForegroundWindow(giHandle);
+					}
+					//不处于主界面且悬浮窗不处于最小化，最小化悬浮窗
+					if ((!giIsPaimonVisibleFlag) && (!thisIsIconicFlag))
+					{
+						ShowWindow(thisHandle, SW_MINIMIZE);
+					}
 				}
 				else
 				{
-					//如果悬浮窗处于最小化，则恢复悬浮窗
-					if (IsIconic(thisHandle))
+					if (thisIsIconicFlag)
 					{
-							ShowWindow(thisHandle, SW_RESTORE);
-					}
-					//如果原神窗口有移动，悬浮窗随之移动
-					if (!isEqual(giRect, giRectTmp) || offGiMinMap != offGiMinMapTmp)
-					{
-						
-						SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + offGiMinMap.x, giRect.top + offGiMinMap.y, 0, 0, SWP_NOSIZE);
-						giRectTmp = giRect;
-						offGiMinMapTmp = offGiMinMap;
+						ShowWindow(thisHandle, SW_RESTORE);
+						SetForegroundWindow(giHandle);
 					}
 				}
+
+				//如果原神窗口有移动，悬浮窗随之移动
+				if (!isEqual(giRect, giRectTmp) || offGiMinMap != offGiMinMapTmp)
+				{
+
+					SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + offGiMinMap.x, giRect.top + offGiMinMap.y, 0, 0, SWP_NOSIZE);
+					giRectTmp = giRect;
+					offGiMinMapTmp = offGiMinMap;
+				}
+				
 			}
 			else
 			{
-				if (!IsIconic(thisHandle))
+				if (!thisIsIconicFlag)
 				{
 					//处于不可见状态则令悬浮窗进行最小化
 					ShowWindow(thisHandle, SW_MINIMIZE);

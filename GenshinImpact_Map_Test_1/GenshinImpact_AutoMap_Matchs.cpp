@@ -103,7 +103,7 @@ void GenshinImpact_AutoMap_Matchs::testSURF()
 
 		}
 	}
-	int k = good_matches.size();
+	int k = (int)good_matches.size();
 	static double x = 0;
 	static double y = 0;
 	for (size_t i = 0; i < k; i++)
@@ -123,7 +123,7 @@ void GenshinImpact_AutoMap_Matchs::testSURF()
 		cout << "SURF End time:" << t << "s" << endl;
 		t = (double)cv::getTickCount();
 	}
-	p = Point(x, y);
+	p = Point((int)x, (int)y);
 	//-- Draw matches
 
 	//Mat img_matches;

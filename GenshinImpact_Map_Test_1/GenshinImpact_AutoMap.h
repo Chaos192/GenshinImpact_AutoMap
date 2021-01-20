@@ -143,6 +143,9 @@ namespace giam
 		//原神是否派蒙可见，即在主画面
 		bool giIsPaimonVisibleFlag = false;
 
+		//
+		bool thisIsIconicFlag = false;
+
 		//HUD参数
 		struct HUD
 		{
@@ -289,8 +292,8 @@ namespace giam
 			bool isUpdata = true;
 			bool isGetMap = true;
 			bool isUpHUD = true;
-			int max;
-			bool *isShow;
+			int max = 0;
+			bool *isShow = nullptr;
 			bool isAutoMove=false;
 			int numFlag[3] = {73,10,19};//[66,131,80];
 
@@ -307,8 +310,8 @@ namespace giam
 
 		struct Location2d
 		{
-			int x;
-			int y;
+			int x=0;
+			int y=0;
 			Location2d() :Location2d(0, 0) {}
 			Location2d(int _x, int _y) :x(_x), y(_y) {}
 		};
@@ -316,8 +319,8 @@ namespace giam
 		struct OBJECT
 		{
 			string name;
-			unsigned char klass;
-			int orderNum;
+			unsigned char klass=0;
+			int orderNum=0;
 			Location2d p;
 			OBJECT(){}
 			OBJECT(string _name, unsigned char _klass, int _orderNum, int _x, int _y) :OBJECT(_name, _klass, _orderNum, Location2d(_x, _y)) {}
@@ -384,7 +387,7 @@ namespace giam
 		//
 		Mat giFrameMap;
 
-		giAMM giMatch = giAMM(matMatchMap);
+		giAMM giMatch;
 
 	public:
 		//框架类函数
@@ -429,6 +432,7 @@ namespace giam
 		//
 		void giGetMap();
 		
+		void thisIsIconic();
 		
 
 
