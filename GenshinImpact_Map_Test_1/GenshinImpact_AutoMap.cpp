@@ -581,11 +581,12 @@ void giam::GenshinImpact_AutoMap::mapShow()
 	if (!IsIconic(thisHandle))
 	{
 		imshow(autoMapWindowsName, autoMapMat);
+		//如果平移了悬浮窗
 		if (offGiMinMap != offGiMinMapTmp)
 		{
+			//平移窗口。giRect：如果原神已经退出，则使用关闭前的位置
 			SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + offGiMinMap.x, giRect.top + offGiMinMap.y, 0, 0, SWP_NOSIZE);
 			offGiMinMapTmp = offGiMinMap;
-
 		}
 	}
 
@@ -619,7 +620,7 @@ void giam::GenshinImpact_AutoMap::mapShow()
 			}
 
 			//如果原神窗口有移动，悬浮窗随之移动
-			if (!isEqual(giRect, giRectTmp) || offGiMinMap != offGiMinMapTmp)
+			if (!isEqual(giRect, giRectTmp))
 			{
 
 				SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + offGiMinMap.x, giRect.top + offGiMinMap.y, 0, 0, SWP_NOSIZE);
