@@ -590,54 +590,52 @@ void giam::GenshinImpact_AutoMap::mapShow()
 		}
 	}
 
-	//如果原神正在运行
-	if (giIsRunningFlag)
+
+	//如果原神处于可见状态
+	if (giIsDisplayFlag)
 	{
-		//并且处于可见状态
-		if (giIsDisplayFlag)
+		if (giFlag.isAutoMove)
 		{
-			if (giFlag.isAutoMove)
+			//处于主界面且悬浮窗处于最小化，恢复悬浮窗
+			if (giIsPaimonVisibleFlag && thisIsIconicFlag)
 			{
-				//处于主界面且悬浮窗处于最小化，恢复悬浮窗
-				if (giIsPaimonVisibleFlag && thisIsIconicFlag)
-				{
-					ShowWindow(thisHandle, SW_RESTORE);
-					SetForegroundWindow(giHandle);
-				}
-				//不处于主界面且悬浮窗不处于最小化，最小化悬浮窗
-				if ((!giIsPaimonVisibleFlag) && (!thisIsIconicFlag))
-				{
-					ShowWindow(thisHandle, SW_MINIMIZE);
-				}
+				ShowWindow(thisHandle, SW_RESTORE);
+				SetForegroundWindow(giHandle);
 			}
-			else
+			//不处于主界面且悬浮窗不处于最小化，最小化悬浮窗
+			if ((!giIsPaimonVisibleFlag) && (!thisIsIconicFlag))
 			{
-				if (thisIsIconicFlag)
-				{
-					ShowWindow(thisHandle, SW_RESTORE);
-					SetForegroundWindow(giHandle);
-				}
-			}
-
-			//如果原神窗口有移动，悬浮窗随之移动
-			if (!isEqual(giRect, giRectTmp))
-			{
-
-				SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + offGiMinMap.x, giRect.top + offGiMinMap.y, 0, 0, SWP_NOSIZE);
-				giRectTmp = giRect;
-				offGiMinMapTmp = offGiMinMap;
-			}
-
-		}
-		else
-		{
-			if (!thisIsIconicFlag)
-			{
-				//处于不可见状态则令悬浮窗进行最小化
 				ShowWindow(thisHandle, SW_MINIMIZE);
 			}
 		}
+		else
+		{
+			if (thisIsIconicFlag)
+			{
+				ShowWindow(thisHandle, SW_RESTORE);
+				SetForegroundWindow(giHandle);
+			}
+		}
+
+		//如果原神窗口有移动，悬浮窗随之移动
+		if (!isEqual(giRect, giRectTmp))
+		{
+
+			SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + offGiMinMap.x, giRect.top + offGiMinMap.y, 0, 0, SWP_NOSIZE);
+			giRectTmp = giRect;
+			offGiMinMapTmp = offGiMinMap;
+		}
+
 	}
+	else
+	{
+		if (!thisIsIconicFlag)
+		{
+			//处于不可见状态则令悬浮窗进行最小化
+			ShowWindow(thisHandle, SW_MINIMIZE);
+		}
+	}
+
 	//等待显示更新
 	FRL.Wait();
 
