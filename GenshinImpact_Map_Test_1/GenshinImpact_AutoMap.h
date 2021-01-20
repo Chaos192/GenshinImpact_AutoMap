@@ -432,7 +432,7 @@ namespace giam
 		//
 		void giGetMap();
 		
-		void thisIsIconic();
+		bool thisIsIconic();
 		
 
 

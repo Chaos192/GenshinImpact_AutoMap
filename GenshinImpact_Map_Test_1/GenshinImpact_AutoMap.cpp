@@ -342,9 +342,10 @@ void giam::GenshinImpact_AutoMap::giGetMap()
 	}
 }
 
-void giam::GenshinImpact_AutoMap::thisIsIconic()
+bool giam::GenshinImpact_AutoMap::thisIsIconic()
 {
 	thisIsIconicFlag = IsIconic(thisHandle);
+	return thisIsIconicFlag;
 }
 
 //设置HUD
@@ -570,69 +571,95 @@ void giam::GenshinImpact_AutoMap::mapUpdata()
 //地图显示刷新
 void giam::GenshinImpact_AutoMap::mapShow()
 {
-	thisIsIconic();
 	//如果悬浮窗窗口不存在，停止运行并退出
 	if (!IsWindow(thisHandle))
 	{
 		isRun = false;
 		return;
 	}
-	//如果窗口处于最小化状态，不对画面进行更新
-	if (!IsIconic(thisHandle))
+
+
+
+	//如果窗口不处于最小化状态，对画面进行更新
+	if (!thisIsIconic())
 	{
 		imshow(autoMapWindowsName, autoMapMat);
-		//如果平移了悬浮窗
-		if (offGiMinMap != offGiMinMapTmp)
+		//如果平移了悬浮窗或者原神窗口有移动，悬浮窗随之移动
+		if (offGiMinMap != offGiMinMapTmp|| (!isEqual(giRect, giRectTmp)))
 		{
+			//窗口跟随原神平移
 			//平移窗口。giRect：如果原神已经退出，则使用关闭前的位置
 			SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + offGiMinMap.x, giRect.top + offGiMinMap.y, 0, 0, SWP_NOSIZE);
 			offGiMinMapTmp = offGiMinMap;
-		}
-	}
-
-
-	//如果原神处于可见状态
-	if (giIsDisplayFlag)
-	{
-		if (giFlag.isAutoMove)
-		{
-			//处于主界面且悬浮窗处于最小化，恢复悬浮窗
-			if (giIsPaimonVisibleFlag && thisIsIconicFlag)
-			{
-				ShowWindow(thisHandle, SW_RESTORE);
-				SetForegroundWindow(giHandle);
-			}
-			//不处于主界面且悬浮窗不处于最小化，最小化悬浮窗
-			if ((!giIsPaimonVisibleFlag) && (!thisIsIconicFlag))
-			{
-				ShowWindow(thisHandle, SW_MINIMIZE);
-			}
-		}
-		else
-		{
-			if (thisIsIconicFlag)
-			{
-				ShowWindow(thisHandle, SW_RESTORE);
-				SetForegroundWindow(giHandle);
-			}
-		}
-
-		//如果原神窗口有移动，悬浮窗随之移动
-		if (!isEqual(giRect, giRectTmp))
-		{
-
-			SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + offGiMinMap.x, giRect.top + offGiMinMap.y, 0, 0, SWP_NOSIZE);
 			giRectTmp = giRect;
-			offGiMinMapTmp = offGiMinMap;
 		}
-
 	}
-	else
+
+	//原神是否运行
+	if (giIsRunningFlag)
 	{
-		if (!thisIsIconicFlag)
+		//是否自动追踪
+		switch (giFlag.isAutoMove)
 		{
-			//处于不可见状态则令悬浮窗进行最小化
-			ShowWindow(thisHandle, SW_MINIMIZE);
+			case true:
+			{
+				//是否处于可见状态
+				switch (giIsDisplayFlag)
+				{
+					case true:
+					{
+						//处于主界面且悬浮窗处于最小化，恢复悬浮窗
+						if (giIsPaimonVisibleFlag && thisIsIconicFlag)
+						{
+							ShowWindow(thisHandle, SW_RESTORE);
+							SetForegroundWindow(giHandle);
+						}
+						//不处于主界面且悬浮窗不处于最小化，最小化悬浮窗
+						if ((!giIsPaimonVisibleFlag) && (!thisIsIconicFlag))
+						{
+							ShowWindow(thisHandle, SW_MINIMIZE);
+						}
+						break;
+					}
+					case false:
+					{
+						//悬浮窗不处于最小化，最小化悬浮窗
+						if (!thisIsIconicFlag)
+						{
+							ShowWindow(thisHandle, SW_MINIMIZE);
+						}
+						break;
+					}
+				}
+				break;
+			}
+			case false:
+			{
+				//是否处于可见状态
+				switch (giIsDisplayFlag)
+				{
+					case true:
+					{
+						if (thisIsIconicFlag)
+						{
+							ShowWindow(thisHandle, SW_RESTORE);
+							SetForegroundWindow(giHandle);
+						}
+						break;
+					}
+					case false:
+					{
+						if (!thisIsIconicFlag)
+						{
+							//处于不可见状态则令悬浮窗进行最小化
+							ShowWindow(thisHandle, SW_MINIMIZE);
+						}
+						break;
+					}
+				}
+
+				break;
+			}
 		}
 	}
 
