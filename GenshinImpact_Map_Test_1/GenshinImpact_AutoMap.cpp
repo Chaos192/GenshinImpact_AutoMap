@@ -465,6 +465,9 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 			//显示Flag为真
 			if (giFlag.isShow[i])
 			{
+				int dx = giTab.lisPoint[i].x;
+				int dy = giTab.lisPoint[i].y;
+
 				for (int j = 0; j < OBJ.o[i].size(); j++)
 				{
 
@@ -473,16 +476,13 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 					if (isContains(minMapRect, p))
 					{
 						Mat r;
-						int x = (int)((p.x - minMapRect.x) / giMEF.scale);
-						int y = (int)((p.y - minMapRect.y) / giMEF.scale);
-						//该x，y左下角要有足够的空间来填充图标
-						if (x + giTab.lis[i].cols > autoMapSize.width || y + giTab.lis[i].rows > autoMapSize.height)
+						int x = (int)((p.x - minMapRect.x) / giMEF.scale) - dx;
+						int y = (int)((p.y - minMapRect.y) / giMEF.scale) - dy;
+
+						//该x，y周围要有足够的空间来填充图标
+						if (x > 0 && y > 0 && x + giTab.lis[i].cols < autoMapSize.width&&y + giTab.lis[i].rows < autoMapSize.height)
 						{
-							;
-						}
-						else
-						{
-							r = img(Rect(x, y, giTab.lis[i].cols, giTab.lis[i].rows));
+							r = img(Rect(x , y , giTab.lis[i].cols, giTab.lis[i].rows));
 							giTab.lis[i].copyTo(r, giTab.lisMask[i]);
 						}
 

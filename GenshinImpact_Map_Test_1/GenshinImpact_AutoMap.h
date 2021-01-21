@@ -202,6 +202,7 @@ namespace giam
 			Mat *lis = new Mat[3];
 			Mat *lisMask = new Mat[3];
 			Rect *lisRect = new Rect[3];
+			Point *lisPoint = new Point[3];
 			TAB()
 			{
 				lis[0] = pngA;
@@ -213,6 +214,10 @@ namespace giam
 				lisRect[0] = pngARect;
 				lisRect[1] = pngBRect;
 				lisRect[2] = pngCRect;
+				lisPoint[0] = Point(pngA.cols / 2, pngA.rows);
+				lisPoint[1] = Point(pngB.cols / 2, pngB.rows);
+				lisPoint[2] = Point(pngC.cols / 2, pngC.rows);
+
 				//aa = LoadBitmap(, MAKEINTRESOURCE(IDB_BITMAP1));
 				//aa = LoadImage(GetModuleHandle(0), MAKEINTRESOURCE(IDB_BITMAP4), IDB_BITMAP4, 0, 0, LR_LOADFROMFILE);
 				//aa = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_BITMAP6));
@@ -344,7 +349,7 @@ namespace giam
 			{
 				num = k;
 				o = new giAMO[k];
-				o[0].initCSD2();
+				o[0].initCSD();
 				o[1].initFHYS();
 			}
 		}OBJ=obj(2);
