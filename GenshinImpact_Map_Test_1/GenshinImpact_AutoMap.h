@@ -344,7 +344,7 @@ namespace giam
 			{
 				num = k;
 				o = new giAMO[k];
-				o[0].initCSD();
+				o[0].initCSD2();
 				o[1].initFHYS();
 			}
 		}OBJ=obj(2);
