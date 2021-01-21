@@ -230,7 +230,7 @@ void giam::GenshinImpact_AutoMap::giIsPaimonVisible()
 	cv::Point minLoc, maxLoc;
 	//寻找最佳匹配位置
 	cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
-	if (minVal + maxVal < 0.82)
+	if (minVal + maxVal < 0.98)
 	{
 		if (giIsPaimonVisibleFlag)giFlag.isUpHUD = true;
 		giIsPaimonVisibleFlag = false;
@@ -443,7 +443,7 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 
 	//putText(img, giHUD.runState, Point(24, 12), FONT_HERSHEY_COMPLEX_SMALL, 0.4, giHUD.runTextColor, 1);
 
-	putText(img, to_string((int)(1.0/FRL.runningTime)), Point(10, 40), FONT_HERSHEY_COMPLEX_SMALL, 1, giHUD.runTextColor, 1);
+	//putText(img, to_string((int)(1.0/FRL.runningTime)), Point(10, 40), FONT_HERSHEY_COMPLEX_SMALL, 1, giHUD.runTextColor, 1);
 
 }
 
@@ -457,27 +457,33 @@ void giam::GenshinImpact_AutoMap::setFLAG()
 //在地图上绘制标记
 void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 {
+	int dx = 0;
+	int dy = 0;
+	Point p;
+	Mat r;
+	int x = 0;
+	int y = 0;
+
 	//更新Flag为真
-	if (giFlag.isUpdata||giFlag.isGetMap)
+	if (giFlag.isUpdata||giFlag.isGetMap||giFlag.isAutoMove)
 	{
 		for (int i = 0; i < min(giFlag.max, OBJ.num); i++)
 		{
 			//显示Flag为真
 			if (giFlag.isShow[i])
 			{
-				int dx = giTab.lisPoint[i].x;
-				int dy = giTab.lisPoint[i].y;
+				dx = giTab.lisPoint[i].x;
+				dy = giTab.lisPoint[i].y;
 
 				for (int j = 0; j < OBJ.o[i].size(); j++)
 				{
 
-					Point p = Point(OBJ.o[i].at(j).x, OBJ.o[i].at(j).y);
+					p = Point(OBJ.o[i].at(j).x, OBJ.o[i].at(j).y);
 					//目标点在小地图显示区域内
 					if (isContains(minMapRect, p))
 					{
-						Mat r;
-						int x = (int)((p.x - minMapRect.x) / giMEF.scale) - dx;
-						int y = (int)((p.y - minMapRect.y) / giMEF.scale) - dy;
+						x = (int)((p.x - minMapRect.x) / giMEF.scale) - dx;
+						y = (int)((p.y - minMapRect.y) / giMEF.scale) - dy;
 
 						//该x，y周围要有足够的空间来填充图标
 						if (x > 0 && y > 0 && x + giTab.lis[i].cols < autoMapSize.width&&y + giTab.lis[i].rows < autoMapSize.height)
@@ -500,31 +506,36 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 //测试用
 void giam::GenshinImpact_AutoMap::customProcess()
 {
-	_count++;
-	//giTab.HBitmap2Mat(giTab.aa, giTab.png);
-	//IplImage img=*giTab.hBitmap2Ipl(giTab.aa);
-	//Mat iasd=Mat(img,0);
-	
-	static int k = 1;
-
-
-	if (giIsPaimonVisibleFlag&&giFlag.isAutoMove)
+	//如果窗口不处于最小化状态，对画面进行更新
+	if (!thisIsIconic())
 	{
-		if (k == 1)
+		_count++;
+		//giTab.HBitmap2Mat(giTab.aa, giTab.png);
+		//IplImage img=*giTab.hBitmap2Ipl(giTab.aa);
+		//Mat iasd=Mat(img,0);
+
+		static int k = 1;
+
+
+		if (giIsPaimonVisibleFlag&&giFlag.isAutoMove)
 		{
-			//imwrite("output.png", giFrame);
-			k = 0;
-		}
-		static Point tmp;
-		giMatch.init();
-		giMatch.setObject(giFrameMap);
-		giMatch.test();
-		zerosMinMap = giMatch.getLocation();
-		//cout << zerosMinMap << endl;
-		if (zerosMinMap != tmp)
-		{
-			tmp = zerosMinMap;
-			giFlag.isGetMap = true;
+			if (k == 1)
+			{
+				//imwrite("output.png", giFrame);
+				k = 0;
+			}
+			static Point tmp;
+			giMatch.init();
+			giMatch.setObject(giFrameMap);
+			giMatch.test();
+			zerosMinMap = giMatch.getLocation();
+			//cout << zerosMinMap << endl;
+			if (zerosMinMap != tmp)
+			{
+				tmp = zerosMinMap;
+				giFlag.isGetMap = true;
+				giFlag.isUpHUD = true;
+			}
 		}
 	}
 }
@@ -533,39 +544,43 @@ void giam::GenshinImpact_AutoMap::customProcess()
 void giam::GenshinImpact_AutoMap::mapUpdata()
 {
 	//更新用
-	 static Mat tmpMap;
+	static Mat tmpMap;
 
 	//更新原神窗口状态
 	giCheckWindows();
 
-	//获取原神窗口截屏
-	//giGetScreen();
-	//giScreenROI();
-	//giGetPaimon();
-	//截取地图
-	if (giFlag.isGetMap|| giFlag.isUpHUD)
+	//如果窗口不处于最小化状态，对画面进行更新
+	if (!thisIsIconicFlag)
 	{
-		getMinMap().copyTo(tmpMap);
-		giFlag.isGetMap = false;
-		giFlag.isUpHUD = true;
+		
+
+		//截取地图
+		if (giFlag.isGetMap || giFlag.isUpHUD)
+		{
+			getMinMap().copyTo(tmpMap);
+			giFlag.isGetMap = false;
+			giFlag.isUpHUD = true;
+
+
+		}
+
+
+
+		if (giFlag.isUpHUD)
+		{
+			//设置显示标记
+			setFLAG();
+			addFLAG(tmpMap);
+			//设置显示HUD
+			setHUD();
+			addHUD(tmpMap);
+
+			//将加工好的画面赋给显示变量
+			tmpMap.copyTo(autoMapMat);
+			giFlag.isUpHUD = false;
+			tmpMap.release();
+		}
 	}
-
-	//设置显示标记
-	setFLAG();
-	addFLAG(tmpMap);
-
-	//设置显示HUD
-	setHUD();
-	if (giFlag.isUpHUD)
-	{
-		addHUD(tmpMap);
-
-		//将加工好的画面赋给显示变量
-		tmpMap.copyTo(autoMapMat);
-		giFlag.isUpHUD = false;
-		tmpMap.release();
-	}
-
 }
 
 //地图显示刷新
@@ -578,10 +593,8 @@ void giam::GenshinImpact_AutoMap::mapShow()
 		return;
 	}
 
-
-
 	//如果窗口不处于最小化状态，对画面进行更新
-	if (!thisIsIconic())
+	if (!thisIsIconicFlag)
 	{
 		imshow(autoMapWindowsName, autoMapMat);
 		//如果平移了悬浮窗或者原神窗口有移动，悬浮窗随之移动
