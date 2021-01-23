@@ -233,7 +233,7 @@ namespace giam
 				::GetObject(hBitmap, sizeof(bm), &bm);
 				return bm;
 			}
-			BOOL HBitmap2Mat(HBITMAP& _hBmp, Mat& _mat)
+			Mat HBitmap2Mat(HBITMAP& _hBmp)
 			{
 				//BITMAP²Ù×÷
 				BITMAP bmp;
@@ -242,13 +242,9 @@ namespace giam
 				int depth = bmp.bmBitsPixel == 1 ? IPL_DEPTH_1U : IPL_DEPTH_8U;
 				//mat²Ù×÷
 				Mat v_mat;
-				v_mat.create(cvSize(bmp.bmWidth, bmp.bmHeight), CV_8UC3);
-				//v_mat.create(cvSize(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8UC3, nChannels));
+				v_mat.create(cvSize(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8UC3, nChannels));
 				GetBitmapBits(_hBmp, bmp.bmHeight*bmp.bmWidth*nChannels, v_mat.data);
-				_mat = v_mat;
-				te();
-				
-				return TRUE;
+				return v_mat;
 			}
 			IplImage* hBitmap2Ipl(HBITMAP hBmp)
 			{
