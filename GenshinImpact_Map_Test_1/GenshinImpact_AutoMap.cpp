@@ -180,12 +180,8 @@ void giam::GenshinImpact_AutoMap::giIsDisplay()
 //原神是否最大化
 void giam::GenshinImpact_AutoMap::giIsZoomed()
 {
-	if (giHandle != NULL&& giIsDisplayFlag)
+	if (giHandle != NULL && giIsDisplayFlag)
 	{
-		giGetScreen();
-		giScreenROI();
-		giGetPaimon();
-
 		giIsZoomedFlag = IsZoomed(giHandle);
 		//获取原神窗口区域
 		GetWindowRect(giHandle, &giRect);
@@ -199,8 +195,13 @@ void giam::GenshinImpact_AutoMap::giIsFullScreen()
 {
 	if (giHandle != NULL&& giIsDisplayFlag)
 	{
-		giIsPaimonVisible();
-
+		if (!giIsZoomedFlag)
+		{
+			giGetScreen();
+			giScreenROI();
+			giGetPaimon();
+			giIsPaimonVisible();
+		}
 		static RECT rcDesk;
 		GetWindowRect(GetDesktopWindow(), &rcDesk);
 		if (giRect.left <= rcDesk.left&& giRect.top <= rcDesk.top&& giRect.right >= rcDesk.right&& giRect.bottom >= rcDesk.bottom)
@@ -230,7 +231,8 @@ void giam::GenshinImpact_AutoMap::giIsPaimonVisible()
 	cv::Point minLoc, maxLoc;
 	//寻找最佳匹配位置
 	cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
-	if (minVal + maxVal < 0.98)
+	cout << minVal << "" << maxVal << endl;
+	if (minVal  < 0.66)
 	{
 		if (giIsPaimonVisibleFlag)giFlag.isUpHUD = true;
 		giIsPaimonVisibleFlag = false;
@@ -296,7 +298,6 @@ void giam::GenshinImpact_AutoMap::giGetScreen()
 	giFrame.create(cv::Size(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8U, nChannels));
 	
 	GetBitmapBits(hBmp, bmp.bmHeight*bmp.bmWidth*nChannels, giFrame.data);
-	
 }
 
 void giam::GenshinImpact_AutoMap::giScreenROI()

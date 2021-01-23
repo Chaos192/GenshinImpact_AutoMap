@@ -225,7 +225,8 @@ namespace giam
 			TAB(HWND handle)
 			{
 				//HBITMAP hBitmap = (HBITMAP)LoadImage(GetModuleHandle(0),m_SPath + _T("top_btn.bmp"),IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-				HBitmap2Mat(aa, png);
+				png=HBitmap2Mat(aa);
+				//HBitmap2Mat(aa, png);
 			}
 			BITMAP HBitmap2Bitmap(HBITMAP hBitmap)
 			{
@@ -273,7 +274,8 @@ namespace giam
 				typedef HWND(WINAPI *PROCGETCONSOLEWINDOW)();
 				PROCGETCONSOLEWINDOW GetConsoleWindow;
 
-				HMODULE hKernel32 = GetModuleHandle((LPCWSTR)"kernel32");
+				HMODULE hKernel32 = GetModuleHandle("kernel32");
+				//HMODULE hKernel32 = GetModuleHandle((LPCWSTR)"kernel32");
 				GetConsoleWindow = (PROCGETCONSOLEWINDOW)GetProcAddress(hKernel32, "GetConsoleWindow");
 				HWND cmd = GetConsoleWindow();
 				HDC dc = GetDC(cmd);
