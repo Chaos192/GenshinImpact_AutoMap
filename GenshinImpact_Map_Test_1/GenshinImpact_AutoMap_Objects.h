@@ -51,6 +51,9 @@ private:
 public:
 	//传送点
 	void initCSD();
+	//风神瞳
+	void initFST();
+
 	//绯红玉髓
 	void initFHYS();
 	Location2d at(int n);

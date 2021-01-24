@@ -148,10 +148,22 @@ void GenshinImpact_AutoMap_Objects::initCSD()
 	isLock = true;
 }
 
+void GenshinImpact_AutoMap_Objects::initFST()
+{
+	if (isLock)throw"Cann't Change!";
+	object = new GenshinImpact_AutoMap_Object("∑Á…ÒÕ´", 2, 80);//66+14
+
+	{
+
+	}
+
+	isLock = true;
+}
+
 void GenshinImpact_AutoMap_Objects::initFHYS()
 {
 	if (isLock)throw"Cann't Change!";
-	object = new GenshinImpact_AutoMap_Object("Á≥∫Ï”ÒÀË", 2, 80);//66+14
+	object = new GenshinImpact_AutoMap_Object("Á≥∫Ï”ÒÀË", 10, 80);//66+14
 
 	{
 		add(2442, 1953);
