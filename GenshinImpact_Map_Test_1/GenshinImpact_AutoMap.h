@@ -348,11 +348,11 @@ namespace giam
 			{
 				num = k;
 				o = new giAMO[k];
-				o[0].initCSD();
-				o[1].initFST();
+				o[0].initFST();
+				o[1].initYST();
 				o[2].initFHYS();
 
-				at.initALL();
+				//at.initALL();
 			}
 		}OBJ=obj(3);
 

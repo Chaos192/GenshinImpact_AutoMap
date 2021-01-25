@@ -498,6 +498,8 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 				}
 			}
 		}
+		//批量添加物品的显示
+		/*
 		for (int i = 0; i < 4; i++)
 		{
 			dx = giTab.lisPoint[i].x;
@@ -524,7 +526,8 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 
 			}
 		}
-		
+		*/
+
 		giFlag.isUpdata = false;
 	}
 

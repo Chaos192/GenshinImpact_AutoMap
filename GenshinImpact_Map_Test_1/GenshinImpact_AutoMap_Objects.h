@@ -51,9 +51,12 @@ private:
 public:
 	void initALL();
 	//传送点
-	void initCSD();
+	//void initCSD();
+
 	//风神瞳
 	void initFST();
+	//岩神瞳
+	void initYST();
 
 	//绯红玉髓
 	void initFHYS();
