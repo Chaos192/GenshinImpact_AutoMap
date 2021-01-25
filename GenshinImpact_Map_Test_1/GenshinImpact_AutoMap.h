@@ -186,10 +186,10 @@ namespace giam
 			BITMAP bb;
 																																  //string pngA = "f_t_c_1_1.png";
 			Mat png;
-			Mat pngA = imread("./Res/f_t_c_1_1.png", IMREAD_UNCHANGED);
-			Mat pngAMask = imread("./Res/f_t_c_1_1_mask.bmp", IMREAD_UNCHANGED);
-			Mat pngB = imread("./Res/f_t_t_1_1.png", IMREAD_UNCHANGED);
-			Mat pngBMask = imread("./Res/f_t_t_1_1_mask.bmp", IMREAD_UNCHANGED);
+			Mat pngA = imread("./Res/FST.png", IMREAD_UNCHANGED);
+			Mat pngAMask = imread("./Res/FST_mask.bmp", IMREAD_UNCHANGED);
+			Mat pngB = imread("./Res/YST.png", IMREAD_UNCHANGED);
+			Mat pngBMask = imread("./Res/YST_mask.bmp", IMREAD_UNCHANGED);
 			Mat pngC = imread("./Res/f_t_c_1_1.png", IMREAD_UNCHANGED);
 			Mat pngCMask = imread("./Res/f_t_c_1_1_mask.bmp", IMREAD_UNCHANGED);
 			Mat sysIcon1 = imread("./Res/sysIcon_1.png", IMREAD_UNCHANGED);
@@ -214,9 +214,9 @@ namespace giam
 				lisRect[0] = pngARect;
 				lisRect[1] = pngBRect;
 				lisRect[2] = pngCRect;
-				lisPoint[0] = Point(pngA.cols / 2, pngA.rows);
-				lisPoint[1] = Point(pngB.cols / 2, pngB.rows);
-				lisPoint[2] = Point(pngC.cols / 2, pngC.rows);
+				lisPoint[0] = Point(pngA.cols / 2, pngA.rows/2);
+				lisPoint[1] = Point(pngB.cols / 2, pngB.rows/2);
+				lisPoint[2] = Point(pngC.cols / 2, pngC.rows/2);
 
 				//aa = LoadBitmap(, MAKEINTRESOURCE(IDB_BITMAP1));
 				//aa = LoadImage(GetModuleHandle(0), MAKEINTRESOURCE(IDB_BITMAP4), IDB_BITMAP4, 0, 0, LR_LOADFROMFILE);
