@@ -16,13 +16,19 @@ int main()
 	GSize k=GSize(1, 2);
 	int a[2] = {0};
 	k.toArray(a);
-	std::cout << k.x << " " << k.y << std::endl;
+	std::cout << k.width << " " << k.height << std::endl;
 	std::cout << p.x <<" "<< p.y << std::endl;
-	k.y = 12;
+	k.height = 12;
 	std::cout << a[0] << " " << a[1] << std::endl;
+	
+	for (int i = 0; i < m.getMaxCount(); i++) 
+	{
+		cv::imshow("123", *(cv::Mat*)m.getSource(i));
+		cv::waitKey(1000);
+	}
+	cv::Mat mat= cv::Mat(200,200,CV_8UC3,cv::Scalar(100, 0, 200));
+	m.setSource(&mat);
 
-	cv::imshow("123", *(cv::Mat*)m.testMat);
-	cv::waitKey(0);
 	return 0;
 }
 

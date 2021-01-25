@@ -47,7 +47,6 @@ BOOL HBitmap2Mat(HBITMAP& _hBmp, cv::Mat& _mat)
 // 这是已导出类的构造函数。
 GGenshinImpactMatch::GGenshinImpactMatch(void)
 {
-	testMat = new cv::Mat;
 	gMat = new void*[gLoadDllResMaxCount];
 	gHmp = new void*[gLoadDllResMaxCount];
 
@@ -62,7 +61,6 @@ GGenshinImpactMatch::GGenshinImpactMatch(void)
 
 GGenshinImpactMatch::~GGenshinImpactMatch(void)
 {
-	delete testMat;
 	for (int i = 0; i < gLoadDllResMaxCount; i++)
 	{
 		delete gMat[i];
@@ -87,6 +85,24 @@ bool GGenshinImpactMatch::setTarget(void * _target)
 	return false;
 }
 
+void * GGenshinImpactMatch::getSource(int _id)
+{
+	if (0 < _id&&_id < gLoadDllResMaxCount)
+	{
+		return gMat[_id];
+	}
+	else
+	{
+		return gMat[0];
+	}
+	return nullptr;
+}
+
+int GGenshinImpactMatch::getMaxCount()
+{
+	return gLoadDllResMaxCount;
+}
+
 
 GPoint GGenshinImpactMatch::getPosition()
 {
@@ -95,13 +111,6 @@ GPoint GGenshinImpactMatch::getPosition()
 
 bool GGenshinImpactMatch::gLoadSource()
 {
-	/*Test*/
-	HBITMAP test = LoadBitmap(GetModuleHandle(L"TEST2PROJECT1.dll"), MAKEINTRESOURCE(IDB_BITMAP1));
-	cv::Mat out;
-	if(!HBitmap2Mat(test, *(cv::Mat*)testMat))throw"HBITMAP to cv::Mat Faile!";
-	//if (testMat != NULL)return true;
-	/*Test*/
-
 	if (gLoadSourceGetRes())
 	{
 		for (int i = 0; i < gLoadDllResMaxCount; i++)
@@ -156,20 +165,13 @@ bool GGenshinImpactMatch::gLoadSourceBitMap(void * _hBmp, void * _mat)
 
 GSize::GSize():GSize(0,0){}
 
-GSize::GSize(int _x, int _y):x(_x),y(_y){}
+GSize::GSize(int _width, int _height):width(_width),height(_height){}
 
 void GSize::toArray(int _array[2])
 {
-	_array[0] = x;
-	_array[1] = y;
+	_array[0] = width;
+	_array[1] = height;
 }
-
-
-//int * GSize::toArray()
-//{
-//	int _array[2] = { x,y };
-//	return _array;
-//}
 
 GPoint::GPoint() :GPoint(0, 0) {}
 
