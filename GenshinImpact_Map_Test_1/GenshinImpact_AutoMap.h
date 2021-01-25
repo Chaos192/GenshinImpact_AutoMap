@@ -274,7 +274,7 @@ namespace giam
 				typedef HWND(WINAPI *PROCGETCONSOLEWINDOW)();
 				PROCGETCONSOLEWINDOW GetConsoleWindow;
 
-				HMODULE hKernel32 = GetModuleHandle((LPCWSTR)"kernel32");
+				HMODULE hKernel32 = GetModuleHandle("kernel32");
 				//HMODULE hKernel32 = GetModuleHandle((LPCWSTR)"kernel32");
 				GetConsoleWindow = (PROCGETCONSOLEWINDOW)GetProcAddress(hKernel32, "GetConsoleWindow");
 				HWND cmd = GetConsoleWindow();
@@ -343,12 +343,15 @@ namespace giam
 		{
 			int num = 0;
 			giAMO *o;
+			giAMO at;
 			obj(int k)
 			{
 				num = k;
 				o = new giAMO[k];
 				o[0].initCSD();
 				o[1].initFHYS();
+
+				at.initALL();
 			}
 		}OBJ=obj(2);
 

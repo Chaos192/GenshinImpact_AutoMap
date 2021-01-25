@@ -44,11 +44,12 @@ public:
 
 public:
 	GenshinImpact_AutoMap_Object *object;
-
+	GenshinImpact_AutoMap_Object **objptr = nullptr;
 private:
 	bool isLock = false;
-
+	int classNum = 0;
 public:
+	void initALL();
 	//传送点
 	void initCSD();
 	//风神瞳
@@ -60,6 +61,13 @@ public:
 
 	void add(int x,int y);
 	int size();
+	int size(int i);
+
+
+
+	void fun(int absID, int numID, int TypeID, std::string Type, int X, int Y, std::string Info);
+	void fun(int numID, int TypeID, int X, int Y);
+
 };
 
 typedef GenshinImpact_AutoMap_Objects giAMO;

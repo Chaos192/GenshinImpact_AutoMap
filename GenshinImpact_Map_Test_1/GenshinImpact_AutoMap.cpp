@@ -498,6 +498,32 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 				}
 			}
 		}
+		for (int i = 0; i < 4; i++)
+		{
+			dx = giTab.lisPoint[i].x;
+			dy = giTab.lisPoint[i].y;
+
+			for (int j = 0; j < OBJ.at.size(i); j++)
+			{
+
+				p = Point((*OBJ.at.objptr[i]).at(j).x, (*OBJ.at.objptr[i]).at(j).y);
+				//目标点在小地图显示区域内
+				if (isContains(minMapRect, p))
+				{
+					x = (int)((p.x - minMapRect.x) / giMEF.scale) - dx;
+					y = (int)((p.y - minMapRect.y) / giMEF.scale) - dy;
+
+					//该x，y周围要有足够的空间来填充图标
+					if (x > 0 && y > 0 && x + giTab.lis[i].cols < autoMapSize.width&&y + giTab.lis[i].rows < autoMapSize.height)
+					{
+						r = img(Rect(x, y, giTab.lis[i].cols, giTab.lis[i].rows));
+						giTab.lis[i].copyTo(r, giTab.lisMask[i]);
+					}
+
+				}
+
+			}
+		}
 		
 		giFlag.isUpdata = false;
 	}
