@@ -53,8 +53,8 @@ public:
 private:
 	GPoint gPosition;
 	//BITMAP testBIT;
-	void **gMat = nullptr;
-	void **gHmp = nullptr;
+	void *gMat = nullptr;
+	void *gHmp = nullptr;
 	//导入dll需要加载的bitmap的数量
 	int gLoadDllResMaxCount = 14;
 	//BOOL isMatchEndFlag = false;

@@ -48,14 +48,8 @@ BOOL HBitmap2Mat(HBITMAP& _hBmp, cv::Mat& _mat)
 GGenshinImpactMatch::GGenshinImpactMatch(void)
 {
 	testMat = new cv::Mat;
-	gMat = new void*[gLoadDllResMaxCount];
-	gHmp = new void*[gLoadDllResMaxCount];
-
-	for (int i = 0; i < gLoadDllResMaxCount; i++)
-	{
-		gMat[i] = new cv::Mat;
-		gHmp[i] = new HBITMAP;
-	}
+	gMat = new cv::Mat[gLoadDllResMaxCount];
+	gHmp = new HBITMAP[gLoadDllResMaxCount];
 
 	if (!gLoadSource())throw "Dll Resource Image Load Faile!";
 }
@@ -63,11 +57,7 @@ GGenshinImpactMatch::GGenshinImpactMatch(void)
 GGenshinImpactMatch::~GGenshinImpactMatch(void)
 {
 	delete testMat;
-	for (int i = 0; i < gLoadDllResMaxCount; i++)
-	{
-		delete gMat[i];
-		delete gHmp[i];
-	}
+
 	delete[] gMat;
 	delete[] gHmp;
 }
@@ -106,7 +96,8 @@ bool GGenshinImpactMatch::gLoadSource()
 	{
 		for (int i = 0; i < gLoadDllResMaxCount; i++)
 		{
-			if (gLoadSourceBitMap(gHmp[i], gMat[i]) == false)
+			*(HBITMAP*)(*(HBITMAP*)gHmp + 1) = 0;
+			if (gLoadSourceBitMap(gHmp+i, gMat[i]) == false)
 			{
 				return false;
 			}
@@ -151,7 +142,12 @@ bool GGenshinImpactMatch::gLoadSourceGetRes()
 
 bool GGenshinImpactMatch::gLoadSourceBitMap(void * _hBmp, void * _mat)
 {
-	return HBitmap2Mat(*(HBITMAP*)_hBmp, *(cv::Mat*)_mat);
+	for (int i = 0; i < gLoadDllResMaxCount; i++)
+	{
+		HBitmap2Mat(*(HBITMAP*)((HBITMAP*)gHmp + i), *(cv::Mat*)((cv::Mat*)_mat + i));
+	}
+
+	return false;
 }
 
 GSize::GSize():GSize(0,0){}
