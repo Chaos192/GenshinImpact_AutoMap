@@ -184,10 +184,20 @@
     <ResourceCompile Include="Test2Project1.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\bitmap3.bmp" />
-    <Image Include="res\test.bmp" />
+    <Image Include="res\七天神像.bmp" />
+    <Image Include="res\七天神像mask.bmp" />
     <Image Include="res\传送锚点.bmp" />
-    <Image Include="res\传送锚点mask_1bit.bmp" />
+    <Image Include="res\传送锚点mask.bmp" />
+    <Image Include="res\征讨领域.bmp" />
+    <Image Include="res\征讨领域mask.bmp" />
+    <Image Include="res\深境螺旋.bmp" />
+    <Image Include="res\深境螺旋mask.bmp" />
+    <Image Include="res\神瞳.bmp" />
+    <Image Include="res\神瞳mask.bmp" />
+    <Image Include="res\秘境.bmp" />
+    <Image Include="res\秘境mask.bmp" />
+    <Image Include="res\绯红玉髓.bmp" />
+    <Image Include="res\绯红玉髓mask.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

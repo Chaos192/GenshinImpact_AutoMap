@@ -51,13 +51,43 @@
     <Image Include="res\传送锚点.bmp">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="res\test.bmp">
+    <Image Include="res\传送锚点mask.bmp">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="res\bitmap3.bmp">
+    <Image Include="res\七天神像.bmp">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="res\传送锚点mask_1bit.bmp">
+    <Image Include="res\七天神像mask.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\秘境.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\秘境mask.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\征讨领域.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\征讨领域mask.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\深境螺旋.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\深境螺旋mask.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\神瞳.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\神瞳mask.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\绯红玉髓.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\绯红玉髓mask.bmp">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

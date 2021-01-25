@@ -28,7 +28,6 @@ BOOL HBitmap2Mat(HBITMAP& _hBmp, cv::Mat& _mat)
 	//BITMAP操作
 	BITMAP bmp;
 	GetObject(_hBmp, sizeof(BITMAP), &bmp);
-	if (1 == 1);
 	int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
 	int depth = bmp.bmBitsPixel == 1 ? IPL_DEPTH_1U : IPL_DEPTH_8U;
 	//mat操作
@@ -49,14 +48,28 @@ BOOL HBitmap2Mat(HBITMAP& _hBmp, cv::Mat& _mat)
 GGenshinImpactMatch::GGenshinImpactMatch(void)
 {
 	testMat = new cv::Mat;
-	if (!gLoadSource())throw "Dll Resource Image Load Faile!";
-	
+	gMat = new void*[gLoadDllResMaxCount];
+	gHmp = new void*[gLoadDllResMaxCount];
 
+	for (int i = 0; i < gLoadDllResMaxCount; i++)
+	{
+		gMat[i] = new cv::Mat;
+		gHmp[i] = new HBITMAP;
+	}
+
+	if (!gLoadSource())throw "Dll Resource Image Load Faile!";
 }
 
 GGenshinImpactMatch::~GGenshinImpactMatch(void)
 {
 	delete testMat;
+	for (int i = 0; i < gLoadDllResMaxCount; i++)
+	{
+		delete gMat[i];
+		delete gHmp[i];
+	}
+	delete[] gMat;
+	delete[] gHmp;
 }
 
 bool GGenshinImpactMatch::setSource(void * _source)
@@ -82,14 +95,63 @@ GPoint GGenshinImpactMatch::getPosition()
 
 bool GGenshinImpactMatch::gLoadSource()
 {
+	/*Test*/
 	HBITMAP test = LoadBitmap(GetModuleHandle(L"TEST2PROJECT1.dll"), MAKEINTRESOURCE(IDB_BITMAP1));
-	//testMat = new cv::Mat();
 	cv::Mat out;
 	if(!HBitmap2Mat(test, *(cv::Mat*)testMat))throw"HBITMAP to cv::Mat Faile!";
-	//testMat = &out;
-	
-	if (testMat != NULL)return true;
+	//if (testMat != NULL)return true;
+	/*Test*/
+
+	if (gLoadSourceGetRes())
+	{
+		for (int i = 0; i < gLoadDllResMaxCount; i++)
+		{
+			if (gLoadSourceBitMap(gHmp[i], gMat[i]) == false)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 	return false;
+}
+
+bool GGenshinImpactMatch::gLoadSourceGetRes()
+{
+	*(HBITMAP*)gHmp[0] = LoadBitmap(GetModuleHandle(L"TEST2PROJECT1.dll"), MAKEINTRESOURCE(IDB_BITMAP1));
+	if (gHmp[0] == NULL)throw"LoadSource Get Res ID:IDB_BITMAP1 Dll HBitmap faile";
+	*(HBITMAP*)gHmp[1] = LoadBitmap(GetModuleHandle(L"TEST2PROJECT1.dll"), MAKEINTRESOURCE(IDB_BITMAP2));
+	if (gHmp[1] == NULL)throw"LoadSource Get Res ID:IDB_BITMAP2 Dll HBitmap faile";
+	*(HBITMAP*)gHmp[2] = LoadBitmap(GetModuleHandle(L"TEST2PROJECT1.dll"), MAKEINTRESOURCE(IDB_BITMAP3));
+	if (gHmp[2] == NULL)throw"LoadSource Get Res ID:IDB_BITMAP3 Dll HBitmap faile";
+	*(HBITMAP*)gHmp[3] = LoadBitmap(GetModuleHandle(L"TEST2PROJECT1.dll"), MAKEINTRESOURCE(IDB_BITMAP4));
+	if (gHmp[3] == NULL)throw"LoadSource Get Res ID:IDB_BITMAP4 Dll HBitmap faile";
+	*(HBITMAP*)gHmp[4] = LoadBitmap(GetModuleHandle(L"TEST2PROJECT1.dll"), MAKEINTRESOURCE(IDB_BITMAP5));
+	if (gHmp[4] == NULL)throw"LoadSource Get Res ID:IDB_BITMAP5 Dll HBitmap faile";
+	*(HBITMAP*)gHmp[5] = LoadBitmap(GetModuleHandle(L"TEST2PROJECT1.dll"), MAKEINTRESOURCE(IDB_BITMAP6));
+	if (gHmp[5] == NULL)throw"LoadSource Get Res ID:IDB_BITMAP6 Dll HBitmap faile";
+	*(HBITMAP*)gHmp[6] = LoadBitmap(GetModuleHandle(L"TEST2PROJECT1.dll"), MAKEINTRESOURCE(IDB_BITMAP7));
+	if (gHmp[6] == NULL)throw"LoadSource Get Res ID:IDB_BITMAP7 Dll HBitmap faile";
+	*(HBITMAP*)gHmp[7] = LoadBitmap(GetModuleHandle(L"TEST2PROJECT1.dll"), MAKEINTRESOURCE(IDB_BITMAP8));
+	if (gHmp[7] == NULL)throw"LoadSource Get Res ID:IDB_BITMAP8 Dll HBitmap faile";
+	*(HBITMAP*)gHmp[8] = LoadBitmap(GetModuleHandle(L"TEST2PROJECT1.dll"), MAKEINTRESOURCE(IDB_BITMAP9));
+	if (gHmp[8] == NULL)throw"LoadSource Get Res ID:IDB_BITMAP9 Dll HBitmap faile";
+	*(HBITMAP*)gHmp[9] = LoadBitmap(GetModuleHandle(L"TEST2PROJECT1.dll"), MAKEINTRESOURCE(IDB_BITMAP10));
+	if (gHmp[9] == NULL)throw"LoadSource Get Res ID:IDB_BITMAP10 Dll HBitmap faile";
+	*(HBITMAP*)gHmp[10]= LoadBitmap(GetModuleHandle(L"TEST2PROJECT1.dll"), MAKEINTRESOURCE(IDB_BITMAP11));
+	if (gHmp[10] == NULL)throw"LoadSource Get Res ID:IDB_BITMAP11 Dll HBitmap faile";
+	*(HBITMAP*)gHmp[11] = LoadBitmap(GetModuleHandle(L"TEST2PROJECT1.dll"), MAKEINTRESOURCE(IDB_BITMAP12));
+	if (gHmp[11] == NULL)throw"LoadSource Get Res ID:IDB_BITMAP12 Dll HBitmap faile";
+	*(HBITMAP*)gHmp[12] = LoadBitmap(GetModuleHandle(L"TEST2PROJECT1.dll"), MAKEINTRESOURCE(IDB_BITMAP13));
+	if (gHmp[12] == NULL)throw"LoadSource Get Res ID:IDB_BITMAP13 Dll HBitmap faile";
+	*(HBITMAP*)gHmp[13] = LoadBitmap(GetModuleHandle(L"TEST2PROJECT1.dll"), MAKEINTRESOURCE(IDB_BITMAP14));
+	if (gHmp[13] == NULL)throw"LoadSource Get Res ID:IDB_BITMAP14 Dll HBitmap faile";
+	return true;
+}
+
+bool GGenshinImpactMatch::gLoadSourceBitMap(void * _hBmp, void * _mat)
+{
+	return HBitmap2Mat(*(HBITMAP*)_hBmp, *(cv::Mat*)_mat);
 }
 
 GSize::GSize():GSize(0,0){}
