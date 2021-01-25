@@ -506,7 +506,7 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 			for (int j = 0; j < OBJ.at.size(i); j++)
 			{
 
-				p = Point((*OBJ.at.objptr[i]).at(j).x, (*OBJ.at.objptr[i]).at(j).y);
+				p = Point(OBJ.at.objptr[i].at(j).x, OBJ.at.objptr[i].at(j).y);
 				//目标点在小地图显示区域内
 				if (isContains(minMapRect, p))
 				{

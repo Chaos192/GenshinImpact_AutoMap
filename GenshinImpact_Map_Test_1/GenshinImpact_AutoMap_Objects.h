@@ -44,7 +44,7 @@ public:
 
 public:
 	GenshinImpact_AutoMap_Object *object;
-	GenshinImpact_AutoMap_Object **objptr = nullptr;
+	GenshinImpact_AutoMap_Object *objptr = nullptr;
 private:
 	bool isLock = false;
 	int classNum = 0;

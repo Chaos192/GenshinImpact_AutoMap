@@ -62,11 +62,19 @@ GenshinImpact_AutoMap_Objects::GenshinImpact_AutoMap_Objects()
 {
 	std::string type[4] = { "风神瞳", "岩神瞳","风地灵龛","岩地灵龛"};
 	int num[4] = { 65,131,10,10 };
-	objptr = new GenshinImpact_AutoMap_Object*[4];
-	for (int i = 0; i < 4; i++)
-	{
-		objptr[i] = new GenshinImpact_AutoMap_Object(type[i],i,num[i]);
-	}
+	objptr = new GenshinImpact_AutoMap_Object[4];
+	GenshinImpact_AutoMap_Object list0(type[0], 0, num[0]);
+	GenshinImpact_AutoMap_Object list1(type[1], 1, num[1]);
+	GenshinImpact_AutoMap_Object list2(type[2], 2, num[2]);
+	GenshinImpact_AutoMap_Object list3(type[3], 3, num[3]);
+	objptr[0] = list0;
+	objptr[1] = list1;
+	objptr[2] = list2;
+	objptr[3] = list3;
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	objptr[i] = new GenshinImpact_AutoMap_Object(type[i],i,num[i]);
+	//}
 }
 
 GenshinImpact_AutoMap_Objects::~GenshinImpact_AutoMap_Objects()
@@ -386,10 +394,74 @@ void GenshinImpact_AutoMap_Objects::initCSD()
 void GenshinImpact_AutoMap_Objects::initFST()
 {
 	if (isLock)throw"Cann't Change!";
-	object = new GenshinImpact_AutoMap_Object("风神瞳", 2, 80);//66+14
+	object = new GenshinImpact_AutoMap_Object("风神瞳", 2, 65);//66+14
 
 	{
-
+		add(1626, 756);
+		add(1752, 533);
+		add(1492, 570);
+		add(1658, 584);
+		add(1876, 770);
+		add(1747, 623);
+		add(1589, 734);
+		add(1548, 717);
+		add(1590, 685);
+		add( 1423, 832);
+		add( 1466, 805);
+		add( 1520, 901);
+		add( 1776, 1029);
+		add( 1888, 939);
+		add( 1709, 1131);
+		add( 1985, 972);
+		add( 2003, 862);
+		add( 2062, 899);
+		add( 2067, 839);
+		add( 2028, 775);
+		add( 2021, 728);
+		add( 2112, 770);
+		add( 2060, 1007);
+		add( 2109, 1066);
+		add( 2056, 1123);
+		add( 2088, 1204);
+		add( 2156, 1283);
+		add( 2310, 1207);
+		add( 2271, 1386);
+		add( 2043, 1441);
+		add( 1946, 1515);
+		add( 2074, 1552);
+		add( 2387, 1327);
+		add( 2471, 1325);
+		add( 2533, 1449);
+		add( 2598, 1472);
+		add( 2603, 1512);
+		add( 2646, 1594);
+		add( 2681, 1402);
+		add( 2798, 1474);
+		add( 2838, 1549);
+		add( 2810, 1622);
+		add( 2975, 1658);
+		add( 2863, 1838);
+		add( 3046, 1757);
+		add( 2954, 1728);
+		add( 3225, 1649);
+		add( 2590, 1329);
+		add( 2709, 1352);
+		add( 2777, 1377);
+		add( 2719, 1304);
+		add( 2819, 1264);
+		add( 2716, 1222);
+		add( 2715, 1031);
+		add( 2947, 1085);
+		add( 3111, 1012);
+		add( 3007, 879);
+		add( 2662, 664);
+		add( 2588, 548);
+		add( 2964, 625);
+		add( 3137, 505);
+		add( 3588, 780);
+		add( 3786, 1541);
+		add( 2256, 758);
+		add( 2293, 808);
 	}
 
 	isLock = true;
@@ -504,7 +576,7 @@ int GenshinImpact_AutoMap_Objects::size()
 
 int GenshinImpact_AutoMap_Objects::size(int i)
 {
-	return (*objptr[i]).size();
+	return objptr[i].size();
 }
 
 void GenshinImpact_AutoMap_Objects::fun(int absID, int numID, int TypeID, std::string Type, int X, int Y, std::string Info)
@@ -514,9 +586,9 @@ void GenshinImpact_AutoMap_Objects::fun(int absID, int numID, int TypeID, std::s
 
 void GenshinImpact_AutoMap_Objects::fun(int numID, int TypeID, int X, int Y)
 {
-	if (numID <= (*objptr[TypeID]).size())
+	if (numID <= objptr[TypeID].size())
 	{
-		(*objptr[TypeID]).add(X, Y);
+		objptr[TypeID].add(X, Y);
 
 	}
 }

@@ -349,11 +349,12 @@ namespace giam
 				num = k;
 				o = new giAMO[k];
 				o[0].initCSD();
-				o[1].initFHYS();
+				o[1].initFST();
+				o[2].initFHYS();
 
 				at.initALL();
 			}
-		}OBJ=obj(2);
+		}OBJ=obj(3);
 
 		//完整地图源备份
 		//Mat mapMatSource = imread("Map.png", IMREAD_UNCHANGED);
