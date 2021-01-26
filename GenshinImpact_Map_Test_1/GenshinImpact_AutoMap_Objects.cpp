@@ -4,15 +4,16 @@ inline Location2d::Location2d() :Location2d(0, 0) {}
 
 inline Location2d::Location2d(int _x, int _y) : x(_x), y(_y) {}
 
-GenshinImpact_AutoMap_Object::GenshinImpact_AutoMap_Object()
-{
-	//throw"No Klass Funcation.";
-	
-}
+GenshinImpact_AutoMap_Object::GenshinImpact_AutoMap_Object(): GenshinImpact_AutoMap_Object("NoName",0,3){}
 
 GenshinImpact_AutoMap_Object::~GenshinImpact_AutoMap_Object()
 {
-	delete[] p;
+	if (p != nullptr)
+	{
+		delete[] p;
+		p = nullptr;
+	}
+
 }
 
 GenshinImpact_AutoMap_Object::GenshinImpact_AutoMap_Object(std::string str, int k,int max)
@@ -62,15 +63,15 @@ GenshinImpact_AutoMap_Objects::GenshinImpact_AutoMap_Objects()
 {
 	std::string type[4] = { "风神瞳", "岩神瞳","风地灵龛","岩地灵龛"};
 	int num[4] = { 65,131,10,10 };
-	objptr = new GenshinImpact_AutoMap_Object[4];
+	objptr = new GenshinImpact_AutoMap_Object*[4];
 	GenshinImpact_AutoMap_Object list0(type[0], 0, num[0]);
 	GenshinImpact_AutoMap_Object list1(type[1], 1, num[1]);
 	GenshinImpact_AutoMap_Object list2(type[2], 2, num[2]);
 	GenshinImpact_AutoMap_Object list3(type[3], 3, num[3]);
-	objptr[0] = list0;
-	objptr[1] = list1;
-	objptr[2] = list2;
-	objptr[3] = list3;
+	objptr[0] = &list0;
+	objptr[1] = &list1;
+	objptr[2] = &list2;
+	objptr[3] = &list3;
 	//for (int i = 0; i < 4; i++)
 	//{
 	//	objptr[i] = new GenshinImpact_AutoMap_Object(type[i],i,num[i]);
@@ -79,7 +80,10 @@ GenshinImpact_AutoMap_Objects::GenshinImpact_AutoMap_Objects()
 
 GenshinImpact_AutoMap_Objects::~GenshinImpact_AutoMap_Objects()
 {
-	delete object;
+	if (isLock)
+	{
+		delete object;
+	}
 	delete[] objptr;
 }
 
@@ -391,137 +395,137 @@ void GenshinImpact_AutoMap_Objects::initYST()
 	object = new GenshinImpact_AutoMap_Object("岩神瞳", 2, 131);//66+14
 
 	{
-		add(1138, 1174);
-		add(1080, 1355);
-		add(1066, 1307);
-		add(1242, 1314);
-		add(1157, 1387);
-		add(1308, 1427);
-		add(1364, 1401);
-		add(1193, 1435);
-		add(1044, 1465);
-		add(1128, 1495);
-		add(1276, 1486);
-		add(1305, 1502);
-		add(1387, 1508);
-		add(1252, 1576);
-		add(1034, 1559);
-		add(1112, 1631);
-		add(1141, 1614);
-		add(1239, 1670);
-		add(1221, 1738);
-		add(1269, 1631);
-		add(1438, 1605);
-		add(1371, 1655);
-		add(1363, 1703);
-		add(1380, 1778);
-		add(1436, 1685);
-		add(1574, 1586);
-		add(1493, 1735);
-		add(1569, 1796);
-		add(1389, 1943);
-		add(1276, 1889);
-		add(1831, 1836);
-		add(1464, 2048);
-		add(1439, 2043);
-		add(1511, 2084);
-		add(1603, 2013);
-		add(1911, 2015);
-		add(1836, 2055);
-		add(1914, 2082);
-		add(1793, 2092);
-		add(1785, 2143);
-		add(1950, 2149);
-		add(2058, 2320);
-		add(1899, 2250);
-		add(2080, 2189);
-		add(2119, 2221);
-		add(2080, 2306);
-		add(1879, 2371);
-		add(2321, 2355);
-		add(2171, 2645);
-		add(2427, 2636);
-		add(2516, 2693);
-		add(2301, 2759);
-		add(1709, 2200);
-		add(1677, 2265);
-		add(1354, 2323);
-		add(1559, 2394);
-		add(1364, 2432);
-		add(1562, 2428);
-		add(1619, 2447);
-		add(1808, 2432);
-		add(1457, 2511);
-		add(1553, 2567);
-		add(1833, 2557);
-		add(1752, 2611);
-		add(1358, 2699);
-		add(1462, 2667);
-		add(1532, 2648);
-		add(1162, 2521);
-		add(1159, 2388);
-		add(917, 2665);
-		add(988, 2673);
-		add(1029, 2663);
-		add(757, 2708);
-		add(835, 2756);
-		add(735, 2841);
-		add(880, 2860);
-		add(724, 2905);
-		add(1041, 2838);
-		add(1266, 2794);
-		add(1232, 2806);
-		add(1235, 2849);
-		add(1182, 2881);
-		add(1303, 2922);
-		add(1331, 2961);
-		add(1114, 3001);
-		add(995, 3000);
-		add(735, 3013);
-		add(609, 2494);
-		add(603, 2416);
-		add(819, 1565);
-		add(708, 1684);
-		add(756, 1715);
-		add(923, 1700);
-		add(715, 1831);
-		add(1025, 1873);
-		add(1316, 2121);
-		add(1213, 2094);
-		add(1085, 2349);
-		add(1053, 2220);
-		add(1866, 2916);
-		add(986, 2121);
-		add(887, 2207);
-		add(810, 2253);
-		add(746, 2201);
-		add(777, 2148);
-		add(719, 2155);
-		add(703, 2131);
-		add(642, 2216);
-		add(612, 2086);
-		add(752, 2015);
-		add(789, 1964);
-		add(696, 1987);
-		add(485, 1819);
-		add(443, 1914);
-		add(466, 1999);
-		add(367, 2008);
-		add(439, 2021);
-		add(471, 2036);
-		add(522, 2052);
-		add(355, 2145);
-		add(286, 2123);
-		add(279, 2197);
-		add(318, 2187);
-		add(409, 2161);
-		add(429, 2161);
-		add(1449, 1823);
-		add(1936, 2237);
-		add(1197, 2147);
-		add(978, 1748);
-		add(2617, 2789);
-		add(1294, 2040);
+		add(1134, 1069);
+		add(1076, 1297);
+		add(1062, 1237);
+		add(1239, 1246);
+		add(1154, 1337);
+		add(1306, 1388);
+		add(1362, 1356);
+		add(1190, 1398);
+		add(1041, 1435);
+		add(1125, 1473);
+		add(1273, 1462);
+		add(1303, 1483);
+		add(1385, 1490);
+		add(1250, 1575);
+		add(1031, 1555);
+		add(1109, 1646);
+		add(1137, 1624);
+		add(1236, 1694);
+		add(1218, 1780);
+		add(1266, 1646);
+		add(1436, 1613);
+		add(1369, 1675);
+		add(1360, 1736);
+		add(1377, 1831);
+		add(1434, 1713);
+		add(1573, 1589);
+		add(1492, 1776);
+		add(1568, 1853);
+		add(1387, 2039);
+		add(1274, 1970);
+		add(1832, 1904);
+		add(1462, 2171);
+		add(1438, 2165);
+		add(1510, 2217);
+		add(1602, 2127);
+		add(1912, 2129);
+		add(1836, 2180);
+		add(1915, 2214);
+		add(1793, 2226);
+		add(1786, 2291);
+		add(1951, 2298);
+		add(2059, 2514);
+		add(1900, 2426);
+		add(2081, 2348);
+		add(2121, 2390);
+		add(2081, 2497);
+		add(1880, 2579);
+		add(2324, 2558);
+		add(2173, 2924);
+		add(2430, 2912);
+		add(2520, 2984);
+		add(2304, 3068);
+		add(1708, 2363);
+		add(1677, 2445);
+		add(1352, 2518);
+		add(1558, 2607);
+		add(1362, 2655);
+		add(1561, 2650);
+		add(1618, 2674);
+		add(1809, 2655);
+		add(1456, 2755);
+		add(1552, 2825);
+		add(1833, 2813);
+		add(1752, 2881);
+		add(1356, 2991);
+		add(1461, 2951);
+		add(1531, 2928);
+		add(1159, 2768);
+		add(1156, 2599);
+		add(913, 2949);
+		add(983, 2959);
+		add(1025, 2947);
+		add(752, 3004);
+		add(830, 3064);
+		add(730, 3171);
+		add(875, 3195);
+		add(718, 3252);
+		add(1037, 3167);
+		add(1263, 3112);
+		add(1230, 3127);
+		add(1233, 3182);
+		add(1178, 3222);
+		add(1300, 3273);
+		add(1328, 3322);
+		add(1111, 3373);
+		add(991, 3371);
+		add(729, 3388);
+		add(602, 2733);
+		add(597, 2635);
+		add(814, 1563);
+		add(703, 1712);
+		add(750, 1751);
+		add(918, 1732);
+		add(709, 1897);
+		add(1021, 1950);
+		add(1313, 2263);
+		add(1210, 2229);
+		add(1082, 2551);
+		add(1049, 2387);
+		add(1866, 3265);
+		add(982, 2263);
+		add(882, 2372);
+		add(805, 2429);
+		add(740, 2364);
+		add(772, 2297);
+		add(714, 2306);
+		add(697, 2276);
+		add(636, 2383);
+		add(605, 2219);
+		add(747, 2129);
+		add(784, 2065);
+		add(690, 2095);
+		add(478, 1883);
+		add(436, 2002);
+		add(459, 2109);
+		add(359, 2120);
+		add(432, 2136);
+		add(464, 2155);
+		add(516, 2177);
+		add(347, 2293);
+		add(278, 2265);
+		add(271, 2360);
+		add(310, 2347);
+		add(402, 2313);
+		add(422, 2313);
+		add(1448, 1888);
+		add(1937, 2409);
+		add(1194, 2296);
+		add(973, 1792);
+		add(2621, 3105);
+		add(1291, 2161);
 	}
 
 	isLock = true;
@@ -636,7 +640,7 @@ int GenshinImpact_AutoMap_Objects::size()
 
 int GenshinImpact_AutoMap_Objects::size(int i)
 {
-	return objptr[i].size();
+	return objptr[i]->size();
 }
 
 void GenshinImpact_AutoMap_Objects::fun(int absID, int numID, int TypeID, std::string Type, int X, int Y, std::string Info)
@@ -646,9 +650,9 @@ void GenshinImpact_AutoMap_Objects::fun(int absID, int numID, int TypeID, std::s
 
 void GenshinImpact_AutoMap_Objects::fun(int numID, int TypeID, int X, int Y)
 {
-	if (numID <= objptr[TypeID].size())
+	if (numID <= objptr[TypeID]->size())
 	{
-		objptr[TypeID].add(X, Y);
+		objptr[TypeID]->add(X, Y);
 
 	}
 }

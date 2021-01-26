@@ -180,16 +180,24 @@ void GenshinImpact_AutoMap_Matchs::test2()
 	cv::Point minLoc, maxLoc;
 	//—∞’“◊Óº—∆•≈‰Œª÷√
 	cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
-	cout << "Star:"<<maxLoc.x << "," << maxLoc.y << endl;
-	cout <<"Star:"<< minVal << "," << maxVal << endl;
+	//cout << "Star:"<<maxLoc.x << "," << maxLoc.y << endl;
+	//cout <<"Star:"<< minVal << "," << maxVal << endl;
 	Mat show,roi;
 	img_scene.copyTo(show);
-	rectangle(show, Rect(maxLoc.x, maxLoc.y, 22, 22), Scalar(255, 120, 0),2);
-	rectangle(show, Rect(minLoc.x, minLoc.y,22,22), Scalar(120, 0, 120));
+	if (maxVal > 0.75)
+	{
+		rectangle(show, Rect(maxLoc.x, maxLoc.y, 22, 22), Scalar(255, 120, 0), 2);
+
+	}
+	//rectangle(show, Rect(maxLoc.x, maxLoc.y, 22, 22), Scalar(255, 120, 0),2);
+	//rectangle(show, Rect(minLoc.x, minLoc.y,22,22), Scalar(120, 0, 120));
+
 	//roi=show(Rect(maxLoc, Point(22, 22)));
 	//img_object.copyTo(roi);
-	imshow("mas", tmp);
-	imshow("show",show);
+	//namedWindow("MatchTemplate", 256);
+	//namedWindow("View", 256);
+	//imshow("MatchTemplate", tmp);
+	//imshow("View",show);
 	//testORB();
 }
 
