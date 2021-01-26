@@ -132,6 +132,8 @@ namespace giam
 		//原神窗口区域保存对比用
 		RECT giRectTmp;
 
+		
+
 		//原神是否正在运行标志
 		bool giIsRunningFlag = false;
 		//原神是否可见标志
@@ -396,6 +398,8 @@ namespace giam
 
 		giAMM giMatch;
 
+		Size giSize;
+
 	public:
 		//框架类函数
 
@@ -419,15 +423,19 @@ namespace giam
 		//类内实现函数
 
 		//原神是否运行
-		void giIsRunning();
+		bool giIsRunning();
+
 		//原神是否可见
-		void giIsDisplay();
+		bool giIsDisplay();
+
 		//原神是否最大化
-		void giIsZoomed();
+		//bool giIsZoomed();
+
 		//原神是否全屏
-		void giIsFullScreen();
+		bool giIsFullScreen();
+
 		//原神是否派蒙可见，即在主画面
-		void giIsPaimonVisible();
+		bool giIsPaimonVisible();
 		//检查原神窗口状态
 		void giCheckWindows();
 		//获取原神画面

@@ -31,6 +31,7 @@ public:
 
 	void testSURF();
 	void test();
+	void test2();
 	void testORB();
 	bool keySave();
 	bool keyLoad();

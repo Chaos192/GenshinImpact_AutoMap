@@ -154,66 +154,77 @@ bool giam::GenshinImpact_AutoMap::isContains(Rect & r, Point & p)
 }
 
 //原神是否运行
-void giam::GenshinImpact_AutoMap::giIsRunning()
+bool giam::GenshinImpact_AutoMap::giIsRunning()
 {
 	//尝试获取原神句柄
 	giHandle = FindWindowA(NULL, "原神");
 	if (giHandle != NULL)
 	{
 		giIsRunningFlag = true;
-		return;
 	}
-	giIsRunningFlag= false;
+	else
+	{
+		giIsRunningFlag = false;
+	}
+	return giIsRunningFlag;
 }
 
 //原神是否可见
-void giam::GenshinImpact_AutoMap::giIsDisplay()
+bool giam::GenshinImpact_AutoMap::giIsDisplay()
 {
-	if (giHandle != NULL && giIsRunningFlag)
+	if (giIsRunningFlag)
 	{
 		giIsDisplayFlag = !IsIconic(giHandle);
-		return;
+		GetWindowRect(giHandle, &giRect);
+		giSize.width = giRect.right - giRect.left;//+6
+		giSize.height = giRect.bottom - giRect.top;//+29
+		//+6,+29
+		//cout << giRect.bottom - giRect.top << "," << giRect.right - giRect.left << endl;
 	}
-	giIsDisplayFlag = false;
+	else
+	{
+		giIsDisplayFlag = false;
+	}
+	return giIsDisplayFlag;
 }
 
 //原神是否最大化
-void giam::GenshinImpact_AutoMap::giIsZoomed()
-{
-	if (giHandle != NULL && giIsDisplayFlag)
-	{
-		giIsZoomedFlag = IsZoomed(giHandle);
-		//获取原神窗口区域
-		GetWindowRect(giHandle, &giRect);
-		return;
-	}
-	giIsZoomedFlag = false;
-}
+//bool giam::GenshinImpact_AutoMap::giIsZoomed()
+//{
+//	if (giHandle != NULL && giIsDisplayFlag)
+//	{
+//		giIsZoomedFlag = IsZoomed(giHandle);
+//		//获取原神窗口区域
+//		GetWindowRect(giHandle, &giRect);
+//		giSize.width = giRect.bottom - giRect.top;
+//		giSize.height = giRect.right - giRect.left;
+//		cout << giRect.bottom - giRect.top <<"," << giRect.right- giRect.left  << endl;
+//		return;
+//	}
+//	giIsZoomedFlag = false;
+//}
 
 //原神是否全屏
-void giam::GenshinImpact_AutoMap::giIsFullScreen()
+bool giam::GenshinImpact_AutoMap::giIsFullScreen()
 {
-	if (giHandle != NULL&& giIsDisplayFlag)
+	giIsFullScreenFlag = false;
+	if (giIsDisplay())
 	{
-		if (!giIsZoomedFlag)
-		{
 			giGetScreen();
 			giScreenROI();
 			giGetPaimon();
 			giIsPaimonVisible();
-		}
 		static RECT rcDesk;
 		GetWindowRect(GetDesktopWindow(), &rcDesk);
 		if (giRect.left <= rcDesk.left&& giRect.top <= rcDesk.top&& giRect.right >= rcDesk.right&& giRect.bottom >= rcDesk.bottom)
 		{
 			giIsFullScreenFlag = true;
-			return;
 		}
 	}
-	giIsZoomedFlag = false;
+	return giIsFullScreenFlag;
 }
 
-void giam::GenshinImpact_AutoMap::giIsPaimonVisible()
+bool giam::GenshinImpact_AutoMap::giIsPaimonVisible()
 {
 	static Mat tmp;
 	static Mat matPaimon;
@@ -231,7 +242,7 @@ void giam::GenshinImpact_AutoMap::giIsPaimonVisible()
 	cv::Point minLoc, maxLoc;
 	//寻找最佳匹配位置
 	cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
-	cout << minVal << "" << maxVal << endl;
+	//cout << minVal << "" << maxVal << endl;
 	if (minVal  < 0.66)
 	{
 		if (giIsPaimonVisibleFlag)giFlag.isUpHUD = true;
@@ -244,6 +255,7 @@ void giam::GenshinImpact_AutoMap::giIsPaimonVisible()
 		giIsPaimonVisibleFlag = true;
 		giGetMap();
 	}
+	return giIsPaimonVisibleFlag;
 }
 
 //检查原神窗口状态
@@ -251,7 +263,7 @@ void giam::GenshinImpact_AutoMap::giCheckWindows()
 {
 	giIsRunning();
 	giIsDisplay();
-	giIsZoomed();
+	//giIsZoomed();
 	giIsFullScreen();
 }
 
@@ -397,7 +409,7 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 	//绘制背景条
 	Mat backRect(20, autoMapSize.width, CV_8UC4, Scalar(200, 200,200, 255));
 	tmp = img(Rect(0,0, autoMapSize.width, 20));
-	addWeighted(tmp, 0.6, backRect, 0.4, 0, tmp);
+	cv::addWeighted(tmp, 0.6, backRect, 0.4, 0, tmp);
 	
 	//绘制小图标
 	Mat backgound;
@@ -407,11 +419,11 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 	if (!giFlag.isShow[0])
 	{
 		//小图标半隐藏
-		addWeighted(tmp, 0.5, backgound, 0.5, 0, tmp);
+		cv::addWeighted(tmp, 0.5, backgound, 0.5, 0, tmp);
 	}
 	else
 	{
-		addWeighted(tmp, 0.7, backgound, 0.2, 0, tmp);
+		cv::addWeighted(tmp, 0.7, backgound, 0.2, 0, tmp);
 	}
 
 	tmp = img(giTab.pngBRect);//Rect(30, 0, giTab.pngA.cols, giTab.pngA.rows)
@@ -421,26 +433,30 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 	if (!giFlag.isShow[1])
 	{
 		//小图标半隐藏
-		addWeighted(tmp, 0.5, backgound, 0.5, 0, tmp);
+		cv::addWeighted(tmp, 0.5, backgound, 0.5, 0, tmp);
 	}
 	else
 	{
-		addWeighted(tmp, 0.7, backgound, 0.2, 0, tmp);
+		cv::addWeighted(tmp, 0.7, backgound, 0.2, 0, tmp);
 	}
 
 	tmp.release();
 	tmp = img(Rect(autoMapSize.width - giTab.sysIcon1.cols , 0, giTab.sysIcon1.cols, giTab.sysIcon1.rows));
 	tmp.copyTo(backgound);
 	giTab.sysIcon1.copyTo(tmp, giTab.sysIcon1Mask);
-	addWeighted(tmp, 0.5, backgound, 0.5, 0, tmp);
+	cv::addWeighted(tmp, 0.5, backgound, 0.5, 0, tmp);
 
 	tmp.release();
 
-
+	Mat star;
+	img(Rect(autoMapSize.width / 2 - 5, autoMapSize.height / 2 - 5, 11, 11)).copyTo(star);
+	tmp = img(Rect(autoMapSize.width / 2 - 5, autoMapSize.height / 2 - 5, 11, 11));
+	circle(star, Point(5, 5), 4, giHUD.minStarColor, 1, LINE_AA);
+	addWeighted(tmp, 0.5, star, 0.5, 0, tmp);
 
 	//圆点显示原神状态
-	circle(img, Point(6, 10), 4, giHUD.paimonFlagColor, -1);
-	circle(img, Point(16, 10), 4, giHUD.autoMoveFlagColor, -1);
+	cv::circle(img, Point(6, 10), 4, giHUD.paimonFlagColor, -1);
+	cv::circle(img, Point(16, 10), 4, giHUD.autoMoveFlagColor, -1);
 
 	//putText(img, giHUD.runState, Point(24, 12), FONT_HERSHEY_COMPLEX_SMALL, 0.4, giHUD.runTextColor, 1);
 
@@ -540,24 +556,18 @@ void giam::GenshinImpact_AutoMap::customProcess()
 	if (!thisIsIconic())
 	{
 		_count++;
-		//giTab.HBitmap2Mat(giTab.aa, giTab.png);
-		//IplImage img=*giTab.hBitmap2Ipl(giTab.aa);
-		//Mat iasd=Mat(img,0);
 
-		static int k = 1;
 
 
 		if (giIsPaimonVisibleFlag&&giFlag.isAutoMove)
 		{
-			if (k == 1)
-			{
-				//imwrite("output.png", giFrame);
-				k = 0;
-			}
 			static Point tmp;
-			giMatch.init();
 			giMatch.setObject(giFrameMap);
+			giMatch.init();
+
 			giMatch.test();
+			giMatch.test2();
+
 			zerosMinMap = giMatch.getLocation();
 			//cout << zerosMinMap << endl;
 			if (zerosMinMap != tmp)

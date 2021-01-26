@@ -114,8 +114,8 @@ void GenshinImpact_AutoMap_Matchs::testSURF()
 			x = 0;
 			y = 0;
 		}
-		x = x + (92.5 - keypoints_object[good_matches[i].queryIdx].pt.x + keypoints_scene[good_matches[i].trainIdx].pt.x) / k;
-		y = y + (92.5 - keypoints_object[good_matches[i].queryIdx].pt.y + keypoints_scene[good_matches[i].trainIdx].pt.y) / k;
+		x = x + (90 - keypoints_object[good_matches[i].queryIdx].pt.x + keypoints_scene[good_matches[i].trainIdx].pt.x) / k;
+		y = y + (90 - keypoints_object[good_matches[i].queryIdx].pt.y + keypoints_scene[good_matches[i].trainIdx].pt.y) / k;
 	}
 	if (isCout)
 	{
@@ -135,7 +135,61 @@ void GenshinImpact_AutoMap_Matchs::testSURF()
 
 void GenshinImpact_AutoMap_Matchs::test()
 {
+	if (!isInit) return;
 	testSURF();
+	//testORB();
+}
+
+void GenshinImpact_AutoMap_Matchs::test2()
+{
+	Mat img_scene = object(Rect(36,36, object.cols-72,object.rows-72)); //minMap
+	static Mat img_object = imread("./Res/ST.bmp", IMREAD_UNCHANGED); //Star
+	static Mat img_object_mask = imread("./Res/ST_mask.bmp", IMREAD_UNCHANGED); //Star
+	static Mat tmp;
+	//cvtColor(img_object_mask, img_object_mask,CV_Gray)
+	//threshold(img_object_mask, img_object_mask, 245, 255, THRESH_BINARY);
+	/*
+	TM_SQDIFF
+	TM_SQDIFF_NORMED
+	TM_CCORR
+	TM_CCORR_NORMED
+	TM_CCOEFF
+	TM_CCOEFF_NORMED
+	*/
+
+
+	/*
+	TM_SQDIFF + mask ***
+	TM_SQDIFF_NORMED + mask ***** <0.6 ---
+	TM_CCORR + mask *****
+	TM_CCORR_NORMED + mask ***** >0.70 --
+	TM_CCOEFF
+	TM_CCOEFF_NORMED + mask ****** >0.85
+
+	TM_SQDIFF + source ------
+	TM_SQDIFF_NORMED + source ------
+	TM_CCORR + source -----
+	TM_CCORR_NORMED + source ---
+	TM_CCOEFF + source +++ 
+	TM_CCOEFF_NORMED + source ++++ - >0.3
+	*/
+
+	cv::matchTemplate(img_object_mask, img_scene, tmp, cv::TM_CCOEFF_NORMED);
+
+	double minVal, maxVal;
+	cv::Point minLoc, maxLoc;
+	//—∞’“◊Óº—∆•≈‰Œª÷√
+	cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
+	cout << "Star:"<<maxLoc.x << "," << maxLoc.y << endl;
+	cout <<"Star:"<< minVal << "," << maxVal << endl;
+	Mat show,roi;
+	img_scene.copyTo(show);
+	rectangle(show, Rect(maxLoc.x, maxLoc.y, 22, 22), Scalar(255, 120, 0),2);
+	rectangle(show, Rect(minLoc.x, minLoc.y,22,22), Scalar(120, 0, 120));
+	//roi=show(Rect(maxLoc, Point(22, 22)));
+	//img_object.copyTo(roi);
+	imshow("mas", tmp);
+	imshow("show",show);
 	//testORB();
 }
 
