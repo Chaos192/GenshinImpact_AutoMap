@@ -3,6 +3,9 @@
 
 目前做成了原神的PC端悬浮窗地图工具……（但也实现了自动跟踪的功能）
 
+链接：https://pan.xunlei.com/s/VMRzpFyq2hmpeYjTydWOos2mA1
+提取码：4b3u
+
 ## 运行画面
 
 ![运行画面](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/GenshinImpact_Map_Test_1/Img/Snipaste_2021-01-07_15-09-00.png)
