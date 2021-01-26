@@ -8,6 +8,10 @@
 
 ## 运行画面
 
+![自动跟踪](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/GenshinImpact_Map_Test_1/Img/2021-01-27%2000-27-55_5.gif)
+
+![搜索神瞳](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/GenshinImpact_Map_Test_1/Img/2021-01-27%2000-27-55_3.gif)
+
 ![运行画面](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/GenshinImpact_Map_Test_1/Img/Snipaste_2021-01-07_15-09-00.png)
 
 ## 目前实现
@@ -28,6 +32,8 @@
 
 通过游戏内小地图，自动识别角色所在位置
 
+获得小地图上出现的神瞳
+
 在某些情况下自动隐藏悬浮窗，如传送时，打开大地图时，释放大招时……
 
 修复了悬浮窗自动复位时，键鼠焦点转移，导致弹出输入法的问题。
@@ -39,6 +45,8 @@
 添加标记改为自动
 
 根据数据库显示周围资源分布
+
+自动记忆神瞳是否收集，判断显示哪些神瞳没被发现
 
 优化UI
 
