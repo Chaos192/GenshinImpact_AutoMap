@@ -12,7 +12,7 @@ GenshinImpact_AutoMap_Object::GenshinImpact_AutoMap_Object()
 
 GenshinImpact_AutoMap_Object::~GenshinImpact_AutoMap_Object()
 {
-	delete p;
+	delete[] p;
 }
 
 GenshinImpact_AutoMap_Object::GenshinImpact_AutoMap_Object(std::string str, int k,int max)
@@ -79,6 +79,8 @@ GenshinImpact_AutoMap_Objects::GenshinImpact_AutoMap_Objects()
 
 GenshinImpact_AutoMap_Objects::~GenshinImpact_AutoMap_Objects()
 {
+	delete object;
+	delete[] objptr;
 }
 
 void GenshinImpact_AutoMap_Objects::initALL()

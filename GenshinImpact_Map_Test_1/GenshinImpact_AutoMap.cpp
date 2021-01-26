@@ -5,10 +5,13 @@ giam::GenshinImpact_AutoMap::GenshinImpact_AutoMap()
 	//init();
 	cvtColor(matMap, matMatchMap, CV_RGB2GRAY);
 	giMatch = giAMM(matMatchMap);
-
+	giConfig.load();
 }
 
-giam::GenshinImpact_AutoMap::~GenshinImpact_AutoMap(){}
+giam::GenshinImpact_AutoMap::~GenshinImpact_AutoMap()
+{
+
+}
 
 //³õÊ¼»¯
 bool giam::GenshinImpact_AutoMap::init()
@@ -65,6 +68,7 @@ bool giam::GenshinImpact_AutoMap::run()
 //ÍË³ö
 bool giam::GenshinImpact_AutoMap::exit()
 {
+	giConfig.save();
 	return false;
 }
 

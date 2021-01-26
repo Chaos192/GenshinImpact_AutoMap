@@ -6,6 +6,7 @@
 #include <opencv2/xfeatures2d/nonfree.hpp>
 #include <opencv2/imgproc/imgproc_c.h>
 #include "resource.h"
+#include "GenshinImpact_AutoMap_LoadUID.h"
 #include "GenshinImpact_AutoMap_Objects.h"
 #include "GenshinImpact_AutoMap_Matchs.h"
 
@@ -224,6 +225,13 @@ namespace giam
 				//aa = LoadImage(GetModuleHandle(0), MAKEINTRESOURCE(IDB_BITMAP4), IDB_BITMAP4, 0, 0, LR_LOADFROMFILE);
 				//aa = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_BITMAP6));
 			}
+			~TAB()
+			{
+				delete[] lis;
+				delete[] lisMask;
+				delete[] lisRect;
+				delete[] lisPoint;
+			}
 			TAB(HWND handle)
 			{
 				//HBITMAP hBitmap = (HBITMAP)LoadImage(GetModuleHandle(0),m_SPath + _T("top_btn.bmp"),IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
@@ -309,7 +317,10 @@ namespace giam
 				isShow = new bool[n] { false };
 
 			}
-			~FLAG() { delete isShow; };
+			~FLAG() 
+			{
+				delete[] isShow;
+			}
 
 		}giFlag;
 
@@ -356,6 +367,10 @@ namespace giam
 
 				//at.initALL();
 			}
+			~obj()
+			{
+				delete[] o;
+			}
 		}OBJ=obj(3);
 
 		//完整地图源备份
@@ -399,6 +414,8 @@ namespace giam
 		giAMM giMatch;
 
 		Size giSize;
+
+		giAML giConfig;
 
 	public:
 		//框架类函数
