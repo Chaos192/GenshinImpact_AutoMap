@@ -136,12 +136,15 @@ void GenshinImpact_AutoMap_Matchs::testSURF()
 void GenshinImpact_AutoMap_Matchs::test()
 {
 	if (!isInit) return;
+	isCanGet = false;
 	testSURF();
+	isCanGet = true;
 	//testORB();
 }
 
 void GenshinImpact_AutoMap_Matchs::test2()
 {
+	//isCanGet = false;
 	Mat img_scene = object(Rect(36,36, object.cols-72,object.rows-72)); //minMap
 	static Mat img_object = imread("./Res/ST.bmp", IMREAD_UNCHANGED); //Star
 	static Mat img_object_mask = imread("./Res/ST_mask.bmp", IMREAD_UNCHANGED); //Star
@@ -292,6 +295,11 @@ bool GenshinImpact_AutoMap_Matchs::keyLoad()
 void GenshinImpact_AutoMap_Matchs::setCout(bool _isCout)
 {
 	isCout = _isCout;
+}
+
+bool GenshinImpact_AutoMap_Matchs::getIsCanGet()
+{
+	return isCanGet;
 }
 
 void GenshinImpact_AutoMap_Matchs::getObjectKeyPoints()

@@ -10,13 +10,15 @@ giam::GenshinImpact_AutoMap::GenshinImpact_AutoMap()
 
 giam::GenshinImpact_AutoMap::~GenshinImpact_AutoMap()
 {
-
+	if (tMatchInit != nullptr)tMatchInit->join();
+	if (tMatchMap != nullptr)tMatchMap->join();
+	if (tMatchStar != nullptr)tMatchStar->join();
+	if (tMatchTarget != nullptr)tMatchTarget->join();
 }
 
 //初始化
 bool giam::GenshinImpact_AutoMap::init()
 {
-	//AT.on();
 	
 	isInit = false;
 	isRun = true;
@@ -42,6 +44,8 @@ bool giam::GenshinImpact_AutoMap::init()
 	SetWindowLong(thisHandle, GWL_STYLE, GetWindowLong(thisHandle, GWL_EXSTYLE | WS_EX_TOPMOST)); //改变窗口风格
 	ShowWindow(thisHandle, SW_SHOW);
 
+	tMatchInit = new thread(&giam::GenshinImpact_AutoMap::thread_MatchInit,this,ref(giMatch),ref(tMuMatch));
+
 	return false;
 }
 
@@ -53,10 +57,29 @@ bool giam::GenshinImpact_AutoMap::run()
 	//运行循环
 	while (isRun)
 	{
-		//地图图标文字等更新
-		mapUpdata();
+		//更新原神窗口状态
+		giCheckWindows();
 
-		customProcess();
+		//更新线程状态
+		thisCheckThread();
+
+		//如果窗口不处于最小化状态，对画面进行更新
+		if (!thisIsIconic())
+		{
+			//前后端分离
+			//前端显示
+			//后端追踪
+			//mapTrack();
+
+			//mapStar();
+
+			customProcess();
+
+
+			//地图图标文字等更新
+			mapUpdata();
+		}
+
 		//显示
 		mapShow();
 	}
@@ -214,10 +237,10 @@ bool giam::GenshinImpact_AutoMap::giIsFullScreen()
 	giIsFullScreenFlag = false;
 	if (giIsDisplay())
 	{
-			giGetScreen();
-			giScreenROI();
-			giGetPaimon();
-			giIsPaimonVisible();
+		giGetScreen();
+		giScreenROI();
+		giGetPaimon();
+		giIsPaimonVisible();
 		static RECT rcDesk;
 		GetWindowRect(GetDesktopWindow(), &rcDesk);
 		if (giRect.left <= rcDesk.left&& giRect.top <= rcDesk.top&& giRect.right >= rcDesk.right&& giRect.bottom >= rcDesk.bottom)
@@ -365,6 +388,27 @@ bool giam::GenshinImpact_AutoMap::thisIsIconic()
 	return thisIsIconicFlag;
 }
 
+bool giam::GenshinImpact_AutoMap::isNeedFindStar()
+{
+	Rect Roi(zerosMinMap.x - 150, zerosMinMap.y - 150, 300, 300);
+	Point tmpP;
+	bool res = false;
+	for (int i = 0; i < min(giFlag.max, giObjTable.num); i++)
+	{
+		for (int j = 0; j < giObjTable.obj[i].size(); j++)
+		{
+			tmpP = Point(giObjTable.obj[i].at(j).x, giObjTable.obj[i].at(j).y);
+			//目标点在小地图显示区域内
+			if (isContains(Roi, tmpP))
+			{
+				res = true;
+			}
+		}
+	}
+	
+	return res;
+}
+
 //设置HUD
 void giam::GenshinImpact_AutoMap::setHUD()
 {
@@ -488,7 +532,7 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 	//更新Flag为真
 	if (giFlag.isUpdata||giFlag.isGetMap||giFlag.isAutoMove)
 	{
-		for (int i = 0; i < min(giFlag.max, OBJ.num); i++)
+		for (int i = 0; i < min(giFlag.max, giObjTable.num); i++)
 		{
 			//显示Flag为真
 			if (giFlag.isShow[i])
@@ -496,10 +540,10 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 				dx = giTab.lisPoint[i].x;
 				dy = giTab.lisPoint[i].y;
 
-				for (int j = 0; j < OBJ.o[i].size(); j++)
+				for (int j = 0; j < giObjTable.obj[i].size(); j++)
 				{
 
-					p = Point(OBJ.o[i].at(j).x, OBJ.o[i].at(j).y);
+					p = Point(giObjTable.obj[i].at(j).x, giObjTable.obj[i].at(j).y);
 					//目标点在小地图显示区域内
 					if (isContains(minMapRect, p))
 					{
@@ -525,10 +569,10 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 			dx = giTab.lisPoint[i].x;
 			dy = giTab.lisPoint[i].y;
 
-			for (int j = 0; j < OBJ.at.size(i); j++)
+			for (int j = 0; j < giObjTable.at.size(i); j++)
 			{
 
-				p = Point(OBJ.at.objptr[i].at(j).x, OBJ.at.objptr[i].at(j).y);
+				p = Point(giObjTable.at.objptr[i].at(j).x, giObjTable.at.objptr[i].at(j).y);
 				//目标点在小地图显示区域内
 				if (isContains(minMapRect, p))
 				{
@@ -557,21 +601,44 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 void giam::GenshinImpact_AutoMap::customProcess()
 {
 	//如果窗口不处于最小化状态，对画面进行更新
-	if (!thisIsIconic())
+
+	//循环计数
+	_count++;
+	//自动检测
+	if (giIsPaimonVisibleFlag&&giFlag.isAutoMove)
 	{
-		_count++;
+		static Point tmp;
+		giMatch.test2();
+	}
 
+}
 
+void giam::GenshinImpact_AutoMap::mapTrack()
+{
+	static Point tmp;
+	if (giIsPaimonVisibleFlag&&giFlag.isAutoMove)
+	{
+		
+		/*极其耗时*/
+		/*需要分离*/
+		//thread matchMap(&giam::GenshinImpact_AutoMap::thread_MatchMap,this,ref(giMatch),ref(tMuMatch));
+		//giMatch.init();
+		/*非常耗时*/
+		/*应该分离*/
+		//giMatch.test();
 
-		if (giIsPaimonVisibleFlag&&giFlag.isAutoMove)
+		if (tMatchMap == nullptr)
 		{
-			static Point tmp;
+			tMatchMap = new thread(&giam::GenshinImpact_AutoMap::thread_MatchMap, this, ref(giMatch), ref(tMuMatch));
+		}
+		if (tIsEndMap == false)
+		{
+		}
+
+			//设置匹配图像当前小地图
 			giMatch.setObject(giFrameMap);
-			giMatch.init();
-
-			giMatch.test();
-			giMatch.test2();
-
+		if (giMatch.getIsCanGet())
+		{
 			zerosMinMap = giMatch.getLocation();
 			//cout << zerosMinMap << endl;
 			if (zerosMinMap != tmp)
@@ -580,6 +647,18 @@ void giam::GenshinImpact_AutoMap::customProcess()
 				giFlag.isGetMap = true;
 				giFlag.isUpHUD = true;
 			}
+		}
+	
+	}
+}
+
+void giam::GenshinImpact_AutoMap::mapStar()
+{
+	if (giMatch.getIsCanGet())
+	{
+		if (isNeedFindStar())
+		{
+			//zerosMinMap
 		}
 	}
 }
@@ -590,11 +669,10 @@ void giam::GenshinImpact_AutoMap::mapUpdata()
 	//更新用
 	static Mat tmpMap;
 
-	//更新原神窗口状态
-	giCheckWindows();
+
 
 	//如果窗口不处于最小化状态，对画面进行更新
-	if (!thisIsIconicFlag)
+	if (!thisIsIconic())
 	{
 		
 
@@ -604,12 +682,7 @@ void giam::GenshinImpact_AutoMap::mapUpdata()
 			getMinMap().copyTo(tmpMap);
 			giFlag.isGetMap = false;
 			giFlag.isUpHUD = true;
-
-
 		}
-
-
-
 		if (giFlag.isUpHUD)
 		{
 			//设置显示标记
@@ -725,6 +798,23 @@ void giam::GenshinImpact_AutoMap::mapShow()
 
 }
 
+void giam::GenshinImpact_AutoMap::thisCheckThread()
+{
+	static DWORD exitInitCode;
+	static DWORD exitMapCode;
+	static DWORD exitStarCode;
+	static DWORD exitTargetCode;
+	if (tMatchInit != nullptr)
+	{
+		GetExitCodeThread(tMatchInit->native_handle(), &exitInitCode);
+		if (exitInitCode == 0)
+		{
+			tMatchInit->join();
+			tIsEndInit = true;
+		}
+	}
+}
+
 //鼠标回调
 void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int flags, void * parm)
 {
@@ -758,7 +848,7 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 	}
 	case EVENT_LBUTTONUP: 
 	{
-		for (int i = 0; i < gi.OBJ.num; i++)
+		for (int i = 0; i < gi.giObjTable.num; i++)
 		{
 			Rect& r = gi.giTab.lisRect[i];
 
@@ -885,3 +975,36 @@ void giam::GenshinImpact_AutoMap::on_MouseHandle(int event, int x, int y, int fl
 		break;
 	}
 }
+
+void giam::GenshinImpact_AutoMap::thread_MatchInit(giAMM & match, mutex& mu)
+{
+	mu.lock();
+
+	match.init();
+
+	mu.unlock();
+}
+
+void giam::GenshinImpact_AutoMap::thread_MatchMap(giAMM & match, mutex& mu)
+{
+	mu.lock();
+
+	match.test();
+
+	mu.unlock();
+}
+
+void giam::GenshinImpact_AutoMap::thread_MatchStar(giAMM & match, mutex& mu)
+{
+	mu.lock();
+
+
+
+	mu.unlock();
+}
+
+void giam::GenshinImpact_AutoMap::thread_MatchTarget(giAMM & match, mutex& mu)
+{
+}
+
+//void giam::GenshinImpact_AutoMap::thread_Match(giAMM & match) {}

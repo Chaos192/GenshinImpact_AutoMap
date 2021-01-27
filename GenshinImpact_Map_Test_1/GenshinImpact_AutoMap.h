@@ -1,3 +1,5 @@
+#include <mutex> 
+#include <thread>
 #include <iostream>
 #include <Windows.h>
 #include <opencv2/opencv.hpp>
@@ -324,54 +326,26 @@ namespace giam
 
 		}giFlag;
 
-		struct Location2d
-		{
-			int x=0;
-			int y=0;
-			Location2d() :Location2d(0, 0) {}
-			Location2d(int _x, int _y) :x(_x), y(_y) {}
-		};
-
-		struct OBJECT
-		{
-			string name;
-			unsigned char klass=0;
-			int orderNum=0;
-			Location2d p;
-			OBJECT(){}
-			OBJECT(string _name, unsigned char _klass, int _orderNum, int _x, int _y) :OBJECT(_name, _klass, _orderNum, Location2d(_x, _y)) {}
-			OBJECT(string _name, unsigned char _klass, int _orderNum, Location2d _p) :name(_name), klass(_klass), orderNum(_orderNum), p(_p) {}
-		};
-		struct OBJECTS :OBJECT
-		{
-
-		};
-
-		struct FLAG_ICON_T_1
-		{
-
-		};
-
-		struct obj
+		struct ObjTable
 		{
 			int num = 0;
-			giAMO *o;
+			giAMO *obj;
 			giAMO at;
-			obj(int k)
+			ObjTable(int k)
 			{
 				num = k;
-				o = new giAMO[k];
-				o[0].initFST();
-				o[1].initYST();
-				o[2].initFHYS();
+				obj = new giAMO[k];
+				obj[0].initFST();
+				obj[1].initYST();
+				obj[2].initFHYS();
 
 				//at.initALL();
 			}
-			~obj()
+			~ObjTable()
 			{
-				delete[] o;
+				delete[] obj;
 			}
-		}OBJ=obj(3);
+		}giObjTable=ObjTable(3);
 
 		//完整地图源备份
 		//Mat mapMatSource = imread("Map.png", IMREAD_UNCHANGED);
@@ -416,6 +390,19 @@ namespace giam
 		Size giSize;
 
 		giAML giConfig;
+
+		//多线程相关
+		mutex tMuMatch;
+
+		bool tIsEndInit = false;
+		bool tIsEndMap = false;
+		bool tIsEndStar = false;
+		bool tIsEndTarget = false;
+
+		thread * tMatchInit = nullptr;
+		thread * tMatchMap = nullptr;
+		thread * tMatchStar = nullptr;
+		thread * tMatchTarget = nullptr;
 
 	public:
 		//框架类函数
@@ -466,7 +453,7 @@ namespace giam
 		
 		bool thisIsIconic();
 		
-
+		bool isNeedFindStar();
 
 		//设置HUD
 		void setHUD();
@@ -480,13 +467,26 @@ namespace giam
 		//测试用
 		void customProcess();
 
+		//地图跟踪
+		void mapTrack();
+
+		void mapStar();
+
 		//地图数据状态更新
 		void mapUpdata();
 		//地图显示刷新
 		void mapShow();
 
+		//多线程
+		void thisCheckThread();
+
 		//鼠标回调
 		static void on_MouseHandle(int event, int x, int y, int flags, void *parm);
+		//多线程
+		 void thread_MatchInit(giAMM& match, mutex& mu);
+		 void thread_MatchMap(giAMM& match, mutex& mu);
+		 void thread_MatchStar(giAMM& match, mutex& mu);
+		 void thread_MatchTarget(giAMM& match, mutex& mu);
 	};
 
 	typedef GenshinImpact_AutoMap giAM;

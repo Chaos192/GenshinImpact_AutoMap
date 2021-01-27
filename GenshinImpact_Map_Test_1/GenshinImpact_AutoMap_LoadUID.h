@@ -16,6 +16,7 @@ public:
 
 public:
 	GenshinImpact_AutoMap_LoadUID(unsigned int _UID);
+	GenshinImpact_AutoMap_LoadUID(char *_name);
 
 public:
 	int getUID();

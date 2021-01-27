@@ -3,7 +3,7 @@
 GenshinImpact_AutoMap_LoadUID::GenshinImpact_AutoMap_LoadUID()
 {
 	getAppConfigPath();
-	appTempPath=string(appConfigPath);
+	appTempPath = string(appConfigPath);
 
 	appTempPath.append(giIndex);
 	strcat_s(appConfigPath, giIndex.c_str());
@@ -15,7 +15,7 @@ GenshinImpact_AutoMap_LoadUID::GenshinImpact_AutoMap_LoadUID()
 	{
 		_mkdir(appConfigPath);
 	}
-	uidFile=string(appTempPath);
+	uidFile = string(appTempPath);
 	uidFile.append(getUIDFileName());
 
 	if (_access(uidFile.c_str(), 0) == -1)
@@ -57,17 +57,99 @@ GenshinImpact_AutoMap_LoadUID::GenshinImpact_AutoMap_LoadUID(unsigned int _UID)
 {
 	setUID(_UID);
 
-	CHAR my_documents[MAX_PATH];
-	HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
+	getAppConfigPath();
+	appTempPath = string(appConfigPath);
 
-	char tempPath[_MAX_PATH + 1] = { '\0' };
+	appTempPath.append(giIndex);
+	strcat_s(appConfigPath, giIndex.c_str());
 
-	GetTempPath(_MAX_PATH, tempPath);
+	cout << appConfigPath << endl;
+	cout << appTempPath.c_str() << endl;
 
-	if (result != S_OK)
-		std::cout << "Error: " << result << "\n";
+	if (_access(appConfigPath, 0) == -1)
+	{
+		_mkdir(appConfigPath);
+	}
+	uidFile = string(appTempPath);
+	uidFile.append(getUIDFileName());
+
+	if (_access(uidFile.c_str(), 0) == -1)
+	{
+		//File not Found
+		if (fopen_s(&fp, uidFile.c_str(), "w+") == 0)
+		{
+			saveFileHeader();
+			saveData();
+		}
+		else
+		{
+			throw"file Open Faile";
+		}
+		fclose(fp);
+	}
 	else
-		std::cout << "Path: " << my_documents << "\n";
+	{
+		fopen_s(&fp, uidFile.c_str(), "r+");
+		if (loadFileHeader())
+		{
+			loadData();
+		}
+		else
+		{
+			saveFileHeader();
+			saveData();
+		}
+		fclose(fp);
+	}
+}
+
+GenshinImpact_AutoMap_LoadUID::GenshinImpact_AutoMap_LoadUID(char * _name)
+{
+	getAppConfigPath();
+	appTempPath = string(appConfigPath);
+
+	appTempPath.append(giIndex);
+	strcat_s(appConfigPath, giIndex.c_str());
+
+	cout << appConfigPath << endl;
+	cout << appTempPath.c_str() << endl;
+
+	if (_access(appConfigPath, 0) == -1)
+	{
+		_mkdir(appConfigPath);
+	}
+	uidFile = string(appTempPath);
+	uidFile.append(_name);
+	uidFile.append(".ini");
+
+	if (_access(uidFile.c_str(), 0) == -1)
+	{
+		//File not Found
+		if (fopen_s(&fp, uidFile.c_str(), "w+") == 0)
+		{
+			saveFileHeader();
+			saveData();
+		}
+		else
+		{
+			throw"file Open Faile";
+		}
+		fclose(fp);
+	}
+	else
+	{
+		fopen_s(&fp, uidFile.c_str(), "r+");
+		if (loadFileHeader())
+		{
+			loadData();
+		}
+		else
+		{
+			saveFileHeader();
+			saveData();
+		}
+		fclose(fp);
+	}
 }
 
 int GenshinImpact_AutoMap_LoadUID::getUID()

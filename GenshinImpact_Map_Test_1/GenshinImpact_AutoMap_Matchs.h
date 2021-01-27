@@ -38,6 +38,8 @@ public:
 
 	void setCout(bool _isCout);
 
+	bool getIsCanGet();
+
 private:
 	bool isInit = false;
 	bool isCout = false;
@@ -48,6 +50,7 @@ private:
 	//0:SURF
 	int mode = 0;
 	Point p;
+	bool isCanGet = false;
 	double t = 0;
 	//int minHessian = 200;
 	//float ratio_thresh = 0.7f;
