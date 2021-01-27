@@ -191,7 +191,10 @@ namespace giam
 			HBITMAP aa;// = (HBITMAP)LoadImage(GetModuleHandle(0), MAKEINTRESOURCE(IDB_BITMAP4), IDB_BITMAP4, 0, 0, LR_LOADFROMFILE);//LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_PNG1));;
 			BITMAP bb;
 																																  //string pngA = "f_t_c_1_1.png";
-			Mat png;
+			Mat star = imread("./Res/ST.png", IMREAD_UNCHANGED);
+			Mat starMask = imread("./Res/ST_mask.bmp", IMREAD_UNCHANGED);
+			//Mat starRect =
+			Point starPoint = Point(star.cols / 2, star.rows / 2);
 			Mat pngA = imread("./Res/FST.png", IMREAD_UNCHANGED);
 			Mat pngAMask = imread("./Res/FST_mask.bmp", IMREAD_UNCHANGED);
 			Mat pngB = imread("./Res/YST.png", IMREAD_UNCHANGED);
@@ -238,7 +241,7 @@ namespace giam
 			TAB(HWND handle)
 			{
 				//HBITMAP hBitmap = (HBITMAP)LoadImage(GetModuleHandle(0),m_SPath + _T("top_btn.bmp"),IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-				png=HBitmap2Mat(aa);
+				//png=HBitmap2Mat(aa);
 				//HBitmap2Mat(aa, png);
 			}
 			BITMAP HBitmap2Bitmap(HBITMAP hBitmap)
@@ -392,6 +395,8 @@ namespace giam
 
 		giAML giConfig;
 
+		Point mapMatchStar;
+
 		//多线程相关
 		mutex tMuMatch;
 
@@ -423,7 +428,7 @@ namespace giam
 		bool isEqual(RECT &r1, RECT &r2);
 		bool isContains(RECT &r, Point &p);
 		bool isContains(Rect &r, Point &p);
-		int dis2(Point& p);
+		int dis2(Point p);
 		int dis2(int x, int y);
 	private:
 		//类内实现函数
@@ -460,6 +465,8 @@ namespace giam
 		bool isNeedFindStar(int& id, Point &p);
 
 		bool isNeedFindStar(vector<int>& id, vector<Point> &lisP);
+
+		bool isNeedFindStar(vector<int>& lisTpye, vector<int>& lisId, vector<Point> &lisP);
 
 		//设置HUD
 		void setHUD();

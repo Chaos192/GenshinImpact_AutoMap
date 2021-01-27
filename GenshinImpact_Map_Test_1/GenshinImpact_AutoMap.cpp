@@ -180,7 +180,7 @@ bool giam::GenshinImpact_AutoMap::isContains(Rect & r, Point & p)
 	return false;
 }
 
-int giam::GenshinImpact_AutoMap::dis2(Point & p)
+int giam::GenshinImpact_AutoMap::dis2(Point p)
 {
 	return dis2(p.x,p.y);
 }
@@ -465,6 +465,33 @@ bool giam::GenshinImpact_AutoMap::isNeedFindStar(vector<int>& lisId, vector<Poin
 	}
 	return res;
 }
+
+bool giam::GenshinImpact_AutoMap::isNeedFindStar(vector<int>& lisType,vector<int>& lisId, vector<Point> &lisP)
+{
+	lisType.clear();
+	lisId.clear();
+	lisP.clear();
+	Rect Roi(zerosMinMap.x - 70, zerosMinMap.y - 70, 140, 140);
+	Point tmpP;
+	bool res = false;
+	for (int i = 0; i < 2; i++)
+	{
+		for (int j = 0; j < giObjTable.obj[i].size(); j++)
+		{
+			tmpP = Point(giObjTable.obj[i].at(j).x, giObjTable.obj[i].at(j).y);
+			//目标点在小地图显示区域内
+			if (isContains(Roi, tmpP))
+			{
+				lisType.push_back(i);
+				lisId.push_back(j);
+				lisP.push_back(tmpP);
+				res = true;
+			}
+		}
+	}
+	return res;
+}
+
 //设置HUD
 void giam::GenshinImpact_AutoMap::setHUD()
 {
@@ -630,6 +657,52 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 
 				}
 			}
+			else
+			{
+				;
+			}
+		}
+		//显示匹配出的star
+		p = mapMatchStar;
+		if (isContains(minMapRect, p))
+		{
+			x = (int)((p.x - minMapRect.x) / giMEF.scale) - giTab.starPoint.x;
+			y = (int)((p.y - minMapRect.y) / giMEF.scale) - giTab.starPoint.y;
+
+			//该x，y周围要有足够的空间来填充图标
+			if (x > 0 && y > 0 && x + giTab.star.cols < autoMapSize.width&&y + giTab.star.rows < autoMapSize.height)
+			{
+				r = img(Rect(x, y, giTab.star.cols, giTab.star.rows));
+				giTab.star.copyTo(r, giTab.starMask);
+			}
+
+		}
+		//显示列表里已发现的
+		for (int i = 0; i < min(giFlag.max, giObjTable.num); i++)
+		{
+				dx = giTab.lisPoint[i].x;
+				dy = giTab.lisPoint[i].y;
+
+				for (int j = 0; j < giObjTable.obj[i].size(); j++)
+				{
+					if (giConfig.data[j][i] == 1)
+					{
+						p = Point(giObjTable.obj[i].at(j).x, giObjTable.obj[i].at(j).y);
+						//目标点在小地图显示区域内
+						if (isContains(minMapRect, p))
+						{
+							x = (int)((p.x - minMapRect.x) / giMEF.scale) - dx;
+							y = (int)((p.y - minMapRect.y) / giMEF.scale) - dy;
+
+							//该x，y周围要有足够的空间来填充图标
+							if (x > 0 && y > 0 && x + giTab.lis[i].cols < autoMapSize.width&&y + giTab.lis[i].rows < autoMapSize.height)
+							{
+								r = img(Rect(x, y, giTab.lis[i].cols, giTab.lis[i].rows));
+								giTab.lis[i].copyTo(r, giTab.lisMask[i]);
+							}
+					}
+				}
+			}
 		}
 		//批量添加物品的显示
 		/*
@@ -677,6 +750,7 @@ void giam::GenshinImpact_AutoMap::customProcess()
 
 }
 
+//匹配指定目标
 void giam::GenshinImpact_AutoMap::mapTrack()
 {
 	static Point tmp;
@@ -720,24 +794,30 @@ void giam::GenshinImpact_AutoMap::mapTrack()
 	}
 }
 
+//匹配风、岩神瞳
 void giam::GenshinImpact_AutoMap::mapStar()
 {
 	static vector<Point> p;
 	static Point findP;
+	static vector<int> type;
 	static vector<int> id;
 	static DWORD exitStarCode;
 	static const Point Compensation_factor(16,48);
+	static int minVal = 0;
+	static int matchId = 0;
 	Rect tmp;
 	if (tIsEndInit == false)return;
-	if (isNeedFindStar(id,p))
+	//根据当前位置，获取周围大地图140px范围内所有star，如果没有则false
+	if (isNeedFindStar(type,id, p) || tMatchStar != nullptr)
 	{
+		
 		if (tMatchStar == nullptr)
 		{
 			//设置匹配图像当前小地图
 			giMatch.setObject(giFrameMap);
 			tMatchStar = new thread(&giam::GenshinImpact_AutoMap::thread_MatchStar, this, ref(giMatch), ref(tMuMatch));
 		}
-		if (tIsEndStar == false)
+		if (tMatchStar != nullptr)
 		{
 			GetExitCodeThread(tMatchStar->native_handle(), &exitStarCode);
 			if (exitStarCode == 0)
@@ -748,38 +828,47 @@ void giam::GenshinImpact_AutoMap::mapStar()
 				tIsEndStar = true;
 			}
 		}
-		if (tIsEndStar)
+		if (tIsEndStar&&id.size()>0)
 		{
-			//未检测到star
+			//进程检测到star，未检测到则为false
 			if (giMatch.getIsFindStar())
 			{
-				Mat show, roi;
-				//giFrameMap.copyTo(show);
-				cvtColor(giFrameMap, show, CV_GRAY2BGR);
-				autoMapMat.copyTo(roi);
-				//giFrameMap(Rect(36, 36, giFrameMap.cols - 72, giFrameMap.rows - 72)).copyTo(show);
-
+				//获得star位置，相对小地图中心
 				findP = giMatch.getFindStar();
+				//位置映射至大地图，根据已知当前位置，将会包含当前位置所带有的误差
 				Point tmpP = findP * 2 + zerosMinMap;
-				cout << id.size() << endl;
-				rectangle(show, Rect(findP.x + giFrameMap.cols/2, findP.y + giFrameMap.rows/2, 22, 22), Scalar(0, 255, 0), 1);
-				rectangle(roi, Rect(findP.x * 2 + 125-11, findP.y * 2 + 100-11, 22, 22), Scalar(0, 255, 0), 1);
 
-				for (int i = 0; i < id.size(); i++)
+				minVal = dis2(tmpP - p.at(0));
+				matchId = 0;
+				for (int i = 1; i < id.size(); i++)
 				{
-					int x = tmpP.x - p.at(i).x;
-					int y = tmpP.y - p.at(i).y;
-					int dx = 0;
-					int dy = 0;
-					tmp = Rect((p.at(i) - zerosMinMap).x + 125-11, (p.at(i) - zerosMinMap).y + 100-11, 22, 22);
-					cout << id.at(i) << ":" << "|" << x << "," << y <<"|"<< dis2(x,y)<< endl;
-					rectangle(roi, tmp, Scalar(255, 120, 0),2);
-					putText(roi, to_string(id.at(i)), Point(tmp.x,tmp.y), FONT_HERSHEY_COMPLEX_SMALL, 1, Scalar(255, 250, 0), 1);
+					if (dis2(tmpP - p.at(i)) < minVal)
+					{
+						minVal = dis2(tmpP - p.at(i));
+						matchId = i;
+					}
 				}
-				namedWindow("View1", 256);
-				imshow("View1", roi);
-				namedWindow("View2", 256);
-				imshow("View2", show);
+				if (minVal > 1000)cout << minVal << endl;
+				mapMatchStar = tmpP;
+				switch (giConfig.data[id.at(matchId)][type.at(matchId)])
+				{
+					case 0:
+					{
+						giConfig.data[id.at(matchId)][type.at(matchId)] = 1;//已发现
+						break;
+					}
+					case 1:
+					{
+						break;
+					}
+					default:
+						break;
+				}
+			}
+			else
+			{
+				//判断周围是否应该存在star
+				
 			}
 			tIsEndStar = false;
 		}
@@ -925,6 +1014,7 @@ void giam::GenshinImpact_AutoMap::mapShow()
 
 }
 
+//检查匹配初始化线程是否结束
 void giam::GenshinImpact_AutoMap::thisCheckThread()
 {
 	static DWORD exitInitCode;
