@@ -222,7 +222,7 @@ int GenshinImpact_AutoMap_LoadUID::loadFileHeader()
 
 int GenshinImpact_AutoMap_LoadUID::loadData()
 {
-	for (int i = 0; i < 100;i++)
+	for (int i = 0; i < 200;i++)
 	{
 		for (int j = 0; j < 10; j++)
 		{
@@ -240,7 +240,7 @@ int GenshinImpact_AutoMap_LoadUID::saveFileHeader()
 
 int GenshinImpact_AutoMap_LoadUID::saveData()
 {
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 200; i++)
 	{
 		for (int j = 0; j < 10; j++)
 		{

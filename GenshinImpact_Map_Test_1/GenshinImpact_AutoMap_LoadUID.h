@@ -24,7 +24,7 @@ public:
 	void getAppConfigPath();
 	//char* getAppConfigPath();
 
-	int data[100][10] = { 0 };
+	int data[200][10] = { 0 };
 	void save();
 	void load();
 private:

@@ -69,9 +69,9 @@ bool giam::GenshinImpact_AutoMap::run()
 			//前后端分离
 			//前端显示
 			//后端追踪
-			//mapTrack();
+			mapTrack();
 
-			//mapStar();
+			mapStar();
 
 			customProcess();
 
@@ -178,6 +178,16 @@ bool giam::GenshinImpact_AutoMap::isContains(Rect & r, Point & p)
 		return true;
 	}
 	return false;
+}
+
+int giam::GenshinImpact_AutoMap::dis2(Point & p)
+{
+	return dis2(p.x,p.y);
+}
+
+int giam::GenshinImpact_AutoMap::dis2(int x, int y)
+{
+	return x * x + y * y;
 }
 
 //原神是否运行
@@ -405,10 +415,56 @@ bool giam::GenshinImpact_AutoMap::isNeedFindStar()
 			}
 		}
 	}
-	
+
 	return res;
 }
 
+bool giam::GenshinImpact_AutoMap::isNeedFindStar(int& id, Point &p)
+{
+	Rect Roi(zerosMinMap.x - 150, zerosMinMap.y - 150, 300, 300);
+	Point tmpP;
+	bool res = false;
+	for (int i = 0; i < 2; i++)
+	{
+		for (int j = 0; j < giObjTable.obj[i].size(); j++)
+		{
+			tmpP = Point(giObjTable.obj[i].at(j).x, giObjTable.obj[i].at(j).y);
+			//目标点在小地图显示区域内
+			if (isContains(Roi, tmpP))
+			{
+				id = j;
+				p = tmpP;
+				res = true;
+			}
+		}
+	}
+
+	return res;
+}
+
+bool giam::GenshinImpact_AutoMap::isNeedFindStar(vector<int>& lisId, vector<Point> &lisP)
+{
+	lisId.clear();
+	lisP.clear();
+	Rect Roi(zerosMinMap.x - 70, zerosMinMap.y - 70, 140, 140);
+	Point tmpP;
+	bool res = false;
+	for (int i = 0; i < 2; i++)
+	{
+		for (int j = 0; j < giObjTable.obj[i].size(); j++)
+		{
+			tmpP = Point(giObjTable.obj[i].at(j).x, giObjTable.obj[i].at(j).y);
+			//目标点在小地图显示区域内
+			if (isContains(Roi, tmpP))
+			{
+				lisId.push_back(j);
+				lisP.push_back(tmpP);
+				res = true;
+			}
+		}
+	}
+	return res;
+}
 //设置HUD
 void giam::GenshinImpact_AutoMap::setHUD()
 {
@@ -423,6 +479,7 @@ void giam::GenshinImpact_AutoMap::setHUD()
 		giHUD.runState = "Genshin Impact Not Run";
 		giHUD.runTextColor = Scalar(0, 0, 255);
 	}
+
 	if (giIsDisplayFlag)
 	{
 		giHUD.displayFlagColor = Scalar(0, 255, 0);
@@ -431,6 +488,7 @@ void giam::GenshinImpact_AutoMap::setHUD()
 	{
 		giHUD.displayFlagColor = Scalar(0, 0, 255);
 	}
+
 	if (giIsPaimonVisibleFlag)
 	{
 		giHUD.paimonFlagColor = Scalar(0, 255, 0);
@@ -439,6 +497,7 @@ void giam::GenshinImpact_AutoMap::setHUD()
 	{
 		giHUD.paimonFlagColor = Scalar(128, 128, 128);
 	}
+
 	if (giFlag.isAutoMove)
 	{
 		giHUD.autoMoveFlagColor = Scalar(0, 255, 0);
@@ -446,6 +505,15 @@ void giam::GenshinImpact_AutoMap::setHUD()
 	else
 	{
 		giHUD.autoMoveFlagColor = Scalar(128, 128, 128);
+	}
+
+	if (tIsEndInit)
+	{
+		giHUD.isEndMatchInit = Scalar(0, 255, 0);
+	}
+	else
+	{
+		giHUD.isEndMatchInit = Scalar(128, 128, 128);
 	}
 }
 
@@ -505,10 +573,11 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 	//圆点显示原神状态
 	cv::circle(img, Point(6, 10), 4, giHUD.paimonFlagColor, -1);
 	cv::circle(img, Point(16, 10), 4, giHUD.autoMoveFlagColor, -1);
+	cv::circle(img, Point(26, 10), 4, giHUD.isEndMatchInit, -1);
 
 	//putText(img, giHUD.runState, Point(24, 12), FONT_HERSHEY_COMPLEX_SMALL, 0.4, giHUD.runTextColor, 1);
 
-	//putText(img, to_string((int)(1.0/FRL.runningTime)), Point(10, 40), FONT_HERSHEY_COMPLEX_SMALL, 1, giHUD.runTextColor, 1);
+	putText(img, to_string((int)(1.0/FRL.runningTime)), Point(80, 18), FONT_HERSHEY_COMPLEX_SMALL, 1, giHUD.runTextColor, 1);
 
 }
 
@@ -604,62 +673,120 @@ void giam::GenshinImpact_AutoMap::customProcess()
 
 	//循环计数
 	_count++;
-	//自动检测
-	if (giIsPaimonVisibleFlag&&giFlag.isAutoMove)
-	{
-		static Point tmp;
-		giMatch.test2();
-	}
+	
 
 }
 
 void giam::GenshinImpact_AutoMap::mapTrack()
 {
 	static Point tmp;
+	static DWORD exitMapCode;
+	if (tIsEndInit == false)return;
 	if (giIsPaimonVisibleFlag&&giFlag.isAutoMove)
 	{
-		
-		/*极其耗时*/
-		/*需要分离*/
-		//thread matchMap(&giam::GenshinImpact_AutoMap::thread_MatchMap,this,ref(giMatch),ref(tMuMatch));
-		//giMatch.init();
-		/*非常耗时*/
-		/*应该分离*/
-		//giMatch.test();
-
 		if (tMatchMap == nullptr)
 		{
+			//设置匹配图像当前小地图
+			giMatch.setObject(giFrameMap);
+
 			tMatchMap = new thread(&giam::GenshinImpact_AutoMap::thread_MatchMap, this, ref(giMatch), ref(tMuMatch));
 		}
 		if (tIsEndMap == false)
 		{
+				GetExitCodeThread(tMatchMap->native_handle(), &exitMapCode);
+				if (exitMapCode == 0)
+				{
+					tMatchMap->join();
+					delete tMatchMap;
+					tMatchMap = nullptr;
+					tIsEndMap = true;
+				}
 		}
-
-			//设置匹配图像当前小地图
-			giMatch.setObject(giFrameMap);
-		if (giMatch.getIsCanGet())
+		if (tIsEndMap)
 		{
-			zerosMinMap = giMatch.getLocation();
-			//cout << zerosMinMap << endl;
-			if (zerosMinMap != tmp)
+			if (giMatch.getIsCanGet())
 			{
-				tmp = zerosMinMap;
-				giFlag.isGetMap = true;
-				giFlag.isUpHUD = true;
+				zerosMinMap = giMatch.getLocation();
+				//cout << zerosMinMap << endl;
+				if (zerosMinMap != tmp)
+				{
+					tmp = zerosMinMap;
+					giFlag.isGetMap = true;
+					giFlag.isUpHUD = true;
+				}
 			}
+			tIsEndMap = false;
 		}
-	
 	}
 }
 
 void giam::GenshinImpact_AutoMap::mapStar()
 {
-	if (giMatch.getIsCanGet())
+	static vector<Point> p;
+	static Point findP;
+	static vector<int> id;
+	static DWORD exitStarCode;
+	static const Point Compensation_factor(16,48);
+	Rect tmp;
+	if (tIsEndInit == false)return;
+	if (isNeedFindStar(id,p))
 	{
-		if (isNeedFindStar())
+		if (tMatchStar == nullptr)
 		{
-			//zerosMinMap
+			//设置匹配图像当前小地图
+			giMatch.setObject(giFrameMap);
+			tMatchStar = new thread(&giam::GenshinImpact_AutoMap::thread_MatchStar, this, ref(giMatch), ref(tMuMatch));
 		}
+		if (tIsEndStar == false)
+		{
+			GetExitCodeThread(tMatchStar->native_handle(), &exitStarCode);
+			if (exitStarCode == 0)
+			{
+				tMatchStar->join();
+				delete tMatchStar;
+				tMatchStar = nullptr;
+				tIsEndStar = true;
+			}
+		}
+		if (tIsEndStar)
+		{
+			//未检测到star
+			if (giMatch.getIsFindStar())
+			{
+				Mat show, roi;
+				//giFrameMap.copyTo(show);
+				cvtColor(giFrameMap, show, CV_GRAY2BGR);
+				autoMapMat.copyTo(roi);
+				//giFrameMap(Rect(36, 36, giFrameMap.cols - 72, giFrameMap.rows - 72)).copyTo(show);
+
+				findP = giMatch.getFindStar();
+				Point tmpP = findP * 2 + zerosMinMap;
+				cout << id.size() << endl;
+				rectangle(show, Rect(findP.x + giFrameMap.cols/2, findP.y + giFrameMap.rows/2, 22, 22), Scalar(0, 255, 0), 1);
+				rectangle(roi, Rect(findP.x * 2 + 125-11, findP.y * 2 + 100-11, 22, 22), Scalar(0, 255, 0), 1);
+
+				for (int i = 0; i < id.size(); i++)
+				{
+					int x = tmpP.x - p.at(i).x;
+					int y = tmpP.y - p.at(i).y;
+					int dx = 0;
+					int dy = 0;
+					tmp = Rect((p.at(i) - zerosMinMap).x + 125-11, (p.at(i) - zerosMinMap).y + 100-11, 22, 22);
+					cout << id.at(i) << ":" << "|" << x << "," << y <<"|"<< dis2(x,y)<< endl;
+					rectangle(roi, tmp, Scalar(255, 120, 0),2);
+					putText(roi, to_string(id.at(i)), Point(tmp.x,tmp.y), FONT_HERSHEY_COMPLEX_SMALL, 1, Scalar(255, 250, 0), 1);
+				}
+				namedWindow("View1", 256);
+				imshow("View1", roi);
+				namedWindow("View2", 256);
+				imshow("View2", show);
+			}
+			tIsEndStar = false;
+		}
+
+		//cout << id << ":" <<"|"<< p.x << "," << p.y <<"||"<< zerosMinMap.x <<","<< zerosMinMap.y << "|" << endl;
+
+		//zerosMinMap
 	}
 }
 
@@ -675,7 +802,7 @@ void giam::GenshinImpact_AutoMap::mapUpdata()
 	if (!thisIsIconic())
 	{
 		
-
+		giFlag.isGetMap = true;
 		//截取地图
 		if (giFlag.isGetMap || giFlag.isUpHUD)
 		{
@@ -801,17 +928,20 @@ void giam::GenshinImpact_AutoMap::mapShow()
 void giam::GenshinImpact_AutoMap::thisCheckThread()
 {
 	static DWORD exitInitCode;
-	static DWORD exitMapCode;
-	static DWORD exitStarCode;
-	static DWORD exitTargetCode;
+	//static DWORD exitMapCode;
+	//static DWORD exitStarCode;
+	//static DWORD exitTargetCode;
 	if (tMatchInit != nullptr)
 	{
 		GetExitCodeThread(tMatchInit->native_handle(), &exitInitCode);
 		if (exitInitCode == 0)
 		{
 			tMatchInit->join();
+			delete tMatchInit;
+			tMatchInit = nullptr;
 			tIsEndInit = true;
 		}
+		
 	}
 }
 
@@ -998,7 +1128,7 @@ void giam::GenshinImpact_AutoMap::thread_MatchStar(giAMM & match, mutex& mu)
 {
 	mu.lock();
 
-
+	match.test2();
 
 	mu.unlock();
 }

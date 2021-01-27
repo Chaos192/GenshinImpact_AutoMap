@@ -39,12 +39,17 @@ public:
 	void setCout(bool _isCout);
 
 	bool getIsCanGet();
-
+	bool getIsFindStar();
+	Point getFindStar();
 private:
 	bool isInit = false;
 	bool isCout = false;
 	bool isObjectExist = false;
 	bool isTargetExist = false;
+
+	bool isFindStar = false;
+	Point isStarPoint;
+
 	Mat object;
 	Mat target;
 	//0:SURF

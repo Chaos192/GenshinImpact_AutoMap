@@ -146,11 +146,9 @@ void GenshinImpact_AutoMap_Matchs::test2()
 {
 	//isCanGet = false;
 	Mat img_scene = object(Rect(36,36, object.cols-72,object.rows-72)); //minMap
-	static Mat img_object = imread("./Res/ST.bmp", IMREAD_UNCHANGED); //Star
 	static Mat img_object_mask = imread("./Res/ST_mask.bmp", IMREAD_UNCHANGED); //Star
 	static Mat tmp;
-	//cvtColor(img_object_mask, img_object_mask,CV_Gray)
-	//threshold(img_object_mask, img_object_mask, 245, 255, THRESH_BINARY);
+
 	/*
 	TM_SQDIFF
 	TM_SQDIFF_NORMED
@@ -185,23 +183,21 @@ void GenshinImpact_AutoMap_Matchs::test2()
 	cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
 	//cout << "Star:"<<maxLoc.x << "," << maxLoc.y << endl;
 	//cout <<"Star:"<< minVal << "," << maxVal << endl;
-	Mat show,roi;
-	img_scene.copyTo(show);
+
 	if (maxVal > 0.75)
 	{
-		rectangle(show, Rect(maxLoc.x, maxLoc.y, 22, 22), Scalar(255, 120, 0), 2);
-
+		isStarPoint = maxLoc+Point(11,11)-Point(img_scene.size()/2);
+		isFindStar = true;
+	}
+	else
+	{
+		isFindStar = false;
 	}
 	//rectangle(show, Rect(maxLoc.x, maxLoc.y, 22, 22), Scalar(255, 120, 0),2);
 	//rectangle(show, Rect(minLoc.x, minLoc.y,22,22), Scalar(120, 0, 120));
 
-	//roi=show(Rect(maxLoc, Point(22, 22)));
-	//img_object.copyTo(roi);
-	//namedWindow("MatchTemplate", 256);
-	//namedWindow("View", 256);
-	//imshow("MatchTemplate", tmp);
-	//imshow("View",show);
-	//testORB();
+
+
 }
 
 void GenshinImpact_AutoMap_Matchs::testORB()
@@ -300,6 +296,16 @@ void GenshinImpact_AutoMap_Matchs::setCout(bool _isCout)
 bool GenshinImpact_AutoMap_Matchs::getIsCanGet()
 {
 	return isCanGet;
+}
+
+bool GenshinImpact_AutoMap_Matchs::getIsFindStar()
+{
+	return isFindStar;
+}
+
+Point GenshinImpact_AutoMap_Matchs::getFindStar()
+{
+	return isStarPoint;
 }
 
 void GenshinImpact_AutoMap_Matchs::getObjectKeyPoints()

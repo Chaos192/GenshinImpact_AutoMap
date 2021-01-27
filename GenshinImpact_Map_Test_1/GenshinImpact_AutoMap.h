@@ -162,6 +162,7 @@ namespace giam
 			Scalar minStarColor = Scalar(255, 255, 0);
 			Scalar paimonFlagColor = Scalar(255, 255, 0);
 			Scalar autoMoveFlagColor = Scalar(255, 255, 0);
+			Scalar isEndMatchInit = Scalar(255, 255, 0);
 
 		}giHUD;
 
@@ -201,8 +202,8 @@ namespace giam
 			Mat sysIcon1Mask = imread("./Res/sysIcon_1_mask.bmp", IMREAD_UNCHANGED);
 
 			Rect pngARect = Rect(30, 0, pngA.cols, pngA.rows);
-			Rect pngBRect = Rect(44, 0, pngB.cols, pngB.rows);
-			Rect pngCRect = Rect(68, 0, pngC.cols, pngC.rows);
+			Rect pngBRect = Rect(52, 0, pngB.cols, pngB.rows);
+			Rect pngCRect = Rect(72, 0, pngC.cols, pngC.rows);
 
 			Mat *lis = new Mat[3];
 			Mat *lisMask = new Mat[3];
@@ -422,7 +423,8 @@ namespace giam
 		bool isEqual(RECT &r1, RECT &r2);
 		bool isContains(RECT &r, Point &p);
 		bool isContains(Rect &r, Point &p);
-
+		int dis2(Point& p);
+		int dis2(int x, int y);
 	private:
 		//类内实现函数
 
@@ -454,6 +456,10 @@ namespace giam
 		bool thisIsIconic();
 		
 		bool isNeedFindStar();
+
+		bool isNeedFindStar(int& id, Point &p);
+
+		bool isNeedFindStar(vector<int>& id, vector<Point> &lisP);
 
 		//设置HUD
 		void setHUD();
