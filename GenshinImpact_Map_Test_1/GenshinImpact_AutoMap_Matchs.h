@@ -42,11 +42,16 @@ public:
 	bool getIsCanGet();
 	bool getIsFindStar();
 	Point getFindStar();
+
+	bool isFinishMatchTarget = false;
+
+	//bool getIsFinishMatchTarget();
 private:
 	bool isInit = false;
 	bool isCout = false;
 	bool isObjectExist = false;
 	bool isTargetExist = false;
+
 
 	bool isFindStar = false;
 	Point isStarPoint;

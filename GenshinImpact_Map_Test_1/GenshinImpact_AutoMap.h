@@ -482,7 +482,9 @@ namespace giam
 		void customProcess();
 
 		//µØÍ¼¸ú×Ù
-		void mapTrack();
+		void mapTarget();
+
+		void mapMatchMap();
 
 		void mapStar();
 

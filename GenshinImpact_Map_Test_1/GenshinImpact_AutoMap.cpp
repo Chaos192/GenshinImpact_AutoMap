@@ -71,9 +71,15 @@ bool giam::GenshinImpact_AutoMap::run()
 			//前端显示
 			//后端追踪
 
-			
-			mapTrack();
+			//匹配可传送目标
+			//mapTarget();
+			giMatch.setObject(giFrameMap);
+			giMatch.test3();
 
+			//匹配当前所在位置
+			mapMatchMap();
+
+			//匹配标志物品
 			mapStar();
 
 			customProcess();
@@ -754,7 +760,29 @@ void giam::GenshinImpact_AutoMap::customProcess()
 }
 
 //匹配指定目标
-void giam::GenshinImpact_AutoMap::mapTrack()
+void giam::GenshinImpact_AutoMap::mapTarget()
+{
+	static DWORD exitTargetCode;
+	if (tMatchTarget == nullptr)
+	{
+		//设置匹配图像当前小地图
+		giMatch.setObject(giFrameMap);
+		tMatchTarget = new thread(&giam::GenshinImpact_AutoMap::thread_MatchTarget, this, ref(giMatch), ref(tMuMatch));
+	}
+	if (tMatchTarget != nullptr)
+	{
+		GetExitCodeThread(tMatchTarget->native_handle(), &exitTargetCode);
+		if (exitTargetCode == 0)
+		{
+			tMatchTarget->join();
+			delete tMatchTarget;
+			tMatchTarget = nullptr;
+			tIsEndTarget = true;
+		}
+	}
+}
+
+void giam::GenshinImpact_AutoMap::mapMatchMap()
 {
 	static Point tmp;
 	static DWORD exitMapCode;
@@ -765,7 +793,7 @@ void giam::GenshinImpact_AutoMap::mapTrack()
 		{
 			//设置匹配图像当前小地图
 			giMatch.setObject(giFrameMap);
-			double t = t = (double)cv::getTickCount(); 
+			double t = t = (double)cv::getTickCount();
 
 			tMatchMap = new thread(&giam::GenshinImpact_AutoMap::thread_MatchMap, this, ref(giMatch), ref(tMuMatch));
 
@@ -774,19 +802,19 @@ void giam::GenshinImpact_AutoMap::mapTrack()
 		}
 		if (tIsEndMap == false)
 		{
-				GetExitCodeThread(tMatchMap->native_handle(), &exitMapCode);
-				if (exitMapCode == 0)
-				{
-					double t = t = (double)cv::getTickCount();
+			GetExitCodeThread(tMatchMap->native_handle(), &exitMapCode);
+			if (exitMapCode == 0)
+			{
+				double t = t = (double)cv::getTickCount();
 
-					tMatchMap->join();
-					delete tMatchMap;
-					tMatchMap = nullptr;
-					tIsEndMap = true;
+				tMatchMap->join();
+				delete tMatchMap;
+				tMatchMap = nullptr;
+				tIsEndMap = true;
 
-					t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-					cout << "delete Thread time:" << t << "s" << endl;
-				}
+				t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+				cout << "delete Thread time:" << t << "s" << endl;
+			}
 		}
 		if (tIsEndMap)
 		{
@@ -1239,11 +1267,29 @@ void giam::GenshinImpact_AutoMap::thread_MatchStar(giAMM & match, mutex& mu)
 
 void giam::GenshinImpact_AutoMap::thread_MatchTarget(giAMM & match, mutex& mu)
 {
+	//while (!match.isFinishMatchTarget)
+	//{
+	//	match.test3();
+	//}
 	mu.lock();
-
+	
 	match.test3();
 
 	mu.unlock();
+
+	//Mat img_scene(giFrameMap);// = (Rect(36, 36, object.cols - 72, object.rows - 72)); //minMap
+
+	//if (maxVal > 0.75)
+	//{
+	//	isStarPoint = maxLoc + Point(img_object_mask.size() / 2) - Point(img_scene.size() / 2);
+	//	isFindStar = true;
+	//}
+	//else
+	//{
+	//	isFindStar = false;
+	//}
+
+	
 }
 
 //void giam::GenshinImpact_AutoMap::thread_Match(giAMM & match) {}
