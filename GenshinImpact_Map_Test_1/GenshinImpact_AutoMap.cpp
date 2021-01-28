@@ -73,6 +73,12 @@ bool giam::GenshinImpact_AutoMap::run()
 
 			//匹配可传送目标
 			//mapTarget();
+			static int k = 0;
+			if (k == 0)
+			{
+				imwrite("C:\\Users\\GengG\\source\\repos\\GenshinImpact_AutoMap\\x64\\Out\\123.bmp", giFrameMap);
+				k = 1;
+			}
 			giMatch.setObject(giFrameMap);
 			giMatch.test3();
 
@@ -365,12 +371,16 @@ void giam::GenshinImpact_AutoMap::giScreenROI()
 		giFrameROI = giFrame(Rect(0, 0, 285, 240)); 
 		//giFrame(Rect(0, 0, 285, 240)).copyTo(giFrameRect);
 		cvtColor(giFrameROI, giFrameRect, CV_RGB2GRAY);
+		//imshow("UID", giFrame(Rect(giFrame.cols - 212- , giFrame.rows - 23, 160, 18)));
+
 	}
 	else
 	{
 		giFrameROI = giFrame(Rect(0, 0, 250, 210));
 		//giFrame(Rect(0, 0, 250, 210)).copyTo(giFrameRect);
 		cvtColor(giFrameROI, giFrameRect, CV_RGB2GRAY);
+		//imshow("UID", giFrame(Rect(giFrame.cols - 212 - 6, giFrame.rows - 23 - 29, 160, 18)));
+
 	}
 }
 
@@ -405,74 +415,6 @@ bool giam::GenshinImpact_AutoMap::thisIsIconic()
 {
 	thisIsIconicFlag = IsIconic(thisHandle);
 	return thisIsIconicFlag;
-}
-
-bool giam::GenshinImpact_AutoMap::isNeedFindStar()
-{
-	Rect Roi(zerosMinMap.x - 150, zerosMinMap.y - 150, 300, 300);
-	Point tmpP;
-	bool res = false;
-	for (int i = 0; i < min(giFlag.max, giObjTable.num); i++)
-	{
-		for (int j = 0; j < giObjTable.obj[i].size(); j++)
-		{
-			tmpP = Point(giObjTable.obj[i].at(j).x, giObjTable.obj[i].at(j).y);
-			//目标点在小地图显示区域内
-			if (isContains(Roi, tmpP))
-			{
-				res = true;
-			}
-		}
-	}
-
-	return res;
-}
-
-bool giam::GenshinImpact_AutoMap::isNeedFindStar(int& id, Point &p)
-{
-	Rect Roi(zerosMinMap.x - 150, zerosMinMap.y - 150, 300, 300);
-	Point tmpP;
-	bool res = false;
-	for (int i = 0; i < 2; i++)
-	{
-		for (int j = 0; j < giObjTable.obj[i].size(); j++)
-		{
-			tmpP = Point(giObjTable.obj[i].at(j).x, giObjTable.obj[i].at(j).y);
-			//目标点在小地图显示区域内
-			if (isContains(Roi, tmpP))
-			{
-				id = j;
-				p = tmpP;
-				res = true;
-			}
-		}
-	}
-
-	return res;
-}
-
-bool giam::GenshinImpact_AutoMap::isNeedFindStar(vector<int>& lisId, vector<Point> &lisP)
-{
-	lisId.clear();
-	lisP.clear();
-	Rect Roi(zerosMinMap.x - 70, zerosMinMap.y - 70, 140, 140);
-	Point tmpP;
-	bool res = false;
-	for (int i = 0; i < 2; i++)
-	{
-		for (int j = 0; j < giObjTable.obj[i].size(); j++)
-		{
-			tmpP = Point(giObjTable.obj[i].at(j).x, giObjTable.obj[i].at(j).y);
-			//目标点在小地图显示区域内
-			if (isContains(Roi, tmpP))
-			{
-				lisId.push_back(j);
-				lisP.push_back(tmpP);
-				res = true;
-			}
-		}
-	}
-	return res;
 }
 
 bool giam::GenshinImpact_AutoMap::isNeedFindStar(vector<int>& lisType,vector<int>& lisId, vector<Point> &lisP)

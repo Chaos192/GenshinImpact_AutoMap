@@ -172,7 +172,8 @@ void GenshinImpact_AutoMap_Matchs::test2()
 void GenshinImpact_AutoMap_Matchs::test3()
 {
 	Mat img_scene = object;
-	static Mat img_object_mask = imread("./Res/Target_0.bmp", IMREAD_UNCHANGED); //Star
+
+	static Mat img_object_mask = imread("./Res/Target_1.bmp", IMREAD_UNCHANGED); //Star
 	static Mat tmp;
 
 	cv::matchTemplate(img_object_mask, img_scene, tmp, cv::TM_CCOEFF_NORMED);
@@ -183,7 +184,7 @@ void GenshinImpact_AutoMap_Matchs::test3()
 	cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
 
 	cout << minVal << ":" << maxVal << endl;
-	rectangle(img_scene, Rect(maxLoc.x , maxLoc.y, img_object_mask.rows, img_object_mask.cols), Scalar(255, 0, 0));
+	rectangle(img_scene, Rect(maxLoc.x , maxLoc.y, img_object_mask.cols, img_object_mask.rows), Scalar(255, 0, 0));
 	putText(img_scene, to_string((int)(maxVal * 100)), Point(maxLoc.x, maxLoc.y), 1, 1, Scalar(255, 255, 0));
 	namedWindow("View0", 256);
 	imshow("View0", img_scene);

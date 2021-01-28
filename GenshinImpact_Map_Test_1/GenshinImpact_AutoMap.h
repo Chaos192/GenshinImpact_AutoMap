@@ -460,12 +460,6 @@ namespace giam
 		void giGetMap();
 		
 		bool thisIsIconic();
-		
-		bool isNeedFindStar();
-
-		bool isNeedFindStar(int& id, Point &p);
-
-		bool isNeedFindStar(vector<int>& id, vector<Point> &lisP);
 
 		bool isNeedFindStar(vector<int>& lisTpye, vector<int>& lisId, vector<Point> &lisP);
 
