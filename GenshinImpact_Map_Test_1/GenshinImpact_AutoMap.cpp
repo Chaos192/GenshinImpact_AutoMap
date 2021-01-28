@@ -3,6 +3,7 @@
 giam::GenshinImpact_AutoMap::GenshinImpact_AutoMap()
 {
 	//init();
+
 	cvtColor(matMap, matMatchMap, CV_RGB2GRAY);
 	giMatch = giAMM(matMatchMap);
 	giConfig.load();
@@ -69,6 +70,8 @@ bool giam::GenshinImpact_AutoMap::run()
 			//前后端分离
 			//前端显示
 			//后端追踪
+
+			
 			mapTrack();
 
 			mapStar();
@@ -247,16 +250,16 @@ bool giam::GenshinImpact_AutoMap::giIsFullScreen()
 	giIsFullScreenFlag = false;
 	if (giIsDisplay())
 	{
-		giGetScreen();
-		giScreenROI();
-		giGetPaimon();
-		giIsPaimonVisible();
 		static RECT rcDesk;
 		GetWindowRect(GetDesktopWindow(), &rcDesk);
 		if (giRect.left <= rcDesk.left&& giRect.top <= rcDesk.top&& giRect.right >= rcDesk.right&& giRect.bottom >= rcDesk.bottom)
 		{
 			giIsFullScreenFlag = true;
 		}
+		giGetScreen();
+		giScreenROI();
+		giGetPaimon();
+		giIsPaimonVisible();
 	}
 	return giIsFullScreenFlag;
 }
@@ -762,18 +765,27 @@ void giam::GenshinImpact_AutoMap::mapTrack()
 		{
 			//设置匹配图像当前小地图
 			giMatch.setObject(giFrameMap);
+			double t = t = (double)cv::getTickCount(); 
 
 			tMatchMap = new thread(&giam::GenshinImpact_AutoMap::thread_MatchMap, this, ref(giMatch), ref(tMuMatch));
+
+			t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+			cout << "new Thread time:" << t << "s" << endl;
 		}
 		if (tIsEndMap == false)
 		{
 				GetExitCodeThread(tMatchMap->native_handle(), &exitMapCode);
 				if (exitMapCode == 0)
 				{
+					double t = t = (double)cv::getTickCount();
+
 					tMatchMap->join();
 					delete tMatchMap;
 					tMatchMap = nullptr;
 					tIsEndMap = true;
+
+					t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+					cout << "delete Thread time:" << t << "s" << endl;
 				}
 		}
 		if (tIsEndMap)
@@ -805,6 +817,7 @@ void giam::GenshinImpact_AutoMap::mapStar()
 	static const Point Compensation_factor(16,48);
 	static int minVal = 0;
 	static int matchId = 0;
+
 	Rect tmp;
 	if (tIsEndInit == false)return;
 	//根据当前位置，获取周围大地图140px范围内所有star，如果没有则false
@@ -933,6 +946,7 @@ void giam::GenshinImpact_AutoMap::mapShow()
 		//如果平移了悬浮窗或者原神窗口有移动，悬浮窗随之移动
 		if (offGiMinMap != offGiMinMapTmp|| (!isEqual(giRect, giRectTmp)))
 		{
+			if (giIsFullScreenFlag)offGiMinMap = Point(288, 82);else offGiMinMap = Point(250, 100);
 			//窗口跟随原神平移
 			//平移窗口。giRect：如果原神已经退出，则使用关闭前的位置
 			SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + offGiMinMap.x, giRect.top + offGiMinMap.y, 0, 0, SWP_NOSIZE);
@@ -1225,6 +1239,11 @@ void giam::GenshinImpact_AutoMap::thread_MatchStar(giAMM & match, mutex& mu)
 
 void giam::GenshinImpact_AutoMap::thread_MatchTarget(giAMM & match, mutex& mu)
 {
+	mu.lock();
+
+	match.test3();
+
+	mu.unlock();
 }
 
 //void giam::GenshinImpact_AutoMap::thread_Match(giAMM & match) {}

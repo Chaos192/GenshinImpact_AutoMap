@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <Test2Project1.h>
-#include<opencv.hpp>
+#include <opencv.hpp>
 int main()
 {
 	

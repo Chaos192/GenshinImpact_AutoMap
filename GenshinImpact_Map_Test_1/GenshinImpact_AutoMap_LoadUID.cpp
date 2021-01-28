@@ -8,8 +8,8 @@ GenshinImpact_AutoMap_LoadUID::GenshinImpact_AutoMap_LoadUID()
 	appTempPath.append(giIndex);
 	strcat_s(appConfigPath, giIndex.c_str());
 
-	cout << appConfigPath << endl;
-	cout << appTempPath.c_str() << endl;
+	//cout << appConfigPath << endl;
+	//cout << appTempPath.c_str() << endl;
 
 	if (_access(appConfigPath, 0) == -1)
 	{

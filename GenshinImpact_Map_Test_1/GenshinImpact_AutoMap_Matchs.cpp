@@ -30,7 +30,6 @@ void GenshinImpact_AutoMap_Matchs::init()
 	if (isInit) return;
 
 	detector = cv::xfeatures2d::SURF::create(minHessian);
-
 	detector->detectAndCompute(target, noArray(), keypoints_scene, descriptors_scene);
 
 	isInit = true;
@@ -198,6 +197,10 @@ void GenshinImpact_AutoMap_Matchs::test2()
 
 
 
+}
+
+void GenshinImpact_AutoMap_Matchs::test3()
+{
 }
 
 void GenshinImpact_AutoMap_Matchs::testORB()
