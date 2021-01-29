@@ -73,14 +73,18 @@ bool giam::GenshinImpact_AutoMap::run()
 
 			//匹配可传送目标
 			//mapTarget();
-			static int k = 0;
-			if (k == 0)
+			if (giIsRunningFlag)
 			{
-				imwrite("C:\\Users\\GengG\\source\\repos\\GenshinImpact_AutoMap\\x64\\Out\\123.bmp", giFrameMap);
-				k = 1;
+				static int k = 0;
+				if (k == 0)
+				{
+					imwrite("C:\\Users\\GengG\\source\\repos\\GenshinImpact_AutoMap\\x64\\Out\\123.bmp", giFrameMap);
+					k = 1;
+				}
+				giMatch.setObject(giFrameMap);
+				giMatch.test3();
 			}
-			giMatch.setObject(giFrameMap);
-			giMatch.test3();
+
 
 			//匹配当前所在位置
 			mapMatchMap();
