@@ -6,6 +6,34 @@
 链接：https://pan.xunlei.com/s/VMRzpFyq2hmpeYjTydWOos2mA1
 提取码：4b3u
 
+## 开发环境
+
+Visual Studio 2017 
+
+opencv4.5.0
+
+控制台应用
+
+在VS里配置好Opencv即可进行编译输出，所用资源文件均已上传。
+
+由于使用的是opencv的dll，以及程序中封装了一张较大的地图图片，所以最后生成的程序大概有37MB，发布版解压缩大致有92MB，以至于无法上传至GitHub，有需要的可以自己手动编译，或者点击上方链接下载。
+
+链接版本只经过简单测试，如有任何问题可以提交反馈。
+
+## 工作原理与系统权限
+
+本地图是通过调用Windows Api来对原神的游戏窗口进行截屏，然后对画面进行图像处理，对地图与世界地图进行匹配来实现的自动追踪。
+
+通过Api来设置地图为顶层窗口，使其保持在原神游戏窗口的上方。
+
+之后的开发中将会涉及到数据文件的保存与读取，目前会在Temp目录中建立名为GenshinImpactAutoMap的文件夹，并在该文件夹中建立数据存档。
+
+如：`C:\Users\%USERNAME%\AppData\Local\Temp\GenshinImpactAutoMap`
+
+日后可能会开发GPU加速图像处理的功能，需要使用GPU运算。
+
+除此之外不存在其他系统资源的使用，也没有获取系统权限的需求。
+
 ## 运行画面
 
 ![运行画面](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/GenshinImpact_Map_Test_1/Img/Snipaste_2021-01-07_15-09-00.png)
