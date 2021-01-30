@@ -97,6 +97,7 @@ bool giam::GenshinImpact_AutoMap::run()
 					imwrite("C:\\Users\\GengG\\source\\repos\\GenshinImpact_AutoMap\\x64\\Out\\123.bmp", giFrameMap);
 					k = 1;
 				}
+
 				giMatch.setObject(giFrameMap);
 				giMatch.test3();
 			}
@@ -401,32 +402,40 @@ void giam::GenshinImpact_AutoMap::giScreenROI()
 		{
 			giFrameROI = giFrame(Rect(0, 0, 285, 240));
 			cvtColor(giFrameROI, giFrameRect, CV_RGB2GRAY);
-			giFrameUID = giFrame(Rect(giFrame.cols - 212 - 6, giFrame.rows - 23 - 29, 160, 18));
+			giFrameUID = giFrame(Rect(giFrame.cols - 246, giFrame.rows - 25 - 29, 180, 18));
 			break;
 		}
 		case 2:
 		{
 			giFrameROI = giFrame(Rect(0, 0, 250, 210));
 			cvtColor(giFrameROI, giFrameRect, CV_RGB2GRAY);
-			giFrameUID = giFrame(Rect(giFrame.cols - 206 , giFrame.rows - 23, 154, 18));
+			giFrameUID = giFrame(Rect(giFrame.cols - 207 , giFrame.rows - 23, 155, 18));
 			break;
 		}
 		case 3:
 		{
 			giFrameROI = giFrame(Rect(0, 0, 250, 210));
 			cvtColor(giFrameROI, giFrameRect, CV_RGB2GRAY);
-			giFrameUID = giFrame(Rect(giFrame.cols - 212 - 6, giFrame.rows - 23 - 29, 160, 18));
+			giFrameUID = giFrame(Rect(giFrame.cols - 213, giFrame.rows - 23 - 29, 155, 18));
 			break;
 		}
 		default:
 		{
 			giFrameROI = giFrame(Rect(0, 0, 285, 240));
 			cvtColor(giFrameROI, giFrameRect, CV_RGB2GRAY);
-			giFrameUID = giFrame(Rect(giFrame.cols - 212, giFrame.rows - 23, 160, 18));
+			giFrameUID = giFrame(Rect(giFrame.cols - 240, giFrame.rows - 25, 160, 18));
 			break;
 		}
 	}
 	imshow("UID", giFrameUID);
+	static int k = 0;
+	if (k == 0)
+	{
+		//imwrite("output.png", giFrame);
+
+		imwrite("C:\\Users\\GengG\\source\\repos\\GenshinImpact_AutoMap\\x64\\Out\\1680.png", giFrameUID);
+		k = 1;
+	}
 }
 
 void giam::GenshinImpact_AutoMap::giGetPaimon()
