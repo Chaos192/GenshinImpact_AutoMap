@@ -70,15 +70,6 @@ int getUid(Num num,Mat img)
 		//寻找最佳匹配位置
 		cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
 
-		//cout << minVal << ":" << maxVal << endl;
-		//rectangle(Roi, Rect(maxLoc.x, maxLoc.y, checkUID.cols, checkUID.rows), Scalar(255, 0, 0));
-
-		//namedWindow("View0", 1);
-		//imshow("View0", Roi);
-		//namedWindow("View", 1);
-		//imshow("View", tmp);
-
-		//waitKey(1000);
 		int x = maxLoc.x + checkUID.cols + 7;
 		int y = 0;
 		double tmplis[9] = { 0 };
@@ -103,16 +94,6 @@ int getUid(Num num,Mat img)
 				//寻找最佳匹配位置
 				cv::minMaxLoc(tmp, &minVali, &maxVali, &minLoci, &maxLoci);
 
-				if (p==1&&(i==3||i==8))
-				{
-					namedWindow("View0", 1);
-					imshow("View0", Roi);
-					namedWindow("View", 1);
-					imshow("View", tmp);
-					//waitKey(3000);
-				}
-
-				cout <<p<<":||"<< i << ":|| " << maxVali << endl;
 				tmplis[i] = maxVali;
 				tmplisx[i] = maxLoci.x + numCheckUID.cols-1;
 				if (maxVali > 0.85)
@@ -129,17 +110,6 @@ int getUid(Num num,Mat img)
 			}
 			
 		}
-		
-		
-
-		//waitKey(3000);
-		//for (int i = 0; i < num.max; i++)
-		//{
-		//	
-		//	Mat checkNum = num.n[i];
-		//	Mat Roi = img(r);
-		//}
-		//
 	}
 
 	for (int i = 0; i < 9; i++)
