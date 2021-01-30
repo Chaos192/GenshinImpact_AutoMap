@@ -25,6 +25,9 @@ public:
 	void setObject(Mat img);
 	//匹配目标，在该图像中匹配
 	void setTarget(Mat img);
+	//UID区域
+	void setRectUID(Mat img);
+
 	void getKeyPoints();
 	void onMatch();
 	Point getLocation();
@@ -33,6 +36,8 @@ public:
 	void test();
 	void test2();
 	void test3();
+	void getUID();
+
 	void testORB();
 	bool keySave();
 	bool keyLoad();
@@ -45,19 +50,23 @@ public:
 
 	bool isFinishMatchTarget = false;
 
+	int UID = 0;
 	//bool getIsFinishMatchTarget();
 private:
+	bool isGetUID = false;
+	int uid = 0;
 	bool isInit = false;
 	bool isCout = false;
 	bool isObjectExist = false;
 	bool isTargetExist = false;
-
+	bool isRectUIDExist = false;
 
 	bool isFindStar = false;
 	Point isStarPoint;
 
 	Mat object;
 	Mat target;
+	Mat rectUID;
 	//0:SURF
 	int mode = 0;
 	Point p;

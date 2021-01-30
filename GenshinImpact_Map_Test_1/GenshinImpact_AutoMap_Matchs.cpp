@@ -52,6 +52,12 @@ void GenshinImpact_AutoMap_Matchs::setTarget(Mat img)
 	isTargetExist = true;
 }
 
+void GenshinImpact_AutoMap_Matchs::setRectUID(Mat img)
+{
+	rectUID = img;
+	isRectUIDExist = true;
+}
+
 void GenshinImpact_AutoMap_Matchs::getKeyPoints()
 {
 	getObjectKeyPoints();
@@ -211,6 +217,14 @@ void GenshinImpact_AutoMap_Matchs::test3()
 	//{
 	//	isFindStar = false;
 	//}
+}
+
+void GenshinImpact_AutoMap_Matchs::getUID()
+{
+	isGetUID = false;
+	Mat uidType = rectUID(Rect(0,0,60,rectUID.cols));
+
+
 }
 
 void GenshinImpact_AutoMap_Matchs::testORB()

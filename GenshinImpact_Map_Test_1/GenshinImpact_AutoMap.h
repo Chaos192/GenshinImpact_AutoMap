@@ -390,9 +390,16 @@ namespace giam
 		//
 		Mat giFrameMap;
 
+		Mat giFrameUID;
+
 		giAMM giMatch;
 
 		Size giSize;
+		
+		Size giShowSize;
+
+		int giShowMode = 1;
+		int giShowType=0;
 
 		giAML giConfig;
 
@@ -458,6 +465,8 @@ namespace giam
 		void giGetPaimon();
 		//
 		void giGetMap();
+
+		void giSize2ShowMode();
 		
 		bool thisIsIconic();
 

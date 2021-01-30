@@ -11,10 +11,26 @@ giam::GenshinImpact_AutoMap::GenshinImpact_AutoMap()
 
 giam::GenshinImpact_AutoMap::~GenshinImpact_AutoMap()
 {
-	if (tMatchInit != nullptr)tMatchInit->join();
-	if (tMatchMap != nullptr)tMatchMap->join();
-	if (tMatchStar != nullptr)tMatchStar->join();
-	if (tMatchTarget != nullptr)tMatchTarget->join();
+	if (tMatchInit != nullptr)
+	{
+		tMatchInit->join();
+		delete tMatchInit;
+	}
+	if (tMatchMap != nullptr)
+	{
+		tMatchMap->join();
+		delete tMatchMap;
+	}
+	if (tMatchStar != nullptr)
+	{
+		tMatchStar->join();
+		delete tMatchStar;
+	}
+	if (tMatchTarget != nullptr)
+	{
+		tMatchTarget->join();
+		delete tMatchTarget;
+	}
 }
 
 //初始化
@@ -73,9 +89,9 @@ bool giam::GenshinImpact_AutoMap::run()
 
 			//匹配可传送目标
 			//mapTarget();
-			if (giIsRunningFlag)
+			if (giIsRunningFlag&&giIsPaimonVisibleFlag)
 			{
-				static int k = 0;
+ 				static int k = 0;
 				if (k == 0)
 				{
 					imwrite("C:\\Users\\GengG\\source\\repos\\GenshinImpact_AutoMap\\x64\\Out\\123.bmp", giFrameMap);
@@ -234,6 +250,8 @@ bool giam::GenshinImpact_AutoMap::giIsDisplay()
 		GetWindowRect(giHandle, &giRect);
 		giSize.width = giRect.right - giRect.left;//+6
 		giSize.height = giRect.bottom - giRect.top;//+29
+		giSize2ShowMode();
+		cout << giShowMode << ":" << giSize.height << "," << giSize.width <<":" << giShowSize.height << "," << giShowSize.width << endl;
 		//+6,+29
 		//cout << giRect.bottom - giRect.top << "," << giRect.right - giRect.left << endl;
 	}
@@ -370,22 +388,45 @@ void giam::GenshinImpact_AutoMap::giGetScreen()
 
 void giam::GenshinImpact_AutoMap::giScreenROI()
 {
-	if (giIsFullScreenFlag)
+	switch (giShowType)
 	{
-		giFrameROI = giFrame(Rect(0, 0, 285, 240)); 
-		//giFrame(Rect(0, 0, 285, 240)).copyTo(giFrameRect);
-		cvtColor(giFrameROI, giFrameRect, CV_RGB2GRAY);
-		//imshow("UID", giFrame(Rect(giFrame.cols - 212- , giFrame.rows - 23, 160, 18)));
-
+		case 0:
+		{
+			giFrameROI = giFrame(Rect(0, 0, 285, 240));
+			cvtColor(giFrameROI, giFrameRect, CV_RGB2GRAY);
+			giFrameUID = giFrame(Rect(giFrame.cols - 240 , giFrame.rows - 25, 180, 18));
+			break;
+		}
+		case 1:
+		{
+			giFrameROI = giFrame(Rect(0, 0, 285, 240));
+			cvtColor(giFrameROI, giFrameRect, CV_RGB2GRAY);
+			giFrameUID = giFrame(Rect(giFrame.cols - 212 - 6, giFrame.rows - 23 - 29, 160, 18));
+			break;
+		}
+		case 2:
+		{
+			giFrameROI = giFrame(Rect(0, 0, 250, 210));
+			cvtColor(giFrameROI, giFrameRect, CV_RGB2GRAY);
+			giFrameUID = giFrame(Rect(giFrame.cols - 206 , giFrame.rows - 23, 154, 18));
+			break;
+		}
+		case 3:
+		{
+			giFrameROI = giFrame(Rect(0, 0, 250, 210));
+			cvtColor(giFrameROI, giFrameRect, CV_RGB2GRAY);
+			giFrameUID = giFrame(Rect(giFrame.cols - 212 - 6, giFrame.rows - 23 - 29, 160, 18));
+			break;
+		}
+		default:
+		{
+			giFrameROI = giFrame(Rect(0, 0, 285, 240));
+			cvtColor(giFrameROI, giFrameRect, CV_RGB2GRAY);
+			giFrameUID = giFrame(Rect(giFrame.cols - 212, giFrame.rows - 23, 160, 18));
+			break;
+		}
 	}
-	else
-	{
-		giFrameROI = giFrame(Rect(0, 0, 250, 210));
-		//giFrame(Rect(0, 0, 250, 210)).copyTo(giFrameRect);
-		cvtColor(giFrameROI, giFrameRect, CV_RGB2GRAY);
-		//imshow("UID", giFrame(Rect(giFrame.cols - 212 - 6, giFrame.rows - 23 - 29, 160, 18)));
-
-	}
+	imshow("UID", giFrameUID);
 }
 
 void giam::GenshinImpact_AutoMap::giGetPaimon()
@@ -413,6 +454,78 @@ void giam::GenshinImpact_AutoMap::giGetMap()
 	{
 		giFrameRect(Rect(54, 17, 185, 185)).copyTo(giFrameMap);
 	}
+}
+
+void giam::GenshinImpact_AutoMap::giSize2ShowMode()
+{
+	static const Size size1920x1080(1920, 1080);
+	static const Size size1680x1050(1680, 1050);
+	static const Size size1440x900(1440, 900);
+	static const Size size1366x768(1366, 768);
+	static const Size size1920x1080uf(1929, 1106);
+	static const Size size1680x1050uf(1689, 1079);
+	static const Size size1440x900uf(1449, 929);
+	static const Size size1366x768uf(1375, 797);
+	if (giSize == size1920x1080)
+	{
+		giShowMode = 1;
+		giShowSize = size1920x1080;
+		giShowType = 0;
+		return;
+	}
+	if (giSize == size1920x1080uf)
+	{
+		giShowMode = 0;
+		giShowSize = size1920x1080;
+		giShowType = 1;
+		return;
+	}
+
+	if (giSize == size1680x1050)
+	{
+		giShowMode = 1;
+		giShowSize = size1680x1050;
+		giShowType = 2;
+		return;
+	}
+	if (giSize == size1680x1050uf)
+	{
+		giShowMode = 0;
+		giShowSize = size1680x1050uf;
+		giShowType = 3;
+		return;
+	}
+
+	if (giSize == size1440x900)
+	{
+		giShowMode = 1;
+		giShowSize = size1440x900;
+		giShowType = 4;
+		return;
+	}
+	if (giSize == size1440x900uf)
+	{
+		giShowMode = 0;
+		giShowSize = size1440x900uf;
+		giShowType = 5;
+		return;
+	}
+	if (giSize == size1366x768)
+	{
+		giShowMode = 1;
+		giShowSize = size1366x768;
+		giShowType = 6;
+		return;
+	}
+	if (giSize == size1366x768uf)
+	{
+		giShowMode = 0;
+		giShowSize = size1366x768uf;
+		giShowType = 7;
+		return;
+	}
+	giShowMode = 1;
+	giShowSize = Size(0, 0);
 }
 
 bool giam::GenshinImpact_AutoMap::thisIsIconic()
