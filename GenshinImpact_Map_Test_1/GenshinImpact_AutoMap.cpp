@@ -433,7 +433,7 @@ void giam::GenshinImpact_AutoMap::giScreenROI()
 	{
 		//imwrite("output.png", giFrame);
 
-		imwrite("C:\\Users\\GengG\\source\\repos\\GenshinImpact_AutoMap\\x64\\Out\\1680.png", giFrameUID);
+		imwrite("C:\\Users\\GengG\\source\\repos\\GenshinImpact_AutoMap\\x64\\Out\\1920.png", giFrameUID);
 		k = 1;
 	}
 }
@@ -945,7 +945,7 @@ void giam::GenshinImpact_AutoMap::mapStar()
 				//获得star位置，相对小地图中心
 				findP = giMatch.getFindStar();
 				//位置映射至大地图，根据已知当前位置，将会包含当前位置所带有的误差
-				Point tmpP = findP * 2 + zerosMinMap;
+				Point tmpP = findP *1 + zerosMinMap;
 
 				minVal = dis2(tmpP - p.at(0));
 				matchId = 0;
