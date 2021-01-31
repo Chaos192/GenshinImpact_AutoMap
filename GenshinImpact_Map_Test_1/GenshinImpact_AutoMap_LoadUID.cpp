@@ -157,10 +157,52 @@ int GenshinImpact_AutoMap_LoadUID::getUID()
 	return uid;
 }
 
+string GenshinImpact_AutoMap_LoadUID::getStrUID()
+{
+	return uidstr;
+}
+
 void GenshinImpact_AutoMap_LoadUID::setUID(int _uid)
 {
-	uid = _uid;
-	uid2str(_uid);
+	if (uid != _uid)
+	{
+		save();
+
+		uid = _uid;
+		uid2str(_uid);
+
+		uidFile = string(appTempPath);
+		uidFile.append(getUIDFileName());
+
+		if (_access(uidFile.c_str(), 0) == -1)
+		{
+			//File not Found
+			if (fopen_s(&fp, uidFile.c_str(), "w+") == 0)
+			{
+				saveFileHeader();
+				saveData();
+			}
+			else
+			{
+				throw"file Open Faile";
+			}
+			fclose(fp);
+		}
+		else
+		{
+			fopen_s(&fp, uidFile.c_str(), "r+");
+			if (loadFileHeader())
+			{
+				loadData();
+			}
+			else
+			{
+				saveFileHeader();
+				saveData();
+			}
+			fclose(fp);
+		}
+	}
 }
 
 void GenshinImpact_AutoMap_LoadUID::getAppConfigPath()
@@ -171,8 +213,8 @@ void GenshinImpact_AutoMap_LoadUID::getAppConfigPath()
 void GenshinImpact_AutoMap_LoadUID::save()
 {
 	fopen_s(&fp, uidFile.c_str(), "w");
-	loadFileHeader();
-	loadData();
+	saveFileHeader();
+	saveData();
 	fclose(fp);
 }
 

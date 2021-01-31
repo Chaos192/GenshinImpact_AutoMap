@@ -91,12 +91,12 @@ bool giam::GenshinImpact_AutoMap::run()
 			//mapTarget();
 			if (giIsRunningFlag&&giIsPaimonVisibleFlag)
 			{
- 				static int k = 0;
-				if (k == 0)
-				{
-					imwrite("C:\\Users\\GengG\\source\\repos\\GenshinImpact_AutoMap\\x64\\Out\\123.bmp", giFrameMap);
-					k = 1;
-				}
+ 			//	static int k = 0;
+				//if (k == 0)
+				//{
+				//	imwrite("C:\\Users\\GengG\\source\\repos\\GenshinImpact_AutoMap\\x64\\Out\\123.bmp", giFrameMap);
+				//	k = 1;
+				//}
 
 				giMatch.setObject(giFrameMap);
 				giMatch.test3();
@@ -226,11 +226,24 @@ int giam::GenshinImpact_AutoMap::dis2(int x, int y)
 	return x * x + y * y;
 }
 
+int giam::GenshinImpact_AutoMap::getMaxID(double lis[], int len)
+{
+	int maxId = 0;
+	for (int i = 1; i < len; i++)
+	{
+		if (lis[i] > lis[maxId])
+		{
+			maxId = i;
+		}
+	}
+	return maxId;
+}
+
 //原神是否运行
 bool giam::GenshinImpact_AutoMap::giIsRunning()
 {
 	//尝试获取原神句柄
-	giHandle = FindWindowA(NULL, "原神");
+	giHandle = FindWindowA(NULL, "原神");/* 对原神窗口的操作 */
 	if (giHandle != NULL)
 	{
 		giIsRunningFlag = true;
@@ -247,12 +260,12 @@ bool giam::GenshinImpact_AutoMap::giIsDisplay()
 {
 	if (giIsRunningFlag)
 	{
-		giIsDisplayFlag = !IsIconic(giHandle);
-		GetWindowRect(giHandle, &giRect);
+		giIsDisplayFlag = !IsIconic(giHandle);/* 对原神窗口的操作 */
+		GetWindowRect(giHandle, &giRect);/* 对原神窗口的操作 */
 		giSize.width = giRect.right - giRect.left;//+6
 		giSize.height = giRect.bottom - giRect.top;//+29
 		giSize2ShowMode();
-		cout << giShowMode << ":" << giSize.height << "," << giSize.width <<":" << giShowSize.height << "," << giShowSize.width << endl;
+		//cout << giShowMode << ":" << giSize.height << "," << giSize.width <<":" << giShowSize.height << "," << giShowSize.width << endl;
 		//+6,+29
 		//cout << giRect.bottom - giRect.top << "," << giRect.right - giRect.left << endl;
 	}
@@ -303,7 +316,7 @@ bool giam::GenshinImpact_AutoMap::giIsPaimonVisible()
 {
 	static Mat tmp;
 	static Mat matPaimon;
-	if (giIsFullScreenFlag)
+	if (giShowType==0)
 	{
 		matPaimon = matPaimon1;
 	}
@@ -317,8 +330,8 @@ bool giam::GenshinImpact_AutoMap::giIsPaimonVisible()
 	cv::Point minLoc, maxLoc;
 	//寻找最佳匹配位置
 	cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
-	//cout << minVal << "" << maxVal << endl;
-	if (minVal  < 0.66)
+	cout << minVal << "" << maxVal << endl;
+	if (minVal  < 0.66 || maxVal==1)
 	{
 		if (giIsPaimonVisibleFlag)giFlag.isUpHUD = true;
 		giIsPaimonVisibleFlag = false;
@@ -355,10 +368,10 @@ void giam::GenshinImpact_AutoMap::giGetScreen()
 	if (giHandle == NULL)return;
 
 	//获取目标句柄的窗口大小RECT
-	GetWindowRect(giHandle, &rc);
+	GetWindowRect(giHandle, &rc);/* 对原神窗口的操作 */
 
 	//获取目标句柄的DC
-	HDC hScreen = GetDC(giHandle);
+	HDC hScreen = GetDC(giHandle);/* 对原神窗口的操作 */
 	HDC hCompDC = CreateCompatibleDC(hScreen);
 
 	//获取目标句柄的宽度和高度
@@ -427,15 +440,15 @@ void giam::GenshinImpact_AutoMap::giScreenROI()
 			break;
 		}
 	}
-	imshow("UID", giFrameUID);
-	static int k = 0;
-	if (k == 0)
-	{
-		//imwrite("output.png", giFrame);
+	//imshow("UID", giFrameUID);
+	//static int k = 0;
+	//if (k == 0)
+	//{
+	//	//imwrite("output.png", giFrame);
 
-		imwrite("C:\\Users\\GengG\\source\\repos\\GenshinImpact_AutoMap\\x64\\Out\\1920.png", giFrameUID);
-		k = 1;
-	}
+	//	imwrite("C:\\Users\\GengG\\source\\repos\\GenshinImpact_AutoMap\\x64\\Out\\1920.png", giFrameUID);
+	//	k = 1;
+	//}
 }
 
 void giam::GenshinImpact_AutoMap::giGetPaimon()
@@ -681,7 +694,8 @@ void giam::GenshinImpact_AutoMap::addHUD(Mat img)
 
 	//putText(img, giHUD.runState, Point(24, 12), FONT_HERSHEY_COMPLEX_SMALL, 0.4, giHUD.runTextColor, 1);
 
-	putText(img, to_string((int)(1.0/FRL.runningTime)), Point(80, 18), FONT_HERSHEY_COMPLEX_SMALL, 1, giHUD.runTextColor, 1);
+	putText(img, to_string((int)(1.0 / FRL.runningTime)), Point(80, 18), FONT_HERSHEY_COMPLEX_SMALL, 1, giHUD.runTextColor, 1);
+	putText(img, "UID:"+giConfig.getStrUID(), Point(160, 195), FONT_HERSHEY_COMPLEX_SMALL, 0.5, Scalar(0,0,0), 1,LINE_AA);
 
 }
 
@@ -824,32 +838,76 @@ void giam::GenshinImpact_AutoMap::customProcess()
 	//循环计数
 	_count++;
 	
-	Mat * n = new Mat[10];
-	int max = 10;
-	Mat UID = imread("./uid/UID_.png", IMREAD_UNCHANGED);
-	Mat uid0 = imread("./uid/uid0.png", IMREAD_UNCHANGED);
-	Mat uid1 = imread("./uid/uid1.png", IMREAD_UNCHANGED);
-	Mat uid2 = imread("./uid/uid2.png", IMREAD_UNCHANGED);
-	Mat uid3 = imread("./uid/uid3.png", IMREAD_UNCHANGED);
-	Mat uid4 = imread("./uid/uid4.png", IMREAD_UNCHANGED);
-	Mat uid5 = imread("./uid/uid5.png", IMREAD_UNCHANGED);
-	Mat uid6 = imread("./uid/uid6.png", IMREAD_UNCHANGED);
-	Mat uid7 = imread("./uid/uid7.png", IMREAD_UNCHANGED);
-	Mat uid8 = imread("./uid/uid8.png", IMREAD_UNCHANGED);
-	Mat uid9 = imread("./uid/uid9.png", IMREAD_UNCHANGED);
-	n[0] = uid0;
-	n[1] = uid1;
-	n[2] = uid2;
-	n[3] = uid3;
-	n[4] = uid4;
-	n[5] = uid5;
-	n[6] = uid6;
-	n[7] = uid7;
-	n[8] = uid8;
-	n[9] = uid9;
 	if (giShowType == 0)
 	{
+		int res = 0;
+		int k[9] = { 0 };
+		int c = 1;
 
+		Mat tmp;
+		{
+			Mat checkUID = giNumUID.UID;
+			Mat Roi(giFrameUID);
+
+			cv::matchTemplate(Roi, checkUID, tmp, cv::TM_CCOEFF_NORMED);
+
+			double minVal, maxVal;
+			cv::Point minLoc, maxLoc;
+			//寻找最佳匹配位置
+			cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
+			if (maxVal > 0.85)
+			{
+				int x = maxLoc.x + checkUID.cols + 7;
+				int y = 0;
+				double tmplis[10] = { 0 };
+				int tmplisx[10] = { 0 };
+				for (int p = 8; p >= 0; p--)
+				{
+					for (int i = 0; i < giNumUID.max; i++)
+					{
+						Rect r(x, y, giNumUID.n[i].cols + 2, giNumUID.n[i].rows);//180-46/9->140/9->16->16*9=90+54=144
+						if (x + r.width > giFrameUID.cols)
+						{
+							r = Rect(giFrameUID.cols - giNumUID.n[i].cols - 2, 0, giNumUID.n[i].cols + 2, giNumUID.n[i].rows);
+						}
+
+						Mat numCheckUID = giNumUID.n[i];
+						Roi = giFrameUID(r);
+
+						cv::matchTemplate(Roi, numCheckUID, tmp, cv::TM_CCOEFF_NORMED);
+
+						double minVali, maxVali;
+						cv::Point minLoci, maxLoci;
+						//寻找最佳匹配位置
+						cv::minMaxLoc(tmp, &minVali, &maxVali, &minLoci, &maxLoci);
+
+						tmplis[i] = maxVali;
+						tmplisx[i] = maxLoci.x + numCheckUID.cols - 1;
+						if (maxVali > 0.85)
+						{
+							k[p] = i;
+							x = x + maxLoci.x + numCheckUID.cols - 1;
+							break;
+						}
+						if (i == giNumUID.max - 1)
+						{
+							k[p] = getMaxID(tmplis, 10);
+							x = x + tmplisx[k[p]];
+						}
+					}
+
+				}
+			}
+
+		}
+
+		for (int i = 0; i < 9; i++)
+		{
+			res += k[i] * c;
+			c = c * 10;
+		}
+		giConfig.setUID(res);
+		//cout << "UID:" << res << endl;
 	}
 }
 
@@ -1094,7 +1152,7 @@ void giam::GenshinImpact_AutoMap::mapShow()
 						if (giIsPaimonVisibleFlag && thisIsIconicFlag)
 						{
 							ShowWindow(thisHandle, SW_RESTORE);
-							SetForegroundWindow(giHandle);
+							SetForegroundWindow(giHandle);/* 对原神窗口的操作 */
 						}
 						//不处于主界面且悬浮窗不处于最小化，最小化悬浮窗
 						if ((!giIsPaimonVisibleFlag) && (!thisIsIconicFlag))
@@ -1125,7 +1183,7 @@ void giam::GenshinImpact_AutoMap::mapShow()
 						if (thisIsIconicFlag)
 						{
 							ShowWindow(thisHandle, SW_RESTORE);
-							SetForegroundWindow(giHandle);
+							SetForegroundWindow(giHandle);/* 对原神窗口的操作 */
 						}
 						break;
 					}
@@ -1166,6 +1224,9 @@ void giam::GenshinImpact_AutoMap::thisCheckThread()
 			delete tMatchInit;
 			tMatchInit = nullptr;
 			tIsEndInit = true;
+			//默认自动启用自动追踪
+			giFlag.isAutoMove = true;
+			giFlag.isUpdata = true;
 		}
 		
 	}

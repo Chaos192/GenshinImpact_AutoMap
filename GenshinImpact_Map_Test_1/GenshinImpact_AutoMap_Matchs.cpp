@@ -189,13 +189,13 @@ void GenshinImpact_AutoMap_Matchs::test3()
 	//—∞’“◊Óº—∆•≈‰Œª÷√
 	cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
 
-	cout << minVal << ":" << maxVal << endl;
+	//cout << minVal << ":" << maxVal << endl;
 	rectangle(img_scene, Rect(maxLoc.x , maxLoc.y, img_object_mask.cols, img_object_mask.rows), Scalar(255, 0, 0));
 	putText(img_scene, to_string((int)(maxVal * 100)), Point(maxLoc.x, maxLoc.y), 1, 1, Scalar(255, 255, 0));
-	namedWindow("View0", 256);
-	imshow("View0", img_scene);
-	namedWindow("View", 256);
-	imshow("View", tmp);
+	//namedWindow("View0", 256);
+	//imshow("View0", img_scene);
+	//namedWindow("View", 256);
+	//imshow("View", tmp);
 	//waitKey(1);
 	//Mat img_scene = object(Rect(36, 36, object.cols - 72, object.rows - 72)); //minMap
 	//static Mat img_object_mask = imread("./Res/ST_mask.bmp", IMREAD_UNCHANGED); //Star

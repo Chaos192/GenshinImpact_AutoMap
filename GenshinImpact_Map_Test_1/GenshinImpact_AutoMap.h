@@ -185,6 +185,40 @@ namespace giam
 			bool bLCU = false;
 		}giMEF;
 
+		struct NUMUID
+		{
+			Mat * n = new Mat[10];
+			int max = 10;
+			Mat UID = imread("./Res/UID/UID_.png", IMREAD_UNCHANGED);
+			Mat uid0 = imread("./Res/UID/uid0.png", IMREAD_UNCHANGED);
+			Mat uid1 = imread("./Res/UID/uid1.png", IMREAD_UNCHANGED);
+			Mat uid2 = imread("./Res/UID/uid2.png", IMREAD_UNCHANGED);
+			Mat uid3 = imread("./Res/UID/uid3.png", IMREAD_UNCHANGED);
+			Mat uid4 = imread("./Res/UID/uid4.png", IMREAD_UNCHANGED);
+			Mat uid5 = imread("./Res/UID/uid5.png", IMREAD_UNCHANGED);
+			Mat uid6 = imread("./Res/UID/uid6.png", IMREAD_UNCHANGED);
+			Mat uid7 = imread("./Res/UID/uid7.png", IMREAD_UNCHANGED);
+			Mat uid8 = imread("./Res/UID/uid8.png", IMREAD_UNCHANGED);
+			Mat uid9 = imread("./Res/UID/uid9.png", IMREAD_UNCHANGED);
+			NUMUID()
+			{
+				n[0] = uid0;
+				n[1] = uid1;
+				n[2] = uid2;
+				n[3] = uid3;
+				n[4] = uid4;
+				n[5] = uid5;
+				n[6] = uid6;
+				n[7] = uid7;
+				n[8] = uid8;
+				n[9] = uid9;
+			}
+			~NUMUID()
+			{
+				delete[] n;
+			}
+		}giNumUID;
+
 		//地图标记对应图标
 		struct TAB
 		{
@@ -438,6 +472,7 @@ namespace giam
 		bool isContains(Rect &r, Point &p);
 		int dis2(Point p);
 		int dis2(int x, int y);
+		int getMaxID(double lis[], int len);
 	private:
 		//类内实现函数
 

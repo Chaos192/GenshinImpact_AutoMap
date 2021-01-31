@@ -20,6 +20,7 @@ public:
 
 public:
 	int getUID();
+	string getStrUID();
 	void setUID(int _uid);
 	void getAppConfigPath();
 	//char* getAppConfigPath();
