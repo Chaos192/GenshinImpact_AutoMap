@@ -55,7 +55,7 @@ int getMaxId(double lis[], int len)
 int getUid(Num num,Mat img)
 {
 	int res = 0;
-	int k[9] = { 1,2,3,4,5,6,7,8,9};
+	int k[9] = { 0 };
 	int c = 1;
 
 	Mat tmp;
@@ -69,47 +69,50 @@ int getUid(Num num,Mat img)
 		cv::Point minLoc, maxLoc;
 		//寻找最佳匹配位置
 		cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
-
-		int x = maxLoc.x + checkUID.cols + 7;
-		int y = 0;
-		double tmplis[9] = { 0 };
-		int tmplisx[9] = { 0 };
-		for (int p = 8; p >= 0; p--)
+		if (maxVal > 0.85)
 		{
-			for (int i = 0; i < num.max; i++)
+			int x = maxLoc.x + checkUID.cols + 7;
+			int y = 0;
+			double tmplis[9] = { 0 };
+			int tmplisx[9] = { 0 };
+			for (int p = 8; p >= 0; p--)
 			{
-				Rect r(x,y, num.n[i].cols + 2, num.n[i].rows);//180-46/9->140/9->16->16*9=90+54=144
-				if (x + r.width > img.cols)
+				for (int i = 0; i < num.max; i++)
 				{
-					r = Rect(img.cols - num.n[i].cols-2, 0, num.n[i].cols+2, num.n[i].rows);
+					Rect r(x, y, num.n[i].cols + 2, num.n[i].rows);//180-46/9->140/9->16->16*9=90+54=144
+					if (x + r.width > img.cols)
+					{
+						r = Rect(img.cols - num.n[i].cols - 2, 0, num.n[i].cols + 2, num.n[i].rows);
+					}
+
+					Mat numCheckUID = num.n[i];
+					Roi = img(r);
+
+					cv::matchTemplate(Roi, numCheckUID, tmp, cv::TM_CCOEFF_NORMED);
+
+					double minVali, maxVali;
+					cv::Point minLoci, maxLoci;
+					//寻找最佳匹配位置
+					cv::minMaxLoc(tmp, &minVali, &maxVali, &minLoci, &maxLoci);
+
+					tmplis[i] = maxVali;
+					tmplisx[i] = maxLoci.x + numCheckUID.cols - 1;
+					if (maxVali > 0.85)
+					{
+						k[p] = i;
+						x = x + maxLoci.x + numCheckUID.cols - 1;
+						break;
+					}
+					if (i == num.max - 1)
+					{
+						k[p] = getMaxId(tmplis, 9);
+						x = x + tmplisx[k[p]];
+					}
 				}
 
-				Mat numCheckUID = num.n[i];
-				Roi = img(r);
-
-				cv::matchTemplate(Roi, numCheckUID, tmp, cv::TM_CCOEFF_NORMED);
-
-				double minVali, maxVali;
-				cv::Point minLoci, maxLoci;
-				//寻找最佳匹配位置
-				cv::minMaxLoc(tmp, &minVali, &maxVali, &minLoci, &maxLoci);
-
-				tmplis[i] = maxVali;
-				tmplisx[i] = maxLoci.x + numCheckUID.cols-1;
-				if (maxVali > 0.85)
-				{
-					k[p] = i;
-					x = x + maxLoci.x + numCheckUID.cols-1;
-					break;
-				}
-				if (i == num.max - 1)
-				{
-					k[p]=getMaxId(tmplis,9);
-					x = x + tmplisx[k[p]];
-				}
 			}
-			
 		}
+
 	}
 
 	for (int i = 0; i < 9; i++)
@@ -138,7 +141,7 @@ int main()
 	int res3 = getUid(num, test3);
 	t = (getTickCount() - t) / getTickFrequency();
 
-	cout << t << endl;
+	cout << t*1000 << " ms"<<endl;
 
 	cout << "UID:" << "145588000 || " << res1 << endl;
 	if (ans1 != res1)
