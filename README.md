@@ -3,10 +3,13 @@
 
 目前做成了原神的PC端悬浮窗地图工具……（但也实现了自动跟踪的功能）
 
-链接：https://pan.xunlei.com/s/VMRzpFyq2hmpeYjTydWOos2mA1
-提取码：4b3u
+原神悬浮窗v.08
+链接：https://pan.xunlei.com/s/VMSO5JTOm07i64Gs6nSj3SoCA1
+提取码：zi7k
 
 使用要点，没啥要点，先开悬浮窗，再开原神，关掉启动器，无了
+
+有遇到Bug可以尝试自己解决下，我如果发现了会尽量处理，目前的重心在调整匹配精度上。
 
 ## 开发环境
 
