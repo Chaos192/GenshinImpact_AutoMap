@@ -59,7 +59,18 @@ bool giam::GenshinImpact_AutoMap::init()
 	SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + offGiMinMap.x, giRect.top + offGiMinMap.y, autoMapSize.width, autoMapSize.height, SWP_NOMOVE);
 	//设置窗口为无边框
 	SetWindowLong(thisHandle, GWL_STYLE, GetWindowLong(thisHandle, GWL_EXSTYLE | WS_EX_TOPMOST)); //改变窗口风格
+	//加载图标
+
+	HICON hIcon = LoadIcon(GetModuleHandle(0), (LPCTSTR)IDI_ICON7);
+
+	SendMessage(thisHandle, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
+
 	ShowWindow(thisHandle, SW_SHOW);
+
+	//::SetCursor(::LoadCursor(NULL, IDC_CROSS));
+	SetClassLong(thisHandle,-12,(LONG)LoadCursor(NULL, IDC_ARROW));//GCL_HCURSOR
+	//SetClassLong(thisHandle, GCL_HCURSOR, (long)hcur);
+	//SetCursor((HCURSOR)hIcon);
 
 	tMatchInit = new thread(&giam::GenshinImpact_AutoMap::thread_MatchInit,this,ref(giMatch),ref(tMuMatch));
 
