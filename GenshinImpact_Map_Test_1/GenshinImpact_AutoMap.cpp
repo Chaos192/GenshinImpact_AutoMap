@@ -824,7 +824,33 @@ void giam::GenshinImpact_AutoMap::customProcess()
 	//循环计数
 	_count++;
 	
+	Mat * n = new Mat[10];
+	int max = 10;
+	Mat UID = imread("./uid/UID_.png", IMREAD_UNCHANGED);
+	Mat uid0 = imread("./uid/uid0.png", IMREAD_UNCHANGED);
+	Mat uid1 = imread("./uid/uid1.png", IMREAD_UNCHANGED);
+	Mat uid2 = imread("./uid/uid2.png", IMREAD_UNCHANGED);
+	Mat uid3 = imread("./uid/uid3.png", IMREAD_UNCHANGED);
+	Mat uid4 = imread("./uid/uid4.png", IMREAD_UNCHANGED);
+	Mat uid5 = imread("./uid/uid5.png", IMREAD_UNCHANGED);
+	Mat uid6 = imread("./uid/uid6.png", IMREAD_UNCHANGED);
+	Mat uid7 = imread("./uid/uid7.png", IMREAD_UNCHANGED);
+	Mat uid8 = imread("./uid/uid8.png", IMREAD_UNCHANGED);
+	Mat uid9 = imread("./uid/uid9.png", IMREAD_UNCHANGED);
+	n[0] = uid0;
+	n[1] = uid1;
+	n[2] = uid2;
+	n[3] = uid3;
+	n[4] = uid4;
+	n[5] = uid5;
+	n[6] = uid6;
+	n[7] = uid7;
+	n[8] = uid8;
+	n[9] = uid9;
+	if (giShowType == 0)
+	{
 
+	}
 }
 
 //匹配指定目标
