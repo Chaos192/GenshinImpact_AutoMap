@@ -55,7 +55,7 @@ opencv4.5.0
 
 ## 运行画面
 
-![运行画面](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/GenshinImpact_Map_Test_1/Img/Snipaste_2021-01-07_15-09-00.png)
+![运行画面](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/GenshinImpact_Map_Test_1/Img/Snipaste_2021-01-31_23-13-55.png)
 
 
 ### 自动跟踪与搜索神瞳
@@ -113,7 +113,7 @@ opencv4.5.0
 
 目前的解决方案是修改快捷方式，在目标栏添加` -popupwindow`，注意`-`号前面有个空格，如图：
 
-![修改快捷方式]()
+![修改快捷方式](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/GenshinImpact_Map_Test_1/Img/Snipaste_2021-01-31_22-57-14.png)
 
 启动之后按`Alt + Enter`即可切换为无边框模式（我不知道这是怎么做到的，但事实是它可以用）。
 
