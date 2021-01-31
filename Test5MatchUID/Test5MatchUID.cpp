@@ -138,7 +138,7 @@ int main()
 	int ans3 = 100437381;
 	int ans4 = 145492963;
 
-	double t = getTickCount();
+	double t = (double)getTickCount();
 
 	int res1 = getUid(num, test1);
 	int res2 = getUid(num, test2);
