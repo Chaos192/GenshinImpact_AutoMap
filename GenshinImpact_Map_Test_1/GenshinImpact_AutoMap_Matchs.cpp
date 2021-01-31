@@ -119,8 +119,8 @@ void GenshinImpact_AutoMap_Matchs::testSURF()
 			x = 0;
 			y = 0;
 		}
-		x = x + (90 - keypoints_object[good_matches[i].queryIdx].pt.x + keypoints_scene[good_matches[i].trainIdx].pt.x) / k;
-		y = y + (90 - keypoints_object[good_matches[i].queryIdx].pt.y + keypoints_scene[good_matches[i].trainIdx].pt.y) / k;
+		x = x + (img_object.cols/2 - keypoints_object[good_matches[i].queryIdx].pt.x + keypoints_scene[good_matches[i].trainIdx].pt.x) / k;
+		y = y + (img_object.rows/2 - keypoints_object[good_matches[i].queryIdx].pt.y + keypoints_scene[good_matches[i].trainIdx].pt.y) / k;
 	}
 	if (isCout)
 	{

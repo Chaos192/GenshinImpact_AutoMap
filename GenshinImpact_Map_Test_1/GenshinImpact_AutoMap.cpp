@@ -330,7 +330,7 @@ bool giam::GenshinImpact_AutoMap::giIsPaimonVisible()
 	cv::Point minLoc, maxLoc;
 	//—∞’“◊Óº—∆•≈‰Œª÷√
 	cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
-	cout << minVal << "" << maxVal << endl;
+	//cout << minVal << "" << maxVal << endl;
 	if (minVal  < 0.66 || maxVal==1)
 	{
 		if (giIsPaimonVisibleFlag)giFlag.isUpHUD = true;
@@ -883,7 +883,7 @@ void giam::GenshinImpact_AutoMap::customProcess()
 
 						tmplis[i] = maxVali;
 						tmplisx[i] = maxLoci.x + numCheckUID.cols - 1;
-						if (maxVali > 0.85)
+					if (maxVali > 0.85)
 						{
 							k[p] = i;
 							x = x + maxLoci.x + numCheckUID.cols - 1;
@@ -897,6 +897,10 @@ void giam::GenshinImpact_AutoMap::customProcess()
 					}
 
 				}
+			}
+			else
+			{
+				;//imwrite("error.png", Roi);
 			}
 
 		}
@@ -945,27 +949,27 @@ void giam::GenshinImpact_AutoMap::mapMatchMap()
 		{
 			//…Ë÷√∆•≈‰ÕºœÒµ±«∞–°µÿÕº
 			giMatch.setObject(giFrameMap);
-			double t = t = (double)cv::getTickCount();
+			//double t = t = (double)cv::getTickCount();
 
 			tMatchMap = new thread(&giam::GenshinImpact_AutoMap::thread_MatchMap, this, ref(giMatch), ref(tMuMatch));
 
-			t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-			cout << "new Thread time:" << t << "s" << endl;
+			//t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+			//cout << "new Thread time:" << t << "s" << endl;
 		}
 		if (tIsEndMap == false)
 		{
 			GetExitCodeThread(tMatchMap->native_handle(), &exitMapCode);
 			if (exitMapCode == 0)
 			{
-				double t = t = (double)cv::getTickCount();
+				//double t = t = (double)cv::getTickCount();
 
 				tMatchMap->join();
 				delete tMatchMap;
 				tMatchMap = nullptr;
 				tIsEndMap = true;
 
-				t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-				cout << "delete Thread time:" << t << "s" << endl;
+				//t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+				//cout << "delete Thread time:" << t << "s" << endl;
 			}
 		}
 		if (tIsEndMap)
