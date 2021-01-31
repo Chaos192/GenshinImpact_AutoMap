@@ -105,7 +105,7 @@ void GenshinImpact_AutoMap_Matchs::testSURF()
 
 	//-- Filter matches using the Lowe's ratio test
 	//const float ratio_thresh = 0.8f;
-	std::vector<DMatch> good_matches;
+	//std::vector<DMatch> good_matches;
 	std::vector<double> lisx;
 	std::vector<double> lisy;
 	double sumx = 0;
@@ -114,7 +114,7 @@ void GenshinImpact_AutoMap_Matchs::testSURF()
 	{
 		if (knn_matches[i][0].distance < ratio_thresh * knn_matches[i][1].distance)
 		{
-			good_matches.push_back(knn_matches[i][0]);
+			//good_matches.push_back(knn_matches[i][0]);
 			lisx.push_back(((img_object.cols / 2 - keypoints_object[knn_matches[i][0].queryIdx].pt.x)*1.3 + keypoints_scene[knn_matches[i][0].trainIdx].pt.x));
 			lisy.push_back(((img_object.rows / 2 - keypoints_object[knn_matches[i][0].queryIdx].pt.y)*1.3 + keypoints_scene[knn_matches[i][0].trainIdx].pt.y));
 			sumx += lisx.back();
@@ -122,6 +122,12 @@ void GenshinImpact_AutoMap_Matchs::testSURF()
 		}
 	}
 
+	if (min(lisx.size(), lisy.size()) == 0)
+	{
+		cout << "SURF Match Fail" << endl;
+		return;
+	}
+	cout<< "SURF Match Point Number: " << lisx.size()<<","<<lisy.size() << endl;
 	if (isCout)
 	{
 		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
@@ -131,77 +137,57 @@ void GenshinImpact_AutoMap_Matchs::testSURF()
 
 	double meanx = sumx / lisx.size(); //均值
 	double meany = sumy / lisy.size(); //均值
-
-	double accumx = 0.0;
-	double accumy = 0.0;
-	for (int i = 0; i < min(lisx.size(), lisy.size()); i++)
+	int x = (int)meanx;
+	int y = (int)meany;
+	if (min(lisx.size(), lisy.size()) > 15)
 	{
-		accumx += (lisx[i] - meanx)*(lisx[i] - meanx);
-		accumy += (lisy[i] - meany)*(lisy[i] - meany);
-	}
-
-	double stdevx = sqrt(accumx / (lisx.size() - 1)); //标准差
-	double stdevy = sqrt(accumy / (lisy.size() - 1)); //标准差
-
-	sumx = 0;
-	sumy = 0;
-	int numx = 0;
-	int numy = 0;
-	for (int i = 0; i < min(lisx.size(), lisy.size()); i++)
-	{
-		if (abs(lisx[i] - meanx) < 3 * stdevx)
+		double accumx = 0.0;
+		double accumy = 0.0;
+		for (int i = 0; i < min(lisx.size(), lisy.size()); i++)
 		{
-			sumx += lisx[i];
-			numx++;
+			accumx += (lisx[i] - meanx)*(lisx[i] - meanx);
+			accumy += (lisy[i] - meany)*(lisy[i] - meany);
 		}
-		if (abs(lisy[i] - meany) < 3 * stdevy)
+
+		double stdevx = sqrt(accumx / (lisx.size() - 1)); //标准差
+		double stdevy = sqrt(accumy / (lisy.size() - 1)); //标准差
+
+		sumx = 0;
+		sumy = 0;
+		int numx = 0;
+		int numy = 0;
+		for (int i = 0; i < min(lisx.size(), lisy.size()); i++)
 		{
-			sumy += lisy[i];
-			numy++;
+			if (abs(lisx[i] - meanx) < 3 * stdevx)
+			{
+				sumx += lisx[i];
+				numx++;
+			}
+			if (abs(lisy[i] - meany) < 3 * stdevy)
+			{
+				sumy += lisy[i];
+				numy++;
+			}
 		}
+		int x = (int)(sumx / numx);
+		int y = (int)(sumy / numy);
 	}
+	
 
-	if (isCout)
-	{
-		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-		cout << "sum / num time:" << t << "s" << endl;
-		t = (double)cv::getTickCount();
-	}
-
-	int k = (int)good_matches.size();
-	static double x = 0;
-	static double y = 0;
-	double a = 0;
-	double b = 0;
-
-	for (size_t i = 0; i < k; i++)
-	{
-		//size/2-obj+sce
-		if (i == 0) 
-		{
-			x = 0;
-			y = 0;
-		}
-		//a = ((img_object.cols / 2 - keypoints_object[good_matches[i].queryIdx].pt.x)*1.3 + keypoints_scene[good_matches[i].trainIdx].pt.x);
-		//b = ((img_object.rows / 2 - keypoints_object[good_matches[i].queryIdx].pt.y)*1.3 + keypoints_scene[good_matches[i].trainIdx].pt.y);
-		//cout << a << " , " << b <<" , "<< keypoints_object[good_matches[i].queryIdx].pt.x<<" , "<< keypoints_object[good_matches[i].queryIdx].pt.y<<" , "<< keypoints_scene[good_matches[i].trainIdx].pt.x<<" , "<< keypoints_scene[good_matches[i].trainIdx].pt.y<< endl;
-		x = x + ((img_object.cols/2 - keypoints_object[good_matches[i].queryIdx].pt.x)*1.3 + keypoints_scene[good_matches[i].trainIdx].pt.x) / k;
-		y = y + ((img_object.rows/2 - keypoints_object[good_matches[i].queryIdx].pt.y)*1.3 + keypoints_scene[good_matches[i].trainIdx].pt.y) / k;
-	}
 	if (isCout)
 	{
 		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
 		cout << "size/2-obj+sce time:" << t << "s" << endl;
+		cout << x << " , " << y << endl;
 		t = (double)cv::getTickCount();
 	}
 
 	//p = Point((int)x, (int)y);
-	p = Point((int)(sumx / numx), (int)(sumy / numy));
+	p = Point(x, y);
 	//-- Draw matches
 
-	Mat img_matches;
-	drawMatches(img_object, keypoints_object, target, keypoints_scene, good_matches, img_matches, Scalar::all(-1),
-		Scalar::all(-1), std::vector<char>(), DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS);
+	//Mat img_matches;
+	//drawMatches(img_object, keypoints_object, target, keypoints_scene, good_matches, img_matches, Scalar::all(-1),Scalar::all(-1), std::vector<char>(), DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS);
 
 }
 
