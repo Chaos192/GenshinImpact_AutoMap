@@ -8,8 +8,8 @@ using namespace cv;
 
 struct Num
 {
-	Mat * n = new Mat[9];
-	int max = 9;
+	Mat * n = new Mat[10];
+	int max = 10;
 	Mat UID = imread("./uid/UID_.png", IMREAD_UNCHANGED);
 	Mat uid0 = imread("./uid/uid0.png", IMREAD_UNCHANGED);
 	Mat uid1 = imread("./uid/uid1.png", IMREAD_UNCHANGED);
@@ -20,6 +20,7 @@ struct Num
 	Mat uid6 = imread("./uid/uid6.png", IMREAD_UNCHANGED);
 	Mat uid7 = imread("./uid/uid7.png", IMREAD_UNCHANGED);
 	Mat uid8 = imread("./uid/uid8.png", IMREAD_UNCHANGED);
+	Mat uid9 = imread("./uid/uid9.png", IMREAD_UNCHANGED);
 	Num()
 	{
 		n[0] = uid0;
@@ -31,7 +32,7 @@ struct Num
 		n[6] = uid6;
 		n[7] = uid7;
 		n[8] = uid8;
-		//n[9] = uid9;
+		n[9] = uid9;
 	}
 	~Num()
 	{
@@ -73,8 +74,8 @@ int getUid(Num num,Mat img)
 		{
 			int x = maxLoc.x + checkUID.cols + 7;
 			int y = 0;
-			double tmplis[9] = { 0 };
-			int tmplisx[9] = { 0 };
+			double tmplis[10] = { 0 };
+			int tmplisx[10] = { 0 };
 			for (int p = 8; p >= 0; p--)
 			{
 				for (int i = 0; i < num.max; i++)
@@ -105,7 +106,7 @@ int getUid(Num num,Mat img)
 					}
 					if (i == num.max - 1)
 					{
-						k[p] = getMaxId(tmplis, 9);
+						k[p] = getMaxId(tmplis, 10);
 						x = x + tmplisx[k[p]];
 					}
 				}
@@ -130,15 +131,20 @@ int main()
 	Mat test1 = imread(".\\uid\\test1.png", IMREAD_UNCHANGED);
 	Mat test2 = imread(".\\uid\\test2.png", IMREAD_UNCHANGED);
 	Mat test3 = imread(".\\uid\\test3.png", IMREAD_UNCHANGED);
+	Mat test4 = imread(".\\uid\\test4.png", IMREAD_UNCHANGED);
+
 	int ans1 = 145588000;
 	int ans2 = 145147062;
 	int ans3 = 100437381;
+	int ans4 = 145492963;
 
 	double t = getTickCount();
 
 	int res1 = getUid(num, test1);
 	int res2 = getUid(num, test2);
 	int res3 = getUid(num, test3);
+	int res4 = getUid(num, test4);
+
 	t = (getTickCount() - t) / getTickFrequency();
 
 	cout << t*1000 << " ms"<<endl;
@@ -159,9 +165,16 @@ int main()
 		cout << "Match ERROR" << endl;
 	}
 
+	cout << "UID:" << "145492963 || " << res4 << endl;
+	if (ans3 != res3)
+	{
+		cout << "Match ERROR" << endl;
+	}
+
 	cv::imshow("test1", test1);
 	cv::imshow("test2", test2);
 	cv::imshow("test3", test3);
+	cv::imshow("test4", test4);
 
 	waitKey(1000);
     std::cout << "Hello World!\n";
