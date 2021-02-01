@@ -849,7 +849,7 @@ void giam::GenshinImpact_AutoMap::customProcess()
 	//Ñ­»·¼ÆÊý
 	_count++;
 	
-	if (giShowType == 0)
+	if (giShowType == 0 && giIsRunningFlag)
 	{
 		int res = 0;
 		int k[9] = { 0 };
