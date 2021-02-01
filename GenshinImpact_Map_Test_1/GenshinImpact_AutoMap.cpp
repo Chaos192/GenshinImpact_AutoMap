@@ -1014,7 +1014,7 @@ void giam::GenshinImpact_AutoMap::mapStar()
 	static int matchId = 0;
 
 	Rect tmp;
-	if (tIsEndInit == false)return;
+	if (tIsEndInit == false|| giIsRunningFlag == false)return;
 	//根据当前位置，获取周围大地图140px范围内所有star，如果没有则false
 	if (isNeedFindStar(type,id, p) || tMatchStar != nullptr)
 	{
@@ -1240,7 +1240,7 @@ void giam::GenshinImpact_AutoMap::thisCheckThread()
 			tMatchInit = nullptr;
 			tIsEndInit = true;
 			//默认自动启用自动追踪
-			giFlag.isAutoMove = true;
+			giFlag.isAutoMove = giIsRunningFlag;
 			giFlag.isUpdata = true;
 		}
 		
