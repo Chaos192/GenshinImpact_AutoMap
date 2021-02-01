@@ -221,6 +221,7 @@ void GenshinImpact_AutoMap_Matchs::test2()
 	}
 	else
 	{
+		isStarPoint = Point(0, 0);
 		isFindStar = false;
 	}
 

@@ -2,13 +2,7 @@
 // Microsoft Visual C++ 生成的包含文件。
 // 供 GenshinImpact_Map_Test_1.rc 使用
 //
-#define IDI_ICON1                       121
-#define IDI_ICON2                       122
-#define IDI_ICON3                       123
-#define IDI_ICON4                       124
-#define IDI_ICON5                       125
-#define IDI_ICON6                       126
-#define IDI_ICON7                       127
+#define IDI_ICON                       127
 
 // Next default values for new objects
 // 

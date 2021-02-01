@@ -234,12 +234,12 @@ namespace giam
 			Mat pngAMask = imread("./Res/FST_mask.bmp", IMREAD_UNCHANGED);
 			Mat pngB = imread("./Res/YST.png", IMREAD_UNCHANGED);
 			Mat pngBMask = imread("./Res/YST_mask.bmp", IMREAD_UNCHANGED);
-			Mat pngC = imread("./Res/f_t_c_1_1.png", IMREAD_UNCHANGED);
-			Mat pngCMask = imread("./Res/f_t_c_1_1_mask.bmp", IMREAD_UNCHANGED);
+			Mat pngC = imread("./Res/f_t_t_1_1.png", IMREAD_UNCHANGED);
+			Mat pngCMask = imread("./Res/f_t_t_1_1_mask.bmp", IMREAD_UNCHANGED);
 			Mat sysIcon1 = imread("./Res/sysIcon_1.png", IMREAD_UNCHANGED);
 			Mat sysIcon1Mask = imread("./Res/sysIcon_1_mask.bmp", IMREAD_UNCHANGED);
 
-			Rect pngARect = Rect(30, 0, pngA.cols, pngA.rows);
+			Rect pngARect = Rect(32, 0, pngA.cols, pngA.rows);
 			Rect pngBRect = Rect(52, 0, pngB.cols, pngB.rows);
 			Rect pngCRect = Rect(72, 0, pngC.cols, pngC.rows);
 
