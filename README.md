@@ -3,13 +3,19 @@
 
 目前做成了原神的PC端悬浮窗地图工具……（但也实现了自动跟踪的功能）
 
-原神悬浮窗v.08
-链接：https://pan.xunlei.com/s/VMSO5JTOm07i64Gs6nSj3SoCA1
-提取码：zi7k
+原神悬浮窗v.0.8.1 修复了不能单独启动的bug 
+
+迅雷网盘
+链接：https://pan.xunlei.com/s/VMSQvQb_czvkJfcam4CBZvxeA1
+提取码：459n
+
+蓝奏云盘
+链接：https://wws.lanzous.com/iip8el5y0te
+密码:bwiv
 
 使用要点，没啥要点，先开悬浮窗，再开原神，关掉启动器，无了
 
-官服打开窗口弹不上去就闪以下的话，目前的解决方案是修改游戏的快捷方式，在目标栏添加` -popupwindow`，注意`-`号前面有个空格，如图：
+## 官服打开窗口弹不上去就闪以下的话，目前的解决方案是修改游戏的快捷方式，在目标栏添加` -popupwindow`，注意`-`号前面有个空格，如图：
 
 ![修改快捷方式](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/GenshinImpact_Map_Test_1/Img/Snipaste_2021-01-31_22-57-14.png)
 
