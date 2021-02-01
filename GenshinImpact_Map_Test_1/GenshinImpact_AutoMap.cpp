@@ -1270,8 +1270,8 @@ void giam::GenshinImpact_AutoMap::thisCheckThread()
 			tMatchInit = nullptr;
 			tIsEndInit = true;
 			//默认自动启用自动追踪
-			giFlag.isAutoMove = giIsRunningFlag;
-			giFlag.isUpdata = true;
+			//giFlag.isAutoMove = giIsRunningFlag;
+			//giFlag.isUpdata = true;
 		}
 		
 	}
