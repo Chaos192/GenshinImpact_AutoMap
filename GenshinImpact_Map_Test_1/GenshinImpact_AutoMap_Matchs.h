@@ -33,6 +33,7 @@ public:
 	Point getLocation();
 
 	void testSURF();
+	void testSURF2();
 	void test();
 	void test2();
 	void test3();

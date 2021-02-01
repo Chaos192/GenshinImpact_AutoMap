@@ -40,7 +40,6 @@ bool giam::GenshinImpact_AutoMap::init()
 	isInit = false;
 	isRun = true;
 	
-
 	//初始化背景
 	autoMapMat = Mat(autoMapSize, CV_8UC4, Scalar(200, 200, 200, 255));
 	//创建窗口
@@ -68,7 +67,7 @@ bool giam::GenshinImpact_AutoMap::init()
 	ShowWindow(thisHandle, SW_SHOW);
 
 	//::SetCursor(::LoadCursor(NULL, IDC_CROSS));
-	SetClassLong(thisHandle,-12,(LONG)LoadCursor(NULL, IDC_ARROW));//GCL_HCURSOR
+	//SetClassLong(thisHandle,-12,(LONG)LoadCursor(NULL, IDC_ARROW));//GCL_HCURSOR
 	//SetClassLong(thisHandle, GCL_HCURSOR, (long)hcur);
 	//SetCursor((HCURSOR)hIcon);
 

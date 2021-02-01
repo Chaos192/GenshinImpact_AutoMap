@@ -191,6 +191,116 @@ void GenshinImpact_AutoMap_Matchs::testSURF()
 
 }
 
+void GenshinImpact_AutoMap_Matchs::testSURF2()
+{
+	Mat img_scene(target);
+	Mat img_object(object);
+
+	static Point hisP[3] = { Point(0,0), Point(0,0), Point(0,0)};
+
+	detector->detectAndCompute(img_object, noArray(), keypoints_object, descriptors_object);
+
+
+	//-- Step 2: Matching descriptor vectors with a FLANN based matcher
+	// Since SURF is a floating-point descriptor NORM_L2 is used
+	Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
+	std::vector< std::vector<DMatch> > knn_matches;
+	matcher->knnMatch(descriptors_object, descriptors_scene, knn_matches, 2);
+
+	if (isCout)
+	{
+		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+		cout << "matcher->knnMatch time:" << t << "s" << endl;
+		t = (double)cv::getTickCount();
+	}
+
+	//-- Filter matches using the Lowe's ratio test
+	//const float ratio_thresh = 0.8f;
+	//std::vector<DMatch> good_matches;
+	std::vector<double> lisx;
+	std::vector<double> lisy;
+	double sumx = 0;
+	double sumy = 0;
+	for (size_t i = 0; i < knn_matches.size(); i++)
+	{
+		if (knn_matches[i][0].distance < ratio_thresh * knn_matches[i][1].distance)
+		{
+			//good_matches.push_back(knn_matches[i][0]);
+			lisx.push_back(((img_object.cols / 2 - keypoints_object[knn_matches[i][0].queryIdx].pt.x)*1.3 + keypoints_scene[knn_matches[i][0].trainIdx].pt.x));
+			lisy.push_back(((img_object.rows / 2 - keypoints_object[knn_matches[i][0].queryIdx].pt.y)*1.3 + keypoints_scene[knn_matches[i][0].trainIdx].pt.y));
+			sumx += lisx.back();
+			sumy += lisy.back();
+		}
+	}
+
+	if (min(lisx.size(), lisy.size()) == 0)
+	{
+		cout << "SURF Match Fail" << endl;
+		return;
+	}
+	cout << "SURF Match Point Number: " << lisx.size() << "," << lisy.size() << endl;
+	if (isCout)
+	{
+		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+		cout << "good_matches.push_back time:" << t << "s" << endl;
+		t = (double)cv::getTickCount();
+	}
+
+	double meanx = sumx / lisx.size(); //均值
+	double meany = sumy / lisy.size(); //均值
+	int x = (int)meanx;
+	int y = (int)meany;
+	if (min(lisx.size(), lisy.size()) > 15)
+	{
+		double accumx = 0.0;
+		double accumy = 0.0;
+		for (int i = 0; i < min(lisx.size(), lisy.size()); i++)
+		{
+			accumx += (lisx[i] - meanx)*(lisx[i] - meanx);
+			accumy += (lisy[i] - meany)*(lisy[i] - meany);
+		}
+
+		double stdevx = sqrt(accumx / (lisx.size() - 1)); //标准差
+		double stdevy = sqrt(accumy / (lisy.size() - 1)); //标准差
+
+		sumx = 0;
+		sumy = 0;
+		int numx = 0;
+		int numy = 0;
+		for (int i = 0; i < min(lisx.size(), lisy.size()); i++)
+		{
+			if (abs(lisx[i] - meanx) < 3 * stdevx)
+			{
+				sumx += lisx[i];
+				numx++;
+			}
+			if (abs(lisy[i] - meany) < 3 * stdevy)
+			{
+				sumy += lisy[i];
+				numy++;
+			}
+		}
+		int x = (int)(sumx / numx);
+		int y = (int)(sumy / numy);
+	}
+
+
+	if (isCout)
+	{
+		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+		cout << "size/2-obj+sce time:" << t << "s" << endl;
+		cout << x << " , " << y << endl;
+		t = (double)cv::getTickCount();
+	}
+
+	//p = Point((int)x, (int)y);
+
+	p = Point(x, y);
+	hisP[0] = hisP[1];
+	hisP[1] = hisP[2];
+	hisP[2] = p;
+}
+
 void GenshinImpact_AutoMap_Matchs::test()
 {
 	if (!isInit) return;
