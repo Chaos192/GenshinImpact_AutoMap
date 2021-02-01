@@ -3,11 +3,14 @@
 
 目前做成了原神的PC端悬浮窗地图工具……（但也实现了自动跟踪的功能）
 
-原神悬浮窗v.0.8.1 修复了不能单独启动的bug 
+ 
+原神悬浮窗v.0.8.2 修复了不能单独启动的bug，添加了绯红玉髓标记，但没有自动识别玉髓
 
 迅雷网盘
-链接：https://pan.xunlei.com/s/VMSQvQb_czvkJfcam4CBZvxeA1
-提取码：459n
+链接：https://pan.xunlei.com/s/VMSSInYRm0g20pDRFCczyPIeA1
+提取码：qeqp
+
+原神悬浮窗v.0.8.1 修复了不能单独启动的bug
 
 蓝奏云盘
 链接：https://wws.lanzous.com/iip8el5y0te
