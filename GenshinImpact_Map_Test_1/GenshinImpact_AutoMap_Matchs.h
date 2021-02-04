@@ -85,9 +85,12 @@ private:
 	//vector<Point2d> off_sce;
 	int minHessian = 400;
 	float ratio_thresh = 0.66f;
+
 	Ptr<cv::xfeatures2d::SURF> detector;
-	std::vector<KeyPoint> keypoints_object, keypoints_scene;
-	Mat descriptors_object, descriptors_scene;
+	Ptr<cv::xfeatures2d::SURF> detectorTmp;
+	std::vector<KeyPoint> keypoints_object, keypoints_scene, keypoints_sceneTmp;
+	Mat descriptors_object, descriptors_scene, descriptors_sceneTmp;
+
 	Ptr<ORB> orb;
 	vector<KeyPoint> keyPoints_tem, keyPoints_test;
 	Mat descriptors_tem, descriptors_test;
