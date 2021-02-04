@@ -303,14 +303,35 @@ bool giam::GenshinImpact_AutoMap::giIsPaimonVisible()
 {
 	static Mat tmp;
 	static Mat matPaimon;
-	if (giShowType==0)
+	switch (giShowType)
 	{
-		matPaimon = matPaimon1;
+		case 0:
+		{
+			matPaimon = matPaimon1;
+			break;
+		}
+		case 1:
+		{
+			matPaimon = matPaimon1;
+			break;
+		}
+		case 2:
+		{
+			matPaimon = matPaimon2;
+			break;
+		}
+		case 3:
+		{
+			matPaimon = matPaimon2;
+			break;
+		}
+		default:
+		{
+
+			break;
+		}
 	}
-	else
-	{
-		matPaimon = matPaimon2;
-	}
+
 	cv::matchTemplate(matPaimon, giFramePaimon, tmp, cv::TM_CCOEFF_NORMED);
 
 	double minVal, maxVal;
@@ -431,29 +452,66 @@ void giam::GenshinImpact_AutoMap::giScreenROI()
 
 void giam::GenshinImpact_AutoMap::giGetPaimon()
 {
-	//(18,8,48,55) 1366 768
-	if (giIsFullScreenFlag)
+	switch (giShowType)
 	{
-		giFrameRect(Rect(26, 12, 68, 77)).copyTo(giFramePaimon);
-		//giFrameRect(Rect(0, 0, 94, 89)).copyTo(giFramePaimon);
-	}
-	else
-	{
-		giFrameRect(Rect(23, 11, 59, 67)).copyTo(giFramePaimon);
-		//giFrameRect(Rect(0, 0, 82, 78)).copyTo(giFramePaimon);
+		case 0:
+		{
+			giFrameRect(Rect(26, 12, 68, 77)).copyTo(giFramePaimon); 
+			break;
+		}
+		case 1:
+		{
+			giFrameRect(Rect(26, 12, 68, 77)).copyTo(giFramePaimon);
+			break;
+		}
+		case 2:
+		{
+			giFrameRect(Rect(23, 11, 59, 67)).copyTo(giFramePaimon);
+			break;
+		}
+		case 3:
+		{
+			giFrameRect(Rect(23, 11, 59, 67)).copyTo(giFramePaimon);
+			break;
+		}
+		default:
+		{
+			
+			break;
+		}
 	}
 }
 
 void giam::GenshinImpact_AutoMap::giGetMap()
 {
-	if (giIsFullScreenFlag)
+	switch (giShowType)
 	{
-		giFrameRect(Rect(62, 19, 212, 212)).copyTo(giFrameMap);
+		case 0:
+		{
+			giFrameRect(Rect(62, 19, 212, 212)).copyTo(giFrameMap);
+			break;
+		}
+		case 1:
+		{
+			giFrameRect(Rect(62, 19, 212, 212)).copyTo(giFrameMap);
+			break;
+		}
+		case 2:
+		{
+			giFrameRect(Rect(54, 17, 185, 185)).copyTo(giFrameMap);
+			break;
+		}
+		case 3:
+		{
+			giFrameRect(Rect(54, 17, 185, 185)).copyTo(giFrameMap);
+			break;
+		}
+		default:
+		{
+			break;
+		}
 	}
-	else
-	{
-		giFrameRect(Rect(54, 17, 185, 185)).copyTo(giFrameMap);
-	}
+
 }
 
 void giam::GenshinImpact_AutoMap::giSize2ShowMode()
@@ -834,7 +892,7 @@ void giam::GenshinImpact_AutoMap::customProcess()
 	//循环计数
 	_count++;
 	
-	if (giShowType == 0 && giIsRunningFlag)
+	if (giShowType == 0 && giIsRunningFlag&& giIsDisplayFlag)
 	{
 		int res = 0;
 		int k[9] = { 0 };
@@ -999,7 +1057,7 @@ void giam::GenshinImpact_AutoMap::mapStar()
 	static int matchId = 0;
 
 	Rect tmp;
-	if (tIsEndInit == false|| giIsRunningFlag == false)return;
+	if (tIsEndInit == false|| giIsRunningFlag == false|| giIsPaimonVisibleFlag == false)return;
 	//根据当前位置，获取周围大地图140px范围内所有star，如果没有则false
 	if (isNeedFindStar(type,id, p) || tMatchStar != nullptr)
 	{
