@@ -268,6 +268,14 @@ bool giam::GenshinImpact_AutoMap::giIsDisplay()
 		giSize.width = giRect.right - giRect.left;//+6
 		giSize.height = giRect.bottom - giRect.top;//+29
 		giSize2ShowMode();
+		if (giShowType == 8)
+		{
+			giIsDisplayFlag = false;
+		}
+		else
+		{
+			giIsDisplayFlag = true;
+		}
 		//cout << giShowMode << ":" << giSize.height << "," << giSize.width <<":" << giShowSize.height << "," << giShowSize.width << endl;
 		//+6,+29
 		//cout << giRect.bottom - giRect.top << "," << giRect.right - giRect.left << endl;
@@ -584,6 +592,7 @@ void giam::GenshinImpact_AutoMap::giSize2ShowMode()
 	}
 	giShowMode = 1;
 	giShowSize = Size(0, 0);
+	giShowType = 8;
 }
 
 bool giam::GenshinImpact_AutoMap::thisIsIconic()
@@ -805,7 +814,7 @@ void giam::GenshinImpact_AutoMap::addFLAG(Mat img)
 		}
 		//显示匹配出的star
 		p = mapMatchStar;
-		if (p != zerosMinMap / 2)
+		if (p != zerosMinMap )
 		{
 			if (isContains(minMapRect, p))
 			{
@@ -1055,8 +1064,8 @@ void giam::GenshinImpact_AutoMap::mapStar()
 	static const Point Compensation_factor(16,48);
 	static int minVal = 0;
 	static int matchId = 0;
-
 	Rect tmp;
+
 	if (tIsEndInit == false|| giIsRunningFlag == false|| giIsPaimonVisibleFlag == false)return;
 	//根据当前位置，获取周围大地图140px范围内所有star，如果没有则false
 	if (isNeedFindStar(type,id, p) || tMatchStar != nullptr)
@@ -1100,8 +1109,11 @@ void giam::GenshinImpact_AutoMap::mapStar()
 						matchId = i;
 					}
 				}
-				if (minVal > 1000)cout << minVal << endl;
+				cout << "True"<<minVal << endl;
 				mapMatchStar = tmpP;
+				Mat view(giFrameMap);
+				rectangle(view, Rect(findP.x + view.cols, findP.y + view.rows, 22, 22), Scalar(255, 0, 0), 1);
+				imshow("1", view);
 				switch (giConfig.data[id.at(matchId)][type.at(matchId)])
 				{
 					case 0:
@@ -1137,7 +1149,7 @@ void giam::GenshinImpact_AutoMap::mapStar()
 						matchId = i;
 					}
 				}
-				if (minVal > 100)cout << minVal << endl;
+				cout << "False" << minVal << endl;
 				mapMatchStar = tmpP;
 				//判断周围是否应该存在star
 				switch (giConfig.data[id.at(matchId)][type.at(matchId)])
@@ -1168,7 +1180,7 @@ void giam::GenshinImpact_AutoMap::mapStar()
 
 		}
 
-		//cout << id << ":" <<"|"<< p.x << "," << p.y <<"||"<< zerosMinMap.x <<","<< zerosMinMap.y << "|" << endl;
+		//cout << matchId << ":" <<"|"<< mapMatchStar.x << "," << mapMatchStar.y << endl;
 
 		//zerosMinMap
 	}

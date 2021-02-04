@@ -326,12 +326,12 @@ void GenshinImpact_AutoMap_Matchs::test2()
 
 	if (maxVal > 0.75)
 	{
-		isStarPoint = maxLoc-Point(img_scene.size()/2);//+Point(11,11)似乎并不需要
+		isStarPoint = maxLoc-Point(img_scene.size())/2;//+Point(11,11)似乎并不需要
 		isFindStar = true;
 	}
 	else
 	{
-		isStarPoint = Point(0, 0);
+		//isStarPoint = Point(0, 0);
 		isFindStar = false;
 	}
 
@@ -341,7 +341,7 @@ void GenshinImpact_AutoMap_Matchs::test2()
 
 void GenshinImpact_AutoMap_Matchs::test3()
 {
-	Mat img_scene = object;
+	Mat img_scene(object);
 
 	static Mat img_object_mask = imread("./Res/Target_1.bmp", IMREAD_UNCHANGED); //Star
 	static Mat tmp;
