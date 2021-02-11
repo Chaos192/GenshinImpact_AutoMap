@@ -44,12 +44,18 @@
     <ClCompile Include="AutomaticTrackingMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ATM_Resource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutomaticTrackingMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ATM_Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -60,6 +66,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="resource\mainicon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\GIMAP.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

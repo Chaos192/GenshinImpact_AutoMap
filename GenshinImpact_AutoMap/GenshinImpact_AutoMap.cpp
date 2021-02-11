@@ -7,13 +7,17 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 	//ÉèÖÃÎÞ±ß¿ò
 	//setWindowFlags(Qt::CustomizeWindowHint);
 	setWindowFlags(Qt::FramelessWindowHint);
-	map.Mat2QImage();
-	ui.MainView->setPixmap(QPixmap::fromImage(map.MainImg));
+	
 }
 
 void GenshinImpact_AutoMap::doubleClickExit()
 {
 
+}
+
+bool GenshinImpact_AutoMap::eventFilter(QObject * watched, QEvent * event)
+{
+	return false;
 }
 
 void GenshinImpact_AutoMap::EventClickMove()

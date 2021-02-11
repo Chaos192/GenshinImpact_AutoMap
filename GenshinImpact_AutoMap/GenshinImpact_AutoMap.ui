@@ -34,13 +34,16 @@
      </rect>
     </property>
     <property name="cursor">
-     <cursorShape>CrossCursor</cursorShape>
+     <cursorShape>ArrowCursor</cursorShape>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
     </property>
     <property name="layoutDirection">
      <enum>Qt::LeftToRight</enum>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string>原神自动地图</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
