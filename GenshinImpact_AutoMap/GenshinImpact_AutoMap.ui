@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="mouseTracking">
-   <bool>false</bool>
+   <bool>true</bool>
   </property>
   <property name="windowTitle">
    <string>GenshinImpact_AutoMap</string>
@@ -24,6 +24,9 @@
     <normaloff>:/IconMain/resource/icon.ico</normaloff>:/IconMain/resource/icon.ico</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
    <widget class="QLabel" name="MainView">
     <property name="geometry">
      <rect>
@@ -34,7 +37,7 @@
      </rect>
     </property>
     <property name="cursor">
-     <cursorShape>ArrowCursor</cursorShape>
+     <cursorShape>CrossCursor</cursorShape>
     </property>
     <property name="mouseTracking">
      <bool>true</bool>
@@ -43,7 +46,7 @@
      <enum>Qt::LeftToRight</enum>
     </property>
     <property name="text">
-     <string>原神自动地图</string>
+     <string>TextLabel</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

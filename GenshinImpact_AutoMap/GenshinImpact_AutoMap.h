@@ -1,8 +1,12 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
+#include <QMouseEvent>
 #include "ui_GenshinImpact_AutoMap.h"
 #include "AutomaticTrackingMap.h"
+
+////
+#include <QDebug>
 
 class GenshinImpact_AutoMap : public QMainWindow
 {
@@ -18,11 +22,12 @@ private:
 	//×Ô¶¯×·×ÙµØÍ¼
 	ATmap map;
 
-	void eventMouseMove();
+	//void eventMouseMove();
 	//void updataMap();
 
 protected:
-	bool eventFilter(QObject * watched, QEvent * event)override;
+	//bool eventFilter(QObject * watched, QEvent * event)override;
+	void mouseMoveEvent(QMouseEvent *e);
 
 private:
 	//timer = new QTimer(this);
