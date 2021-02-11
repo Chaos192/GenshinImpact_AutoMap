@@ -68,10 +68,18 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='D452T1_C|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='D452T1_C|x64'">
+    <IncludePath>$(VS_VC_opencv_INCLUDE);$(VS_VC_opencv_INCLUDE)\opencv2;$(IncludePath)</IncludePath>
+    <LibraryPath>$(VS_VC_OPENCV_LIB);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='R450T1_W|x64'" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='D452T1_C|x64'">
+    <Link>
+      <AdditionalDependencies>opencv_world450d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>msvc2017_64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>

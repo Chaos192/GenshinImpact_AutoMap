@@ -1,5 +1,7 @@
 #pragma once
 #include <QtWidgets/QMainWindow>
+#include <opencv2/opencv.hpp>
+
 
 class AutomaticTrackingMap
 {
