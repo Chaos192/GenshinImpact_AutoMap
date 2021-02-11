@@ -7,7 +7,8 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 	//ÉèÖÃÎÞ±ß¿ò
 	//setWindowFlags(Qt::CustomizeWindowHint);
 	setWindowFlags(Qt::FramelessWindowHint);
-	
+	myCursor = new QCursor(QPixmap(":/CurMain/resource/cur3.cur"), 2,2);
+	this->setCursor(*myCursor);
 }
 
 void GenshinImpact_AutoMap::doubleClickExit()

@@ -1,5 +1,10 @@
 <RCC>
   <qresource prefix="GenshinImpact_AutoMap"/>
+  <qresource prefix="CurMain">
+    <file>resource/cur.cur</file>
+    <file>resource/cur2.cur</file>
+    <file>resource/cur3.cur</file>
+  </qresource>
   <qresource prefix="IconExit">
     <file>resource/icon16.ico</file>
   </qresource>

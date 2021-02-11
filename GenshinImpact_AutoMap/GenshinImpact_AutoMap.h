@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QtWidgets/QMainWindow>
 #include <QMouseEvent>
+#include <QtWidgets/QMainWindow>
 #include "ui_GenshinImpact_AutoMap.h"
 #include "AutomaticTrackingMap.h"
 
@@ -21,7 +21,7 @@ private:
 private:
 	//×Ô¶¯×·×ÙµØÍ¼
 	ATmap map;
-
+	QCursor *myCursor;
 	//void eventMouseMove();
 	//void updataMap();
 
