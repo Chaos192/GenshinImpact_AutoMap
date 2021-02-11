@@ -1,4 +1,9 @@
 <RCC>
-    <qresource prefix="GenshinImpact_AutoMap">
-    </qresource>
+  <qresource prefix="GenshinImpact_AutoMap"/>
+  <qresource prefix="IconExit">
+    <file>resource/icon16.ico</file>
+  </qresource>
+  <qresource prefix="IconMain">
+    <file>resource/icon.ico</file>
+  </qresource>
 </RCC>

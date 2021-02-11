@@ -12,4 +12,8 @@ public:
 
 private:
     Ui::GenshinImpact_AutoMapClass ui;
+
+private slots:
+	void doubleClickExit();
+	void EventClickMove();
 };

@@ -9,49 +9,88 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>400</height>
+    <width>250</width>
+    <height>200</height>
    </rect>
+  </property>
+  <property name="mouseTracking">
+   <bool>false</bool>
   </property>
   <property name="windowTitle">
    <string>GenshinImpact_AutoMap</string>
   </property>
+  <property name="windowIcon">
+   <iconset theme="MainIcon" resource="GenshinImpact_AutoMap.qrc">
+    <normaloff>:/IconMain/resource/icon.ico</normaloff>:/IconMain/resource/icon.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <property name="leftMargin">
-     <number>0</number>
+   <widget class="QLabel" name="MainView">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>250</width>
+      <height>200</height>
+     </rect>
     </property>
-    <property name="topMargin">
-     <number>0</number>
+    <property name="cursor">
+     <cursorShape>CrossCursor</cursorShape>
     </property>
-    <property name="rightMargin">
-     <number>0</number>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
     </property>
-    <property name="bottomMargin">
-     <number>0</number>
+    <property name="text">
+     <string>TextLabel</string>
     </property>
-    <item>
-     <widget class="QLabel" name="label">
-      <property name="cursor">
-       <cursorShape>CrossCursor</cursorShape>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-   </layout>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="ExitButton">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>0</y>
+      <width>20</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QWidget{
+background-color:rgb(0,0,0,0);
+color:rgb(0,0,0);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset theme="exitIcon" resource="GenshinImpact_AutoMap.qrc">
+      <normaloff>:/IconExit/resource/icon16.ico</normaloff>:/IconExit/resource/icon16.ico</iconset>
+    </property>
+   </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
   <include location="GenshinImpact_AutoMap.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>ExitButton</sender>
+   <signal>clicked()</signal>
+   <receiver>GenshinImpact_AutoMapClass</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>239</x>
+     <y>10</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>69</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

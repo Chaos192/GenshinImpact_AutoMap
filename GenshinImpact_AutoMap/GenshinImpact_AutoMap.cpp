@@ -8,3 +8,12 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 	//setWindowFlags(Qt::CustomizeWindowHint);
 	setWindowFlags(Qt::FramelessWindowHint);
 }
+
+void GenshinImpact_AutoMap::doubleClickExit()
+{
+
+}
+
+void GenshinImpact_AutoMap::EventClickMove()
+{
+}
