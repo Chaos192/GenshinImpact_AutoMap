@@ -17,6 +17,10 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 	//label->setAttribute(Qt::WA_TranslucentBackground);
 
 	//label->setStyleSheet("background:transparent");
+
+	map.getGiHandle();
+	map.getThisHandle((HWND)this->winId());
+	map.setWindowsPos();
 }
 
 void GenshinImpact_AutoMap::doubleClickExit()

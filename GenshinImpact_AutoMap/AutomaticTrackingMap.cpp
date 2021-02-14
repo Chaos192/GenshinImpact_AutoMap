@@ -30,3 +30,32 @@ void AutomaticTrackingMap::Mat2QImage()
 	MainMatTmp = MainMat;
 	MainImg = QImage((uchar*)(MainMatTmp.data), MainMatTmp.cols, MainMatTmp.rows, MainMatTmp.cols*(MainMatTmp.channels()), QImage::Format_RGB32);
 }
+
+void AutomaticTrackingMap::getGiHandle()
+{
+	giHandle = FindWindowA(NULL, "原神");
+	if (giHandle != NULL)
+	{
+		GetWindowRect(giHandle, &giRect);
+	}
+}
+
+void AutomaticTrackingMap::getThisHandle()
+{
+	;//giHandle = FindWindowA(NULL, "原神");
+}
+
+void AutomaticTrackingMap::getThisHandle(HWND _thisHandle)
+{
+	thisHandle = _thisHandle;
+}
+
+void AutomaticTrackingMap::setWindowsPos()
+{
+	SetWindowPos(thisHandle, HWND_TOPMOST, giRect.left + offGiMinMap.x, giRect.top + offGiMinMap.y, 0, 0, SWP_NOSIZE);
+}
+
+void AutomaticTrackingMap::setWindowsPos(HWND _thisHandle)
+{
+	SetWindowPos(_thisHandle, HWND_TOPMOST, giRect.left + offGiMinMap.x, giRect.top + offGiMinMap.y, 0, 0, SWP_NOSIZE);
+}
