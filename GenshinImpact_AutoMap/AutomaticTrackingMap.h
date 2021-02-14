@@ -1,7 +1,7 @@
 #pragma once
 #include <QtWidgets/QMainWindow>
 #include <opencv2/opencv.hpp>
-
+#include <vector>
 #include "ATM_Resource.h"
 
 class AutomaticTrackingMap

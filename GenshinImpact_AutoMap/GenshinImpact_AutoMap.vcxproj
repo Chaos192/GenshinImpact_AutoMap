@@ -173,6 +173,7 @@
     <ResourceCompile Include="GenshinImpact_AutoMap.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="resource\BackGroundMask.bmp" />
     <Image Include="resource\GIMAP.bmp" />
     <Image Include="resource\mainicon.ico" />
   </ItemGroup>

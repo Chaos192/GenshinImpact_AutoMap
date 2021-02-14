@@ -4,6 +4,8 @@ ATM_Resource::ATM_Resource()
 {
 	hGIMAP= LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_GIMAP));
 	HBitmap2Mat(hGIMAP, GIMAP);
+	hMAINMASK = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_BITMAP1));
+	HBitmap2Mat(hMAINMASK, MAINMASK);
 }
 
 ATM_Resource::~ATM_Resource()

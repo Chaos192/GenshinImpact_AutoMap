@@ -13,10 +13,12 @@ public:
 	~ATM_Resource();
 public:
 	Mat GIMAP;
+	Mat MAINMASK;
 	Mat *GIOBJICON;
 
 private:
 	HBITMAP hGIMAP;
+	HBITMAP hMAINMASK;
 	HBITMAP *hGIOBJICON;
 
 	bool HBitmap2Mat(HBITMAP& _hBmp, cv::Mat& _mat);

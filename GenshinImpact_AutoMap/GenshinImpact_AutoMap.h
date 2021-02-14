@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QMouseEvent>
+#include <qpainter.h>
 #include <QtWidgets/QMainWindow>
 #include "ui_GenshinImpact_AutoMap.h"
 #include "AutomaticTrackingMap.h"
@@ -28,6 +29,7 @@ private:
 protected:
 	//bool eventFilter(QObject * watched, QEvent * event)override;
 	void mouseMoveEvent(QMouseEvent *e);
+	void paintEvent(QPaintEvent *event);
 
 private:
 	//timer = new QTimer(this);

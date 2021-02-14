@@ -1,5 +1,9 @@
 <RCC>
   <qresource prefix="GenshinImpact_AutoMap"/>
+  <qresource prefix="BackGroundImage">
+    <file>resource/BGmask.png</file>
+    <file>resource/bg1.png</file>
+  </qresource>
   <qresource prefix="CurMain">
     <file>resource/cur.cur</file>
     <file>resource/cur2.cur</file>
