@@ -46,7 +46,7 @@
      <string notr="true">background-color:rgba(128,128,128)</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

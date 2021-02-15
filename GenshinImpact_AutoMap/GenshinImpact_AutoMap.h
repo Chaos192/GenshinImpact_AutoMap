@@ -23,12 +23,16 @@ private:
 	//×Ô¶¯×·×ÙµØÍ¼
 	ATmap map;
 	QCursor *myCursor;
-	//void eventMouseMove();
-	//void updataMap();
+
+	void mapinit();
 
 protected:
 	//bool eventFilter(QObject * watched, QEvent * event)override;
-	void mouseMoveEvent(QMouseEvent *e);
+	void mouseMoveEvent(QMouseEvent *event);
+	void mousePressEvent(QMouseEvent *event);
+	void mouseReleaseEvent(QMouseEvent *event);
+	void mouseDoubleClickEvent(QMouseEvent *event);
+	void wheelEvent(QWheelEvent *event);
 	void paintEvent(QPaintEvent *event);
 
 private:
@@ -37,9 +41,6 @@ private:
 	QTimer *mapMessageLoopTimer;
 
 private slots:
-	void doubleClickExit();
-	void EventClickMove();
-
 	void runMap();
 
 	void updataFrontEnd();

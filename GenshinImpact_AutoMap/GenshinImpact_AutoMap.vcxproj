@@ -159,12 +159,14 @@
     <QtRcc Include="GenshinImpact_AutoMap.qrc" />
     <QtUic Include="GenshinImpact_AutoMap.ui" />
     <QtMoc Include="GenshinImpact_AutoMap.h" />
+    <ClCompile Include="ATM_MouseEvent.cpp" />
     <ClCompile Include="ATM_Resource.cpp" />
     <ClCompile Include="AutomaticTrackingMap.cpp" />
     <ClCompile Include="GenshinImpact_AutoMap.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ATM_MouseEvent.h" />
     <ClInclude Include="ATM_Resource.h" />
     <ClInclude Include="AutomaticTrackingMap.h" />
     <ClInclude Include="resource.h" />
