@@ -34,6 +34,8 @@ void AutomaticTrackingMap::FrontEndUpdata()
 
 void AutomaticTrackingMap::BackEndUpdata()
 {
+	getGiState();
+	setThisOffset();
 }
 
 void AutomaticTrackingMap::Mat2QImage()
@@ -93,7 +95,7 @@ Mat AutomaticTrackingMap::getViewMap()
 
 void AutomaticTrackingMap::getGiState()
 {
-	GIS.isRun();
+	GIS.getGiState();
 }
 
 void AutomaticTrackingMap::setThisState()
@@ -101,6 +103,14 @@ void AutomaticTrackingMap::setThisState()
 	//ÉèÖÃ´°¿ÚÎ»ÖÃ
 	setWindowsPos();
 	ShowWindow(thisHandle, SW_SHOW);
+}
+
+void AutomaticTrackingMap::setThisOffset()
+{
+	if (GIS.giRectMode > 0)
+	{
+		offGiMinMap = GIS.getOffset();
+	}
 }
 
 void AutomaticTrackingMap::getGiHandle()

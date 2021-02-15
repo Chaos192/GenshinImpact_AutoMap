@@ -1,23 +1,24 @@
 #pragma once
 #include <Windows.h>
-namespace ATM
+#include <opencv2/opencv.hpp>
+enum RectMode
 {
-#define FW_UNDIFINDE -1
-#define FW_MINIMIZE 0
-#define F_1920x1080 1
-#define W_1920x1080 2
-#define F_1680x1050 3
-#define W_1680x1050 4
-#define F_1600x900 5
-#define W_1600x900 6
-#define F_1440x900 7
-#define W_1440x900 8
-#define F_1400x1050 9
-#define W_1400x1050 10
-#define F_1366x768 11
-#define W_1366x768 12
-}
+	FW_UNDIFINDE = -1,
+	FW_MINIMIZE = 0,
+	F_1920x1080 = 1,
+	W_1920x1080 = 2,
+	F_1680x1050 = 3,
+	W_1680x1050 = 4,
+	F_1600x900 = 5,
+	W_1600x900 = 6,
+	F_1440x900 = 7,
+	W_1440x900 = 8,
+	F_1400x1050 = 9,
+	W_1400x1050 = 10,
+	F_1366x768 = 11,
+	W_1366x768 = 12,
 
+};
 
 class ATM_GiState
 {
@@ -31,8 +32,9 @@ public:
 
 	bool isRunning = false;
 	bool isPaimonVisible = false;
-
-	int giRectMode = FW_MINIMIZE;
+	bool isFullScreen = false;
+	int giRectMode = RectMode::FW_MINIMIZE;
+	cv::Size giSize;
 
 	bool giIsRunningFlag = false;
 
@@ -41,7 +43,9 @@ public:
 
 	bool isRun();
 	void getHandle();
+	void getRect();
 	int getGiRectMode();
-
+	int getGiState();
+	cv::Point getOffset();
 };
 

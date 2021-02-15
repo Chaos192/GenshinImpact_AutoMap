@@ -64,10 +64,12 @@ void GenshinImpact_AutoMap::mouseReleaseEvent(QMouseEvent * event)
 
 void GenshinImpact_AutoMap::mouseDoubleClickEvent(QMouseEvent * event)
 {
+
 }
 
 void GenshinImpact_AutoMap::wheelEvent(QWheelEvent * event)
 {
+
 }
 
 void GenshinImpact_AutoMap::paintEvent(QPaintEvent * event)

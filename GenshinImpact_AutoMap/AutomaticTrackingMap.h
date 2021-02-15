@@ -62,7 +62,7 @@ public:
 
 	void getGiState();
 	void setThisState();
-
+	void setThisOffset();
 
 	void getGiHandle();
 	void getThisHandle();
