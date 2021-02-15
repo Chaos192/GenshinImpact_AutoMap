@@ -53,6 +53,9 @@
     <ClCompile Include="ATM_GiState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QtClassMyExitButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutomaticTrackingMap.h">
@@ -86,5 +89,10 @@
     <Image Include="resource\BackGroundMask.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="QtClassMyExitButton.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>

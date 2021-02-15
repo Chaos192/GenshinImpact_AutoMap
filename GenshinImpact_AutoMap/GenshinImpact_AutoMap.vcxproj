@@ -156,6 +156,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="QtClassMyExitButton.cpp" />
     <QtRcc Include="GenshinImpact_AutoMap.qrc" />
     <QtUic Include="GenshinImpact_AutoMap.ui" />
     <QtMoc Include="GenshinImpact_AutoMap.h" />
@@ -171,6 +172,7 @@
     <ClInclude Include="ATM_MouseEvent.h" />
     <ClInclude Include="ATM_Resource.h" />
     <ClInclude Include="AutomaticTrackingMap.h" />
+    <QtMoc Include="QtClassMyExitButton.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

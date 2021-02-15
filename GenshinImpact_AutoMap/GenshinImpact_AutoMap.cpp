@@ -9,6 +9,7 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 	mapMessageLoopTimer->start(16);//1000/30=33.3
 	//mapMessageLoopTimer->setSingleShot(true);
 	connect(mapMessageLoopTimer, SIGNAL(timeout()), this, SLOT(runMap()));
+	connect(ui.ExitButton, SIGNAL(mouseDoubleClickExitExe()), this, SLOT(close()));
 	connect(this, &GenshinImpact_AutoMap::mapUpdataFrontEnd, this, &GenshinImpact_AutoMap::updataFrontEnd);
 	connect(this, &GenshinImpact_AutoMap::mapUpdataBackEnd, this, &GenshinImpact_AutoMap::updataBackEnd);
 
@@ -58,18 +59,33 @@ void GenshinImpact_AutoMap::mouseReleaseEvent(QMouseEvent * event)
 		// ×ó¼ü°´ÏÂ
 		map.MET.bLCD = false;
 		map.setMouseUpPos(event->x(), event->y());
-		qDebug() << "mouse move setMouseUpPos" << event->x() << "," << event->y();
+		qDebug() << "mouse move res" << event->x() << "," << event->y();
 	}
 }
 
 void GenshinImpact_AutoMap::mouseDoubleClickEvent(QMouseEvent * event)
 {
+	if (event->button() == Qt::LeftButton)
+	{
+		qDebug() << "mouse move double" << event->x() << "," << event->y();
 
+	}
 }
 
 void GenshinImpact_AutoMap::wheelEvent(QWheelEvent * event)
 {
-
+	if (event->delta() > 0) {
+		if (map.MET.scale > 0.5)
+		{
+			map.MET.scale /= 1.2;
+		}
+	}
+	else {
+		if (map.MET.scale < 6)
+		{
+			map.MET.scale *= 1.2;
+		}
+	}
 }
 
 void GenshinImpact_AutoMap::paintEvent(QPaintEvent * event)

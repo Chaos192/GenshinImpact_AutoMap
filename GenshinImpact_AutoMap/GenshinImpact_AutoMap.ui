@@ -52,7 +52,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="ExitButton">
+   <widget class="QtClassMyExitButton" name="ExitButton">
     <property name="geometry">
      <rect>
       <x>230</x>
@@ -78,25 +78,15 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QtClassMyExitButton</class>
+   <extends>QPushButton</extends>
+   <header>QtClassMyExitButton.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="GenshinImpact_AutoMap.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>ExitButton</sender>
-   <signal>clicked()</signal>
-   <receiver>GenshinImpact_AutoMapClass</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>239</x>
-     <y>10</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>249</x>
-     <y>69</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
