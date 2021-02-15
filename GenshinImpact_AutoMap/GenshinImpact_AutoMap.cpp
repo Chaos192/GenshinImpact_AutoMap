@@ -4,6 +4,7 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
+	//刷新定时器
 	mapMessageLoopTimer = new QTimer(this);
 	mapMessageLoopTimer->start(16);//1000/30=33.3
 	//mapMessageLoopTimer->setSingleShot(true);
@@ -17,32 +18,17 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 
 	//设置半透明无边框窗口
 	//setWindowFlags(Qt::CustomizeWindowHint);
-	setWindowOpacity(0.9);
-	setWindowFlags(Qt::FramelessWindowHint);
+	this->setWindowOpacity(0.9);
+	this->setWindowFlags(Qt::FramelessWindowHint);
 	this->setAttribute(Qt::WA_TranslucentBackground, true);
-
 	ui.MainView->setAttribute(Qt::WA_TranslucentBackground);
+
+	mapInit();
 }
 
-//bool GenshinImpact_AutoMap::eventFilter(QObject * watched, QEvent * event)
-//{
-//	switch (event->type())
-//	{
-//		case QEvent::MouseButtonPress:
-//		{
-//			if (watched == ui.MainView)
-//			{
-//
-//			}
-//			break;
-//		}
-//	}
-//
-//	return QWidget::eventFilter(watched, event);
-//}
-
-void GenshinImpact_AutoMap::mapinit()
+void GenshinImpact_AutoMap::mapInit()
 {
+	map.Init((HWND)this->winId());
 }
 
 void GenshinImpact_AutoMap::mouseMoveEvent(QMouseEvent * event)

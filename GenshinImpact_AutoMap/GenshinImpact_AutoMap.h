@@ -24,7 +24,7 @@ private:
 	ATmap map;
 	QCursor *myCursor;
 
-	void mapinit();
+	void mapInit();
 
 protected:
 	//bool eventFilter(QObject * watched, QEvent * event)override;

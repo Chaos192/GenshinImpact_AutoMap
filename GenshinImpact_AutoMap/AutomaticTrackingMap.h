@@ -5,12 +5,14 @@
 #include <vector>
 #include "ATM_Resource.h"
 #include "ATM_MouseEvent.h"
+#include "ATM_GiState.h"
 
 
 class AutomaticTrackingMap
 {
 	//加载资源
 	ATM_Resource RES;
+	ATM_GiState GIS;
 
 	cv::Mat MainMat;
 	cv::Mat MainMatTmp;
@@ -21,15 +23,9 @@ public:
 
 	ATM_MouseEvent MET;
 
-
-	//原神游戏窗口句柄
-	HWND giHandle;
 	//自动悬浮窗句柄
 	HWND thisHandle;
-	//原神窗口区域
-	RECT giRect;
-	//原神窗口区域保存对比用
-	RECT giRectTmp;
+
 
 
 	//悬浮窗大小
@@ -46,9 +42,15 @@ public:
 	//
 	Rect minMapRect;
 
+	//原神是否正在运行标志
+
+
+
+	//Qt
 	QImage MainImg;
 
-
+	void Init(HWND mapWindowsHandle);
+	void Exit();
 
 	void FrontEndUpdata();
 	void BackEndUpdata();
@@ -57,6 +59,9 @@ public:
 
 public:
 	Mat getViewMap();
+
+	void getGiState();
+	void setThisState();
 
 
 	void getGiHandle();
