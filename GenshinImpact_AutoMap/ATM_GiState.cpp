@@ -138,18 +138,18 @@ cv::Point ATM_GiState::getOffset()
 		case F_1680x1050:
 		{
 			res.x = 250;
-			res.y = 100;
+			res.y = 82;
 			break;
 		}
 		case W_1680x1050:
 		{
 			res.x = 250;
-			res.y = 100;
+			res.y = 82;
 			break;
 		}
 		
 		default:
 			break;
 	}
-	return cv::Size();
+	return res;
 }

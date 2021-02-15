@@ -30,6 +30,10 @@ void AutomaticTrackingMap::FrontEndUpdata()
 {
 	MainMat = getViewMap();
 	Mat2QImage();
+	getGiState();
+	setThisState();
+	SetForegroundWindow(GIS.giHandle);/* 对原神窗口的操作 */
+
 }
 
 void AutomaticTrackingMap::BackEndUpdata()
@@ -62,6 +66,23 @@ Mat AutomaticTrackingMap::getViewMap()
 	reMapSize.height = (int)(reMapSize.height * MET.scale);
 
 	Size R = reMapSize / 2;
+
+	if (zerosMinMap.x < 0)
+	{
+		zerosMinMap.x = 0;
+	}
+	if (zerosMinMap.y < 0)
+	{
+		zerosMinMap.y = 0;
+	}
+	if (zerosMinMap.x > mapSize.width)
+	{
+		zerosMinMap.x = mapSize.width;
+	}
+	if (zerosMinMap.y > mapSize.height)
+	{
+		zerosMinMap.y = mapSize.height;
+	}
 
 	Point LT = zerosMinMap - Point(R);
 	Point RB = zerosMinMap + Point(R);
