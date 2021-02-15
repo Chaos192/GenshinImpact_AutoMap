@@ -1,7 +1,7 @@
 #pragma once
-
-#include <QMouseEvent>
+#include <qtimer.h>
 #include <qpainter.h>
+#include <QMouseEvent>
 #include <QtWidgets/QMainWindow>
 #include "ui_GenshinImpact_AutoMap.h"
 #include "AutomaticTrackingMap.h"
@@ -34,8 +34,21 @@ protected:
 private:
 	//timer = new QTimer(this);
 	//connect(timer, SIGNAL(timeout()), this, SLOT(DrawLine()));
+	QTimer *mapMessageLoopTimer;
 
 private slots:
 	void doubleClickExit();
 	void EventClickMove();
+
+	void runMap();
+
+	void updataFrontEnd();
+	void updataBackEnd();
+
+signals:
+
+	void mapUpdata();
+	void mapUpdataFrontEnd();
+	void mapUpdataBackEnd();
+
 };

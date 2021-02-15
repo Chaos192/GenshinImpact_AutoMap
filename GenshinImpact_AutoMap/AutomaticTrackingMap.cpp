@@ -28,7 +28,7 @@ void AutomaticTrackingMap::Mat2QImage()
 {
 	//cv::cvtColor(MainMat, MainMatTmp, cv::COLOR_BGRA2RGBA);
 	MainMatTmp = MainMat;
-	MainImg = QImage((uchar*)(MainMatTmp.data), MainMatTmp.cols, MainMatTmp.rows, MainMatTmp.cols*(MainMatTmp.channels()), QImage::Format_RGB32);
+	MainImg = QImage((uchar*)(MainMatTmp.data), MainMatTmp.cols, MainMatTmp.rows, MainMatTmp.cols*(MainMatTmp.channels()), QImage::Format_ARGB32);
 }
 
 void AutomaticTrackingMap::getGiHandle()
