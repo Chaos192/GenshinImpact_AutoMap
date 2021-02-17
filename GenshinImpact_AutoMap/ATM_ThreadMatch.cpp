@@ -1,5 +1,29 @@
 #include "ATM_ThreadMatch.h"
 
+ATM_ThreadMatch::~ATM_ThreadMatch()
+{
+	if (tSurfMapInit != nullptr)
+	{
+		tSurfMapInit->join();
+		delete tSurfMapInit;
+	}
+	if (tSurfMapMatch != nullptr)
+	{
+		tSurfMapMatch->join();
+		delete tSurfMapMatch;
+	}
+	if (tMatchStar != nullptr)
+	{
+		tMatchStar->join();
+		delete tMatchStar;
+	}
+	if (tMatchTarget != nullptr)
+	{
+		tMatchTarget->join();
+		delete tMatchTarget;
+	}
+}
+
 void ATM_ThreadMatch::cThreadSurfMapInit(Mat &Map)
 {
 	cvtColor(Map, mapGray, CV_RGB2GRAY);

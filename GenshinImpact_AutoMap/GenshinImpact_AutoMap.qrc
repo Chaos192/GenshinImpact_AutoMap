@@ -1,9 +1,11 @@
 <RCC>
   <qresource prefix="GenshinImpact_AutoMap"/>
-  <qresource prefix="BackGroundImage">
-    <file>resource/BGmask.png</file>
-    <file>resource/bg1.png</file>
+  <qresource prefix="IconAutoMode">
+    <file>resource/AutoModeIcon3.ico</file>
+    <file>resource/AutoModeIcon2.ico</file>
+    <file>resource/AutoModeIcon.ico</file>
   </qresource>
+  <qresource prefix="BackGroundImage"/>
   <qresource prefix="CurMain">
     <file>resource/cur.cur</file>
     <file>resource/cur2.cur</file>
@@ -11,6 +13,7 @@
   </qresource>
   <qresource prefix="IconExit">
     <file>resource/icon16.ico</file>
+    <file>resource/icon32.ico</file>
   </qresource>
   <qresource prefix="IconMain">
     <file>resource/icon.ico</file>

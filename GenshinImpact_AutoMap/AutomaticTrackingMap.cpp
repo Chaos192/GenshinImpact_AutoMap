@@ -24,8 +24,7 @@ void AutomaticTrackingMap::Init(HWND mapWindowsHandle)
 	*/
 	BackEndUpdata();
 
-	//多线程初始化
-	TMS.cThreadSurfMapInit(RES.GIMAP);
+
 	
 	/**/
 }
@@ -70,15 +69,22 @@ void AutomaticTrackingMap::BackEndUpdata()
 	/*
 	数据处理部分
 	*/
-	//多线程检查输出
-	TMS.CheckThread();
-	TMS.GetMatchResults();
-	TMS.cThreadSurfMapMatch();
 
-	if (TMS.tIsEndSurfMapInit)
+	if (isAutoMode)
 	{
-		zerosMinMap = TMS.pos;
+		//多线程检查输出
+		TMS.CheckThread();
+		TMS.GetMatchResults();
+		//多线程初始化
+		TMS.cThreadSurfMapInit(RES.GIMAP);
+		TMS.cThreadSurfMapMatch();
+
+		if (TMS.tIsEndSurfMapInit)
+		{
+			zerosMinMap = TMS.pos;
+		}
 	}
+
 	/*
 	获取部分
 	*/
@@ -246,6 +252,16 @@ void AutomaticTrackingMap::setMouseMovePos(int x, int y)
 	MET.normalizationZerosMinMap(Rect(0,0,mapSize.width,mapSize.width));
 	zerosMinMap = MET.zerosMinMap;
 	
+}
+
+void AutomaticTrackingMap::setAutoMode()
+{
+	isAutoMode = !isAutoMode;
+}
+
+bool AutomaticTrackingMap::getAutoMode()
+{
+	return isAutoMode;
 }
 
 int AutomaticTrackingMap::getThisState()

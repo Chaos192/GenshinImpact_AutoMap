@@ -61,6 +61,8 @@ class ATM_ThreadMatch
 
 	ATM_TM_SurfMap surfMap;
 public:
+	~ATM_ThreadMatch();
+
 	Point pos;
 
 	bool isExistObjMinMap = false;

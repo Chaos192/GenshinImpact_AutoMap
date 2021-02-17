@@ -46,6 +46,7 @@ private slots:
 	void updataFrontEnd();
 	void updataBackEnd();
 
+	void setAutoMode();
 signals:
 
 	void mapUpdata();

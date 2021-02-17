@@ -58,7 +58,7 @@ void GenshinImpact_AutoMap::mouseReleaseEvent(QMouseEvent * event)
 	{
 		// ×ó¼ü°´ÏÂ
 		map.MET.bLCD = false;
-		map.setMouseUpPos(event->x(), event->y());
+		//map.setMouseUpPos(event->x(), event->y());
 		qDebug() << "mouse move res" << event->x() << "," << event->y();
 	}
 }
@@ -133,5 +133,14 @@ void GenshinImpact_AutoMap::updataBackEnd()
 	//static int count = 0;
 	//qDebug() << "Updata Back-End " << count++ << " ";
 	map.BackEndUpdata();
+}
+
+void GenshinImpact_AutoMap::setAutoMode()
+{
+	map.setAutoMode();
+	if (map.getAutoMode())
+	{
+		//ui.AutoButton->setIcon();
+	}
 }
 

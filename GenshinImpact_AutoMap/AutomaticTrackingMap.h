@@ -93,6 +93,9 @@ public:
 	void setMouseDownPos(int x,int y);
 	void setMouseUpPos(int x, int y);
 	void setMouseMovePos(int x, int y);
+
+	void setAutoMode();
+	bool getAutoMode();
 private:
 	int getThisState();
 	
