@@ -157,6 +157,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ATM_GI_ScreenResolution.cpp" />
+    <ClCompile Include="ATM_ThreadMatch.cpp" />
     <ClCompile Include="QtClassMyExitButton.cpp" />
     <QtRcc Include="GenshinImpact_AutoMap.qrc" />
     <QtUic Include="GenshinImpact_AutoMap.ui" />
@@ -173,6 +174,7 @@
     <ClInclude Include="ATM_GI_ScreenResolution.h" />
     <ClInclude Include="ATM_MouseEvent.h" />
     <ClInclude Include="ATM_Resource.h" />
+    <ClInclude Include="ATM_ThreadMatch.h" />
     <ClInclude Include="AutomaticTrackingMap.h" />
     <QtMoc Include="QtClassMyExitButton.h" />
     <ClInclude Include="resource.h" />

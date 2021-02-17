@@ -6,6 +6,7 @@
 #include "ATM_Resource.h"
 #include "ATM_MouseEvent.h"
 #include "ATM_GiState.h"
+#include "ATM_ThreadMatch.h"
 
 enum ThisWinState
 {
@@ -22,6 +23,8 @@ class AutomaticTrackingMap
 	ATM_Resource RES;
 	//原神窗口信息
 	ATM_GiState GIS;
+	//多线程匹配
+	ATM_ThreadMatch TMS;
 
 	cv::Mat MainMat;
 	cv::Mat MainMatTmp;
@@ -92,7 +95,11 @@ public:
 	void setMouseMovePos(int x, int y);
 private:
 	int getThisState();
+	
+
+	
 	void setThisState();
+	void setThreadMatchMat();
 };
 
 typedef AutomaticTrackingMap ATmap;

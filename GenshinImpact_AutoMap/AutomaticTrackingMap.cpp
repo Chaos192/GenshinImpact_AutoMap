@@ -25,6 +25,8 @@ void AutomaticTrackingMap::Init(HWND mapWindowsHandle)
 	BackEndUpdata();
 
 	//多线程初始化
+	TMS.cThreadSurfMapInit(RES.GIMAP);
+	
 	/**/
 }
 
@@ -40,7 +42,7 @@ void AutomaticTrackingMap::FrontEndUpdata()
 	*/
 
 	setThisState();
-
+	setThreadMatchMat();
 
 
 
@@ -69,7 +71,14 @@ void AutomaticTrackingMap::BackEndUpdata()
 	数据处理部分
 	*/
 	//多线程检查输出
+	TMS.CheckThread();
+	TMS.GetMatchResults();
+	TMS.cThreadSurfMapMatch();
 
+	if (TMS.tIsEndSurfMapInit)
+	{
+		zerosMinMap = TMS.pos;
+	}
 	/*
 	获取部分
 	*/
@@ -329,5 +338,25 @@ void AutomaticTrackingMap::setThisState()
 			setThisState_Normal();
 			break;
 		}
+	}
+}
+
+void AutomaticTrackingMap::setThreadMatchMat()
+{
+	if (GIS.isRunning)
+	{
+		Mat matRGB2GRAY;
+		cvtColor(GIS.giFrameMap, matRGB2GRAY, CV_RGB2GRAY);
+		TMS.getObjMinMap(matRGB2GRAY);
+		cvtColor(GIS.giFramePaimon, matRGB2GRAY, CV_RGB2GRAY);
+		TMS.getObjPaimon(matRGB2GRAY);
+		cvtColor(GIS.giFrameUID, matRGB2GRAY, CV_RGB2GRAY);
+		TMS.getObjUID(matRGB2GRAY);
+	}
+	else
+	{
+		TMS.isExistObjMinMap = false;
+		TMS.isExistObjPaimon = false;
+		TMS.isExistObjUID = false;
 	}
 }
