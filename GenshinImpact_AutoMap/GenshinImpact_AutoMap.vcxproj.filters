@@ -56,6 +56,9 @@
     <ClCompile Include="QtClassMyExitButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ATM_GI_ScreenResolution.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutomaticTrackingMap.h">
@@ -71,6 +74,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ATM_GiState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ATM_GI_ScreenResolution.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

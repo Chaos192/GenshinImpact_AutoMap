@@ -117,8 +117,7 @@ int ATM_GiState::getGiState()
 	isRun() ? getHandle() : giRectMode = RectMode::FW_MINIMIZE;
 	return giRectMode;
 }
-
-cv::Point ATM_GiState::getOffset()
+Point ATM_GiState::getOffset()
 {
 	cv::Point res;
 	switch (giRectMode)
@@ -152,4 +151,255 @@ cv::Point ATM_GiState::getOffset()
 			break;
 	}
 	return res;
+}
+
+void ATM_GiState::getGiScreen()
+{
+	static HBITMAP	hBmp;
+	BITMAP bmp;
+
+	DeleteObject(hBmp);
+
+	if (giHandle == NULL)return;
+
+	//获取目标句柄的窗口大小RECT
+	GetWindowRect(giHandle, &giRect);/* 对原神窗口的操作 */
+
+	//获取目标句柄的DC
+	HDC hScreen = GetDC(giHandle);/* 对原神窗口的操作 */
+	HDC hCompDC = CreateCompatibleDC(hScreen);
+
+	//获取目标句柄的宽度和高度
+	int	nWidth = giRect.right - giRect.left;
+	int	nHeight = giRect.bottom - giRect.top;
+
+	//创建Bitmap对象
+	hBmp = CreateCompatibleBitmap(hScreen, nWidth, nHeight);//得到位图
+
+	SelectObject(hCompDC, hBmp); //不写就全黑
+	BitBlt(hCompDC, 0, 0, nWidth, nHeight, hScreen, 0, 0, SRCCOPY);
+
+	//释放对象
+	DeleteDC(hScreen);
+	DeleteDC(hCompDC);
+
+	//类型转换
+	GetObject(hBmp, sizeof(BITMAP), &bmp);
+
+	int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
+	int depth = bmp.bmBitsPixel == 1 ? IPL_DEPTH_1U : IPL_DEPTH_8U;
+
+	//mat操作
+	giFrame.create(cv::Size(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8U, nChannels));
+
+	GetBitmapBits(hBmp, bmp.bmHeight*bmp.bmWidth*nChannels, giFrame.data);
+}
+
+void ATM_GiState::getGiFrame()
+{
+	getGiScreen();
+	getGiRectMode();
+	if (giRectMode > 0)
+	{
+		getGiFramePaimon();
+		getGiFrameMap();
+		getGiFrameUID();
+	}
+}
+
+void ATM_GiState::getGiFramePaimon()
+{
+	Rect PaimonRect;
+	switch (giRectMode)
+	{
+		case F_1920x1080:
+		case W_1920x1080:
+		{
+			PaimonRect = Rect(26, 12, 68, 77);
+			break;
+		}
+		case F_1680x1050:
+		case W_1680x1050:
+		{
+
+			PaimonRect = Rect(23, 11, 59, 67);
+			break;
+		}
+		case F_1600x900:
+		case W_1600x900:
+		{
+
+			PaimonRect = Rect(23, 11, 59, 67);
+			break;
+		}
+		case F_1440x900:
+		case W_1440x900:
+		{
+
+			PaimonRect = Rect(23, 11, 59, 67);
+			break;
+		}
+		case F_1400x1050:
+		case W_1400x1050:
+		{
+
+			PaimonRect = Rect(23, 11, 59, 67);
+			break;
+		}
+		case F_1366x768:
+		case W_1366x768:
+		{
+
+			PaimonRect = Rect(23, 11, 59, 67);
+			break;
+		}
+		default:
+		{
+			PaimonRect = Rect(26, 12, 68, 77);
+			break;
+		}
+	}
+	giFrame(PaimonRect).copyTo(giFramePaimon);
+
+}
+
+void ATM_GiState::getGiFrameMap()
+{
+	Rect mapRect;
+	switch (giRectMode)
+	{
+		case F_1920x1080:
+		case W_1920x1080:
+		{
+			mapRect = Rect(62, 19, 212, 212);
+			break;
+		}
+		case F_1680x1050:
+		case W_1680x1050:
+		{
+
+			mapRect = Rect(54, 17, 185, 185);
+			break;
+		}
+		case F_1600x900:
+		case W_1600x900:
+		{
+
+			mapRect = Rect(54, 17, 185, 185);
+			break;
+		}
+		case F_1440x900:
+		case W_1440x900:
+		{
+
+			mapRect = Rect(54, 17, 185, 185);
+			break;
+		}
+		case F_1400x1050:
+		case W_1400x1050:
+		{
+
+			mapRect = Rect(54, 17, 185, 185);
+			break;
+		}
+		case F_1366x768:
+		case W_1366x768:
+		{
+
+			mapRect = Rect(54, 17, 185, 185);
+			break;
+		}
+		default:
+		{
+			mapRect = Rect(62, 19, 212, 212);
+			break;
+		}
+	}
+	giFrame(mapRect).copyTo(giFrameMap);
+}
+
+void ATM_GiState::getGiFrameUID()
+{
+	Rect uidRect;
+	switch (giRectMode)
+	{
+		case F_1920x1080:
+		{
+			uidRect = Rect(giFrame.cols - 240, giFrame.rows - 25, 180, 18);
+			break;
+		}
+		case W_1920x1080:
+		{
+			uidRect = Rect(giFrame.cols - 240, giFrame.rows - 25, 180, 18);
+			uidRect.x = uidRect.x - 16;
+			uidRect.y = uidRect.y - 29;
+			break;
+		}
+		case F_1680x1050:
+		{
+			uidRect = Rect(giFrame.cols - 207, giFrame.rows - 23, 155, 18);
+			break;
+		}
+		case W_1680x1050:
+		{
+			uidRect = Rect(giFrame.cols - 207, giFrame.rows - 23, 155, 18);
+			uidRect.x = uidRect.x - 16;
+			uidRect.y = uidRect.y - 29;
+			break;
+		}
+		case F_1600x900:
+		{
+			uidRect = Rect(giFrame.cols - 207, giFrame.rows - 23, 155, 18);
+			break;
+		}
+		case W_1600x900:
+		{
+			uidRect = Rect(giFrame.cols - 207, giFrame.rows - 23, 155, 18);
+			uidRect.x = uidRect.x - 16;
+			uidRect.y = uidRect.y - 29;
+			break;
+		}
+		case F_1440x900:
+		{
+			uidRect = Rect(giFrame.cols - 207, giFrame.rows - 23, 155, 18);
+			break;
+		}
+		case W_1440x900:
+		{
+			uidRect = Rect(giFrame.cols - 207, giFrame.rows - 23, 155, 18);
+			uidRect.x = uidRect.x - 16;
+			uidRect.y = uidRect.y - 29;
+			break;
+		}
+		case F_1400x1050:
+		{
+			uidRect = Rect(giFrame.cols - 207, giFrame.rows - 23, 155, 18);
+			break;
+		}
+		case W_1400x1050:
+		{
+			uidRect = Rect(giFrame.cols - 207, giFrame.rows - 23, 155, 18);
+			uidRect.x = uidRect.x - 16;
+			uidRect.y = uidRect.y - 29;
+			break;
+		}
+		case F_1366x768:
+		{
+			uidRect = Rect(giFrame.cols - 207, giFrame.rows - 23, 155, 18);
+			break;
+		}
+		case W_1366x768:
+		{
+			uidRect = Rect(giFrame.cols - 207, giFrame.rows - 23, 155, 18);
+			uidRect.x = uidRect.x - 16;
+			uidRect.y = uidRect.y - 29;
+			break;
+		}
+		default:
+		{
+			uidRect = Rect(giFrame.cols - 240, giFrame.rows - 25, 180, 18);
+			break;
+		}
+	}
+	giFrame(uidRect).copyTo(giFrameUID);
 }

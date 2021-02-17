@@ -7,26 +7,39 @@
 #include "ATM_MouseEvent.h"
 #include "ATM_GiState.h"
 
+enum ThisWinState
+{
+	Normal,
+	Minimize,
+	NoTop,
+	Top,
+	TopShow,
+};
 
 class AutomaticTrackingMap
 {
 	//加载资源
 	ATM_Resource RES;
+	//原神窗口信息
 	ATM_GiState GIS;
 
 	cv::Mat MainMat;
 	cv::Mat MainMatTmp;
+
+	int thisStateMode = 0;
+
 public:
 	AutomaticTrackingMap();
 	~AutomaticTrackingMap();
 public:
 
+	//鼠标位置
 	ATM_MouseEvent MET;
 
 	//自动悬浮窗句柄
 	HWND thisHandle;
-
-
+	//是否启用自动追踪
+	bool isAutoMode = false;
 
 	//悬浮窗大小
 	Size autoMapSize = Size(250, 200);
@@ -61,8 +74,11 @@ public:
 	Mat getViewMap();
 
 	void getGiState();
-	void setThisState();
-	void setThisOffset();
+	void setThisState_Normal();
+	void setThisState_Minimize();
+	void setThisState_TopShow();
+
+	void getThisOffset();
 
 	void getGiHandle();
 	void getThisHandle();
@@ -74,6 +90,9 @@ public:
 	void setMouseDownPos(int x,int y);
 	void setMouseUpPos(int x, int y);
 	void setMouseMovePos(int x, int y);
+private:
+	int getThisState();
+	void setThisState();
 };
 
 typedef AutomaticTrackingMap ATmap;

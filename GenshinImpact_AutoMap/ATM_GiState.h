@@ -1,6 +1,9 @@
 #pragma once
 #include <Windows.h>
 #include <opencv2/opencv.hpp>
+#include <opencv2/imgproc/types_c.h>
+using namespace cv;
+
 enum RectMode
 {
 	FW_UNDIFINDE = -1,
@@ -30,22 +33,42 @@ public:
 	//原神窗口区域保存对比用
 	RECT giRectTmp;
 
+	//原神游戏窗口截图
+	Mat giFrame;
+	//原神游戏窗口截图有效区域
+	//Mat giFrameROI;
+	//
+	Mat giFrameRect;
+	//
+	Mat giFramePaimon;
+	//
+	Mat giFrameMap;
+
+	Mat giFrameUID;
+
+
+	//原神是否运行中
 	bool isRunning = false;
+	//派蒙是否可见即是否处于主画面
 	bool isPaimonVisible = false;
+	//原神是否全屏
 	bool isFullScreen = false;
+	//窗口分辨率模式
 	int giRectMode = RectMode::FW_MINIMIZE;
-	cv::Size giSize;
-
-	bool giIsRunningFlag = false;
-
-	//原神是否派蒙可见，即在主画面
-	bool giIsPaimonVisibleFlag = false;
+	//窗口大小
+	Size giSize;
 
 	bool isRun();
 	void getHandle();
 	void getRect();
 	int getGiRectMode();
 	int getGiState();
-	cv::Point getOffset();
+	Point getOffset();
+
+	void getGiScreen();
+	void getGiFrame();
+	void getGiFramePaimon();
+	void getGiFrameMap();
+	void getGiFrameUID();
 };
 

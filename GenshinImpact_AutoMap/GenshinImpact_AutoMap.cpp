@@ -19,7 +19,7 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 
 	//设置半透明无边框窗口
 	//setWindowFlags(Qt::CustomizeWindowHint);
-	this->setWindowOpacity(0.9);
+	//this->setWindowOpacity(0.9);
 	this->setWindowFlags(Qt::FramelessWindowHint);
 	this->setAttribute(Qt::WA_TranslucentBackground, true);
 	ui.MainView->setAttribute(Qt::WA_TranslucentBackground);

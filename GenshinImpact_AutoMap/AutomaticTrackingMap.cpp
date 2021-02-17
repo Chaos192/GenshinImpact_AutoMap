@@ -11,13 +11,19 @@ AutomaticTrackingMap::~AutomaticTrackingMap()
 
 void AutomaticTrackingMap::Init(HWND mapWindowsHandle)
 {
+	/*
+	数据状态初始化
+	*/
 	MET.zerosMinMap = zerosMinMap;
 	getGiHandle();
 	getThisHandle(mapWindowsHandle);
 
 
-	getGiState();
-	setThisState();
+	/*
+	后端数据更新
+	*/
+	BackEndUpdata();
+
 	//多线程初始化
 	/**/
 }
@@ -26,20 +32,63 @@ void AutomaticTrackingMap::Exit()
 {
 }
 
+//前端显示
 void AutomaticTrackingMap::FrontEndUpdata()
 {
-	MainMat = getViewMap();
-	Mat2QImage();
-	getGiState();
-	setThisState();
-	SetForegroundWindow(GIS.giHandle);/* 对原神窗口的操作 */
+	/*
+	设置部分
+	*/
 
+	setThisState();
+
+
+
+
+
+	/*
+	显示部分
+	*/
+
+	//获取显示区域地图
+	MainMat = getViewMap();
+	//添加物品图标
+	//添加当前位置图标
+
+	/*
+	显示输出部分
+	*/
+
+	//图片输出到Qt显示
+	Mat2QImage();
 }
 
+//后端状态数据
 void AutomaticTrackingMap::BackEndUpdata()
 {
+	/*
+	数据处理部分
+	*/
+	//多线程检查输出
+
+	/*
+	获取部分
+	*/
+
+	//获取原神窗口状态
 	getGiState();
-	setThisOffset();
+
+	//获取本身相对原神位置
+	getThisOffset();
+	getThisState();
+
+	/*
+	状态转移部分
+	*/
+
+	//判断当前本身窗口状态
+	thisStateMode = getThisState();
+
+
 }
 
 void AutomaticTrackingMap::Mat2QImage()
@@ -66,23 +115,6 @@ Mat AutomaticTrackingMap::getViewMap()
 	reMapSize.height = (int)(reMapSize.height * MET.scale);
 
 	Size R = reMapSize / 2;
-
-	if (zerosMinMap.x < 0)
-	{
-		zerosMinMap.x = 0;
-	}
-	if (zerosMinMap.y < 0)
-	{
-		zerosMinMap.y = 0;
-	}
-	if (zerosMinMap.x > mapSize.width)
-	{
-		zerosMinMap.x = mapSize.width;
-	}
-	if (zerosMinMap.y > mapSize.height)
-	{
-		zerosMinMap.y = mapSize.height;
-	}
 
 	Point LT = zerosMinMap - Point(R);
 	Point RB = zerosMinMap + Point(R);
@@ -117,20 +149,48 @@ Mat AutomaticTrackingMap::getViewMap()
 void AutomaticTrackingMap::getGiState()
 {
 	GIS.getGiState();
+	if (GIS.giRectMode > 0)
+	{
+		GIS.getGiFrame();
+	}
 }
 
-void AutomaticTrackingMap::setThisState()
+void AutomaticTrackingMap::setThisState_Normal()
+{
+	//设置窗口位置
+	//setWindowsPos();
+	SetWindowPos(thisHandle, HWND_TOP, GIS.giRect.left + offGiMinMap.x, GIS.giRect.top + offGiMinMap.y, 0, 0, SWP_NOSIZE);
+}
+
+void AutomaticTrackingMap::setThisState_Minimize()
+{
+	//最小化显示窗口
+	ShowWindow(thisHandle, SW_MINIMIZE);
+	//设置原神窗口为前台
+	SetForegroundWindow(GIS.giHandle);/* 对原神窗口的操作 */
+
+}
+
+void AutomaticTrackingMap::setThisState_TopShow()
 {
 	//设置窗口位置
 	setWindowsPos();
+	//还原显示窗口
 	ShowWindow(thisHandle, SW_SHOW);
+	//设置原神窗口为前台
+	//SetForegroundWindow(GIS.giHandle);/* 对原神窗口的操作 */
 }
 
-void AutomaticTrackingMap::setThisOffset()
+void AutomaticTrackingMap::getThisOffset()
 {
+	static Point offGiMinMapTmp;
 	if (GIS.giRectMode > 0)
 	{
-		offGiMinMap = GIS.getOffset();
+		offGiMinMapTmp = GIS.getOffset();
+		if (offGiMinMap != offGiMinMapTmp)
+		{
+			offGiMinMap = offGiMinMapTmp;
+		}
 	}
 }
 
@@ -167,12 +227,107 @@ void AutomaticTrackingMap::setMouseDownPos(int x, int y)
 void AutomaticTrackingMap::setMouseUpPos(int x, int y)
 {
 	MET.setMouseUpPos(x, y);
+	MET.normalizationZerosMinMap(Rect(0, 0, mapSize.width, mapSize.width));
 	zerosMinMap = MET.zerosMinMap;
 }
 
 void AutomaticTrackingMap::setMouseMovePos(int x, int y)
 {
 	MET.setMouseMovePos(x, y);
+	MET.normalizationZerosMinMap(Rect(0,0,mapSize.width,mapSize.width));
 	zerosMinMap = MET.zerosMinMap;
 	
+}
+
+int AutomaticTrackingMap::getThisState()
+{
+	if (GIS.isRunning)
+	{
+		if (isAutoMode)
+		{
+			if (GIS.isPaimonVisible)
+			{
+				thisStateMode = ThisWinState::TopShow;
+			}
+			else
+			{
+				thisStateMode = ThisWinState::Minimize;
+			}
+		}
+		else
+		{
+			thisStateMode = ThisWinState::TopShow;
+		}
+	}
+	else
+	{
+		thisStateMode = ThisWinState::Normal;
+	}
+
+	//switch (thisStateMode)
+	//{
+	//	case ThisWinState::Normal:
+	//	{
+	//		if (isAutoMode && GIS.isRunning == true)
+	//		{
+	//			if (GIS.isPaimonVisible)
+	//			{
+	//				thisStateMode = ThisWinState::TopShow;
+	//			}
+	//			else
+	//			{
+	//				thisStateMode = ThisWinState::Minimize;
+	//			}
+	//		}
+	//		else
+	//		{
+	//			thisStateMode = ThisWinState::Normal;
+	//		}
+	//		break;
+	//	}
+	//	case ThisWinState::Minimize:
+	//	{
+	//		break;
+	//	}
+	//	case ThisWinState::TopShow:
+	//	{
+	//		//设置本身置顶当前窗口状态
+	//		setThisState_TopShow();
+	//		break;
+	//	}
+	//	default:
+	//	{
+	//		setThisState_Normal();
+	//		break;
+	//	}
+	//}
+	return thisStateMode;
+}
+
+void AutomaticTrackingMap::setThisState()
+{
+	switch (thisStateMode)
+	{
+		case ThisWinState::Normal:
+		{
+			setThisState_Normal();
+			break;
+		}
+		case ThisWinState::Minimize:
+		{
+			setThisState_Minimize();
+			break;
+		}
+		case ThisWinState::TopShow:
+		{
+			//设置本身置顶当前窗口状态
+			setThisState_TopShow();
+			break;
+		}
+		default:
+		{
+			setThisState_Normal();
+			break;
+		}
+	}
 }

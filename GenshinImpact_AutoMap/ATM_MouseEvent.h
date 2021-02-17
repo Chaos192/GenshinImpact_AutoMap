@@ -3,6 +3,8 @@
 using namespace cv;
 class ATM_MouseEvent
 {
+	int X = 0;
+	int Y = 0;
 	int x0 = 0;
 	int y0 = 0;
 	int x1 = 0;
@@ -23,5 +25,6 @@ public:
 	void setMouseDownPos(int x, int y);
 	void setMouseUpPos(int x, int y);
 	void setMouseMovePos(int x, int y);
+	void normalizationZerosMinMap(Rect rangeRect);
 };
 
