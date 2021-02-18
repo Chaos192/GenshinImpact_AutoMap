@@ -101,6 +101,18 @@
     <Image Include="resource\BackGroundMask.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="resource\Paimon1920x1080.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\Paimon1366x768.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\Paimon1440x900.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\Paimon1680x1050.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtClassMyExitButton.h">

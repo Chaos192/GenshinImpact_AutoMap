@@ -66,10 +66,12 @@ void GenshinImpact_AutoMap::mouseReleaseEvent(QMouseEvent * event)
 
 void GenshinImpact_AutoMap::mouseDoubleClickEvent(QMouseEvent * event)
 {
+	static int i = 0;
 	if (event->button() == Qt::LeftButton)
 	{
 		qDebug() << "mouse move double" << event->x() << "," << event->y();
-
+		map.CustomProcess(i);
+		i++;
 	}
 }
 
@@ -146,7 +148,7 @@ void GenshinImpact_AutoMap::setAutoMode()
 	}
 	else
 	{
-		ui.AutoButton->setIcon(QIcon(":/IconAutoMode/resource/AutoModeSwitchOn.ico"));
+		ui.AutoButton->setIcon(QIcon(":/IconAutoMode/resource/AutoModeSwitchOff.ico"));
 	}
 }
 

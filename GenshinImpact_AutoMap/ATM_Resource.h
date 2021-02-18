@@ -7,7 +7,7 @@ using namespace cv;
 
 class ATM_Resource
 {
-	//HBITMAP gHmp = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_BITMAP1));
+	//HBITMAP gHmp = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_MAINMASK));
 public:
 	ATM_Resource();
 	~ATM_Resource();
@@ -15,11 +15,17 @@ public:
 	Mat GIMAP;
 	Mat MAINMASK;
 	Mat *GIOBJICON;
+	Mat *GIPAIMON;
 
 private:
 	HBITMAP hGIMAP;
 	HBITMAP hMAINMASK;
 	HBITMAP *hGIOBJICON;
+	HBITMAP *hGIPAIMON;
+
+	void loadGiMap();
+	void loadMainMask();
+	void loadGiPaimon();
 
 	bool HBitmap2Mat(HBITMAP& _hBmp, cv::Mat& _mat);
 };

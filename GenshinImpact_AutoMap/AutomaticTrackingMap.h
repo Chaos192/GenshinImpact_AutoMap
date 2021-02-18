@@ -76,6 +76,8 @@ public:
 
 	void Mat2QImage();
 
+	void CustomProcess(int i);
+
 public:
 	Mat getViewMap();
 

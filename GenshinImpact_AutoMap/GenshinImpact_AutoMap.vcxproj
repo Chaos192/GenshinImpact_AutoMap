@@ -186,6 +186,10 @@
     <Image Include="resource\BackGroundMask.bmp" />
     <Image Include="resource\GIMAP.bmp" />
     <Image Include="resource\mainicon.ico" />
+    <Image Include="resource\Paimon1366x768.bmp" />
+    <Image Include="resource\Paimon1440x900.bmp" />
+    <Image Include="resource\Paimon1680x1050.bmp" />
+    <Image Include="resource\Paimon1920x1080.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

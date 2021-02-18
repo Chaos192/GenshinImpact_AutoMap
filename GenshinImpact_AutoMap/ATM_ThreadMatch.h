@@ -11,7 +11,6 @@ using namespace cv;
 
 class ATM_TM_SurfMap
 {
-	bool isInit = false;
 	Mat _mapMat;
 	Mat _minMapMat;
 
@@ -26,6 +25,8 @@ class ATM_TM_SurfMap
 
 	Point pos;
 public:
+	bool isInit = false;
+
 	void setMap(Mat mapMat);
 	void setMinMap(Mat minMapMat);
 
@@ -34,10 +35,21 @@ public:
 	Point SURFMatch(Mat minMapMat);
 	Point getLocalPos();
 private:
-
 	double dis(Point &p);
 };
 
+class ATM_TM_TemplatePaimon
+{
+	Mat _paimonTemplate;
+	Mat _paimonMat;
+	bool isPaimonVisible = false;
+public:
+	void setPaimonTemplate(Mat paimonTemplateMat);
+	void setPaimonMat(Mat paimonMat);
+	void TemplatePaimon();
+	bool getPaimonVisible();
+
+};
 
 class ATM_TM_SurfMatch
 {
@@ -52,18 +64,22 @@ class ATM_TM_TemplateMatch
 class ATM_ThreadMatch
 {
 	Mat mapGray;
-
 	Mat objMinMap;
+
+	Mat templatePaimon;
 	Mat objPaimon;
+
 	Mat objUID;
 
 
 
 	ATM_TM_SurfMap surfMap;
+	ATM_TM_TemplatePaimon tempPaimon;
 public:
 	~ATM_ThreadMatch();
 
 	Point pos;
+	bool isPaimonVisial;
 
 	bool isExistObjMinMap = false;
 	bool isExistObjPaimon = false;
@@ -85,8 +101,9 @@ public:
 	void cThreadSurfMapMatch();
 	void setSurfMap(Mat mapMat);
 
-	void cThreadTemplatePaimonMatch();
-	void setTemplatePaimon(Mat paimonMat);
+	void cThreadTemplatePaimonMatch(Mat &Template);
+	void setTemplatePaimon(Mat TemplatePaimonMat);
+	void setPaimon(Mat PaimonMat);
 
 	void getObjMinMap(Mat &obj);
 	void getObjPaimon(Mat &obj);
@@ -98,13 +115,13 @@ public:
 	void thread_SurfMapInit(Mat& tar);
 	void CheckThread_SurfMapMatch();
 	void thread_SurfMapMatch(Mat& Obj);
+	void CheckThread_TemplatePaimonMatch();
+	void thread_TemplatePaimonMatch(Mat &Template, Mat& Obj);
 
 	void thread_MatchMap(Mat& tar, Mat& Obj);
 	void thread_MatchStar(Mat& tar, Mat& Obj);
 	void thread_MatchTarget(Mat& tar, Mat& Obj);
 
 	void GetMatchResults();
-
-
 };
 

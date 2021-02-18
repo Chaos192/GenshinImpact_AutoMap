@@ -43,9 +43,6 @@ void AutomaticTrackingMap::FrontEndUpdata()
 	setThisState();
 	setThreadMatchMat();
 
-
-
-
 	/*
 	显示部分
 	*/
@@ -78,10 +75,11 @@ void AutomaticTrackingMap::BackEndUpdata()
 		//多线程初始化
 		TMS.cThreadSurfMapInit(RES.GIMAP);
 		TMS.cThreadSurfMapMatch();
-
+		TMS.cThreadTemplatePaimonMatch(RES.GIPAIMON[GIS.resIdPaimon]);
 		if (TMS.tIsEndSurfMapInit)
 		{
 			zerosMinMap = TMS.pos;
+			GIS.isPaimonVisible = TMS.isPaimonVisial;
 		}
 	}
 
@@ -117,6 +115,16 @@ void AutomaticTrackingMap::Mat2QImage()
 	mv0.push_back(mv1[0]);
 	merge(mv0, MainMat);
 	MainImg = QImage((uchar*)(MainMat.data), MainMat.cols, MainMat.rows, MainMat.cols*(MainMat.channels()), QImage::Format_ARGB32);
+}
+
+void AutomaticTrackingMap::CustomProcess(int i)
+{
+	//GIS.getGiFrame();
+	string name("OutputPNG_id_");
+	name.append(to_string(i));
+	name.append("_GiFrame.png");
+
+	imwrite(name, GIS.giFrame);
 }
 
 Mat AutomaticTrackingMap::getViewMap()
@@ -191,7 +199,8 @@ void AutomaticTrackingMap::setThisState_Top()
 	//设置窗口位置
 	setWindowsPos();
 	//还原显示窗口
-	ShowWindow(thisHandle, SW_SHOW);
+	//ShowWindow(thisHandle, SW_SHOW);
+	ShowWindow(thisHandle, SW_RESTORE);
 }
 
 void AutomaticTrackingMap::setThisState_TopShow()
@@ -199,7 +208,8 @@ void AutomaticTrackingMap::setThisState_TopShow()
 	//设置窗口位置
 	setWindowsPos();
 	//还原显示窗口
-	ShowWindow(thisHandle, SW_SHOW);
+	//ShowWindow(thisHandle, SW_SHOW);
+	ShowWindow(thisHandle, SW_RESTORE);
 	//设置原神窗口为前台
 	SetForegroundWindow(GIS.giHandle);/* 对原神窗口的操作 */
 }
@@ -281,14 +291,22 @@ int AutomaticTrackingMap::getThisState()
 	{
 		if (isAutoMode)
 		{
-			if (GIS.isPaimonVisible)
+			if (TMS.tIsEndSurfMapInit == true)
 			{
-				thisStateModeNext = ThisWinState::TopShow;
+				if (GIS.isPaimonVisible)
+				{
+					thisStateModeNext = ThisWinState::TopShow;
+				}
+				else
+				{
+					thisStateModeNext = ThisWinState::Minimize;
+				}
 			}
 			else
 			{
-				thisStateModeNext = ThisWinState::Minimize;
+				thisStateModeNext = ThisWinState::TopShow;
 			}
+
 		}
 		else
 		{

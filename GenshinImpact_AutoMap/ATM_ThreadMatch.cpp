@@ -12,6 +12,11 @@ ATM_ThreadMatch::~ATM_ThreadMatch()
 		tSurfMapMatch->join();
 		delete tSurfMapMatch;
 	}
+	if (tTemplatePaimonMatch != nullptr)
+	{
+		tTemplatePaimonMatch->join();
+		delete tTemplatePaimonMatch;
+	}
 	if (tMatchStar != nullptr)
 	{
 		tMatchStar->join();
@@ -26,17 +31,20 @@ ATM_ThreadMatch::~ATM_ThreadMatch()
 
 void ATM_ThreadMatch::cThreadSurfMapInit(Mat &Map)
 {
-	cvtColor(Map, mapGray, CV_RGB2GRAY);
-	if (tSurfMapInit == nullptr)
+	if (surfMap.isInit == false)
 	{
-		tSurfMapInit = new thread(&ATM_ThreadMatch::thread_SurfMapInit, this, ref(mapGray));
-		tIsEndSurfMapInit = false;
+		cvtColor(Map, mapGray, CV_RGB2GRAY);
+		if (tSurfMapInit == nullptr)
+		{
+			tSurfMapInit = new thread(&ATM_ThreadMatch::thread_SurfMapInit, this, ref(mapGray));
+			tIsEndSurfMapInit = false;
+		}
 	}
 }
 
 void ATM_ThreadMatch::cThreadSurfMapMatch()
 {
-	if (tSurfMapMatch == nullptr && tIsEndSurfMapInit && isExistObjMinMap)
+	if (tSurfMapMatch == nullptr && tIsEndSurfMapInit && isExistObjMinMap && isPaimonVisial)
 	{
 		tSurfMapMatch = new thread(&ATM_ThreadMatch::thread_SurfMapMatch, this, ref(objMinMap));
 		tIsEndSurfMapMatch = false;
@@ -46,6 +54,27 @@ void ATM_ThreadMatch::cThreadSurfMapMatch()
 void ATM_ThreadMatch::setSurfMap(Mat mapMat)
 {
 	surfMap.setMap(mapMat);
+}
+
+void ATM_ThreadMatch::cThreadTemplatePaimonMatch(Mat & Template)
+{
+	cvtColor(Template, templatePaimon, CV_RGB2GRAY);
+
+	if (tTemplatePaimonMatch == nullptr && isExistObjPaimon)
+	{
+		tTemplatePaimonMatch = new thread(&ATM_ThreadMatch::thread_TemplatePaimonMatch, this, ref(templatePaimon), ref(objPaimon));
+		tIsEndTemplatePaimonMatch = false;
+	}
+}
+
+void ATM_ThreadMatch::setTemplatePaimon(Mat TemplatePaimonMat)
+{
+	TemplatePaimonMat.copyTo(templatePaimon);
+}
+
+void ATM_ThreadMatch::setPaimon(Mat PaimonMat)
+{
+	PaimonMat.copyTo(objPaimon);
 }
 
 void ATM_ThreadMatch::getObjMinMap(Mat & obj)
@@ -75,6 +104,10 @@ void ATM_ThreadMatch::CheckThread()
 	if (tIsEndSurfMapMatch == false)
 	{
 		CheckThread_SurfMapMatch();
+	}
+	if (tIsEndTemplatePaimonMatch == false)
+	{
+		CheckThread_TemplatePaimonMatch();
 	}
 }
 
@@ -127,6 +160,32 @@ void ATM_ThreadMatch::thread_SurfMapMatch(Mat & Obj)
 	}
 }
 
+void ATM_ThreadMatch::CheckThread_TemplatePaimonMatch()
+{
+	DWORD exitCode;
+	if (tTemplatePaimonMatch != nullptr)
+	{
+		GetExitCodeThread(tTemplatePaimonMatch->native_handle(), &exitCode);
+		if (exitCode == 0)
+		{
+			tTemplatePaimonMatch->join();
+			delete tTemplatePaimonMatch;
+			tTemplatePaimonMatch = nullptr;
+			tIsEndTemplatePaimonMatch = true;
+		}
+	}
+}
+
+void ATM_ThreadMatch::thread_TemplatePaimonMatch(Mat &Template, Mat & Obj)
+{
+	if (isExistObjPaimon)
+	{
+		tempPaimon.setPaimonTemplate(Template);
+		tempPaimon.setPaimonMat(Obj);
+		tempPaimon.TemplatePaimon();
+	}
+}
+
 void ATM_ThreadMatch::thread_MatchMap(Mat & tar, Mat & Obj)
 {
 }
@@ -142,6 +201,7 @@ void ATM_ThreadMatch::thread_MatchTarget(Mat & tar, Mat & Obj)
 void ATM_ThreadMatch::GetMatchResults()
 {
 	pos = surfMap.getLocalPos();
+	isPaimonVisial = tempPaimon.getPaimonVisible();
 }
 
 void ATM_TM_SurfMap::setMap(Mat mapMat)
@@ -315,4 +375,40 @@ Point ATM_TM_SurfMap::getLocalPos()
 double ATM_TM_SurfMap::dis(Point & p)
 {
 	return sqrt(p.x*p.x + p.y*p.y);
+}
+
+void ATM_TM_TemplatePaimon::setPaimonTemplate(Mat paimonTemplateMat)
+{
+	_paimonTemplate = paimonTemplateMat;
+}
+
+void ATM_TM_TemplatePaimon::setPaimonMat(Mat paimonMat)
+{
+	_paimonMat = paimonMat;
+}
+
+void ATM_TM_TemplatePaimon::TemplatePaimon()
+{
+	Mat tmp;
+	cv::matchTemplate(_paimonTemplate, _paimonMat, tmp, cv::TM_CCOEFF_NORMED);
+
+	double minVal, maxVal;
+	cv::Point minLoc, maxLoc;
+	//—∞’“◊Óº—∆•≈‰Œª÷√
+	cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
+	cout <<"Match Template MinVal & MaxVal" <<minVal << " , "<< maxVal<<endl;
+	if (minVal < 0.75 || maxVal == 1)
+	{
+		isPaimonVisible = false;
+
+	}
+	else
+	{
+		isPaimonVisible = true;
+	}
+}
+
+bool ATM_TM_TemplatePaimon::getPaimonVisible()
+{
+	return isPaimonVisible;
 }

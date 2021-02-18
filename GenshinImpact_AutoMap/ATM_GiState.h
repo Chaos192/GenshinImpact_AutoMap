@@ -47,6 +47,7 @@ public:
 	Mat giFrameUID;
 
 
+
 	//原神是否运行中
 	bool isRunning = false;
 	//派蒙是否可见即是否处于主画面
@@ -55,6 +56,8 @@ public:
 	bool isFullScreen = false;
 	//窗口分辨率模式
 	int giRectMode = RectMode::FW_MINIMIZE;
+
+	int resIdPaimon = 0;
 	//窗口大小
 	Size giSize;
 

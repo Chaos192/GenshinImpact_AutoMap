@@ -216,46 +216,51 @@ void ATM_GiState::getGiFramePaimon()
 		case W_1920x1080:
 		{
 			PaimonRect = Rect(26, 12, 68, 77);
+			resIdPaimon = 0;
 			break;
 		}
 		case F_1680x1050:
 		case W_1680x1050:
 		{
 
-			PaimonRect = Rect(23, 11, 59, 67);
+			PaimonRect = Rect(23, 10, 59, 68);
+			resIdPaimon = 1;
 			break;
 		}
 		case F_1600x900:
 		case W_1600x900:
 		{
 
-			PaimonRect = Rect(23, 11, 59, 67);
+			PaimonRect = Rect(20, 9, 50, 58);//???
 			break;
 		}
 		case F_1440x900:
 		case W_1440x900:
 		{
 
-			PaimonRect = Rect(23, 11, 59, 67);
+			PaimonRect = Rect(20, 9, 50, 58);
+			resIdPaimon = 2;
 			break;
 		}
 		case F_1400x1050:
 		case W_1400x1050:
 		{
 
-			PaimonRect = Rect(23, 11, 59, 67);
+			PaimonRect = Rect(20, 9, 59, 67);//???
 			break;
 		}
 		case F_1366x768:
 		case W_1366x768:
 		{
 
-			PaimonRect = Rect(23, 11, 59, 67);
+			PaimonRect = Rect(19, 8, 48, 56);
+			resIdPaimon = 3;
 			break;
 		}
 		default:
 		{
 			PaimonRect = Rect(26, 12, 68, 77);
+			resIdPaimon = 0;
 			break;
 		}
 	}
