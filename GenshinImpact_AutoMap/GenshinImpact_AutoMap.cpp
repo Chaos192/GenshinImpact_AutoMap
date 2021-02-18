@@ -10,6 +10,7 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 	//mapMessageLoopTimer->setSingleShot(true);
 	connect(mapMessageLoopTimer, SIGNAL(timeout()), this, SLOT(runMap()));
 	connect(ui.ExitButton, SIGNAL(mouseDoubleClickExitExe()), this, SLOT(close()));
+	connect(ui.AutoButton, SIGNAL(clicked()), this, SLOT(setAutoMode()));
 	connect(this, &GenshinImpact_AutoMap::mapUpdataFrontEnd, this, &GenshinImpact_AutoMap::updataFrontEnd);
 	connect(this, &GenshinImpact_AutoMap::mapUpdataBackEnd, this, &GenshinImpact_AutoMap::updataBackEnd);
 
@@ -140,7 +141,12 @@ void GenshinImpact_AutoMap::setAutoMode()
 	map.setAutoMode();
 	if (map.getAutoMode())
 	{
+		ui.AutoButton->setIcon(QIcon(":/IconAutoMode/resource/AutoModeSwitchOn.ico"));
 		//ui.AutoButton->setIcon();
+	}
+	else
+	{
+		ui.AutoButton->setIcon(QIcon(":/IconAutoMode/resource/AutoModeSwitchOn.ico"));
 	}
 }
 

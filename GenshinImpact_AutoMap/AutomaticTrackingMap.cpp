@@ -186,6 +186,14 @@ void AutomaticTrackingMap::setThisState_Minimize()
 
 }
 
+void AutomaticTrackingMap::setThisState_Top()
+{
+	//设置窗口位置
+	setWindowsPos();
+	//还原显示窗口
+	ShowWindow(thisHandle, SW_SHOW);
+}
+
 void AutomaticTrackingMap::setThisState_TopShow()
 {
 	//设置窗口位置
@@ -193,7 +201,7 @@ void AutomaticTrackingMap::setThisState_TopShow()
 	//还原显示窗口
 	ShowWindow(thisHandle, SW_SHOW);
 	//设置原神窗口为前台
-	//SetForegroundWindow(GIS.giHandle);/* 对原神窗口的操作 */
+	SetForegroundWindow(GIS.giHandle);/* 对原神窗口的操作 */
 }
 
 void AutomaticTrackingMap::getThisOffset()
@@ -266,71 +274,56 @@ bool AutomaticTrackingMap::getAutoMode()
 
 int AutomaticTrackingMap::getThisState()
 {
+	//备份状态，以便检查是否跳过窗口状态设置，防止持续激活原神窗口，鼠标焦点无法转移。
+	thisStateModeNext = thisStateMode;
+	//根据原神状态判断下一帧时悬浮窗状态
 	if (GIS.isRunning)
 	{
 		if (isAutoMode)
 		{
 			if (GIS.isPaimonVisible)
 			{
-				thisStateMode = ThisWinState::TopShow;
+				thisStateModeNext = ThisWinState::TopShow;
 			}
 			else
 			{
-				thisStateMode = ThisWinState::Minimize;
+				thisStateModeNext = ThisWinState::Minimize;
 			}
 		}
 		else
 		{
-			thisStateMode = ThisWinState::TopShow;
+			thisStateModeNext = ThisWinState::Top;
 		}
 	}
 	else
 	{
-		thisStateMode = ThisWinState::Normal;
+		thisStateModeNext = ThisWinState::Normal;
+	}
+	//如果状态与上一帧不同，就设置状态，否则跳过
+	if (isFristChangeThisState||thisStateModeNext != thisStateMode)
+	{
+		thisStateMode = thisStateModeNext;
+		isFristChangeThisState = true;
+	}
+	else
+	{
+		thisStateModeNext = ThisWinState::Wait;
 	}
 
-	//switch (thisStateMode)
-	//{
-	//	case ThisWinState::Normal:
-	//	{
-	//		if (isAutoMode && GIS.isRunning == true)
-	//		{
-	//			if (GIS.isPaimonVisible)
-	//			{
-	//				thisStateMode = ThisWinState::TopShow;
-	//			}
-	//			else
-	//			{
-	//				thisStateMode = ThisWinState::Minimize;
-	//			}
-	//		}
-	//		else
-	//		{
-	//			thisStateMode = ThisWinState::Normal;
-	//		}
-	//		break;
-	//	}
-	//	case ThisWinState::Minimize:
-	//	{
-	//		break;
-	//	}
-	//	case ThisWinState::TopShow:
-	//	{
-	//		//设置本身置顶当前窗口状态
-	//		setThisState_TopShow();
-	//		break;
-	//	}
-	//	default:
-	//	{
-	//		setThisState_Normal();
-	//		break;
-	//	}
-	//}
 	return thisStateMode;
 }
 
 void AutomaticTrackingMap::setThisState()
 {
+	//if (thisStateModeNext == ThisWinState::Wait)return;
+	if (isFristChangeThisState != true)
+	{
+		return;
+	}
+	else
+	{
+		isFristChangeThisState = false;
+	}
 	switch (thisStateMode)
 	{
 		case ThisWinState::Normal:
@@ -341,6 +334,12 @@ void AutomaticTrackingMap::setThisState()
 		case ThisWinState::Minimize:
 		{
 			setThisState_Minimize();
+			break;
+		}
+		case ThisWinState::Top:
+		{
+			//设置本身置顶当前窗口状态
+			setThisState_Top();
 			break;
 		}
 		case ThisWinState::TopShow:

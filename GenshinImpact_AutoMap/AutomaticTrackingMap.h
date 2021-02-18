@@ -15,6 +15,7 @@ enum ThisWinState
 	NoTop,
 	Top,
 	TopShow,
+	Wait,
 };
 
 class AutomaticTrackingMap
@@ -30,6 +31,8 @@ class AutomaticTrackingMap
 	cv::Mat MainMatTmp;
 
 	int thisStateMode = 0;
+	int thisStateModeNext = 0;
+	bool isFristChangeThisState = true;
 
 public:
 	AutomaticTrackingMap();
@@ -79,6 +82,7 @@ public:
 	void getGiState();
 	void setThisState_Normal();
 	void setThisState_Minimize();
+	void setThisState_Top();
 	void setThisState_TopShow();
 
 	void getThisOffset();

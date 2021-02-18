@@ -71,12 +71,12 @@ public:
 
 	bool tIsEndSurfMapInit = false;
 	bool tIsEndSurfMapMatch = false;
-	bool tIsEndMap = false;
-	bool tIsEndStar = false;
-	bool tIsEndTarget = false;
+	bool tIsEndTemplatePaimonMatch = false;
 
 	thread * tSurfMapInit = nullptr;
 	thread * tSurfMapMatch = nullptr;
+	thread * tTemplatePaimonMatch = nullptr;
+
 	thread * tMatchStar = nullptr;
 	thread * tMatchTarget = nullptr;
 
@@ -84,6 +84,9 @@ public:
 
 	void cThreadSurfMapMatch();
 	void setSurfMap(Mat mapMat);
+
+	void cThreadTemplatePaimonMatch();
+	void setTemplatePaimon(Mat paimonMat);
 
 	void getObjMinMap(Mat &obj);
 	void getObjPaimon(Mat &obj);
