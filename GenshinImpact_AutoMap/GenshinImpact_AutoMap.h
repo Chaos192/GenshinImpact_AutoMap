@@ -25,12 +25,9 @@ private:
 	//×Ô¶¯×·×ÙµØÍ¼
 	ATmap map;
 	QCursor *myCursor;
-	ATOM globalHotKeyAutoModeSitch;
-	//QtClassMyHotKeyObject *hotKeyAutoMode;
+	QtClassMyHotKeyObject *hotKeyAutoMode;
 
 	void mapInit();
-	void createHotKey();
-	void deteleHotKey();
 
 protected:
 	//bool eventFilter(QObject * watched, QEvent * event)override;
@@ -56,8 +53,6 @@ private slots:
 	void updataBackEnd();
 
 	void setAutoMode();
-
-	bool nativeEvent(const QByteArray &eventType, void *message, long *result);
 
 signals:
 

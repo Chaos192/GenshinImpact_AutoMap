@@ -125,8 +125,11 @@ void AutomaticTrackingMap::CustomProcess(int i)
 	string name("OutputPNG_id_");
 	name.append(to_string(i));
 	name.append("_GiFrame.png");
+	if (GIS.isRunning)
+	{
+		imwrite(name, GIS.giFrame);
 
-	imwrite(name, GIS.giFrame);
+	}
 }
 
 Mat AutomaticTrackingMap::getViewMap()
