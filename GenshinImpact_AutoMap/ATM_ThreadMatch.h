@@ -14,8 +14,8 @@ class ATM_TM_SurfMap
 	Mat _mapMat;
 	Mat _minMapMat;
 
-	int minHessian = 400;
-	float ratio_thresh = 0.75f;
+	int minHessian = 500;
+	float ratio_thresh = 0.66f;
 
 	Ptr<cv::xfeatures2d::SURF> detector, detectorSomeMap;
 	std::vector<KeyPoint> Kp_MinMap, Kp_Map, Kp_SomeMap;
