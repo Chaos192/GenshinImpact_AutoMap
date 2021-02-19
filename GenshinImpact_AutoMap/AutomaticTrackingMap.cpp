@@ -127,7 +127,7 @@ void AutomaticTrackingMap::CustomProcess(int i)
 	name.append("_GiFrame.png");
 	if (GIS.isRunning)
 	{
-		imwrite(name, GIS.giFrame);
+		//imwrite(name, GIS.giFrame);
 
 	}
 }
