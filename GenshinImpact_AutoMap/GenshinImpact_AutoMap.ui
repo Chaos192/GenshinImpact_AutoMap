@@ -116,8 +116,11 @@
       <height>32</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:transparent</string>
+    </property>
     <property name="text">
-     <string/>
+     <string>UI</string>
     </property>
    </widget>
   </widget>

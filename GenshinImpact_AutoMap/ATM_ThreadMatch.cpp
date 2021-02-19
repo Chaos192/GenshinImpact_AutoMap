@@ -228,6 +228,8 @@ void ATM_TM_SurfMap::SURFMatch()
 
 	Mat img_scene(_mapMat);
 	Mat img_object(_minMapMat);
+	Kp_MinMap.clear();
+	Kp_SomeMap.clear();
 
 	bool isContinuity = false;
 
