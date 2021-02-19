@@ -123,7 +123,10 @@ void GenshinImpact_AutoMap::paintEvent(QPaintEvent * event)
 {
 	//设置画面为地图
 	QPainter painter(this);
+	QImage image = QImage(250, 200, QImage::Format_RGBA8888);
 
+	image.fill(qRgba(0, 0, 0, 255));
+	painter.drawImage(0, 0, image);
 	painter.drawImage(0, 0, map.MainImg);
 }
 
