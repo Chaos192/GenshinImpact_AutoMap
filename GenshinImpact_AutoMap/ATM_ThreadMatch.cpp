@@ -224,7 +224,7 @@ void ATM_TM_SurfMap::Init()
 
 void ATM_TM_SurfMap::SURFMatch()
 {
-	static Point hisP[3];
+	//static Point hisP[3];
 
 	Mat img_scene(_mapMat);
 	Mat img_object(_minMapMat);

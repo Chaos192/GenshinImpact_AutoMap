@@ -22,6 +22,7 @@ class ATM_TM_SurfMap
 	Mat Dp_MinMap, Dp_Map, Dp_SomeMap;
 
 	//static Point hisP[3];
+	Point hisP[3];
 
 	Point pos;
 public:
