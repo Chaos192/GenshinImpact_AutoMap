@@ -6,7 +6,7 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
     ui.setupUi(this);
 	//刷新定时器
 	mapMessageLoopTimer = new QTimer(this);
-	mapMessageLoopTimer->start(16);//1000/30=33.3
+	mapMessageLoopTimer->start(42);//1000/30=33.3,1000/24=42
 	//mapMessageLoopTimer->setSingleShot(true);
 	connect(mapMessageLoopTimer, SIGNAL(timeout()), this, SLOT(runMap()));
 	//添加全局快捷键
@@ -47,6 +47,7 @@ void GenshinImpact_AutoMap::mapInit()
 	{
 		qDebug() << "mouse move " << event->x() << "," << event->y();
 		map.setMouseMovePos(event->x(), event->y());
+		update();
 	}
 }
 
@@ -117,12 +118,12 @@ void GenshinImpact_AutoMap::runMap()
 		emit this->mapUpdataBackEnd();
 		isUpdataEnd = true;
 		//启动下一帧
-		mapMessageLoopTimer->start(16);
+		mapMessageLoopTimer->start(42);
 	}
 	else
 	{
 		//启动下一帧
-		mapMessageLoopTimer->start(16);
+		mapMessageLoopTimer->start(42);
 	}
 
 
