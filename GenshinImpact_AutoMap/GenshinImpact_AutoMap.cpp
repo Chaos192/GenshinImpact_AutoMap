@@ -15,7 +15,7 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 	connect(this, &GenshinImpact_AutoMap::mapUpdataBackEnd, this, &GenshinImpact_AutoMap::updataBackEnd);
 
 	//设置鼠标指针
-	myCursor = new QCursor(QPixmap(":/CurMain/resource/cur3.cur"), 2, 2);
+	myCursor = new QCursor(QPixmap(":/CurMain/resource/GenshinImpactCur.cur"), 2, 2);
 	this->setCursor(*myCursor);
 
 	//设置半透明无边框窗口

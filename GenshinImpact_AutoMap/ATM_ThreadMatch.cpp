@@ -397,7 +397,7 @@ void ATM_TM_TemplatePaimon::TemplatePaimon()
 	//—∞’“◊Óº—∆•≈‰Œª÷√
 	cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
 	cout <<"Match Template MinVal & MaxVal" <<minVal << " , "<< maxVal<<endl;
-	if (minVal < 0.75 || maxVal == 1)
+	if (minVal < 0.51 || maxVal == 1)
 	{
 		isPaimonVisible = false;
 

@@ -79,6 +79,7 @@ void AutomaticTrackingMap::BackEndUpdata()
 		if (TMS.tIsEndSurfMapInit)
 		{
 			zerosMinMap = TMS.pos;
+			MET.zerosMinMap = zerosMinMap;
 			GIS.isPaimonVisible = TMS.isPaimonVisial;
 		}
 	}
@@ -376,7 +377,7 @@ void AutomaticTrackingMap::setThisState()
 
 void AutomaticTrackingMap::setThreadMatchMat()
 {
-	if (GIS.isRunning)
+	if (GIS.isRunning&&GIS.giRectMode > 0)
 	{
 		Mat matRGB2GRAY;
 		cvtColor(GIS.giFrameMap, matRGB2GRAY, CV_RGB2GRAY);

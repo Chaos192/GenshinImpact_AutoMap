@@ -3,15 +3,10 @@
   <qresource prefix="IconAutoMode">
     <file>resource/AutoModeSwitchOn.ico</file>
     <file>resource/AutoModeSwitchOff.ico</file>
-    <file>resource/AutoModeIcon3.ico</file>
-    <file>resource/AutoModeIcon2.ico</file>
-    <file>resource/AutoModeIcon.ico</file>
   </qresource>
   <qresource prefix="BackGroundImage"/>
   <qresource prefix="CurMain">
-    <file>resource/cur.cur</file>
-    <file>resource/cur2.cur</file>
-    <file>resource/cur3.cur</file>
+    <file>resource/GenshinImpactCur.cur</file>
   </qresource>
   <qresource prefix="IconExit">
     <file>resource/icon16.ico</file>
