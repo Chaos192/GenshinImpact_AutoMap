@@ -9,6 +9,10 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 	mapMessageLoopTimer->start(16);//1000/30=33.3
 	//mapMessageLoopTimer->setSingleShot(true);
 	connect(mapMessageLoopTimer, SIGNAL(timeout()), this, SLOT(runMap()));
+
+	createHotKey();
+	//hotKeyAutoMode = new QtClassMyHotKeyObject("Alt+T", this);
+	//connect(hotKeyAutoMode, SIGNAL(Activated()), this, SLOT(setAutoMode()));
 	connect(ui.ExitButton, SIGNAL(mouseDoubleClickExitExe()), this, SLOT(close()));
 	connect(ui.AutoButton, SIGNAL(clicked()), this, SLOT(setAutoMode()));
 	connect(this, &GenshinImpact_AutoMap::mapUpdataFrontEnd, this, &GenshinImpact_AutoMap::updataFrontEnd);
@@ -28,12 +32,36 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 	mapInit();
 }
 
+GenshinImpact_AutoMap::~GenshinImpact_AutoMap()
+{
+	deteleHotKey();
+}
+
 void GenshinImpact_AutoMap::mapInit()
 {
 	map.Init((HWND)this->winId());
 }
 
-void GenshinImpact_AutoMap::mouseMoveEvent(QMouseEvent * event)
+void GenshinImpact_AutoMap::createHotKey()
+{
+	errno_t res;
+	globalHotKeyAutoModeSitch = GlobalAddAtomA("AutoModeSitch");   //创建原子数据， 避免重复
+	res=RegisterHotKey((HWND)this->winId(), globalHotKeyAutoModeSitch, MOD_ALT, 'T');   //注册ATL键
+	if (res == 0)
+	{
+		UnregisterHotKey((HWND)this->winId(), globalHotKeyAutoModeSitch);
+		res=RegisterHotKey((HWND)this->winId(), globalHotKeyAutoModeSitch, MOD_ALT, 'T');   //注册ATL键
+	}
+
+}
+
+void GenshinImpact_AutoMap::deteleHotKey()
+{
+	UnregisterHotKey((HWND)this->winId(), globalHotKeyAutoModeSitch);
+	GlobalDeleteAtom(globalHotKeyAutoModeSitch);
+}
+
+	void GenshinImpact_AutoMap::mouseMoveEvent(QMouseEvent * event)
 {
 	if (map.MET.bLCD)
 	{
@@ -95,6 +123,7 @@ void GenshinImpact_AutoMap::paintEvent(QPaintEvent * event)
 {
 	//设置画面为地图
 	QPainter painter(this);
+
 	painter.drawImage(0, 0, map.MainImg);
 }
 
@@ -150,5 +179,22 @@ void GenshinImpact_AutoMap::setAutoMode()
 	{
 		ui.AutoButton->setIcon(QIcon(":/IconAutoMode/resource/AutoModeSwitchOff.ico"));
 	}
+}
+
+bool GenshinImpact_AutoMap::nativeEvent(const QByteArray & eventType, void * message, long * result)
+{
+	if (eventType == "windows_generic_MSG")
+	{
+		MSG* msg = reinterpret_cast<MSG*>(message);
+		if (msg->message == WM_HOTKEY)
+		{
+			if (msg->wParam == globalHotKeyAutoModeSitch);
+			{
+				qDebug() << "Alt + T";
+			}
+		}
+	}
+
+	return false; //QWidget::nativeEvent(eventType, message, result);
 }
 

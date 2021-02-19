@@ -62,6 +62,12 @@
     <ClCompile Include="ATM_ThreadMatch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QtClassMyHotKayNativeEventFilter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QtClassMyHotKeyObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutomaticTrackingMap.h">
@@ -83,6 +89,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ATM_ThreadMatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QtClassMyHotKayNativeEventFilter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -116,6 +125,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtClassMyExitButton.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QtClassMyHotKeyObject.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
