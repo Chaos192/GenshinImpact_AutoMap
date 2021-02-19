@@ -99,6 +99,7 @@ void AutomaticTrackingMap::BackEndUpdata()
 	状态转移部分
 	*/
 
+
 	//判断当前本身窗口状态
 	thisStateMode = getThisState();
 
