@@ -1,5 +1,11 @@
 <RCC>
   <qresource prefix="GenshinImpact_AutoMap"/>
+  <qresource prefix="IconUIObjList">
+    <file>resource/UIObjList0.ico</file>
+    <file>resource/UIObjList1.ico</file>
+    <file>resource/UIObjList2.ico</file>
+    <file>resource/UIObjList999.ico</file>
+  </qresource>
   <qresource prefix="IconUI">
     <file>resource/UI0.ico</file>
     <file>resource/UI1.ico</file>

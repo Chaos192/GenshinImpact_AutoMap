@@ -7,6 +7,7 @@
 #include "ATM_MouseEvent.h"
 #include "ATM_GiState.h"
 #include "ATM_ThreadMatch.h"
+#include "ATM_ObjectLists.h"
 
 enum ThisWinState
 {
@@ -26,6 +27,8 @@ class AutomaticTrackingMap
 	ATM_GiState GIS;
 	//多线程匹配
 	ATM_ThreadMatch TMS;
+	//加载物品标记
+	ATM_ObjectLists OLS;
 
 	cv::Mat MainMat;
 	cv::Mat MainMatTmp;
@@ -102,6 +105,8 @@ public:
 
 	void setAutoMode();
 	bool getAutoMode();
+
+	void setObjIsShow(int klass);
 private:
 	int getThisState();
 	
@@ -109,6 +114,11 @@ private:
 	
 	void setThisState();
 	void setThreadMatchMat();
+
+	void drawObjectLists();
+
+private:
+	bool isContains(Rect &r, Point &p);
 };
 
 typedef AutomaticTrackingMap ATmap;

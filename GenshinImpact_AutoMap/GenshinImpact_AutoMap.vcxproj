@@ -164,6 +164,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ATM_GI_ScreenResolution.cpp" />
+    <ClCompile Include="ATM_ObjectLists.cpp" />
     <ClCompile Include="ATM_ThreadMatch.cpp" />
     <ClCompile Include="QtClassMyExitButton.cpp" />
     <ClCompile Include="QtClassMyHotKayNativeEventFilter.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="ATM_GiState.h" />
     <ClInclude Include="ATM_GI_ScreenResolution.h" />
     <ClInclude Include="ATM_MouseEvent.h" />
+    <ClInclude Include="ATM_ObjectLists.h" />
     <ClInclude Include="ATM_Resource.h" />
     <ClInclude Include="ATM_ThreadMatch.h" />
     <ClInclude Include="AutomaticTrackingMap.h" />
@@ -197,6 +199,14 @@
     <Image Include="resource\BackGroundMask.bmp" />
     <Image Include="resource\GIMAP.bmp" />
     <Image Include="resource\mainicon.ico" />
+    <Image Include="resource\ObjectIcons\ObjectList0.bmp" />
+    <Image Include="resource\ObjectIcons\ObjectList0Mask.bmp" />
+    <Image Include="resource\ObjectIcons\ObjectList1.bmp" />
+    <Image Include="resource\ObjectIcons\ObjectList1Mask.bmp" />
+    <Image Include="resource\ObjectIcons\ObjectList2.bmp" />
+    <Image Include="resource\ObjectIcons\ObjectList2Mask.bmp" />
+    <Image Include="resource\ObjectIcons\ObjectList999.bmp" />
+    <Image Include="resource\ObjectIcons\ObjectList999Mask.bmp" />
     <Image Include="resource\Paimon1366x768.bmp" />
     <Image Include="resource\Paimon1440x900.bmp" />
     <Image Include="resource\Paimon1680x1050.bmp" />

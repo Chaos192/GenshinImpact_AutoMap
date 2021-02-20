@@ -15,6 +15,7 @@ void AutomaticTrackingMap::Init(HWND mapWindowsHandle)
 	数据状态初始化
 	*/
 	MET.zerosMinMap = zerosMinMap;
+
 	getGiHandle();
 	getThisHandle(mapWindowsHandle);
 
@@ -50,6 +51,8 @@ void AutomaticTrackingMap::FrontEndUpdata()
 	//获取显示区域地图
 	MainMat = getViewMap();
 	//添加物品图标
+	drawObjectLists();
+
 	//添加当前位置图标
 
 	/*
@@ -287,6 +290,11 @@ bool AutomaticTrackingMap::getAutoMode()
 	return isAutoMode;
 }
 
+void AutomaticTrackingMap::setObjIsShow(int klass)
+{
+	OLS.setShow(klass);
+}
+
 int AutomaticTrackingMap::getThisState()
 {
 	//备份状态，以便检查是否跳过窗口状态设置，防止持续激活原神窗口，鼠标焦点无法转移。
@@ -397,4 +405,46 @@ void AutomaticTrackingMap::setThreadMatchMat()
 		TMS.isExistObjPaimon = false;
 		TMS.isExistObjUID = false;
 	}
+}
+
+void AutomaticTrackingMap::drawObjectLists()
+{
+	int x = 0, y = 0;
+	Point p;
+	Mat ObjIconROIMat;
+	const int dx = 16, dy = 16;//图标顶点到图标中心的偏移
+	for (int objKlass = 0; objKlass < OLS.objectListsNumber(); objKlass++)
+	{
+		if (OLS.isShow(objKlass))
+		{
+			for (int objOrder = 0; objOrder < OLS.objectsNumber(objKlass); objOrder++)
+			{
+				p= OLS.p(objKlass, objOrder);
+				if (isContains(minMapRect, p))
+				{
+					x = (int)((p.x - minMapRect.x) / MET.scale) - dx;
+					y = (int)((p.y - minMapRect.y) / MET.scale) - dy;
+					//该x，y周围要有足够的空间来填充图标
+					if (x > 0 && y > 0 && x + RES.GIOBJICON[objKlass].cols < autoMapSize.width&&y + RES.GIOBJICON[objKlass].rows < autoMapSize.height)
+					{
+						ObjIconROIMat = MainMat(Rect(x, y, RES.GIOBJICON[objKlass].cols, RES.GIOBJICON[objKlass].rows));
+						RES.GIOBJICON[objKlass].copyTo(ObjIconROIMat, RES.GIOBJICONMASK[objKlass]);
+					}
+				}
+			}
+		}
+	}
+}
+
+bool AutomaticTrackingMap::isContains(Rect & r, Point & p)
+{
+	if (p.x<r.x || p.x>(r.x + r.width) || p.y<r.y || p.y>(r.y + r.height))
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+	return false;
 }

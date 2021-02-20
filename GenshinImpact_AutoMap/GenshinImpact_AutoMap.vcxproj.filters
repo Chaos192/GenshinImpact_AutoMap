@@ -68,6 +68,9 @@
     <ClCompile Include="QtClassMyHotKeyObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ATM_ObjectLists.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutomaticTrackingMap.h">
@@ -92,6 +95,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QtClassMyHotKayNativeEventFilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ATM_ObjectLists.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -120,6 +126,30 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="resource\Paimon1680x1050.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList0.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList0Mask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList1Mask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList2Mask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList999.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList999Mask.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -45,6 +45,7 @@ private:
 	//timer = new QTimer(this);
 	//connect(timer, SIGNAL(timeout()), this, SLOT(DrawLine()));
 	QTimer *mapMessageLoopTimer;
+	QTimer *uiObjListSleepTimer;
 
 private slots:
 	void runMap();
@@ -53,6 +54,9 @@ private slots:
 	void updataBackEnd();
 
 	void setAutoMode();
+	void setUIObjListShow();
+	void setUIObjListHide();
+	void setUIObjListToMapData();
 signals:
 
 	void mapUpdata();

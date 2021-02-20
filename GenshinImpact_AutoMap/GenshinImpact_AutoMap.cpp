@@ -4,14 +4,30 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
-	//刷新定时器
+	ui.UIObjList0Button->setVisible(false);
+	ui.UIObjList1Button->setVisible(false);
+	ui.UIObjList2Button->setVisible(false);
+	ui.UIObjList999Button->setVisible(false);
+	connect(ui.UIObjList0Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
+	connect(ui.UIObjList1Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
+	connect(ui.UIObjList2Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
+	connect(ui.UIObjList999Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
+	
+	//创建刷新定时器
 	mapMessageLoopTimer = new QTimer(this);
 	mapMessageLoopTimer->start(42);//1000/30=33.3,1000/24=42
 	//mapMessageLoopTimer->setSingleShot(true);
 	connect(mapMessageLoopTimer, SIGNAL(timeout()), this, SLOT(runMap()));
+	//创建UIObjList激活定时器
+	uiObjListSleepTimer = new QTimer(this);
+	//uiObjListSleepTimer->stop();
+	uiObjListSleepTimer->setSingleShot(true);
+	connect(uiObjListSleepTimer, SIGNAL(timeout()), this, SLOT(setUIObjListHide()));
+
 	//添加全局快捷键
 	hotKeyAutoMode = new QtClassMyHotKeyObject("Alt+T", this);
 	connect(hotKeyAutoMode, SIGNAL(Activated()), this, SLOT(setAutoMode()));
+	connect(ui.UIButton, SIGNAL(clicked()), this, SLOT(setUIObjListShow()));
 	connect(ui.ExitButton, SIGNAL(mouseDoubleClickExitExe()), this, SLOT(close()));
 	connect(this, &GenshinImpact_AutoMap::mapUpdataFrontEnd, this, &GenshinImpact_AutoMap::updataFrontEnd);
 	connect(this, &GenshinImpact_AutoMap::mapUpdataBackEnd, this, &GenshinImpact_AutoMap::updataBackEnd);
@@ -40,7 +56,7 @@ void GenshinImpact_AutoMap::mapInit()
 }
 
 
-	void GenshinImpact_AutoMap::mouseMoveEvent(QMouseEvent * event)
+void GenshinImpact_AutoMap::mouseMoveEvent(QMouseEvent * event)
 {
 	if (map.MET.bLCD)
 	{
@@ -159,6 +175,61 @@ void GenshinImpact_AutoMap::setAutoMode()
 	else
 	{
 		ui.UIButton->setIcon(QIcon(":/IconUI/resource/UI.ico"));
+	}
+}
+
+void GenshinImpact_AutoMap::setUIObjListShow()
+{
+	qDebug() << "setUIObjListShow";
+	ui.UIButton->setIcon(QIcon(":/IconUI/resource/UI1.ico"));
+
+	ui.UIObjList0Button->setVisible(true);
+	ui.UIObjList1Button->setVisible(true);
+	ui.UIObjList2Button->setVisible(true);
+	ui.UIObjList999Button->setVisible(true);
+
+	uiObjListSleepTimer->start(2000);
+
+
+}
+
+void GenshinImpact_AutoMap::setUIObjListHide()
+{
+	qDebug() << "setUIObjListHide";
+	ui.UIObjList0Button->setVisible(false);
+	ui.UIObjList1Button->setVisible(false);
+	ui.UIObjList2Button->setVisible(false);
+	ui.UIObjList999Button->setVisible(false);
+
+
+	if (map.isAutoMode)
+	{
+		ui.UIButton->setIcon(QIcon(":/IconUI/resource/UI0.ico"));
+	}
+	else
+	{
+		ui.UIButton->setIcon(QIcon(":/IconUI/resource/UI.ico"));
+	}
+}
+
+void GenshinImpact_AutoMap::setUIObjListToMapData()
+{
+	QPushButton *btn = qobject_cast<QPushButton*>(sender());
+	if (btn == ui.UIObjList0Button) {
+		qDebug() << "setUIObjListToMapData data 0 FST";
+		map.setObjIsShow(0);
+	}
+	if (btn == ui.UIObjList1Button) {
+		qDebug() << "setUIObjListToMapData data 1 YST";
+		map.setObjIsShow(1);
+	}
+	if (btn == ui.UIObjList2Button) {
+		qDebug() << "setUIObjListToMapData data 2 FHYS";
+		map.setObjIsShow(2);
+	}
+	if (btn == ui.UIObjList999Button) {
+		qDebug() << "setUIObjListToMapData data 999 LLD";
+		map.setObjIsShow(3);
 	}
 }
 

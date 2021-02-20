@@ -9,12 +9,21 @@
 #define IDB_PAIMON1680X1050             105
 #define IDB_PAIMON1440X900              106
 #define IDB_PAIMON1366X768              107
+#define IDB_OBJICON0                    108
+#define IDB_OBJICON0MASK                109
+#define IDB_OBJICON1                    110
+#define IDB_OBJICON1MASK                111
+#define IDB_OBJICON2                    112
+#define IDB_OBJICON2MASK                113
+#define IDB_OBJICON999                  114
+#define IDB_BITMAP8                     115
+#define IDB_OBJICON999MASK              115
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        108
+#define _APS_NEXT_RESOURCE_VALUE        116
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101
