@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="GenshinImpact_AutoMap"/>
+  <qresource prefix="IconUI">
+    <file>resource/UI.ico</file>
+  </qresource>
   <qresource prefix="IconAutoMode">
     <file>resource/AutoModeSwitchOn.ico</file>
     <file>resource/AutoModeSwitchOff.ico</file>

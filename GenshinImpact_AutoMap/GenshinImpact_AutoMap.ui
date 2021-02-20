@@ -84,7 +84,7 @@
    <widget class="QPushButton" name="AutoButton">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>10</x>
       <y>160</y>
       <width>32</width>
       <height>32</height>
@@ -110,9 +110,9 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>3</y>
-      <width>200</width>
+      <x>210</x>
+      <y>160</y>
+      <width>32</width>
       <height>32</height>
      </rect>
     </property>
@@ -120,7 +120,17 @@
      <string notr="true">background-color:transparent</string>
     </property>
     <property name="text">
-     <string>UI</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="GenshinImpact_AutoMap.qrc">
+      <normaloff>:/IconUI/resource/UI.ico</normaloff>:/IconUI/resource/UI.ico</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>32</width>
+      <height>32</height>
+     </size>
     </property>
    </widget>
   </widget>
