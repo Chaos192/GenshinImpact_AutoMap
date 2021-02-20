@@ -53,7 +53,6 @@ private slots:
 	void updataBackEnd();
 
 	void setAutoMode();
-
 signals:
 
 	void mapUpdata();

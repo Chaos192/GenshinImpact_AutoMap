@@ -13,7 +13,6 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 	hotKeyAutoMode = new QtClassMyHotKeyObject("Alt+T", this);
 	connect(hotKeyAutoMode, SIGNAL(Activated()), this, SLOT(setAutoMode()));
 	connect(ui.ExitButton, SIGNAL(mouseDoubleClickExitExe()), this, SLOT(close()));
-	connect(ui.AutoButton, SIGNAL(clicked()), this, SLOT(setAutoMode()));
 	connect(this, &GenshinImpact_AutoMap::mapUpdataFrontEnd, this, &GenshinImpact_AutoMap::updataFrontEnd);
 	connect(this, &GenshinImpact_AutoMap::mapUpdataBackEnd, this, &GenshinImpact_AutoMap::updataBackEnd);
 
@@ -45,7 +44,7 @@ void GenshinImpact_AutoMap::mapInit()
 {
 	if (map.MET.bLCD)
 	{
-		qDebug() << "mouse move " << event->x() << "," << event->y();
+		//qDebug() << "mouse move " << event->x() << "," << event->y();
 		map.setMouseMovePos(event->x(), event->y());
 		update();
 	}
@@ -58,7 +57,7 @@ void GenshinImpact_AutoMap::mousePressEvent(QMouseEvent * event)
 		// 左键按下
 		map.MET.bLCD = true;
 		map.setMouseDownPos(event->x(), event->y());
-		qDebug() << "mouse move setMouseDownPos" << event->x() << "," << event->y();
+		//qDebug() << "mouse move setMouseDownPos" << event->x() << "," << event->y();
 	}
 }
 
@@ -69,18 +68,20 @@ void GenshinImpact_AutoMap::mouseReleaseEvent(QMouseEvent * event)
 		// 左键按下
 		map.MET.bLCD = false;
 		//map.setMouseUpPos(event->x(), event->y());
-		qDebug() << "mouse move res" << event->x() << "," << event->y();
+		//qDebug() << "mouse move res" << event->x() << "," << event->y();
 	}
 }
 
 void GenshinImpact_AutoMap::mouseDoubleClickEvent(QMouseEvent * event)
 {
-	static int i = 0;
+	//static int i = 0;
 	if (event->button() == Qt::LeftButton)
 	{
+		emit this->setAutoMode();
+
 		qDebug() << "mouse move double" << event->x() << "," << event->y();
-		map.CustomProcess(i);
-		i++;
+		//map.CustomProcess(i);
+		//i++;
 	}
 }
 
@@ -150,14 +151,14 @@ void GenshinImpact_AutoMap::updataBackEnd()
 void GenshinImpact_AutoMap::setAutoMode()
 {
 	map.setAutoMode();
-	if (map.getAutoMode())
+	if (map.isAutoMode)
 	{
-		ui.AutoButton->setIcon(QIcon(":/IconAutoMode/resource/AutoModeSwitchOn.ico"));
-		//ui.AutoButton->setIcon();
+		ui.UIButton->setIcon(QIcon(":/IconUI/resource/UI0.ico"));
+		//ui.UIButton->
 	}
 	else
 	{
-		ui.AutoButton->setIcon(QIcon(":/IconAutoMode/resource/AutoModeSwitchOff.ico"));
+		ui.UIButton->setIcon(QIcon(":/IconUI/resource/UI.ico"));
 	}
 }
 
