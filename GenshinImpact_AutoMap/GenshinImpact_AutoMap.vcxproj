@@ -84,7 +84,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
-      <AdditionalDependencies>opencv_world450.lib;$(Qt_LIBS_);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opencv_aruco450.lib;opencv_bgsegm450.lib;opencv_bioinspired450.lib;opencv_calib3d450.lib;opencv_ccalib450.lib;opencv_core450.lib;opencv_datasets450.lib;opencv_dnn450.lib;opencv_dnn_objdetect450.lib;opencv_dnn_superres450.lib;opencv_dpm450.lib;opencv_face450.lib;opencv_features2d450.lib;opencv_flann450.lib;opencv_fuzzy450.lib;opencv_gapi450.lib;opencv_hfs450.lib;opencv_highgui450.lib;opencv_imgcodecs450.lib;opencv_imgproc450.lib;opencv_img_hash450.lib;opencv_intensity_transform450.lib;opencv_line_descriptor450.lib;opencv_mcc450.lib;opencv_ml450.lib;opencv_objdetect450.lib;opencv_optflow450.lib;opencv_phase_unwrapping450.lib;opencv_photo450.lib;opencv_plot450.lib;opencv_quality450.lib;opencv_rapid450.lib;opencv_reg450.lib;opencv_rgbd450.lib;opencv_saliency450.lib;opencv_shape450.lib;opencv_stereo450.lib;opencv_structured_light450.lib;opencv_superres450.lib;opencv_surface_matching450.lib;opencv_text450.lib;opencv_tracking450.lib;opencv_video450.lib;opencv_videoio450.lib;opencv_videostab450.lib;opencv_world450.lib;opencv_ximgproc450.lib;opencv_xobjdetect450.lib;opencv_xphoto450.lib;$(Qt_LIBS_);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\opencv\OpenCV4.5.0sg\build201022\x64\vc15\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
