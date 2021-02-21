@@ -3,6 +3,12 @@
 
 目前做成了原神的PC端悬浮窗地图工具……（但也实现了自动跟踪的功能），Qt重写了之后可以做的很好看，融合的毫无违和感
 
+![完美嵌入](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/Image/Snipaste_2021-02-19_20-27-21.png)
+
+![完美嵌入](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/Image/Snipaste_2021-02-19_20-30-23.png)
+
+![完美嵌入](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/Image/Snipaste_2021-02-19_20-32-53.png)
+
 # Qt重构中，已实现追踪+隐现，待添加标记+UI设计+启动绑定+优化
  
 使用要点，设置原神窗口为无边框，然后先开悬浮窗，再开原神，关掉原神启动器，无了。
