@@ -69,12 +69,16 @@ void ATM_Resource::LoadGiObjIconMask()
 {
 	hGIOBJICONMASK[0] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_OBJICON0MASK));
 	HBitmap2Mat(hGIOBJICONMASK[0], GIOBJICONMASK[0]);
+	Mat2MaskMat(GIOBJICONMASK[0], GIOBJICONMASK[0]);
 	hGIOBJICONMASK[1] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_OBJICON1MASK));
 	HBitmap2Mat(hGIOBJICONMASK[1], GIOBJICONMASK[1]);
+	Mat2MaskMat(GIOBJICONMASK[1], GIOBJICONMASK[1]);
 	hGIOBJICONMASK[2] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_OBJICON2MASK));
 	HBitmap2Mat(hGIOBJICONMASK[2], GIOBJICONMASK[2]);
+	Mat2MaskMat(GIOBJICONMASK[2], GIOBJICONMASK[2]);
 	hGIOBJICONMASK[3] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_OBJICON999MASK));
 	HBitmap2Mat(hGIOBJICONMASK[3], GIOBJICONMASK[3]);
+	Mat2MaskMat(GIOBJICONMASK[3], GIOBJICONMASK[3]);
 }
 
 bool ATM_Resource::HBitmap2Mat(HBITMAP & _hBmp, cv::Mat & _mat)
@@ -94,5 +98,15 @@ bool ATM_Resource::HBitmap2Mat(HBITMAP & _hBmp, cv::Mat & _mat)
 		cv::cvtColor(v_mat, _mat, CV_RGBA2RGB);
 		return true;
 	}
+	return false;
+}
+
+bool ATM_Resource::Mat2MaskMat(Mat & in, Mat & out)
+{
+	std::vector<Mat> mv0;
+	//Õ®µ¿∑÷¿Î
+	split(in, mv0);
+	out = mv0[0];
+
 	return false;
 }

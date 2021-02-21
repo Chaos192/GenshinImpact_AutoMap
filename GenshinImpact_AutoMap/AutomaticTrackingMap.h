@@ -119,6 +119,7 @@ private:
 
 private:
 	bool isContains(Rect &r, Point &p);
+	void addWeightedAlpha(Mat &backgroundImage, Mat& Image,Mat &maskImage);
 };
 
 typedef AutomaticTrackingMap ATmap;

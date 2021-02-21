@@ -96,7 +96,7 @@ void GenshinImpact_AutoMap::mouseDoubleClickEvent(QMouseEvent * event)
 		emit this->setAutoMode();
 
 		qDebug() << "mouse move double" << event->x() << "," << event->y();
-		//map.CustomProcess(i);
+		map.CustomProcess(0);
 		//i++;
 	}
 }

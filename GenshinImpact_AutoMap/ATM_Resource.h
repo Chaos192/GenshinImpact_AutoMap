@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include <Windows.h>
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/types_c.h>
@@ -32,5 +33,6 @@ private:
 	void LoadGiObjIconMask();
 
 	bool HBitmap2Mat(HBITMAP& _hBmp, cv::Mat& _mat);
+	bool Mat2MaskMat(Mat &in, Mat &out);
 };
 

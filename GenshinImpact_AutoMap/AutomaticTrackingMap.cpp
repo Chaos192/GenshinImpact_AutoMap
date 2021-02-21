@@ -125,14 +125,18 @@ void AutomaticTrackingMap::Mat2QImage()
 void AutomaticTrackingMap::CustomProcess(int i)
 {
 	//GIS.getGiFrame();
-	string name("OutputPNG_id_");
-	name.append(to_string(i));
-	name.append("_GiFrame.png");
-	if (GIS.isRunning)
-	{
-		//imwrite(name, GIS.giFrame);
+	//string name("OutputPNG_id_");
+	//name.append(to_string(i));
+	//name.append("_GiFrame.png");
+	//if (GIS.isRunning)
+	//{
+	//	//imwrite(name, GIS.giFrame);
+	//}
 
-	}
+	Mat k;
+	MainMat(Rect(100,100,32,32)).copyTo(k);
+	addWeightedAlpha(k, RES.GIOBJICON[0],RES.GIOBJICONMASK[0]);
+	imshow("asd", k);
 }
 
 Mat AutomaticTrackingMap::getViewMap()
@@ -428,7 +432,8 @@ void AutomaticTrackingMap::drawObjectLists()
 					if (x > 0 && y > 0 && x + RES.GIOBJICON[objKlass].cols < autoMapSize.width&&y + RES.GIOBJICON[objKlass].rows < autoMapSize.height)
 					{
 						ObjIconROIMat = MainMat(Rect(x, y, RES.GIOBJICON[objKlass].cols, RES.GIOBJICON[objKlass].rows));
-						RES.GIOBJICON[objKlass].copyTo(ObjIconROIMat, RES.GIOBJICONMASK[objKlass]);
+						//RES.GIOBJICON[objKlass].copyTo(ObjIconROIMat, RES.GIOBJICONMASK[objKlass]);
+						addWeightedAlpha(ObjIconROIMat, RES.GIOBJICON[objKlass], RES.GIOBJICONMASK[objKlass]);
 					}
 				}
 			}
@@ -447,4 +452,23 @@ bool AutomaticTrackingMap::isContains(Rect & r, Point & p)
 		return true;
 	}
 	return false;
+}
+
+void AutomaticTrackingMap::addWeightedAlpha(Mat & backgroundImage, Mat & Image, Mat &maskImage)
+{
+	std::vector<cv::Mat>scr_channels;
+	std::vector<cv::Mat>dstt_channels;
+	std::vector<cv::Mat>alpha_channels;
+	split(Image, scr_channels);
+	split(backgroundImage, dstt_channels);
+	split(maskImage, alpha_channels);
+
+	Mat Alpha = alpha_channels[0];
+
+	for (int i = 0; i < 3; i++)
+	{
+		dstt_channels[i] = dstt_channels[i].mul(Alpha / 255.0);
+		dstt_channels[i] += scr_channels[i].mul(1.0 - Alpha / 255.0);
+	}
+	merge(dstt_channels, backgroundImage);
 }
