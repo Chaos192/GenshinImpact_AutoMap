@@ -1,6 +1,6 @@
 #include "ATM_MouseEvent.h"
 
-void ATM_MouseEvent::setMouseDownPos(int x, int y)
+void ATM_MouseEvent::setMouseLeftDownPos(int x, int y)
 {
 	X = x;
 	Y = y;
@@ -9,7 +9,7 @@ void ATM_MouseEvent::setMouseDownPos(int x, int y)
 	p0 = zerosMinMap;
 }
 
-void ATM_MouseEvent::setMouseUpPos(int x, int y)
+void ATM_MouseEvent::setMouseLeftUpPos(int x, int y)
 {
 	X = x;
 	Y = y;
@@ -18,13 +18,41 @@ void ATM_MouseEvent::setMouseUpPos(int x, int y)
 	zerosMinMap = p0 - Point(dx*scale, dy*scale);
 }
 
-void ATM_MouseEvent::setMouseMovePos(int x, int y)
+void ATM_MouseEvent::setMouseLeftMovePos(int x, int y)
 {
 	X = x;
 	Y = y;
 	dx = x - x0;
 	dy = y - y0;
 	zerosMinMap = p0 - Point(dx*scale, dy*scale);
+}
+
+void ATM_MouseEvent::setMouseMidDownPos(int x, int y)
+{
+	X = x;
+	Y = y;
+	x1 = x;
+	y1 = y;
+	p1 = offGiMinMap;
+}
+
+void ATM_MouseEvent::setMouseMidUpPos(int x, int y)
+{
+	X = x;
+	Y = y;
+	dx = x - x1;
+	dy = y - y1;
+	offGiMinMap = p1 + Point(dx, dy);
+	std::cout << offGiMinMap.x <<" "<< offGiMinMap.y << std::endl;
+}
+
+void ATM_MouseEvent::setMouseMidMovePos(int x, int y)
+{
+	X = x;
+	Y = y;
+	dx = x - x1;
+	dy = y - y1;
+	offGiMinMap = p1 + Point(dx, dy);
 }
 
 void ATM_MouseEvent::normalizationZerosMinMap(Rect rangeRect)

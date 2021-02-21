@@ -15,7 +15,7 @@ void AutomaticTrackingMap::Init(HWND mapWindowsHandle)
 	数据状态初始化
 	*/
 	MET.zerosMinMap = zerosMinMap;
-
+	MET.offGiMinMap = offGiMinMap;
 	getGiHandle();
 	getThisHandle(mapWindowsHandle);
 
@@ -264,24 +264,43 @@ void AutomaticTrackingMap::setWindowsPos(HWND _thisHandle)
 	SetWindowPos(_thisHandle, HWND_TOPMOST, GIS.giRect.left + offGiMinMap.x, GIS.giRect.top + offGiMinMap.y, 0, 0, SWP_NOSIZE);
 }
 
-void AutomaticTrackingMap::setMouseDownPos(int x, int y)
+void AutomaticTrackingMap::setMoveMapDownPos(int x, int y)
 {
-	MET.setMouseDownPos(x, y);
+	MET.setMouseLeftDownPos(x, y);
 }
 
-void AutomaticTrackingMap::setMouseUpPos(int x, int y)
+void AutomaticTrackingMap::setMoveMapUpPos(int x, int y)
 {
-	MET.setMouseUpPos(x, y);
+	MET.setMouseLeftUpPos(x, y);
 	MET.normalizationZerosMinMap(Rect(0, 0, mapSize.width, mapSize.width));
 	zerosMinMap = MET.zerosMinMap;
 }
 
-void AutomaticTrackingMap::setMouseMovePos(int x, int y)
+void AutomaticTrackingMap::setMoveMapMovePos(int x, int y)
 {
-	MET.setMouseMovePos(x, y);
+	MET.setMouseLeftMovePos(x, y);
 	MET.normalizationZerosMinMap(Rect(0,0,mapSize.width,mapSize.width));
 	zerosMinMap = MET.zerosMinMap;
 	
+}
+
+void AutomaticTrackingMap::setOffsetDownPos(int x, int y)
+{
+	//MET.offGiMinMap = offGiMinMap;
+	MET.setMouseMidDownPos(x, y);
+
+}
+
+void AutomaticTrackingMap::setOffsetUpPos(int x, int y)
+{
+	MET.setMouseMidUpPos(x, y);
+	offGiMinMap = MET.offGiMinMap;
+}
+
+void AutomaticTrackingMap::setOffsetMovePos(int x, int y)
+{
+	MET.setMouseMidMovePos(x, y);
+	offGiMinMap = MET.offGiMinMap;
 }
 
 void AutomaticTrackingMap::setAutoMode()

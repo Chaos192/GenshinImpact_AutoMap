@@ -99,9 +99,13 @@ public:
 	void setWindowsPos();
 	void setWindowsPos(HWND _thisHandle);
 
-	void setMouseDownPos(int x,int y);
-	void setMouseUpPos(int x, int y);
-	void setMouseMovePos(int x, int y);
+	void setMoveMapDownPos(int x,int y);
+	void setMoveMapUpPos(int x, int y);
+	void setMoveMapMovePos(int x, int y);
+
+	void setOffsetDownPos(int x, int y);
+	void setOffsetUpPos(int x, int y);
+	void setOffsetMovePos(int x, int y);
 
 	void setAutoMode();
 	bool getAutoMode();

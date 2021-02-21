@@ -61,9 +61,16 @@ void GenshinImpact_AutoMap::mouseMoveEvent(QMouseEvent * event)
 	if (map.MET.bLCD)
 	{
 		//qDebug() << "mouse move " << event->x() << "," << event->y();
-		map.setMouseMovePos(event->x(), event->y());
+		map.setMoveMapMovePos(event->x(), event->y());
 		update();
 	}
+	if (map.MET.bMCD)
+	{
+		qDebug() << "mouse move " << event->globalX() << "," << event->globalY();
+		map.setOffsetMovePos(event->globalX(), event->globalY());
+		map.setWindowsPos();
+	}
+	//if(map.MET)
 }
 
 void GenshinImpact_AutoMap::mousePressEvent(QMouseEvent * event)
@@ -72,8 +79,14 @@ void GenshinImpact_AutoMap::mousePressEvent(QMouseEvent * event)
 	{
 		// 左键按下
 		map.MET.bLCD = true;
-		map.setMouseDownPos(event->x(), event->y());
-		//qDebug() << "mouse move setMouseDownPos" << event->x() << "," << event->y();
+		map.setMoveMapDownPos(event->x(), event->y());
+		//qDebug() << "mouse move setMouseLeftDownPos" << event->x() << "," << event->y();
+	}
+	if (event->button() == Qt::MidButton)
+	{
+		qDebug() << "MidButton" << event->globalPos().x() << "," << event->globalX();
+		map.MET.bMCD = true;
+		map.setOffsetDownPos(event->globalPos().x(), event->globalPos().y());
 	}
 }
 
@@ -83,8 +96,14 @@ void GenshinImpact_AutoMap::mouseReleaseEvent(QMouseEvent * event)
 	{
 		// 左键按下
 		map.MET.bLCD = false;
-		//map.setMouseUpPos(event->x(), event->y());
+		//map.setMouseLeftUpPos(event->x(), event->y());
 		//qDebug() << "mouse move res" << event->x() << "," << event->y();
+	}
+	if (event->button() == Qt::MidButton)
+	{
+		//qDebug() << "MidButton" << event->x() << "," << event->y();
+		map.MET.bMCD = false;
+		//map.setOffsetUpPos(event->globalX(), event->globalY());
 	}
 }
 

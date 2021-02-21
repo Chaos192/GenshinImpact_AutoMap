@@ -21,10 +21,19 @@ public:
 	//左键单击标志
 	bool bLCD = false;
 	bool bLCU = false;
+	//中键单击
+	bool bMCD = false;
+	bool bMCU = false;
 	Point zerosMinMap;
-	void setMouseDownPos(int x, int y);
-	void setMouseUpPos(int x, int y);
-	void setMouseMovePos(int x, int y);
+	Point offGiMinMap;
+	void setMouseLeftDownPos(int x, int y);
+	void setMouseLeftUpPos(int x, int y);
+	void setMouseLeftMovePos(int x, int y);
+
+	void setMouseMidDownPos(int x, int y);
+	void setMouseMidUpPos(int x, int y);
+	void setMouseMidMovePos(int x, int y);
+
 	void normalizationZerosMinMap(Rect rangeRect);
 };
 
