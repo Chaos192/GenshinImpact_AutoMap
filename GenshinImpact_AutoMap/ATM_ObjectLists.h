@@ -24,7 +24,7 @@ public:
 class ATM_ObjectLists
 {
 	int _objectListsNumber = 4;
-	int _objectMaxNumbers[4] = { 65,131,80,66 };
+	int _objectMaxNumbers[4] = { 65,131,80,120 };
 	bool _isShow[4] = { false };
 	ATM_ObjectList *_objList = nullptr;
 

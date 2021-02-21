@@ -110,8 +110,6 @@ public:
 private:
 	int getThisState();
 	
-
-	
 	void setThisState();
 	void setThreadMatchMat();
 
