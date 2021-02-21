@@ -55,7 +55,6 @@ void GenshinImpact_AutoMap::mapInit()
 	map.Init((HWND)this->winId());
 }
 
-
 void GenshinImpact_AutoMap::mouseMoveEvent(QMouseEvent * event)
 {
 	if (map.MET.bLCD)
@@ -115,7 +114,7 @@ void GenshinImpact_AutoMap::mouseDoubleClickEvent(QMouseEvent * event)
 		emit this->setAutoMode();
 
 		qDebug() << "mouse move double" << event->x() << "," << event->y();
-		map.CustomProcess(0);
+		//map.CustomProcess(0);
 		//i++;
 	}
 }
