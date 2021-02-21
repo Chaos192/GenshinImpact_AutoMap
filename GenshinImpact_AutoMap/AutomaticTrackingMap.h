@@ -66,8 +66,6 @@ public:
 
 	//原神是否正在运行标志
 
-
-
 	//Qt
 	QImage MainImg;
 
