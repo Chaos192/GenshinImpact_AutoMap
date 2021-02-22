@@ -26,6 +26,7 @@ private:
 	ATmap map;
 	QCursor *myCursor;
 	QtClassMyHotKeyObject *hotKeyAutoMode;
+	QtClassMyHotKeyObject *hotKeyAddFlag;
 
 	void mapInit();
 
@@ -54,6 +55,8 @@ private slots:
 	void updataBackEnd();
 
 	void setAutoMode();
+	void setAddFlag();
+
 	void setUIObjListShow();
 	void setUIObjListHide();
 	void setUIObjListToMapData();

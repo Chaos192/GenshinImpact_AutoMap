@@ -1,6 +1,7 @@
 #pragma once
 #include <opencv2/opencv.hpp>
-//using namespace std;
+#include <vector>
+using namespace std;
 class ATM_ObjectList
 {
 	int _maxNumber=0;
@@ -21,12 +22,30 @@ public:
 	cv::Point p(int i);
 };
 
+class ATM_ObjectFlag
+{
+	int _maxNumber = 0;
+	vector<int> _x;
+	vector<int> _y;
+	int _orderPtr = 0;
+public:
+	ATM_ObjectFlag();
+	~ATM_ObjectFlag();
+
+	void append(int x, int y);
+
+	int x(int i);
+	int y(int i);
+	cv::Point p(int i);
+};
+
 class ATM_ObjectLists
 {
 	int _objectListsNumber = 4;
 	int _objectMaxNumbers[4] = { 65,131,80,120 };
 	bool _isShow[4] = { false };
 	ATM_ObjectList *_objList = nullptr;
+	ATM_ObjectFlag objFlag;
 
 public:
 	ATM_ObjectLists();

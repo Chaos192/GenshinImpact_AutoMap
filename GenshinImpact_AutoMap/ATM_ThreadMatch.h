@@ -27,7 +27,7 @@ class ATM_TM_SurfMap
 	Point pos;
 public:
 	bool isInit = false;
-
+	bool isContinuity = false;
 	void setMap(Mat mapMat);
 	void setMinMap(Mat minMapMat);
 
@@ -35,6 +35,7 @@ public:
 	void SURFMatch();
 	Point SURFMatch(Mat minMapMat);
 	Point getLocalPos();
+	bool getIsContinuity();
 private:
 	double dis(Point &p);
 };
@@ -80,7 +81,8 @@ public:
 	~ATM_ThreadMatch();
 
 	Point pos;
-	bool isPaimonVisial;
+	bool isPaimonVisial = false;
+	bool isContinuity = false;
 
 	bool isExistObjMinMap = false;
 	bool isExistObjPaimon = false;

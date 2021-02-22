@@ -1,6 +1,7 @@
 <RCC>
   <qresource prefix="GenshinImpact_AutoMap"/>
   <qresource prefix="IconUIObjList">
+    <file>resource/UIObjFlag.png</file>
     <file>resource/UIObjList0.ico</file>
     <file>resource/UIObjList1.ico</file>
     <file>resource/UIObjList2.ico</file>

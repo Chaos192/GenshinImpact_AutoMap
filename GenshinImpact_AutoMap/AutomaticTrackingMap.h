@@ -8,6 +8,7 @@
 #include "ATM_GiState.h"
 #include "ATM_ThreadMatch.h"
 #include "ATM_ObjectLists.h"
+#include "ATM_SendSocket.h"
 
 enum ThisWinState
 {
@@ -29,6 +30,8 @@ class AutomaticTrackingMap
 	ATM_ThreadMatch TMS;
 	//加载物品标记
 	ATM_ObjectLists OLS;
+	//Socket通信
+	ATM_SendSocket SST;
 
 	cv::Mat MainMat;
 	cv::Mat MainMatTmp;

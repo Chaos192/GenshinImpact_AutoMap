@@ -201,6 +201,7 @@ void ATM_ThreadMatch::thread_MatchTarget(Mat & tar, Mat & Obj)
 void ATM_ThreadMatch::GetMatchResults()
 {
 	pos = surfMap.getLocalPos();
+	isContinuity = surfMap.getIsContinuity();
 	isPaimonVisial = tempPaimon.getPaimonVisible();
 }
 
@@ -229,7 +230,7 @@ void ATM_TM_SurfMap::SURFMatch()
 	Mat img_scene(_mapMat);
 	Mat img_object(_minMapMat);
 
-	bool isContinuity = false;
+	isContinuity = false;
 
 	if ((dis(hisP[1] - hisP[0]) + dis(hisP[2] - hisP[1])) < 2000)
 	{
@@ -364,6 +365,11 @@ Point ATM_TM_SurfMap::SURFMatch(Mat minMapMat)
 Point ATM_TM_SurfMap::getLocalPos()
 {
 	return pos;
+}
+
+bool ATM_TM_SurfMap::getIsContinuity()
+{
+	return isContinuity;
 }
 
 double ATM_TM_SurfMap::dis(Point & p)

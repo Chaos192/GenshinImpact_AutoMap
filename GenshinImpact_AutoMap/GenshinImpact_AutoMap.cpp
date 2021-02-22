@@ -4,10 +4,12 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
+	ui.UIObjFlagButton->setVisible(false);
 	ui.UIObjList0Button->setVisible(false);
 	ui.UIObjList1Button->setVisible(false);
 	ui.UIObjList2Button->setVisible(false);
 	ui.UIObjList999Button->setVisible(false);
+	connect(ui.UIObjFlagButton, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
 	connect(ui.UIObjList0Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
 	connect(ui.UIObjList1Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
 	connect(ui.UIObjList2Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
@@ -27,6 +29,10 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 	//添加全局快捷键
 	hotKeyAutoMode = new QtClassMyHotKeyObject("Alt+T", this);
 	connect(hotKeyAutoMode, SIGNAL(Activated()), this, SLOT(setAutoMode()));
+	hotKeyAddFlag = new QtClassMyHotKeyObject("Alt+F", this);
+	connect(hotKeyAutoMode, SIGNAL(Activated()), this, SLOT(setAddFlag()));
+
+
 	connect(ui.UIButton, SIGNAL(clicked()), this, SLOT(setUIObjListShow()));
 	connect(ui.ExitButton, SIGNAL(mouseDoubleClickExitExe()), this, SLOT(close()));
 	connect(this, &GenshinImpact_AutoMap::mapUpdataFrontEnd, this, &GenshinImpact_AutoMap::updataFrontEnd);
@@ -196,11 +202,18 @@ void GenshinImpact_AutoMap::setAutoMode()
 	}
 }
 
+void GenshinImpact_AutoMap::setAddFlag()
+{
+	//map.zerosMinMap;
+
+}
+
 void GenshinImpact_AutoMap::setUIObjListShow()
 {
 	qDebug() << "setUIObjListShow";
 	ui.UIButton->setIcon(QIcon(":/IconUI/resource/UI1.ico"));
 
+	ui.UIObjFlagButton->setVisible(true);
 	ui.UIObjList0Button->setVisible(true);
 	ui.UIObjList1Button->setVisible(true);
 	ui.UIObjList2Button->setVisible(true);
@@ -214,6 +227,7 @@ void GenshinImpact_AutoMap::setUIObjListShow()
 void GenshinImpact_AutoMap::setUIObjListHide()
 {
 	qDebug() << "setUIObjListHide";
+	ui.UIObjFlagButton->setVisible(false);
 	ui.UIObjList0Button->setVisible(false);
 	ui.UIObjList1Button->setVisible(false);
 	ui.UIObjList2Button->setVisible(false);
@@ -233,6 +247,10 @@ void GenshinImpact_AutoMap::setUIObjListHide()
 void GenshinImpact_AutoMap::setUIObjListToMapData()
 {
 	QPushButton *btn = qobject_cast<QPushButton*>(sender());
+	if (btn == ui.UIObjFlagButton) {
+		qDebug() << "setUIObjListToMapData data 0 FST";
+		map.setObjIsShow(0);
+	}
 	if (btn == ui.UIObjList0Button) {
 		qDebug() << "setUIObjListToMapData data 0 FST";
 		map.setObjIsShow(0);

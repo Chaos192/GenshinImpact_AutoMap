@@ -95,17 +95,17 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='D452T1_C|x64'" Label="QtSettings">
     <QtInstall>msvc2017_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;network;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>msvc2017_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;network;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='R450T1_W|x64'" Label="QtSettings">
     <QtInstall>msvc2017_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;network;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
@@ -166,6 +166,7 @@
   <ItemGroup>
     <ClCompile Include="ATM_GI_ScreenResolution.cpp" />
     <ClCompile Include="ATM_ObjectLists.cpp" />
+    <ClCompile Include="ATM_SendSocket.cpp" />
     <ClCompile Include="ATM_ThreadMatch.cpp" />
     <ClCompile Include="QtClassMyExitButton.cpp" />
     <ClCompile Include="QtClassMyHotKayNativeEventFilter.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="ATM_MouseEvent.h" />
     <ClInclude Include="ATM_ObjectLists.h" />
     <ClInclude Include="ATM_Resource.h" />
+    <ClInclude Include="ATM_SendSocket.h" />
     <ClInclude Include="ATM_ThreadMatch.h" />
     <ClInclude Include="AutomaticTrackingMap.h" />
     <QtMoc Include="QtClassMyExitButton.h" />

@@ -100,6 +100,62 @@ cv::Point ATM_ObjectList::p(int i)
 	return cv::Point(_x[i], _y[i]);
 }
 
+ATM_ObjectFlag::ATM_ObjectFlag()
+{
+
+}
+
+ATM_ObjectFlag::~ATM_ObjectFlag()
+{
+}
+
+void ATM_ObjectFlag::append(int x, int y)
+{
+	_x.push_back(x);
+	_y.push_back(y);
+	_maxNumber++;
+}
+
+int ATM_ObjectFlag::x(int i)
+{
+	if (i < 0)
+	{
+		return _x[0];
+	}
+	if (i >= _maxNumber)
+	{
+		return _x[_maxNumber - 1];
+	}
+	return _x[i];
+}
+
+int ATM_ObjectFlag::y(int i)
+{
+	if (i < 0)
+	{
+		return _y[0];
+	}
+	if (i >= _maxNumber)
+	{
+		return _y[_maxNumber - 1];
+	}
+	return _y[i];
+}
+
+cv::Point ATM_ObjectFlag::p(int i)
+{
+	if (i < 0)
+	{
+		return cv::Point(_x[0], _y[0]);
+	}
+	if (i >= _maxNumber)
+	{
+		return cv::Point(_x[_maxNumber - 1], _y[_maxNumber - 1]);
+	}
+	return cv::Point(_x[i], _y[i]);
+}
+
+
 ATM_ObjectLists::ATM_ObjectLists()
 {
 	_objList = new ATM_ObjectList[_objectListsNumber];
@@ -603,3 +659,5 @@ void ATM_ObjectLists::append(int i, int x, int y)
 	}
 	_objList[i].append(x, y);
 }
+
+

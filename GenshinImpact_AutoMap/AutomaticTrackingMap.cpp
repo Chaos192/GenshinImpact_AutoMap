@@ -16,6 +16,8 @@ void AutomaticTrackingMap::Init(HWND mapWindowsHandle)
 	*/
 	MET.zerosMinMap = zerosMinMap;
 	MET.offGiMinMap = offGiMinMap;
+	SST.setPort(6666);
+
 	getGiHandle();
 	getThisHandle(mapWindowsHandle);
 
@@ -84,6 +86,11 @@ void AutomaticTrackingMap::BackEndUpdata()
 			zerosMinMap = TMS.pos;
 			MET.zerosMinMap = zerosMinMap;
 			GIS.isPaimonVisible = TMS.isPaimonVisial;
+
+			if (TMS.isPaimonVisial&&TMS.isContinuity)
+			{
+				SST.AutoMapUdpSocketSend(zerosMinMap.x, zerosMinMap.y, 0.0);
+			}
 		}
 	}
 
@@ -458,6 +465,8 @@ void AutomaticTrackingMap::drawObjectLists()
 			}
 		}
 	}
+
+
 }
 
 bool AutomaticTrackingMap::isContains(Rect & r, Point & p)
