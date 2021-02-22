@@ -17,6 +17,8 @@ public:
 	Mat MAINMASK;
 	Mat *GIOBJICON;
 	Mat *GIOBJICONMASK;
+	Mat *GIOBJFLAGICON;
+	Mat *GIOBJFLAGICONMASK;
 	Mat *GIPAIMON;
 
 private:
@@ -24,13 +26,17 @@ private:
 	HBITMAP hMAINMASK;
 	HBITMAP *hGIOBJICON;
 	HBITMAP *hGIOBJICONMASK;
+	HBITMAP *hGIOBJFLAGICON;
+	HBITMAP *hGIOBJFLAGICONMASK;
 	HBITMAP *hGIPAIMON;
 
 	void loadGiMap();
 	void loadMainMask();
 	void loadGiPaimon();
 	void loadGiObjIcon();
-	void LoadGiObjIconMask();
+	void loadGiObjIconMask();
+	void loadGiObjFlagIcon();
+	void loadGiObjFlagIconMask();
 
 	bool HBitmap2Mat(HBITMAP& _hBmp, cv::Mat& _mat);
 	bool Mat2MaskMat(Mat &in, Mat &out);

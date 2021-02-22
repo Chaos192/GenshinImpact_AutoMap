@@ -155,6 +155,11 @@ cv::Point ATM_ObjectFlag::p(int i)
 	return cv::Point(_x[i], _y[i]);
 }
 
+int ATM_ObjectFlag::getSize()
+{
+	return _maxNumber;
+}
+
 
 ATM_ObjectLists::ATM_ObjectLists()
 {
@@ -197,6 +202,11 @@ cv::Point ATM_ObjectLists::p(int klass, int i)
 	return _objList[klass].p(i);
 }
 
+cv::Point ATM_ObjectLists::fp(int i)
+{
+	return _objFlag.p(i);
+}
+
 int ATM_ObjectLists::objectListsNumber()
 {
 	return _objectListsNumber;
@@ -211,6 +221,11 @@ int ATM_ObjectLists::objectsNumber(int klass)
 	return _objectMaxNumbers[klass];
 }
 
+int ATM_ObjectLists::flagNumber()
+{
+	return _objFlag.getSize();
+}
+
 bool ATM_ObjectLists::isShow(int klass)
 {
 	if (klass >= _objectListsNumber)
@@ -218,6 +233,11 @@ bool ATM_ObjectLists::isShow(int klass)
 		throw "Element Out Of Bounds";
 	}
 	return _isShow[klass];
+}
+
+bool ATM_ObjectLists::isShowFlag()
+{
+	return _isShowFlag;
 }
 
 void ATM_ObjectLists::setShow(int klass)
@@ -229,6 +249,11 @@ void ATM_ObjectLists::setShow(int klass)
 	_isShow[klass] = !_isShow[klass];
 }
 
+void ATM_ObjectLists::setShowFlag()
+{
+	_isShowFlag = !_isShowFlag;
+}
+
 void ATM_ObjectLists::setShow(int klass, bool isShow)
 {
 	if (klass >= _objectListsNumber)
@@ -236,6 +261,16 @@ void ATM_ObjectLists::setShow(int klass, bool isShow)
 		throw "Element Out Of Bounds";
 	}
 	_isShow[klass] = isShow;
+}
+
+void ATM_ObjectLists::setShowFlag(bool isShow)
+{
+	_isShowFlag = isShow;
+}
+
+void ATM_ObjectLists::appendFlag(int x, int y)
+{
+	_objFlag.append(x, y);
 }
 
 void ATM_ObjectLists::Init0()

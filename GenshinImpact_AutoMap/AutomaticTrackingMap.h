@@ -112,6 +112,8 @@ public:
 	bool getAutoMode();
 
 	void setObjIsShow(int klass);
+	void setObjFlagIsShow();
+	void setAddFlagOnPos();
 private:
 	int getThisState();
 	

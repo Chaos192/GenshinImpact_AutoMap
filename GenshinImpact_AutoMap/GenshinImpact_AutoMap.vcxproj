@@ -202,6 +202,8 @@
     <Image Include="resource\BackGroundMask.bmp" />
     <Image Include="resource\GIMAP.bmp" />
     <Image Include="resource\mainicon.ico" />
+    <Image Include="resource\ObjectIcons\ObjectFlagList0.bmp" />
+    <Image Include="resource\ObjectIcons\ObjectFlagList0Mask.bmp" />
     <Image Include="resource\ObjectIcons\ObjectList0.bmp" />
     <Image Include="resource\ObjectIcons\ObjectList0Mask.bmp" />
     <Image Include="resource\ObjectIcons\ObjectList1.bmp" />

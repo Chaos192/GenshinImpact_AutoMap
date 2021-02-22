@@ -37,6 +37,8 @@ public:
 	int x(int i);
 	int y(int i);
 	cv::Point p(int i);
+
+	int getSize();
 };
 
 class ATM_ObjectLists
@@ -44,8 +46,9 @@ class ATM_ObjectLists
 	int _objectListsNumber = 4;
 	int _objectMaxNumbers[4] = { 65,131,80,120 };
 	bool _isShow[4] = { false };
+	bool _isShowFlag = false;
 	ATM_ObjectList *_objList = nullptr;
-	ATM_ObjectFlag objFlag;
+	ATM_ObjectFlag _objFlag;
 
 public:
 	ATM_ObjectLists();
@@ -54,11 +57,18 @@ public:
 	int x(int klass, int i);
 	int y(int klass, int i);
 	cv::Point p(int klass, int i);
+	cv::Point fp(int i);
 	int objectListsNumber();
 	int objectsNumber(int klass);
+	int flagNumber();
 	bool isShow(int klass);
+	bool isShowFlag();
 	void setShow(int klass);
-	void setShow(int klass,bool isShow);
+	void setShowFlag();
+	void setShow(int klass, bool isShow);
+	void setShowFlag(bool isShow);
+
+	void appendFlag(int x, int y);
 
 
 private:

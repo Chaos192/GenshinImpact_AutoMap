@@ -30,7 +30,7 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 	hotKeyAutoMode = new QtClassMyHotKeyObject("Alt+T", this);
 	connect(hotKeyAutoMode, SIGNAL(Activated()), this, SLOT(setAutoMode()));
 	hotKeyAddFlag = new QtClassMyHotKeyObject("Alt+F", this);
-	connect(hotKeyAutoMode, SIGNAL(Activated()), this, SLOT(setAddFlag()));
+	connect(hotKeyAddFlag, SIGNAL(Activated()), this, SLOT(setAddFlag()));
 
 
 	connect(ui.UIButton, SIGNAL(clicked()), this, SLOT(setUIObjListShow()));
@@ -205,7 +205,7 @@ void GenshinImpact_AutoMap::setAutoMode()
 void GenshinImpact_AutoMap::setAddFlag()
 {
 	//map.zerosMinMap;
-
+	map.setAddFlagOnPos();
 }
 
 void GenshinImpact_AutoMap::setUIObjListShow()
@@ -249,7 +249,7 @@ void GenshinImpact_AutoMap::setUIObjListToMapData()
 	QPushButton *btn = qobject_cast<QPushButton*>(sender());
 	if (btn == ui.UIObjFlagButton) {
 		qDebug() << "setUIObjListToMapData data 0 FST";
-		map.setObjIsShow(0);
+		map.setObjFlagIsShow();
 	}
 	if (btn == ui.UIObjList0Button) {
 		qDebug() << "setUIObjListToMapData data 0 FST";

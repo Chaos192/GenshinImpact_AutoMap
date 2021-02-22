@@ -4,28 +4,39 @@ ATM_Resource::ATM_Resource()
 {
 	hGIOBJICON = new HBITMAP[4];
 	hGIOBJICONMASK = new HBITMAP[4];
+	hGIOBJFLAGICON = new HBITMAP[1];
+	hGIOBJFLAGICONMASK = new HBITMAP[1];
 	hGIPAIMON = new HBITMAP[4];
 
 
 	GIOBJICON = new Mat[4];
 	GIOBJICONMASK = new Mat[4];
+	GIOBJFLAGICON = new Mat[1];
+	GIOBJFLAGICONMASK = new Mat[1];
 	GIPAIMON = new Mat[4];
 
 	loadGiMap();
 	loadMainMask();
 	loadGiPaimon();
 	loadGiObjIcon();
-	LoadGiObjIconMask();
+	loadGiObjIconMask();
+	loadGiObjFlagIcon();
+	loadGiObjFlagIconMask();
+
 }
 
 ATM_Resource::~ATM_Resource()
 {
 	delete[] hGIOBJICON;
 	delete[] hGIOBJICONMASK;
+	delete[] hGIOBJFLAGICON;
+	delete[] hGIOBJFLAGICONMASK;
 	delete[] hGIPAIMON;
 
 	delete[] GIOBJICON;
 	delete[] GIOBJICONMASK;
+	delete[] GIOBJFLAGICON;
+	delete[] GIOBJFLAGICONMASK;
 	delete[] GIPAIMON;
 }
 
@@ -65,7 +76,7 @@ void ATM_Resource::loadGiObjIcon()
 	HBitmap2Mat(hGIOBJICON[3], GIOBJICON[3]);
 }
 
-void ATM_Resource::LoadGiObjIconMask()
+void ATM_Resource::loadGiObjIconMask()
 {
 	hGIOBJICONMASK[0] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_OBJICON0MASK));
 	HBitmap2Mat(hGIOBJICONMASK[0], GIOBJICONMASK[0]);
@@ -79,6 +90,19 @@ void ATM_Resource::LoadGiObjIconMask()
 	hGIOBJICONMASK[3] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_OBJICON999MASK));
 	HBitmap2Mat(hGIOBJICONMASK[3], GIOBJICONMASK[3]);
 	Mat2MaskMat(GIOBJICONMASK[3], GIOBJICONMASK[3]);
+}
+
+void ATM_Resource::loadGiObjFlagIcon()
+{
+	hGIOBJFLAGICON[0] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_OBJFLAGICON0));
+	HBitmap2Mat(hGIOBJFLAGICON[0], GIOBJFLAGICON[0]);
+}
+
+void ATM_Resource::loadGiObjFlagIconMask()
+{
+	hGIOBJFLAGICONMASK[0] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_OBJFLAGICON0MASK));
+	HBitmap2Mat(hGIOBJFLAGICONMASK[0], GIOBJFLAGICONMASK[0]);
+	Mat2MaskMat(GIOBJFLAGICONMASK[0], GIOBJFLAGICONMASK[0]);
 }
 
 bool ATM_Resource::HBitmap2Mat(HBITMAP & _hBmp, cv::Mat & _mat)

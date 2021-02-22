@@ -325,6 +325,16 @@ void AutomaticTrackingMap::setObjIsShow(int klass)
 	OLS.setShow(klass);
 }
 
+void AutomaticTrackingMap::setObjFlagIsShow()
+{
+	OLS.setShowFlag();
+}
+
+void AutomaticTrackingMap::setAddFlagOnPos()
+{
+	OLS.appendFlag(zerosMinMap.x, zerosMinMap.y);
+}
+
 int AutomaticTrackingMap::getThisState()
 {
 	//备份状态，以便检查是否跳过窗口状态设置，防止持续激活原神窗口，鼠标焦点无法转移。
@@ -465,7 +475,25 @@ void AutomaticTrackingMap::drawObjectLists()
 			}
 		}
 	}
-
+	if (OLS.isShowFlag())
+	{
+		for (int objOrder = 0; objOrder < OLS.flagNumber(); objOrder++)
+		{
+			p = OLS.fp(objOrder);
+			if (isContains(minMapRect, p))
+			{
+				x = (int)((p.x - minMapRect.x) / MET.scale) - dx;
+				y = (int)((p.y - minMapRect.y) / MET.scale) - dy;
+				//该x，y周围要有足够的空间来填充图标
+				if (x > 0 && y > 0 && x + RES.GIOBJFLAGICON[0].cols < autoMapSize.width&&y + RES.GIOBJFLAGICON[0].rows < autoMapSize.height)
+				{
+					ObjIconROIMat = MainMat(Rect(x, y, RES.GIOBJFLAGICON[0].cols, RES.GIOBJFLAGICON[0].rows));
+					//RES.GIOBJICON[objKlass].copyTo(ObjIconROIMat, RES.GIOBJICONMASK[objKlass]);
+					addWeightedAlpha(ObjIconROIMat, RES.GIOBJFLAGICON[0], RES.GIOBJFLAGICONMASK[0]);
+				}
+			}
+		}
+	}
 
 }
 
