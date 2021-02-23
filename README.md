@@ -3,6 +3,8 @@
 
 目前做成了原神的PC端悬浮窗地图工具……（但也实现了自动跟踪的功能），Qt重写了之后可以做的很好看，融合的毫无违和感
 
+甚至可以做成圆的盖在原版上，一点问题没有。太赞了
+
 ![完美嵌入](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/Image/Snipaste_2021-02-19_20-27-21.png)
 
 ![完美嵌入](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/Image/Snipaste_2021-02-19_20-30-23.png)
@@ -53,7 +55,7 @@ opencv4.5.0
 
 `if (giHandle != NULL)` 判断原神窗口句柄是否为空
 
-之后的开发中将会涉及到数据文件的保存与读取，目前会在Temp目录中建立名为GenshinImpactAutoMap的文件夹，并在该文件夹中建立数据存档。
+之后的开发中将会涉及到数据文件的保存与读取，目前会在Temp（目前版本应该会改到My Game目录下，Temp下容易被删除）目录中建立名为GenshinImpactAutoMap的文件夹，并在该文件夹中建立数据存档。
 
 如：`C:\Users\%USERNAME%\AppData\Local\Temp\GenshinImpactAutoMap`
 
@@ -74,6 +76,10 @@ opencv4.5.0
 ![搜索神瞳](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/GenshinImpact_Map_Test_1/Img/2021-01-27%2000-27-55_3.gif)
 
 ## 目前实现
+
+全局快捷键 `Alt + T` 开启关闭自动追踪
+
+全局快捷键 `Alt + F` 添加自定义标记
 
 左键拖动以及滚轮缩放地图显示
 
