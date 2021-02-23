@@ -81,6 +81,9 @@ void AutomaticTrackingMap::BackEndUpdata()
 		TMS.cThreadSurfMapInit(RES.GIMAP);
 		TMS.cThreadSurfMapMatch();
 		TMS.cThreadTemplatePaimonMatch(RES.GIPAIMON[GIS.resIdPaimon]);
+		TMS.cThreadOrbAvatarInit(RES.GIAVATAR);
+		TMS.cThreadOrbAvatarMatch();
+
 		if (TMS.tIsEndSurfMapInit)
 		{
 			zerosMinMap = TMS.pos;
@@ -89,7 +92,7 @@ void AutomaticTrackingMap::BackEndUpdata()
 
 			if (TMS.isPaimonVisial&&TMS.isContinuity)
 			{
-				SST.AutoMapUdpSocketSend(zerosMinMap.x, zerosMinMap.y, 0.0);
+				SST.AutoMapUdpSocketSend(zerosMinMap.x, zerosMinMap.y, TMS.rotationAngle);
 			}
 		}
 	}
@@ -131,19 +134,30 @@ void AutomaticTrackingMap::Mat2QImage()
 
 void AutomaticTrackingMap::CustomProcess(int i)
 {
-	//GIS.getGiFrame();
-	//string name("OutputPNG_id_");
-	//name.append(to_string(i));
-	//name.append("_GiFrame.png");
-	//if (GIS.isRunning)
-	//{
-	//	//imwrite(name, GIS.giFrame);
-	//}
+	GIS.getGiFrame();
+	string name("OutputPNG_id_");
+	name.append(to_string(i));
+	name.append("_GiFrame.png");
+	if (GIS.isRunning)
+	{
+		//imwrite(name, GIS.giFrame);
+		//imshow("testOut",GIS.giFrameMap);
+		ATM_TM_ORBAvatar orb;
+		Mat tes,te2;
+		int len1=300, lne2 = 96;
+		cvtColor(RES.GIAVATAR, tes, CV_RGB2GRAY);
+		resize(tes, tes, Size(len1, len1),0,0, INTER_CUBIC);//INTER_AREAz
 
-	Mat k;
-	MainMat(Rect(100,100,32,32)).copyTo(k);
-	addWeightedAlpha(k, RES.GIOBJICON[0],RES.GIOBJICONMASK[0]);
-	imshow("asd", k);
+		orb.setAvatarTemplate(tes);
+
+		cvtColor(GIS.giFrameMap(Rect(82, 82, 48, 48)), te2, CV_RGB2GRAY);
+		resize(te2, te2, Size(len1, len1),0,0, INTER_CUBIC);
+		orb.setAvatarMat(te2);
+
+		orb.Init();
+		orb.ORBMatch();
+		TMS.rotationAngle = orb.getRotationAngle();
+	}
 }
 
 Mat AutomaticTrackingMap::getViewMap()

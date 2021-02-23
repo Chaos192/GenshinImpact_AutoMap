@@ -93,7 +93,7 @@ private:
 
 	Ptr<ORB> orb;
 	vector<KeyPoint> keyPoints_tem, keyPoints_test;
-	Mat descriptors_tem, descriptors_test;
+	Mat descriptors_2, descriptors_test;
 private:
 	void getObjectKeyPoints();
 	void getTargetKeyPoints();

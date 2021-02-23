@@ -17,6 +17,17 @@ ATM_ThreadMatch::~ATM_ThreadMatch()
 		tTemplatePaimonMatch->join();
 		delete tTemplatePaimonMatch;
 	}
+	if (tOrbAvatarInit != nullptr)
+	{
+		tOrbAvatarInit->join();
+		delete tOrbAvatarInit;
+	}
+	if (tOrbAvatarMatch != nullptr)
+	{
+		tOrbAvatarMatch->join();
+		delete tOrbAvatarMatch;
+	}
+
 	if (tMatchStar != nullptr)
 	{
 		tMatchStar->join();
@@ -77,9 +88,40 @@ void ATM_ThreadMatch::setPaimon(Mat PaimonMat)
 	PaimonMat.copyTo(objPaimon);
 }
 
+void ATM_ThreadMatch::cThreadOrbAvatarInit(Mat & TemplatAvatar)
+{
+	if (orbAvatar.isInit == false)
+	{
+		cvtColor(TemplatAvatar, templateAvatar, CV_RGB2GRAY);
+		resize(templateAvatar, templateAvatar, Size(150, 150), 0, 0, INTER_LANCZOS4);//INTER_CUBIC INTER_AREAz
+		if (tOrbAvatarInit == nullptr)
+		{
+			tOrbAvatarInit = new thread(&ATM_ThreadMatch::thread_OrbAvatarInit, this, ref(templateAvatar));
+			tIsEndOrbAvatarInit = false;
+		}
+	}
+}
+
+void ATM_ThreadMatch::cThreadOrbAvatarMatch()
+{
+	resize(objAvatar, objAvatar, Size(150, 150), 0, 0, INTER_LANCZOS4);//INTER_CUBIC INTER_AREAz
+
+	if (tOrbAvatarMatch == nullptr && tIsEndOrbAvatarInit && isExistObjMinMap && isPaimonVisial)
+	{
+		tOrbAvatarMatch = new thread(&ATM_ThreadMatch::thread_OrbAvatarMatch, this, ref(objAvatar));
+		tIsEndOrbAvatarMatch = false;
+	}
+}
+
+void ATM_ThreadMatch::setAvatat(Mat AvatarMat)
+{
+	AvatarMat.copyTo(objAvatar);
+}
+
 void ATM_ThreadMatch::getObjMinMap(Mat & obj)
 {
 	obj.copyTo(objMinMap);
+	obj(Rect(obj.cols / 2 - 24, obj.rows / 2 - 24, 48, 48)).copyTo(objAvatar);
 	isExistObjMinMap = true;
 }
 
@@ -108,6 +150,14 @@ void ATM_ThreadMatch::CheckThread()
 	if (tIsEndTemplatePaimonMatch == false)
 	{
 		CheckThread_TemplatePaimonMatch();
+	}
+	if (tIsEndOrbAvatarInit == false)
+	{
+		CheckThread_OrbAvatarInit();
+	}
+	if (tIsEndOrbAvatarMatch == false)
+	{
+		CheckThread_OrbAvatarMatch();
 	}
 }
 
@@ -186,6 +236,53 @@ void ATM_ThreadMatch::thread_TemplatePaimonMatch(Mat &Template, Mat & Obj)
 	}
 }
 
+void ATM_ThreadMatch::CheckThread_OrbAvatarInit()
+{
+	DWORD exitCode;
+	if (tOrbAvatarInit != nullptr)
+	{
+		GetExitCodeThread(tOrbAvatarInit->native_handle(), &exitCode);
+		if (exitCode == 0)
+		{
+			tOrbAvatarInit->join();
+			delete tOrbAvatarInit;
+			tOrbAvatarInit = nullptr;
+			tIsEndOrbAvatarInit = true;
+		}
+	}
+}
+
+void ATM_ThreadMatch::thread_OrbAvatarInit(Mat & tar)
+{
+	orbAvatar.setAvatarTemplate(templateAvatar);
+	orbAvatar.Init();
+}
+
+void ATM_ThreadMatch::CheckThread_OrbAvatarMatch()
+{
+	DWORD exitCode;
+	if (tOrbAvatarMatch != nullptr)
+	{
+		GetExitCodeThread(tOrbAvatarMatch->native_handle(), &exitCode);
+		if (exitCode == 0)
+		{
+			tOrbAvatarMatch->join();
+			delete tOrbAvatarMatch;
+			tOrbAvatarMatch = nullptr;
+			tIsEndOrbAvatarMatch = true;
+		}
+	}
+}
+
+void ATM_ThreadMatch::thread_OrbAvatarMatch(Mat & Obj)
+{
+	if (isExistObjMinMap)
+	{
+		orbAvatar.setAvatarMat(Obj);
+		orbAvatar.ORBMatch();
+	}
+}
+
 void ATM_ThreadMatch::thread_MatchMap(Mat & tar, Mat & Obj)
 {
 }
@@ -203,6 +300,7 @@ void ATM_ThreadMatch::GetMatchResults()
 	pos = surfMap.getLocalPos();
 	isContinuity = surfMap.getIsContinuity();
 	isPaimonVisial = tempPaimon.getPaimonVisible();
+	rotationAngle = orbAvatar.getRotationAngle();
 }
 
 void ATM_TM_SurfMap::setMap(Mat mapMat)
@@ -411,4 +509,112 @@ void ATM_TM_TemplatePaimon::TemplatePaimon()
 bool ATM_TM_TemplatePaimon::getPaimonVisible()
 {
 	return isPaimonVisible;
+}
+
+void ATM_TM_ORBAvatar::setAvatarTemplate(Mat avatarTemplateMat)
+{
+	_avatarTemplate = avatarTemplateMat;
+}
+
+void ATM_TM_ORBAvatar::setAvatarMat(Mat avatarMat)
+{
+	_avatarMat = avatarMat;
+}
+
+void ATM_TM_ORBAvatar::Init()
+{
+	if (isInit)return;
+	orb = ORB::create();//(36, 1.2, 3, 31, 0, 2, ORB::HARRIS_SCORE);
+	orb->detectAndCompute(_avatarTemplate, Mat(), Kp_Template, Dp_Template, false);
+	isInit = true;
+}
+
+bool GreaterSort(DMatch a, DMatch b)
+{
+	return (a.distance > b.distance);
+}
+
+void ATM_TM_ORBAvatar::ORBMatch()
+{
+	orb->detectAndCompute(_avatarMat, Mat(), Kp_Avatar, Dp_Avatar, false);
+
+	//BruteForceMatcher<HammingLUT> matcher;
+	//vector<DMatch> matches;
+	//matcher.match(Dp_Template, Dp_Avatar, matches);
+
+	//特征匹配是通过使用合适的相似度度量比较特征描述子来执行的。
+   //定义特征描述子匹配器
+	//Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::MatcherType::BRUTEFORCE);
+	////参数MatcherType：匹配器类型，这里使用MatcherType::BRUTEFORCE（暴力匹配算法）
+
+	//vector<DMatch> matches;
+	////通过描述子匹配器，对两幅图像的描述子进行匹配，也就是将两幅图像中的对应特征点进行匹配；输出的是一个DMatch结构体向量，其每一个DMatch结构体包含一组对应特征点的信息。
+	//matcher->match(Dp_Template, Dp_Avatar, matches);
+
+	//double max_dist = 0; double min_dist = 1000;
+	////-- Quick calculation of max and min distances between keypoints     
+	//for (int i = 0; i < Dp_Template.rows; i++)
+	//{
+	//	double dist = matches[i].distance;
+	//	if (dist < min_dist) min_dist = dist;
+	//	if (dist > max_dist) max_dist = dist;
+	//}
+	//printf("-- Max dist : %f \n", max_dist);
+	//printf("-- Min dist : %f \n", min_dist);
+	////-- Draw only "good" matches (i.e. whose distance is less than 0.6*max_dist )     
+	////-- PS.- radiusMatch can also be used here.     
+	//std::vector< DMatch > good_matches;
+	//for (int i = 0; i < Dp_Template.rows; i++)
+	//{
+	//	if (matches[i].distance < 0.6*max_dist)
+	//	{
+	//		good_matches.push_back(matches[i]);
+	//	}
+	//}
+
+	Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::BRUTEFORCE);
+	std::vector< std::vector<DMatch> > KNN_m;
+	vector<DMatch> KNN_m2;
+	std::vector<DMatch> good_matches;
+	matcher->knnMatch(Dp_Template, Dp_Avatar, KNN_m,1);
+
+	double max_dist = 0; double min_dist = 1000;
+	std::vector<double> angle;
+	//-- Quick calculation of max and min distances between keypoints     
+	for (int i = 0; i < Dp_Template.rows; i++)
+	{
+		double dist = KNN_m[i][0].distance;
+		KNN_m2.push_back( KNN_m[i][0]);
+		
+		if (dist < min_dist) min_dist = dist;
+		if (dist > max_dist) max_dist = dist;
+	}
+
+	sort(KNN_m2.begin(), KNN_m2.end(), GreaterSort);
+
+	double res = 0;
+	for (size_t i = 0; i < KNN_m.size(); i++)
+	{
+		if (KNN_m[i][0].distance < 0.66 * max_dist)
+		{
+			good_matches.push_back(KNN_m[i][0]);
+			angle.push_back(Kp_Avatar[KNN_m[i][0].trainIdx].angle - Kp_Template[KNN_m[i][0].queryIdx].angle);
+			res =res+ angle[angle.size()-1];
+		}
+	}
+
+	Mat img_matches;
+	drawMatches(_avatarTemplate, Kp_Template, _avatarMat, Kp_Avatar,
+		good_matches, img_matches, Scalar::all(-1), Scalar::all(-1),
+		vector<char>());
+	if (good_matches.size() != 0)
+	{
+		rotationAngle = -res/ good_matches.size();
+	}
+	
+}
+
+double ATM_TM_ORBAvatar::getRotationAngle()
+{
+	return rotationAngle;
 }

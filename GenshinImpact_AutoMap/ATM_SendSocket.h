@@ -10,6 +10,10 @@ class ATM_SendSocket
 	QUdpSocket *_autoMapUdpSocket; //套接字
 	QHostAddress _clientIp=QHostAddress::LocalHost; //客户端ip
 	quint16 _clientPort = 6666; //客户端port
+	int _x = 0;
+	int _y = 0;
+	double _orientationAngle = 0;
+
 public:
 	ATM_SendSocket();
 	~ATM_SendSocket();

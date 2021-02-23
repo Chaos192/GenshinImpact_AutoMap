@@ -170,7 +170,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>MaxSpeed</Optimization>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -240,6 +240,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="resource\BackGroundMask.bmp" />
+    <Image Include="resource\GIAVATAR.bmp" />
     <Image Include="resource\GIMAP.bmp" />
     <Image Include="resource\mainicon.ico" />
     <Image Include="resource\ObjectIcons\ObjectFlagList0.bmp" />

@@ -92,6 +92,7 @@ void GenshinImpact_AutoMap::mousePressEvent(QMouseEvent * event)
 		qDebug() << "MidButton" << event->globalPos().x() << "," << event->globalX();
 		map.MET.bMCD = true;
 		map.setOffsetDownPos(event->globalPos().x(), event->globalPos().y());
+		map.CustomProcess(0);
 	}
 }
 
@@ -109,6 +110,7 @@ void GenshinImpact_AutoMap::mouseReleaseEvent(QMouseEvent * event)
 		//qDebug() << "MidButton" << event->x() << "," << event->y();
 		map.MET.bMCD = false;
 		//map.setOffsetUpPos(event->globalX(), event->globalY());
+
 	}
 }
 
