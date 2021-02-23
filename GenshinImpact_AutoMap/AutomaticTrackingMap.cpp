@@ -2,6 +2,8 @@
 
 AutomaticTrackingMap::AutomaticTrackingMap()
 {
+	//MainMat = Mat(autoWindowSize, CV_8UC4);
+	//MainMat = Scalar(0, 0, 0);
 }
 
 AutomaticTrackingMap::~AutomaticTrackingMap()
@@ -17,6 +19,7 @@ void AutomaticTrackingMap::Init(HWND mapWindowsHandle)
 	MET.zerosMinMap = zerosMinMap;
 	MET.offGiMinMap = offGiMinMap;
 	SST.setPort(6666);
+
 
 	getGiHandle();
 	getThisHandle(mapWindowsHandle);
@@ -52,6 +55,8 @@ void AutomaticTrackingMap::FrontEndUpdata()
 
 	//获取显示区域地图
 	MainMat = getViewMap();
+	//MainMat(Rect(0, 0, 212, 212)) = getViewMap();
+	//getViewMap().copyTo(MainMat(Rect(0,0,212,212))) ;
 	//添加物品图标
 	drawObjectLists();
 
@@ -120,11 +125,13 @@ void AutomaticTrackingMap::Mat2QImage()
 {
 	std::vector<Mat> mv0;
 	std::vector<Mat> mv1;
+	//MainMat = Scalar(0, 0, 0);
 
 	//通道分离
 	split(MainMat, mv0);
 	split(RES.MAINMASK, mv1);
 	mv0.push_back(mv1[0]);
+	//mv0[3] = mv1[0];
 	merge(mv0, MainMat);
 	MainImg = QImage((uchar*)(MainMat.data), MainMat.cols, MainMat.rows, MainMat.cols*(MainMat.channels()), QImage::Format_ARGB32);
 }
@@ -156,10 +163,10 @@ Mat AutomaticTrackingMap::getViewMap()
 	reMapSize.width = (int)(reMapSize.width * MET.scale);
 	reMapSize.height = (int)(reMapSize.height * MET.scale);
 
-	Size R = reMapSize / 2;
+	//Size R = reMapSize / 2;
 
-	Point LT = zerosMinMap - Point(R);
-	Point RB = zerosMinMap + Point(R);
+	Point LT = zerosMinMap -autoMapCenter;
+	Point RB = zerosMinMap +Point(autoMapSize)-autoMapCenter;
 
 	minMapPoint = LT;
 
@@ -183,7 +190,7 @@ Mat AutomaticTrackingMap::getViewMap()
 
 	resize(RES.GIMAP(minMapRect), minMap, autoMapSize);
 	//minMap = matMap(Rect(minMapPoint, reMapSize));
-
+	//cvtColor(minMap, minMap, CV_RGB2RGBA);
 	return minMap;
 
 }
