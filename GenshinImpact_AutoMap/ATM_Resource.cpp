@@ -7,6 +7,7 @@ ATM_Resource::ATM_Resource()
 	hGIOBJFLAGICON = new HBITMAP[1];
 	hGIOBJFLAGICONMASK = new HBITMAP[1];
 	hGIPAIMON = new HBITMAP[4];
+	hGINUMUID = new HBITMAP[11];
 
 
 	GIOBJICON = new Mat[4];
@@ -14,6 +15,7 @@ ATM_Resource::ATM_Resource()
 	GIOBJFLAGICON = new Mat[1];
 	GIOBJFLAGICONMASK = new Mat[1];
 	GIPAIMON = new Mat[4];
+	GINUMUID = new Mat[11];
 
 	loadGiMap();
 	loadMainMask();
@@ -23,7 +25,7 @@ ATM_Resource::ATM_Resource()
 	loadGiObjIconMask();
 	loadGiObjFlagIcon();
 	loadGiObjFlagIconMask();
-
+	loadGiNumUID();
 }
 
 ATM_Resource::~ATM_Resource()
@@ -33,12 +35,14 @@ ATM_Resource::~ATM_Resource()
 	delete[] hGIOBJFLAGICON;
 	delete[] hGIOBJFLAGICONMASK;
 	delete[] hGIPAIMON;
+	delete[] hGINUMUID;
 
 	delete[] GIOBJICON;
 	delete[] GIOBJICONMASK;
 	delete[] GIOBJFLAGICON;
 	delete[] GIOBJFLAGICONMASK;
 	delete[] GIPAIMON;
+	delete[] GINUMUID;
 }
 
 void ATM_Resource::loadGiMap()
@@ -112,6 +116,32 @@ void ATM_Resource::loadGiObjFlagIconMask()
 	Mat2MaskMat(GIOBJFLAGICONMASK[0], GIOBJFLAGICONMASK[0]);
 }
 
+void ATM_Resource::loadGiNumUID()
+{
+	hGINUMUID[0] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_GINUMUID0_ARGB));
+	HBitmap2MatAlpha(hGINUMUID[0], GINUMUID[0]);
+	hGINUMUID[1] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_GINUMUID1_ARGB));
+	HBitmap2MatAlpha(hGINUMUID[1], GINUMUID[1]);
+	hGINUMUID[2] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_GINUMUID2_ARGB));
+	HBitmap2MatAlpha(hGINUMUID[2], GINUMUID[2]);
+	hGINUMUID[3] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_GINUMUID3_ARGB));
+	HBitmap2MatAlpha(hGINUMUID[3], GINUMUID[3]);
+	hGINUMUID[4] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_GINUMUID4_ARGB));
+	HBitmap2MatAlpha(hGINUMUID[4], GINUMUID[4]);
+	hGINUMUID[5] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_GINUMUID5_ARGB));
+	HBitmap2MatAlpha(hGINUMUID[5], GINUMUID[5]);
+	hGINUMUID[6] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_GINUMUID6_ARGB));
+	HBitmap2MatAlpha(hGINUMUID[6], GINUMUID[6]);
+	hGINUMUID[7] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_GINUMUID7_ARGB));
+	HBitmap2MatAlpha(hGINUMUID[7], GINUMUID[7]);
+	hGINUMUID[8] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_GINUMUID8_ARGB));
+	HBitmap2MatAlpha(hGINUMUID[8], GINUMUID[8]);
+	hGINUMUID[9] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_GINUMUID9_ARGB));
+	HBitmap2MatAlpha(hGINUMUID[9], GINUMUID[9]);
+	hGINUMUID[10] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_GINUMUID_ARGB));
+	HBitmap2MatAlpha(hGINUMUID[10], GINUMUID[10]);
+}
+
 bool ATM_Resource::HBitmap2Mat(HBITMAP & _hBmp, cv::Mat & _mat)
 {
 	//BITMAP操作
@@ -130,6 +160,22 @@ bool ATM_Resource::HBitmap2Mat(HBITMAP & _hBmp, cv::Mat & _mat)
 		return true;
 	}
 	return false;
+}
+
+//带Alpha通道的32位Bmp图片
+bool ATM_Resource::HBitmap2MatAlpha(HBITMAP & _hBmp, cv::Mat & _mat)
+{
+	//BITMAP操作
+	BITMAP bmp;
+	GetObject(_hBmp, sizeof(BITMAP), &bmp);
+	int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
+	int depth = bmp.bmBitsPixel == 1 ? IPL_DEPTH_1U : IPL_DEPTH_8U;
+	//mat操作
+	cv::Mat v_mat;
+	v_mat.create(cvSize(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8UC3, nChannels));
+	GetBitmapBits(_hBmp, bmp.bmHeight*bmp.bmWidth*nChannels, v_mat.data);
+	_mat = v_mat;
+	return true;
 }
 
 bool ATM_Resource::Mat2MaskMat(Mat & in, Mat & out)

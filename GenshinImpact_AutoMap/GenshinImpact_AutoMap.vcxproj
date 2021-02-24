@@ -243,6 +243,17 @@
     <Image Include="resource\GIAVATAR.bmp" />
     <Image Include="resource\GIMAP.bmp" />
     <Image Include="resource\mainicon.ico" />
+    <Image Include="resource\NumUID\uid0.bmp" />
+    <Image Include="resource\NumUID\uid1.bmp" />
+    <Image Include="resource\NumUID\uid2.bmp" />
+    <Image Include="resource\NumUID\uid3.bmp" />
+    <Image Include="resource\NumUID\uid4.bmp" />
+    <Image Include="resource\NumUID\uid5.bmp" />
+    <Image Include="resource\NumUID\uid6.bmp" />
+    <Image Include="resource\NumUID\uid7.bmp" />
+    <Image Include="resource\NumUID\uid8.bmp" />
+    <Image Include="resource\NumUID\uid9.bmp" />
+    <Image Include="resource\NumUID\UID_.bmp" />
     <Image Include="resource\ObjectIcons\ObjectFlagList0.bmp" />
     <Image Include="resource\ObjectIcons\ObjectFlagList0Mask.bmp" />
     <Image Include="resource\ObjectIcons\ObjectList0.bmp" />

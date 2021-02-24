@@ -13,12 +13,13 @@ class ATM_SendSocket
 	int _x = 0;
 	int _y = 0;
 	double _orientationAngle = 0;
+	int _uid = 0;
 
 public:
 	ATM_SendSocket();
 	~ATM_SendSocket();
 	void setPort(quint16 port);
-	void AutoMapUdpSocketSend(int x,int y,double orientationAngle);
+	void AutoMapUdpSocketSend(int x,int y,double orientationAngle,int uid);
 	//void SocketSend(QString sendStr, QHostAddress targetIp, quint16 targetPort); //发送数据,可以向指定目标发送，或者广播
 
 };

@@ -83,6 +83,8 @@ void AutomaticTrackingMap::BackEndUpdata()
 		TMS.cThreadTemplatePaimonMatch(RES.GIPAIMON[GIS.resIdPaimon]);
 		TMS.cThreadOrbAvatarInit(RES.GIAVATAR);
 		TMS.cThreadOrbAvatarMatch();
+		TMS.cThreadTemplateUIDInit(RES.GINUMUID);
+		TMS.cThreadTemplateUIDMatch();
 
 		if (TMS.tIsEndSurfMapInit)
 		{
@@ -92,7 +94,8 @@ void AutomaticTrackingMap::BackEndUpdata()
 
 			if (TMS.isPaimonVisial&&TMS.isContinuity)
 			{
-				SST.AutoMapUdpSocketSend(zerosMinMap.x, zerosMinMap.y, TMS.rotationAngle);
+				SST.AutoMapUdpSocketSend(zerosMinMap.x, zerosMinMap.y, TMS.rotationAngle,TMS.uid);
+				std::cout << TMS.uid << endl;;
 			}
 		}
 	}
@@ -196,10 +199,7 @@ Mat AutomaticTrackingMap::getViewMap()
 	minMapRect = Rect(minMapPoint, reMapSize);
 
 	resize(RES.GIMAP(minMapRect), minMap, autoMapSize);
-	//minMap = matMap(Rect(minMapPoint, reMapSize));
-
 	return minMap;
-
 }
 
 void AutomaticTrackingMap::getGiState()
@@ -450,8 +450,8 @@ void AutomaticTrackingMap::setThreadMatchMat()
 		TMS.getObjMinMap(matRGB2GRAY);
 		cvtColor(GIS.giFramePaimon, matRGB2GRAY, CV_RGB2GRAY);
 		TMS.getObjPaimon(matRGB2GRAY);
-		cvtColor(GIS.giFrameUID, matRGB2GRAY, CV_RGB2GRAY);
-		TMS.getObjUID(matRGB2GRAY);
+		//cvtColor(GIS.giFrameUID, matRGB2GRAY, CV_RGB2GRAY);
+		TMS.getObjUID(GIS.giFrameUID);
 	}
 	else
 	{
