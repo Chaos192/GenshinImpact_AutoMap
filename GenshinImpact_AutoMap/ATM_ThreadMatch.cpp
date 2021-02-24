@@ -42,14 +42,12 @@ ATM_ThreadMatch::~ATM_ThreadMatch()
 
 void ATM_ThreadMatch::cThreadSurfMapInit(Mat &Map)
 {
-	if (surfMap.isInit == false)
+	if (tSurfMapInit == nullptr && surfMap.isInit == false)
 	{
 		cvtColor(Map, mapGray, CV_RGB2GRAY);
-		if (tSurfMapInit == nullptr)
-		{
-			tSurfMapInit = new thread(&ATM_ThreadMatch::thread_SurfMapInit, this, ref(mapGray));
-			tIsEndSurfMapInit = false;
-		}
+
+		tSurfMapInit = new thread(&ATM_ThreadMatch::thread_SurfMapInit, this, ref(mapGray));
+		tIsEndSurfMapInit = false;
 	}
 }
 
@@ -69,10 +67,9 @@ void ATM_ThreadMatch::setSurfMap(Mat mapMat)
 
 void ATM_ThreadMatch::cThreadTemplatePaimonMatch(Mat & Template)
 {
-	cvtColor(Template, templatePaimon, CV_RGB2GRAY);
-
 	if (tTemplatePaimonMatch == nullptr && isExistObjPaimon)
 	{
+		cvtColor(Template, templatePaimon, CV_RGB2GRAY);
 		tTemplatePaimonMatch = new thread(&ATM_ThreadMatch::thread_TemplatePaimonMatch, this, ref(templatePaimon), ref(objPaimon));
 		tIsEndTemplatePaimonMatch = false;
 	}
@@ -90,24 +87,20 @@ void ATM_ThreadMatch::setPaimon(Mat PaimonMat)
 
 void ATM_ThreadMatch::cThreadOrbAvatarInit(Mat & TemplatAvatar)
 {
-	if (orbAvatar.isInit == false)
+	if (tOrbAvatarInit == nullptr && orbAvatar.isInit == false)
 	{
 		cvtColor(TemplatAvatar, templateAvatar, CV_RGB2GRAY);
 		resize(templateAvatar, templateAvatar, Size(150, 150), 0, 0, INTER_LANCZOS4);//INTER_CUBIC INTER_AREAz
-		if (tOrbAvatarInit == nullptr)
-		{
-			tOrbAvatarInit = new thread(&ATM_ThreadMatch::thread_OrbAvatarInit, this, ref(templateAvatar));
-			tIsEndOrbAvatarInit = false;
-		}
+		tOrbAvatarInit = new thread(&ATM_ThreadMatch::thread_OrbAvatarInit, this, ref(templateAvatar));
+		tIsEndOrbAvatarInit = false;
 	}
 }
 
 void ATM_ThreadMatch::cThreadOrbAvatarMatch()
 {
-	resize(objAvatar, objAvatar, Size(150, 150), 0, 0, INTER_LANCZOS4);//INTER_CUBIC INTER_AREAz
-
 	if (tOrbAvatarMatch == nullptr && tIsEndOrbAvatarInit && isExistObjMinMap && isPaimonVisial)
 	{
+		resize(objAvatar, objAvatar, Size(150, 150), 0, 0, INTER_LANCZOS4);//INTER_CUBIC INTER_AREAz
 		tOrbAvatarMatch = new thread(&ATM_ThreadMatch::thread_OrbAvatarMatch, this, ref(objAvatar));
 		tIsEndOrbAvatarMatch = false;
 	}

@@ -43,8 +43,7 @@ protected:
 	void paintEvent(QPaintEvent *event);
 
 private:
-	//timer = new QTimer(this);
-	//connect(timer, SIGNAL(timeout()), this, SLOT(DrawLine()));
+	int Fps = 42;//ms
 	QTimer *mapMessageLoopTimer;
 	QTimer *uiObjListSleepTimer;
 
