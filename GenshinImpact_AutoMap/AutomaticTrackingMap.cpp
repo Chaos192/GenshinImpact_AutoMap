@@ -2,6 +2,13 @@
 
 AutomaticTrackingMap::AutomaticTrackingMap()
 {
+	char strBuffer[256] = { 0 };
+	DWORD dwSize = 256;
+	GetUserNameA(strBuffer, &dwSize);
+	SystemUserName = strBuffer;
+	SystemUserLocalLow.append("C:\\User\\");
+	SystemUserLocalLow.append(SystemUserName);
+	SystemUserLocalLow.append("\\AppData\\LocalLow\\");
 }
 
 AutomaticTrackingMap::~AutomaticTrackingMap()

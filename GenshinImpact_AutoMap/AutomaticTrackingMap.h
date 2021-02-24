@@ -72,6 +72,9 @@ public:
 
 	//原神是否正在运行标志
 
+	string SystemUserName;
+	string SystemUserLocalLow;
+
 	//Qt
 	QImage MainImg;
 

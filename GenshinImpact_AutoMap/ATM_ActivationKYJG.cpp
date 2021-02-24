@@ -4,6 +4,10 @@ void ATM_ActivationKYJG::setActivation()
 {
 	if (kyHandle != NULL)
 	{
+		if (IsIconic(kyHandle))
+		{
+			ShowWindow(kyHandle, SW_RESTORE);
+		}
 		SetForegroundWindow(kyHandle);
 	}
 }
