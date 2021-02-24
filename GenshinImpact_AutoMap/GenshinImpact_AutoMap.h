@@ -27,6 +27,7 @@ private:
 	QCursor *myCursor;
 	QtClassMyHotKeyObject *hotKeyAutoMode;
 	QtClassMyHotKeyObject *hotKeyAddFlag;
+	QtClassMyHotKeyObject *hotKeyActivationKongYingJiuGuan;
 
 	void mapInit();
 
@@ -55,6 +56,7 @@ private slots:
 
 	void setAutoMode();
 	void setAddFlag();
+	void setActivationKongYingJiuGuan();
 
 	void setUIObjListShow();
 	void setUIObjListHide();

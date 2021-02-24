@@ -106,7 +106,7 @@ void AutomaticTrackingMap::BackEndUpdata()
 
 	//获取原神窗口状态
 	getGiState();
-
+	getKYJGState();
 	//获取本身相对原神位置
 	getThisOffset();
 	getThisState();
@@ -349,6 +349,14 @@ void AutomaticTrackingMap::setAddFlagOnPos()
 	OLS.appendFlag(zerosMinMap.x, zerosMinMap.y);
 }
 
+void AutomaticTrackingMap::setKongYingJiuGuanState()
+{
+	if (AKY.isRunKYJG)
+	{
+		AKY.setState(GIS.giHandle);
+	}
+}
+
 int AutomaticTrackingMap::getThisState()
 {
 	//备份状态，以便检查是否跳过窗口状态设置，防止持续激活原神窗口，鼠标焦点无法转移。
@@ -396,6 +404,11 @@ int AutomaticTrackingMap::getThisState()
 	}
 
 	return thisStateMode;
+}
+
+void AutomaticTrackingMap::getKYJGState()
+{
+	AKY.getKYJGHandle();
 }
 
 void AutomaticTrackingMap::setThisState()

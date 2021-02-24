@@ -9,6 +9,7 @@
 #include "ATM_ThreadMatch.h"
 #include "ATM_ObjectLists.h"
 #include "ATM_SendSocket.h"
+#include "ATM_ActivationKYJG.h"
 
 enum ThisWinState
 {
@@ -32,6 +33,8 @@ class AutomaticTrackingMap
 	ATM_ObjectLists OLS;
 	//SocketÍ¨ÐÅ
 	ATM_SendSocket SST;
+	//¿ÕÓ«¾Æ¹Ý¼¤»î
+	ATM_ActivationKYJG AKY;
 
 	cv::Mat MainMat;
 	cv::Mat MainMatTmp;
@@ -114,9 +117,10 @@ public:
 	void setObjIsShow(int klass);
 	void setObjFlagIsShow();
 	void setAddFlagOnPos();
+	void setKongYingJiuGuanState();
 private:
 	int getThisState();
-	
+	void getKYJGState();
 	void setThisState();
 	void setThreadMatchMat();
 

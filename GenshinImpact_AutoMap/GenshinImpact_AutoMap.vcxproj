@@ -204,6 +204,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ATM_ActivationKYJG.cpp" />
     <ClCompile Include="ATM_GI_ScreenResolution.cpp" />
     <ClCompile Include="ATM_ObjectLists.cpp" />
     <ClCompile Include="ATM_SendSocket.cpp" />
@@ -222,6 +223,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ATM_ActivationKYJG.h" />
     <ClInclude Include="ATM_GiState.h" />
     <ClInclude Include="ATM_GI_ScreenResolution.h" />
     <ClInclude Include="ATM_MouseEvent.h" />

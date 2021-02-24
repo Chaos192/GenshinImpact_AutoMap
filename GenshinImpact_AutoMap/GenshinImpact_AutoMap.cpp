@@ -33,6 +33,8 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 	connect(hotKeyAutoMode, SIGNAL(Activated()), this, SLOT(setAutoMode()));
 	hotKeyAddFlag = new QtClassMyHotKeyObject("Alt+F", this);
 	connect(hotKeyAddFlag, SIGNAL(Activated()), this, SLOT(setAddFlag()));
+	hotKeyActivationKongYingJiuGuan = new QtClassMyHotKeyObject("Alt+M", this);
+	connect(hotKeyActivationKongYingJiuGuan, SIGNAL(Activated()), this, SLOT(setActivationKongYingJiuGuan()));
 
 
 	connect(ui.UIButton, SIGNAL(clicked()), this, SLOT(setUIObjListShow()));
@@ -214,6 +216,11 @@ void GenshinImpact_AutoMap::setAddFlag()
 {
 	//map.zerosMinMap;
 	map.setAddFlagOnPos();
+}
+
+void GenshinImpact_AutoMap::setActivationKongYingJiuGuan()
+{
+	map.setKongYingJiuGuanState();
 }
 
 void GenshinImpact_AutoMap::setUIObjListShow()

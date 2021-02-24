@@ -74,6 +74,9 @@
     <ClCompile Include="ATM_SendSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ATM_ActivationKYJG.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutomaticTrackingMap.h">
@@ -104,6 +107,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ATM_SendSocket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ATM_ActivationKYJG.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
