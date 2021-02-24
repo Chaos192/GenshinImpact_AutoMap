@@ -5,6 +5,12 @@
 
 甚至可以做成圆的盖在原版上，一点问题没有。太赞了
 
+## 分支的新效果
+
+![完美嵌入](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/Image/Snipaste_2021-02-23_20-51-30.png)
+
+## 主分支效果
+
 ![完美嵌入](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/Image/Snipaste_2021-02-19_20-27-21.png)
 
 ![完美嵌入](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/Image/Snipaste_2021-02-19_20-30-23.png)
