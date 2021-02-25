@@ -17,28 +17,36 @@ ATM_ThreadMatch::~ATM_ThreadMatch()
 		tTemplatePaimonMatch->join();
 		delete tTemplatePaimonMatch;
 	}
-	if (tMatchStar != nullptr)
+	if (tOrbAvatarInit != nullptr)
 	{
-		tMatchStar->join();
-		delete tMatchStar;
+		tOrbAvatarInit->join();
+		delete tOrbAvatarInit;
 	}
-	if (tMatchTarget != nullptr)
+	if (tOrbAvatarMatch != nullptr)
 	{
-		tMatchTarget->join();
-		delete tMatchTarget;
+		tOrbAvatarMatch->join();
+		delete tOrbAvatarMatch;
+	}
+	if (tTemplateUIDInit != nullptr)
+	{
+		tTemplateUIDInit->join();
+		delete tTemplateUIDInit;
+	}
+	if (tTemplateUIDMatch != nullptr)
+	{
+		tTemplateUIDMatch->join();
+		delete tTemplateUIDMatch;
 	}
 }
 
 void ATM_ThreadMatch::cThreadSurfMapInit(Mat &Map)
 {
-	if (surfMap.isInit == false)
+	if (tSurfMapInit == nullptr && surfMap.isInit == false)
 	{
 		cvtColor(Map, mapGray, CV_RGB2GRAY);
-		if (tSurfMapInit == nullptr)
-		{
-			tSurfMapInit = new thread(&ATM_ThreadMatch::thread_SurfMapInit, this, ref(mapGray));
-			tIsEndSurfMapInit = false;
-		}
+
+		tSurfMapInit = new thread(&ATM_ThreadMatch::thread_SurfMapInit, this, ref(mapGray));
+		tIsEndSurfMapInit = false;
 	}
 }
 
@@ -58,10 +66,9 @@ void ATM_ThreadMatch::setSurfMap(Mat mapMat)
 
 void ATM_ThreadMatch::cThreadTemplatePaimonMatch(Mat & Template)
 {
-	cvtColor(Template, templatePaimon, CV_RGB2GRAY);
-
 	if (tTemplatePaimonMatch == nullptr && isExistObjPaimon)
 	{
+		cvtColor(Template, templatePaimon, CV_RGB2GRAY);
 		tTemplatePaimonMatch = new thread(&ATM_ThreadMatch::thread_TemplatePaimonMatch, this, ref(templatePaimon), ref(objPaimon));
 		tIsEndTemplatePaimonMatch = false;
 	}
@@ -77,9 +84,60 @@ void ATM_ThreadMatch::setPaimon(Mat PaimonMat)
 	PaimonMat.copyTo(objPaimon);
 }
 
+void ATM_ThreadMatch::cThreadOrbAvatarInit(Mat & TemplatAvatar)
+{
+	if (tOrbAvatarInit == nullptr && orbAvatar.isInit == false)
+	{
+		cvtColor(TemplatAvatar, templateAvatar, CV_RGB2GRAY);
+		resize(templateAvatar, templateAvatar, Size(150, 150), 0, 0, INTER_LANCZOS4);//INTER_CUBIC INTER_AREAz
+		tOrbAvatarInit = new thread(&ATM_ThreadMatch::thread_OrbAvatarInit, this, ref(templateAvatar));
+		tIsEndOrbAvatarInit = false;
+	}
+}
+
+void ATM_ThreadMatch::cThreadOrbAvatarMatch()
+{
+	if (tOrbAvatarMatch == nullptr && tIsEndOrbAvatarInit && isExistObjMinMap && isPaimonVisial)
+	{
+		resize(objAvatar, objAvatar, Size(150, 150), 0, 0, INTER_LANCZOS4);//INTER_CUBIC INTER_AREAz
+		tOrbAvatarMatch = new thread(&ATM_ThreadMatch::thread_OrbAvatarMatch, this, ref(objAvatar));
+		tIsEndOrbAvatarMatch = false;
+	}
+}
+
+void ATM_ThreadMatch::setAvatat(Mat AvatarMat)
+{
+	AvatarMat.copyTo(objAvatar);
+}
+
+void ATM_ThreadMatch::cThreadTemplateUIDInit(Mat * TemplateUID)
+{
+	if (tTemplateUIDInit == nullptr && tempUID.isInit == false)
+	{
+		templateUID = TemplateUID;
+		tTemplateUIDInit = new thread(&ATM_ThreadMatch::thread_TemplateUIDInit, this, templateUID);
+		tIsEndTemplateUIDInit = false;
+	}
+}
+
+void ATM_ThreadMatch::cThreadTemplateUIDMatch()
+{
+	if (tTemplateUIDMatch == nullptr && tIsEndTemplateUIDInit && isExistObjUID)
+	{
+		tTemplateUIDMatch = new thread(&ATM_ThreadMatch::thread_TemplateUIDMatch, this, ref(objUID));
+		tIsEndTemplateUIDMatch = false;
+	}
+}
+
+void ATM_ThreadMatch::setUID(Mat UIDMat)
+{
+	UIDMat.copyTo(objUID);
+}
+
 void ATM_ThreadMatch::getObjMinMap(Mat & obj)
 {
 	obj.copyTo(objMinMap);
+	obj(Rect(obj.cols / 2 - 24, obj.rows / 2 - 24, 48, 48)).copyTo(objAvatar);
 	isExistObjMinMap = true;
 }
 
@@ -108,6 +166,22 @@ void ATM_ThreadMatch::CheckThread()
 	if (tIsEndTemplatePaimonMatch == false)
 	{
 		CheckThread_TemplatePaimonMatch();
+	}
+	if (tIsEndOrbAvatarInit == false)
+	{
+		CheckThread_OrbAvatarInit();
+	}
+	if (tIsEndOrbAvatarMatch == false)
+	{
+		CheckThread_OrbAvatarMatch();
+	}
+	if (tIsEndTemplateUIDInit == false)
+	{
+		CheckThread_TemplateUIDInit();
+	}
+	if (tIsEndTemplateUIDMatch == false)
+	{
+		CheckThread_TemplateUIDMatch();
 	}
 }
 
@@ -186,16 +260,99 @@ void ATM_ThreadMatch::thread_TemplatePaimonMatch(Mat &Template, Mat & Obj)
 	}
 }
 
-void ATM_ThreadMatch::thread_MatchMap(Mat & tar, Mat & Obj)
+void ATM_ThreadMatch::CheckThread_OrbAvatarInit()
 {
+	DWORD exitCode;
+	if (tOrbAvatarInit != nullptr)
+	{
+		GetExitCodeThread(tOrbAvatarInit->native_handle(), &exitCode);
+		if (exitCode == 0)
+		{
+			tOrbAvatarInit->join();
+			delete tOrbAvatarInit;
+			tOrbAvatarInit = nullptr;
+			tIsEndOrbAvatarInit = true;
+		}
+	}
 }
 
-void ATM_ThreadMatch::thread_MatchStar(Mat & tar, Mat & Obj)
+void ATM_ThreadMatch::thread_OrbAvatarInit(Mat & tar)
 {
+	orbAvatar.setAvatarTemplate(templateAvatar);
+	orbAvatar.Init();
 }
 
-void ATM_ThreadMatch::thread_MatchTarget(Mat & tar, Mat & Obj)
+void ATM_ThreadMatch::CheckThread_OrbAvatarMatch()
 {
+	DWORD exitCode;
+	if (tOrbAvatarMatch != nullptr)
+	{
+		GetExitCodeThread(tOrbAvatarMatch->native_handle(), &exitCode);
+		if (exitCode == 0)
+		{
+			tOrbAvatarMatch->join();
+			delete tOrbAvatarMatch;
+			tOrbAvatarMatch = nullptr;
+			tIsEndOrbAvatarMatch = true;
+		}
+	}
+}
+
+void ATM_ThreadMatch::thread_OrbAvatarMatch(Mat & Obj)
+{
+	if (isExistObjMinMap)
+	{
+		orbAvatar.setAvatarMat(Obj);
+		orbAvatar.ORBMatch();
+	}
+}
+
+void ATM_ThreadMatch::CheckThread_TemplateUIDInit()
+{
+	DWORD exitCode;
+	if (tTemplateUIDInit != nullptr)
+	{
+		GetExitCodeThread(tTemplateUIDInit->native_handle(), &exitCode);
+		if (exitCode == 0)
+		{
+			tTemplateUIDInit->join();
+			delete tTemplateUIDInit;
+			tTemplateUIDInit = nullptr;
+			tIsEndTemplateUIDInit = true;
+		}
+	}
+}
+
+void ATM_ThreadMatch::thread_TemplateUIDInit(Mat * tar)
+{
+	tempUID.setUIDTemplate(tar);
+	tempUID.Init();
+}
+
+void ATM_ThreadMatch::CheckThread_TemplateUIDMatch()
+{
+	DWORD exitCode;
+	if (tTemplateUIDMatch != nullptr)
+	{
+		GetExitCodeThread(tTemplateUIDMatch->native_handle(), &exitCode);
+		if (exitCode == 0)
+		{
+			tTemplateUIDMatch->join();
+			delete tTemplateUIDMatch;
+			tTemplateUIDMatch = nullptr;
+			tIsEndTemplateUIDMatch = true;
+		}
+	}
+}
+
+void ATM_ThreadMatch::thread_TemplateUIDMatch(Mat & Obj)
+{
+	if (isExistObjUID)
+	{
+		//surfMap.setMinMap(objMinMap);
+		tempUID.setUIDMat(Obj);
+		tempUID.TemplateUID();
+	}
 }
 
 void ATM_ThreadMatch::GetMatchResults()
@@ -203,6 +360,8 @@ void ATM_ThreadMatch::GetMatchResults()
 	pos = surfMap.getLocalPos();
 	isContinuity = surfMap.getIsContinuity();
 	isPaimonVisial = tempPaimon.getPaimonVisible();
+	rotationAngle = orbAvatar.getRotationAngle();
+	uid = tempUID.getUID();
 }
 
 void ATM_TM_SurfMap::setMap(Mat mapMat)
@@ -411,4 +570,290 @@ void ATM_TM_TemplatePaimon::TemplatePaimon()
 bool ATM_TM_TemplatePaimon::getPaimonVisible()
 {
 	return isPaimonVisible;
+}
+
+void ATM_TM_ORBAvatar::setAvatarTemplate(Mat avatarTemplateMat)
+{
+	_avatarTemplate = avatarTemplateMat;
+}
+
+void ATM_TM_ORBAvatar::setAvatarMat(Mat avatarMat)
+{
+	_avatarMat = avatarMat;
+}
+
+void ATM_TM_ORBAvatar::Init()
+{
+	if (isInit)return;
+	orb = ORB::create();//(36, 1.2, 3, 31, 0, 2, ORB::HARRIS_SCORE);
+	orb->detectAndCompute(_avatarTemplate, Mat(), Kp_Template, Dp_Template, false);
+	isInit = true;
+}
+
+bool GreaterSort(DMatch a, DMatch b)
+{
+	return (a.distance > b.distance);
+}
+
+void ATM_TM_ORBAvatar::ORBMatch()
+{
+	orb->detectAndCompute(_avatarMat, Mat(), Kp_Avatar, Dp_Avatar, false);
+
+	//BruteForceMatcher<HammingLUT> matcher;
+	//vector<DMatch> matches;
+	//matcher.match(Dp_Template, Dp_Avatar, matches);
+
+	//特征匹配是通过使用合适的相似度度量比较特征描述子来执行的。
+   //定义特征描述子匹配器
+	//Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::MatcherType::BRUTEFORCE);
+	////参数MatcherType：匹配器类型，这里使用MatcherType::BRUTEFORCE（暴力匹配算法）
+
+	//vector<DMatch> matches;
+	////通过描述子匹配器，对两幅图像的描述子进行匹配，也就是将两幅图像中的对应特征点进行匹配；输出的是一个DMatch结构体向量，其每一个DMatch结构体包含一组对应特征点的信息。
+	//matcher->match(Dp_Template, Dp_Avatar, matches);
+
+	//double max_dist = 0; double min_dist = 1000;
+	////-- Quick calculation of max and min distances between keypoints     
+	//for (int i = 0; i < Dp_Template.rows; i++)
+	//{
+	//	double dist = matches[i].distance;
+	//	if (dist < min_dist) min_dist = dist;
+	//	if (dist > max_dist) max_dist = dist;
+	//}
+	//printf("-- Max dist : %f \n", max_dist);
+	//printf("-- Min dist : %f \n", min_dist);
+	////-- Draw only "good" matches (i.e. whose distance is less than 0.6*max_dist )     
+	////-- PS.- radiusMatch can also be used here.     
+	//std::vector< DMatch > good_matches;
+	//for (int i = 0; i < Dp_Template.rows; i++)
+	//{
+	//	if (matches[i].distance < 0.6*max_dist)
+	//	{
+	//		good_matches.push_back(matches[i]);
+	//	}
+	//}
+
+	Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::BRUTEFORCE);
+	std::vector< std::vector<DMatch> > KNN_m;
+	vector<DMatch> KNN_m2;
+	std::vector<DMatch> good_matches;
+	matcher->knnMatch(Dp_Template, Dp_Avatar, KNN_m,1);
+
+	double max_dist = 0; double min_dist = 1000;
+	std::vector<double> angle;
+	//-- Quick calculation of max and min distances between keypoints     
+	for (int i = 0; i < Dp_Template.rows; i++)
+	{
+		double dist = KNN_m[i][0].distance;
+		KNN_m2.push_back( KNN_m[i][0]);
+		
+		if (dist < min_dist) min_dist = dist;
+		if (dist > max_dist) max_dist = dist;
+	}
+
+	sort(KNN_m2.begin(), KNN_m2.end(), GreaterSort);
+
+	double res = 0;
+	for (size_t i = 0; i < KNN_m.size(); i++)
+	{
+		if (KNN_m[i][0].distance < 0.66 * max_dist)
+		{
+			good_matches.push_back(KNN_m[i][0]);
+			angle.push_back(Kp_Avatar[KNN_m[i][0].trainIdx].angle - Kp_Template[KNN_m[i][0].queryIdx].angle);
+			res =res+ angle[angle.size()-1];
+		}
+	}
+
+	Mat img_matches;
+	drawMatches(_avatarTemplate, Kp_Template, _avatarMat, Kp_Avatar,
+		good_matches, img_matches, Scalar::all(-1), Scalar::all(-1),
+		vector<char>());
+	if (good_matches.size() != 0)
+	{
+		rotationAngle = -res/ good_matches.size();
+	}
+	
+}
+
+double ATM_TM_ORBAvatar::getRotationAngle()
+{
+	return rotationAngle;
+}
+
+//void ATM_TM_Thread::run()
+//{
+//	while (isExitThread == false)
+//	{
+//		if (isRunWork && (*ptr) != nullptr)
+//		{
+//			ptr(workInput);
+//			isRunWork = false;
+//			isEndWork = true;
+//		}
+//		else
+//		{
+//			std::this_thread::sleep_for(std::chrono::milliseconds(1));
+//		}
+//	}
+//}
+//
+//ATM_TM_Thread::ATM_TM_Thread()
+//{
+//	tLoopWork = new thread(&ATM_TM_Thread::run, this);
+//}
+//
+//ATM_TM_Thread::~ATM_TM_Thread()
+//{
+//	if (tLoopWork != nullptr)
+//	{
+//		isExitThread = true;
+//		tLoopWork->join();
+//		delete tLoopWork;
+//	}
+//}
+//
+//ATM_TM_Thread::ATM_TM_Thread(void(*funPtr)(Mat &inMat))
+//{
+//	setFunction(funPtr);
+//	tLoopWork = new thread(&ATM_TM_Thread::run, this);
+//}
+//
+//void ATM_TM_Thread::setFunction(void(*funPtr)(Mat &inMat))
+//{
+//	ptr = funPtr;
+//	isExistFunction = true;
+//}
+//
+//void ATM_TM_Thread::start(Mat & inMat)
+//{
+//	if (isExistFunction == false)
+//	{
+//		throw"Not Found Work Function";
+//	}
+//	workInput = inMat;
+//	isRunWork = true;
+//	isEndWork = false;
+//}
+//
+//bool ATM_TM_Thread::isEnd()
+//{
+//	return isEndWork;
+//}
+
+int ATM_TM_TemplateUID::getMaxID(double lis[], int len)
+{
+	int maxId = 0;
+	for (int i = 1; i < len; i++)
+	{
+		if (lis[i] > lis[maxId])
+		{
+			maxId = i;
+		}
+	}
+	return maxId;
+}
+
+void ATM_TM_TemplateUID::Init()
+{
+	if (isInit)return;
+
+	isInit = true;
+}
+
+void ATM_TM_TemplateUID::setUIDTemplate(Mat * uidTemplateMat)
+{
+	for (int i = 0; i < 10; i++)
+	{
+		uidTemplateMat[i].copyTo(giNumUID.n[i]);
+	}
+	uidTemplateMat[10].copyTo(giNumUID.UID);
+
+}
+
+void ATM_TM_TemplateUID::setUIDMat(Mat uidMat)
+{
+	if (uidMat.channels() == 4)
+	{
+		uidMat.copyTo(_uidMat);
+	}
+	else
+	{
+		cvtColor(uidMat, _uidMat, CV_RGB2RGBA);
+	}
+	
+}
+
+void ATM_TM_TemplateUID::TemplateUID()
+{
+	int bitCount = 1;
+	Mat tmp;
+	Mat checkUID = giNumUID.UID;
+	Mat Roi(_uidMat);
+
+	cv::matchTemplate(Roi, checkUID, tmp, cv::TM_CCOEFF_NORMED);
+
+	double minVal, maxVal;
+	cv::Point minLoc, maxLoc;
+	//寻找最佳匹配位置
+	cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
+	if (maxVal > 0.75)
+	{
+		int x = maxLoc.x + checkUID.cols + 7;
+		int y = 0;
+		double tmplis[10] = { 0 };
+		int tmplisx[10] = { 0 };
+		for (int p = 8; p >= 0; p--)
+		{
+			_NumBit[p] = 0;
+ 			for (int i = 0; i < giNumUID.max; i++)
+			{
+				Rect r(x, y, giNumUID.n[i].cols + 2, giNumUID.n[i].rows);//180-46/9->140/9->16->16*9=90+54=144
+				if (x + r.width > _uidMat.cols)
+				{
+					r = Rect(_uidMat.cols - giNumUID.n[i].cols - 2, 0, giNumUID.n[i].cols + 2, giNumUID.n[i].rows);
+				}
+
+				Mat numCheckUID = giNumUID.n[i];
+				Roi = _uidMat(r);
+
+				cv::matchTemplate(Roi, numCheckUID, tmp, cv::TM_CCOEFF_NORMED);
+
+				double minVali, maxVali;
+				cv::Point minLoci, maxLoci;
+				//寻找最佳匹配位置
+				cv::minMaxLoc(tmp, &minVali, &maxVali, &minLoci, &maxLoci);
+
+				tmplis[i] = maxVali;
+				tmplisx[i] = maxLoci.x + numCheckUID.cols - 1;
+				if (maxVali > 0.85)
+				{
+					_NumBit[p] = i;
+					x = x + maxLoci.x + numCheckUID.cols - 1;
+					break;
+				}
+				if (i == giNumUID.max - 1)
+				{
+					_NumBit[p] = getMaxID(tmplis, 10);
+					x = x + tmplisx[_NumBit[p]];
+				}
+			}
+			//if (p == 0)
+			//{
+			//	break;
+			//}
+
+		}
+	}
+	_uid = 0;
+	for (int i = 0; i < 9; i++)
+	{
+		_uid += _NumBit[i] * bitCount;
+		bitCount = bitCount * 10;
+	}
+
+}
+
+int ATM_TM_TemplateUID::getUID()
+{
+	return _uid;
 }

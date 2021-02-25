@@ -9,6 +9,7 @@
 #include "ATM_ThreadMatch.h"
 #include "ATM_ObjectLists.h"
 #include "ATM_SendSocket.h"
+#include "ATM_ActivationKYJG.h"
 
 enum ThisWinState
 {
@@ -32,6 +33,8 @@ class AutomaticTrackingMap
 	ATM_ObjectLists OLS;
 	//Socket通信
 	ATM_SendSocket SST;
+	//空荧酒馆激活
+	ATM_ActivationKYJG AKY;
 
 	cv::Mat MainMat;
 	cv::Mat MainMatTmp;
@@ -71,6 +74,11 @@ public:
 	Rect minMapRect;
 
 	//原神是否正在运行标志
+
+	string SystemUserName;
+	string SystemUserLocalLow;
+	string SystemUserCompanyIndex;
+	string ApplicationCompanyName="天理之座";
 
 	//Qt
 	QImage MainImg;
@@ -117,9 +125,10 @@ public:
 	void setObjIsShow(int klass);
 	void setObjFlagIsShow();
 	void setAddFlagOnPos();
+	void setKongYingJiuGuanState();
 private:
 	int getThisState();
-	
+	void getKYJGState();
 	void setThisState();
 	void setThreadMatchMat();
 

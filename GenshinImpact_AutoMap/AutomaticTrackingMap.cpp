@@ -2,8 +2,17 @@
 
 AutomaticTrackingMap::AutomaticTrackingMap()
 {
-	//MainMat = Mat(autoWindowSize, CV_8UC4);
-	//MainMat = Scalar(0, 0, 0);
+	char strBuffer[256] = { 0 };
+	DWORD dwSize = 256;
+	GetUserNameA(strBuffer, &dwSize);
+	SystemUserName = strBuffer;
+	SystemUserLocalLow.append("C:\\User\\");
+	SystemUserLocalLow.append(SystemUserName);
+	SystemUserLocalLow.append("\\AppData\\LocalLow\\");
+	SystemUserCompanyIndex = SystemUserLocalLow;
+	SystemUserCompanyIndex.append(ApplicationCompanyName);
+	SystemUserCompanyIndex.append("\\");
+
 }
 
 AutomaticTrackingMap::~AutomaticTrackingMap()
@@ -86,6 +95,11 @@ void AutomaticTrackingMap::BackEndUpdata()
 		TMS.cThreadSurfMapInit(RES.GIMAP);
 		TMS.cThreadSurfMapMatch();
 		TMS.cThreadTemplatePaimonMatch(RES.GIPAIMON[GIS.resIdPaimon]);
+		TMS.cThreadOrbAvatarInit(RES.GIAVATAR);
+		TMS.cThreadOrbAvatarMatch();
+		TMS.cThreadTemplateUIDInit(RES.GINUMUID);
+		TMS.cThreadTemplateUIDMatch();
+
 		if (TMS.tIsEndSurfMapInit)
 		{
 			zerosMinMap = TMS.pos;
@@ -94,7 +108,8 @@ void AutomaticTrackingMap::BackEndUpdata()
 
 			if (TMS.isPaimonVisial&&TMS.isContinuity)
 			{
-				SST.AutoMapUdpSocketSend(zerosMinMap.x, zerosMinMap.y, 0.0);
+				SST.AutoMapUdpSocketSend(zerosMinMap.x, zerosMinMap.y, TMS.rotationAngle,TMS.uid);
+				std::cout << TMS.uid << endl;;
 			}
 		}
 	}
@@ -105,7 +120,7 @@ void AutomaticTrackingMap::BackEndUpdata()
 
 	//获取原神窗口状态
 	getGiState();
-
+	getKYJGState();
 	//获取本身相对原神位置
 	getThisOffset();
 	getThisState();
@@ -138,19 +153,30 @@ void AutomaticTrackingMap::Mat2QImage()
 
 void AutomaticTrackingMap::CustomProcess(int i)
 {
-	//GIS.getGiFrame();
-	//string name("OutputPNG_id_");
-	//name.append(to_string(i));
-	//name.append("_GiFrame.png");
-	//if (GIS.isRunning)
-	//{
-	//	//imwrite(name, GIS.giFrame);
-	//}
+	GIS.getGiFrame();
+	string name("OutputPNG_id_");
+	name.append(to_string(i));
+	name.append("_GiFrame.png");
+	if (GIS.isRunning)
+	{
+		//imwrite(name, GIS.giFrame);
+		//imshow("testOut",GIS.giFrameMap);
+		ATM_TM_ORBAvatar orb;
+		Mat tes,te2;
+		int len1=300, lne2 = 96;
+		cvtColor(RES.GIAVATAR, tes, CV_RGB2GRAY);
+		resize(tes, tes, Size(len1, len1),0,0, INTER_CUBIC);//INTER_AREAz
 
-	Mat k;
-	MainMat(Rect(100,100,32,32)).copyTo(k);
-	addWeightedAlpha(k, RES.GIOBJICON[0],RES.GIOBJICONMASK[0]);
-	imshow("asd", k);
+		orb.setAvatarTemplate(tes);
+
+		cvtColor(GIS.giFrameMap(Rect(82, 82, 48, 48)), te2, CV_RGB2GRAY);
+		resize(te2, te2, Size(len1, len1),0,0, INTER_CUBIC);
+		orb.setAvatarMat(te2);
+
+		orb.Init();
+		orb.ORBMatch();
+		TMS.rotationAngle = orb.getRotationAngle();
+	}
 }
 
 Mat AutomaticTrackingMap::getViewMap()
@@ -342,6 +368,14 @@ void AutomaticTrackingMap::setAddFlagOnPos()
 	OLS.appendFlag(zerosMinMap.x, zerosMinMap.y);
 }
 
+void AutomaticTrackingMap::setKongYingJiuGuanState()
+{
+	if (AKY.isRunKYJG)
+	{
+		AKY.setState(GIS.giHandle);
+	}
+}
+
 int AutomaticTrackingMap::getThisState()
 {
 	//备份状态，以便检查是否跳过窗口状态设置，防止持续激活原神窗口，鼠标焦点无法转移。
@@ -389,6 +423,11 @@ int AutomaticTrackingMap::getThisState()
 	}
 
 	return thisStateMode;
+}
+
+void AutomaticTrackingMap::getKYJGState()
+{
+	AKY.getKYJGHandle();
 }
 
 void AutomaticTrackingMap::setThisState()
@@ -443,8 +482,8 @@ void AutomaticTrackingMap::setThreadMatchMat()
 		TMS.getObjMinMap(matRGB2GRAY);
 		cvtColor(GIS.giFramePaimon, matRGB2GRAY, CV_RGB2GRAY);
 		TMS.getObjPaimon(matRGB2GRAY);
-		cvtColor(GIS.giFrameUID, matRGB2GRAY, CV_RGB2GRAY);
-		TMS.getObjUID(matRGB2GRAY);
+		//cvtColor(GIS.giFrameUID, matRGB2GRAY, CV_RGB2GRAY);
+		TMS.getObjUID(GIS.giFrameUID);
 	}
 	else
 	{

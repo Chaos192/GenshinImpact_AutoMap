@@ -15,30 +15,37 @@ public:
 public:
 	Mat GIMAP;
 	Mat MAINMASK;
+	Mat GIAVATAR;
 	Mat *GIOBJICON;
 	Mat *GIOBJICONMASK;
 	Mat *GIOBJFLAGICON;
 	Mat *GIOBJFLAGICONMASK;
 	Mat *GIPAIMON;
+	Mat *GINUMUID;
 
 private:
 	HBITMAP hGIMAP;
 	HBITMAP hMAINMASK;
+	HBITMAP hGIAVATAR;
 	HBITMAP *hGIOBJICON;
 	HBITMAP *hGIOBJICONMASK;
 	HBITMAP *hGIOBJFLAGICON;
 	HBITMAP *hGIOBJFLAGICONMASK;
 	HBITMAP *hGIPAIMON;
+	HBITMAP *hGINUMUID;
 
 	void loadGiMap();
 	void loadMainMask();
+	void loadGiAvatar();
 	void loadGiPaimon();
 	void loadGiObjIcon();
 	void loadGiObjIconMask();
 	void loadGiObjFlagIcon();
 	void loadGiObjFlagIconMask();
+	void loadGiNumUID();
 
 	bool HBitmap2Mat(HBITMAP& _hBmp, cv::Mat& _mat);
+	bool HBitmap2MatAlpha(HBITMAP& _hBmp, cv::Mat& _mat);
 	bool Mat2MaskMat(Mat &in, Mat &out);
 };
 

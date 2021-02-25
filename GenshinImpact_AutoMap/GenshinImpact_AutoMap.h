@@ -27,6 +27,7 @@ private:
 	QCursor *myCursor;
 	QtClassMyHotKeyObject *hotKeyAutoMode;
 	QtClassMyHotKeyObject *hotKeyAddFlag;
+	QtClassMyHotKeyObject *hotKeyActivationKongYingJiuGuan;
 
 	void mapInit();
 
@@ -43,8 +44,7 @@ protected:
 	void paintEvent(QPaintEvent *event);
 
 private:
-	//timer = new QTimer(this);
-	//connect(timer, SIGNAL(timeout()), this, SLOT(DrawLine()));
+	int Fps = 42;//ms
 	QTimer *mapMessageLoopTimer;
 	QTimer *uiObjListSleepTimer;
 
@@ -56,6 +56,7 @@ private slots:
 
 	void setAutoMode();
 	void setAddFlag();
+	void setActivationKongYingJiuGuan();
 
 	void setUIObjListShow();
 	void setUIObjListHide();

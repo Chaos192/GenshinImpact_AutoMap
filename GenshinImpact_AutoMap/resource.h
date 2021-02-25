@@ -18,14 +18,25 @@
 #define IDB_OBJICON999                  114
 #define IDB_OBJICON999MASK              115
 #define IDB_OBJFLAGICON0                116
-#define IDB_BITMAP2                     117
 #define IDB_OBJFLAGICON0MASK            117
+#define IDB_GIAVATAR                    118
+#define IDB_GINUMUID_ARGB               119
+#define IDB_GINUMUID0_ARGB              120
+#define IDB_GINUMUID1_ARGB              121
+#define IDB_GINUMUID2_ARGB              122
+#define IDB_GINUMUID3_ARGB              123
+#define IDB_GINUMUID4_ARGB              124
+#define IDB_GINUMUID5_ARGB              125
+#define IDB_GINUMUID6_ARGB              126
+#define IDB_GINUMUID7_ARGB              127
+#define IDB_GINUMUID8_ARGB              128
+#define IDB_GINUMUID9_ARGB              129
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        118
+#define _APS_NEXT_RESOURCE_VALUE        130
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101

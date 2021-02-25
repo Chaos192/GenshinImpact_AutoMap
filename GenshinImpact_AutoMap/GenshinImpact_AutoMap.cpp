@@ -15,9 +15,11 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 	connect(ui.UIObjList2Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
 	connect(ui.UIObjList999Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
 	
+
+
 	//创建刷新定时器
 	mapMessageLoopTimer = new QTimer(this);
-	mapMessageLoopTimer->start(42);//1000/30=33.3,1000/24=42
+	mapMessageLoopTimer->start(Fps);//1000/30=33.3,1000/24=42
 	//mapMessageLoopTimer->setSingleShot(true);
 	connect(mapMessageLoopTimer, SIGNAL(timeout()), this, SLOT(runMap()));
 	//创建UIObjList激活定时器
@@ -31,6 +33,8 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 	connect(hotKeyAutoMode, SIGNAL(Activated()), this, SLOT(setAutoMode()));
 	hotKeyAddFlag = new QtClassMyHotKeyObject("Alt+F", this);
 	connect(hotKeyAddFlag, SIGNAL(Activated()), this, SLOT(setAddFlag()));
+	hotKeyActivationKongYingJiuGuan = new QtClassMyHotKeyObject("Alt+M", this);
+	connect(hotKeyActivationKongYingJiuGuan, SIGNAL(Activated()), this, SLOT(setActivationKongYingJiuGuan()));
 
 
 	connect(ui.UIButton, SIGNAL(clicked()), this, SLOT(setUIObjListShow()));
@@ -92,6 +96,7 @@ void GenshinImpact_AutoMap::mousePressEvent(QMouseEvent * event)
 		qDebug() << "MidButton" << event->globalPos().x() << "," << event->globalX();
 		map.MET.bMCD = true;
 		map.setOffsetDownPos(event->globalPos().x(), event->globalPos().y());
+		map.CustomProcess(0);
 	}
 }
 
@@ -109,6 +114,7 @@ void GenshinImpact_AutoMap::mouseReleaseEvent(QMouseEvent * event)
 		//qDebug() << "MidButton" << event->x() << "," << event->y();
 		map.MET.bMCD = false;
 		//map.setOffsetUpPos(event->globalX(), event->globalY());
+
 	}
 }
 
@@ -131,12 +137,16 @@ void GenshinImpact_AutoMap::wheelEvent(QWheelEvent * event)
 		if (map.MET.scale > 0.5)
 		{
 			map.MET.scale /= 1.2;
+			update();
+
 		}
 	}
 	else {
 		if (map.MET.scale < 6)
 		{
 			map.MET.scale *= 1.2;
+			update();
+
 		}
 	}
 }
@@ -159,12 +169,12 @@ void GenshinImpact_AutoMap::runMap()
 		emit this->mapUpdataBackEnd();
 		isUpdataEnd = true;
 		//启动下一帧
-		mapMessageLoopTimer->start(42);
+		mapMessageLoopTimer->start(Fps);
 	}
 	else
 	{
 		//启动下一帧
-		mapMessageLoopTimer->start(42);
+		mapMessageLoopTimer->start(Fps);
 	}
 
 
@@ -206,6 +216,11 @@ void GenshinImpact_AutoMap::setAddFlag()
 {
 	//map.zerosMinMap;
 	map.setAddFlagOnPos();
+}
+
+void GenshinImpact_AutoMap::setActivationKongYingJiuGuan()
+{
+	map.setKongYingJiuGuanState();
 }
 
 void GenshinImpact_AutoMap::setUIObjListShow()

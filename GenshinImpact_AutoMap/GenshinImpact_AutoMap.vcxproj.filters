@@ -74,6 +74,9 @@
     <ClCompile Include="ATM_SendSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ATM_ActivationKYJG.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutomaticTrackingMap.h">
@@ -104,6 +107,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ATM_SendSocket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ATM_ActivationKYJG.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -162,6 +168,42 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="resource\ObjectIcons\ObjectFlagList0Mask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\GIAVATAR.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\NumUID\UID_.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\NumUID\uid0.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\NumUID\uid1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\NumUID\uid2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\NumUID\uid3.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\NumUID\uid4.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\NumUID\uid5.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\NumUID\uid6.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\NumUID\uid7.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\NumUID\uid8.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\NumUID\uid9.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
