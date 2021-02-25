@@ -1,7 +1,9 @@
 #pragma once
+#include <iostream>
 #include <Windows.h>
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/types_c.h>
+using namespace std;
 using namespace cv;
 
 enum RectMode
@@ -46,7 +48,7 @@ public:
 
 	Mat giFrameUID;
 
-
+	string giName = "原神";
 
 	//原神是否运行中
 	bool isRunning = false;
@@ -73,5 +75,8 @@ public:
 	void getGiFramePaimon();
 	void getGiFrameMap();
 	void getGiFrameUID();
+
+	void setGiNameClass(LANGID SystemLanguageID);
+
 };
 

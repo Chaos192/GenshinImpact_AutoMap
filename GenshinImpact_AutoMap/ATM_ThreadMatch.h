@@ -146,7 +146,7 @@ class ATM_ThreadMatch
 public:
 	~ATM_ThreadMatch();
 
-	Point pos;
+	Point pos = Point(1466, 3272);
 	bool isPaimonVisial = false;
 	bool isContinuity = false;
 	double rotationAngle = 0;

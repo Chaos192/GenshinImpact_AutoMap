@@ -55,7 +55,7 @@ public:
 	HWND thisHandle;
 	//是否启用自动追踪
 	bool isAutoMode = false;
-
+	bool isAutoInitFinish = false;
 	//悬浮窗大小
 	Size autoMapSize = Size(250, 200);
 	//完整地图大小
@@ -76,7 +76,8 @@ public:
 	string SystemUserLocalLow;
 	string SystemUserCompanyIndex;
 	string ApplicationCompanyName="天理之座";
-
+	LANGID SystemLanguageID;
+	string SystemLanguage = "Chinese";
 	//Qt
 	QImage MainImg;
 
@@ -123,6 +124,8 @@ public:
 	void setObjFlagIsShow();
 	void setAddFlagOnPos();
 	void setKongYingJiuGuanState();
+private:
+	void getSystemInfo();
 private:
 	int getThisState();
 	void getKYJGState();

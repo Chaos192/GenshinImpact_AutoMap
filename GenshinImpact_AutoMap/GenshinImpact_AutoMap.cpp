@@ -210,6 +210,10 @@ void GenshinImpact_AutoMap::setAutoMode()
 	{
 		ui.UIButton->setIcon(QIcon(":/IconUI/resource/UI.ico"));
 	}
+	if (map.isAutoInitFinish == false)
+	{
+		ui.UIButton->setIcon(QIcon(":/IconUI/resource/UI1.ico"));
+	}
 }
 
 void GenshinImpact_AutoMap::setAddFlag()

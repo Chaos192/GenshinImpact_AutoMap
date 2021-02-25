@@ -2,14 +2,14 @@
 
 bool ATM_GiState::isRun()
 {
-	giHandle = FindWindowA(NULL, "原神");/* 对原神窗口的操作 */
+	giHandle = FindWindowA(NULL, giName.c_str());/* 对原神窗口的操作 */
 	isRunning = giHandle != NULL ? true : false;
 	return isRunning;
 }
 
 void ATM_GiState::getHandle()
 {
-	giHandle = FindWindowA(NULL, "原神");
+	giHandle = FindWindowA(NULL, giName.c_str());
 	getRect();
 }
 
@@ -407,4 +407,26 @@ void ATM_GiState::getGiFrameUID()
 		}
 	}
 	giFrame(uidRect).copyTo(giFrameUID);
+}
+
+void ATM_GiState::setGiNameClass(LANGID SystemLanguageID)
+{
+	switch (SystemLanguageID)
+	{
+		case 0X0804:
+		{
+			giName = "原神";
+			break;
+		}
+		case 0x0409:
+		{
+			giName = "Genshin Impact";
+			break;
+		}
+		default:
+		{
+			giName = "Genshin Impact";
+			break;
+		}
+	}
 }

@@ -2,17 +2,7 @@
 
 AutomaticTrackingMap::AutomaticTrackingMap()
 {
-	char strBuffer[256] = { 0 };
-	DWORD dwSize = 256;
-	GetUserNameA(strBuffer, &dwSize);
-	SystemUserName = strBuffer;
-	SystemUserLocalLow.append("C:\\User\\");
-	SystemUserLocalLow.append(SystemUserName);
-	SystemUserLocalLow.append("\\AppData\\LocalLow\\");
-	SystemUserCompanyIndex = SystemUserLocalLow;
-	SystemUserCompanyIndex.append(ApplicationCompanyName);
-	SystemUserCompanyIndex.append("\\");
-
+	getSystemInfo();
 }
 
 AutomaticTrackingMap::~AutomaticTrackingMap()
@@ -99,6 +89,7 @@ void AutomaticTrackingMap::BackEndUpdata()
 
 		if (TMS.tIsEndSurfMapInit)
 		{
+			isAutoInitFinish = true;
 			zerosMinMap = TMS.pos;
 			MET.zerosMinMap = zerosMinMap;
 			GIS.isPaimonVisible = TMS.isPaimonVisial;
@@ -106,7 +97,6 @@ void AutomaticTrackingMap::BackEndUpdata()
 			if (TMS.isPaimonVisial&&TMS.isContinuity)
 			{
 				SST.AutoMapUdpSocketSend(zerosMinMap.x, zerosMinMap.y, TMS.rotationAngle,TMS.uid);
-				std::cout << TMS.uid << endl;;
 			}
 		}
 	}
@@ -154,23 +144,7 @@ void AutomaticTrackingMap::CustomProcess(int i)
 	name.append("_GiFrame.png");
 	if (GIS.isRunning)
 	{
-		//imwrite(name, GIS.giFrame);
-		//imshow("testOut",GIS.giFrameMap);
-		ATM_TM_ORBAvatar orb;
-		Mat tes,te2;
-		int len1=300, lne2 = 96;
-		cvtColor(RES.GIAVATAR, tes, CV_RGB2GRAY);
-		resize(tes, tes, Size(len1, len1),0,0, INTER_CUBIC);//INTER_AREAz
-
-		orb.setAvatarTemplate(tes);
-
-		cvtColor(GIS.giFrameMap(Rect(82, 82, 48, 48)), te2, CV_RGB2GRAY);
-		resize(te2, te2, Size(len1, len1),0,0, INTER_CUBIC);
-		orb.setAvatarMat(te2);
-
-		orb.Init();
-		orb.ORBMatch();
-		TMS.rotationAngle = orb.getRotationAngle();
+		;
 	}
 }
 
@@ -368,6 +342,40 @@ void AutomaticTrackingMap::setKongYingJiuGuanState()
 	}
 }
 
+void AutomaticTrackingMap::getSystemInfo()
+{
+	char strBuffer[256] = { 0 };
+	DWORD dwSize = 256;
+	GetUserNameA(strBuffer, &dwSize);
+	SystemUserName = strBuffer;
+	SystemUserLocalLow.append("C:\\User\\");
+	SystemUserLocalLow.append(SystemUserName);
+	SystemUserLocalLow.append("\\AppData\\LocalLow\\");
+	SystemUserCompanyIndex = SystemUserLocalLow;
+	SystemUserCompanyIndex.append(ApplicationCompanyName);
+	SystemUserCompanyIndex.append("\\");
+
+	SystemLanguageID = GetSystemDefaultLangID();
+	switch (SystemLanguageID)
+	{
+		case 0X0804:
+		{
+			SystemLanguage = "Chinese";
+			break;
+		}
+		case 0x0409:
+		{
+			SystemLanguage = "English";
+			break;
+		}
+		default:
+		{
+			SystemLanguage = "English";
+			break;
+		}
+	}
+}
+
 int AutomaticTrackingMap::getThisState()
 {
 	//备份状态，以便检查是否跳过窗口状态设置，防止持续激活原神窗口，鼠标焦点无法转移。
@@ -393,6 +401,10 @@ int AutomaticTrackingMap::getThisState()
 				thisStateModeNext = ThisWinState::TopShow;
 			}
 
+			if (AKY.isActivationMap)
+			{
+				thisStateModeNext = ThisWinState::Minimize;
+			}
 		}
 		else
 		{
