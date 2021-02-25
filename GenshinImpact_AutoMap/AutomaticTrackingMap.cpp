@@ -93,12 +93,7 @@ void AutomaticTrackingMap::BackEndUpdata()
 		TMS.GetMatchResults();
 		//多线程初始化
 		TMS.cThreadSurfMapInit(RES.GIMAP);
-
-		if (GIS.isPaimonVisible)
-		{
-			TMS.cThreadSurfMapMatch();
-		}
-
+		TMS.cThreadSurfMapMatch();
 		TMS.cThreadTemplatePaimonMatch(RES.GIPAIMON[GIS.resIdPaimon]);
 		TMS.cThreadOrbAvatarInit(RES.GIAVATAR);
 		TMS.cThreadOrbAvatarMatch();
@@ -433,6 +428,14 @@ int AutomaticTrackingMap::getThisState()
 				thisStateModeNext = ThisWinState::TopShow;
 			}
 
+			if (AKY.isActivationMap)
+			{
+				thisStateModeNext = ThisWinState::Minimize;
+			}
+			else
+			{
+				thisStateModeNext = ThisWinState::TopShow;
+			}
 		}
 		else
 		{
