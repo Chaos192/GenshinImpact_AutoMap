@@ -187,8 +187,11 @@ Mat AutomaticTrackingMap::getViewMap()
 
 	Size reMapSize = autoMapSize;
 	Point reAutoMapCenter = autoMapCenter;
-	reMapSize.width = (int)(reMapSize.width * MET.scale);
-	reMapSize.height = (int)(reMapSize.height * MET.scale);
+	//reMapSize.width = (int)(reMapSize.width * MET.scale);
+	//reMapSize.height = (int)(reMapSize.height * MET.scale);
+	reMapSize.width = (reMapSize.width * MET.scale);
+	reMapSize.height = (reMapSize.height * MET.scale);
+	//reMapSize = reMapSize * MET.scale;
 	reAutoMapCenter = autoMapCenter * MET.scale;
 
 	//Size R = reMapSize / 2;
