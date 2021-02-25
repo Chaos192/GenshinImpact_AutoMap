@@ -93,7 +93,12 @@ void AutomaticTrackingMap::BackEndUpdata()
 		TMS.GetMatchResults();
 		//多线程初始化
 		TMS.cThreadSurfMapInit(RES.GIMAP);
-		TMS.cThreadSurfMapMatch();
+
+		if (GIS.isPaimonVisible)
+		{
+			TMS.cThreadSurfMapMatch();
+		}
+
 		TMS.cThreadTemplatePaimonMatch(RES.GIPAIMON[GIS.resIdPaimon]);
 		TMS.cThreadOrbAvatarInit(RES.GIAVATAR);
 		TMS.cThreadOrbAvatarMatch();
