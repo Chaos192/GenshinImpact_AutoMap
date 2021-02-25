@@ -186,13 +186,15 @@ Mat AutomaticTrackingMap::getViewMap()
 	Point minMapPoint = Point(0, 0);
 
 	Size reMapSize = autoMapSize;
+	Point reAutoMapCenter = autoMapCenter;
 	reMapSize.width = (int)(reMapSize.width * MET.scale);
 	reMapSize.height = (int)(reMapSize.height * MET.scale);
+	reAutoMapCenter = autoMapCenter * MET.scale;
 
 	//Size R = reMapSize / 2;
 
 	Point LT = zerosMinMap -autoMapCenter;
-	Point RB = zerosMinMap +Point(autoMapSize)-autoMapCenter;
+	Point RB = zerosMinMap +Point(reMapSize)-autoMapCenter;
 
 	minMapPoint = LT;
 
@@ -341,6 +343,31 @@ void AutomaticTrackingMap::setOffsetMovePos(int x, int y)
 {
 	MET.setMouseMidMovePos(x, y);
 	offGiMinMap = MET.offGiMinMap;
+}
+
+void AutomaticTrackingMap::setScaleMapDelta(int x, int y,int delta)
+{
+	int dx = x - autoMapCenter.x;
+	int dy = y - autoMapCenter.y;
+
+	if (delta > 0) 
+	{
+		if (MET.scale > 0.5)
+		{
+			MET.scale /= 1.2;
+			//MET.zerosMinMap.x += dx * 0.2;//1.2-1
+			//MET.zerosMinMap.y += dy * 0.2;//1.2-1
+		}
+	}
+	else 
+	{
+		if (MET.scale < 6)
+		{
+			MET.scale *= 1.2;
+			//MET.zerosMinMap.x += dx * 0.2;//1.2-1
+			//MET.zerosMinMap.y += dy * 0.2;//1.2-1
+		}
+	}
 }
 
 void AutomaticTrackingMap::setAutoMode()

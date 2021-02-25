@@ -119,6 +119,8 @@ public:
 	void setOffsetUpPos(int x, int y);
 	void setOffsetMovePos(int x, int y);
 
+	void setScaleMapDelta(int x, int y,int delta);
+
 	void setAutoMode();
 	bool getAutoMode();
 
