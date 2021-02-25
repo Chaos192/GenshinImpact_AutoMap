@@ -357,7 +357,10 @@ void ATM_ThreadMatch::thread_TemplateUIDMatch(Mat & Obj)
 
 void ATM_ThreadMatch::GetMatchResults()
 {
-	pos = surfMap.getLocalPos();
+	if (surfMap.getLocalPos().x != 0 && surfMap.getLocalPos().y != 0)
+	{
+		pos = surfMap.getLocalPos();
+	}
 	isContinuity = surfMap.getIsContinuity();
 	isPaimonVisial = tempPaimon.getPaimonVisible();
 	rotationAngle = orbAvatar.getRotationAngle();
