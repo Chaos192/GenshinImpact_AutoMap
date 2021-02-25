@@ -345,16 +345,17 @@ void AutomaticTrackingMap::setOffsetMovePos(int x, int y)
 
 void AutomaticTrackingMap::setScaleMapDelta(int x, int y,int delta)
 {
-	int dx = x - autoMapCenter.x;
-	int dy = y - autoMapCenter.y;
+	double dx = (x - autoMapCenter.x)*MET.scale;
+	double dy = (y - autoMapCenter.y)*MET.scale;
 
 	if (delta > 0) 
 	{
 		if (MET.scale > 0.5)
 		{
 			MET.scale /= 1.2;
-			//MET.zerosMinMap.x += dx * 0.2;//1.2-1
-			//MET.zerosMinMap.y += dy * 0.2;//1.2-1
+			MET.zerosMinMap.x += dx * 0.2;//1.2-1
+			MET.zerosMinMap.y += dy * 0.2;//1.2-1
+			zerosMinMap = MET.zerosMinMap;
 		}
 	}
 	else 
@@ -362,8 +363,9 @@ void AutomaticTrackingMap::setScaleMapDelta(int x, int y,int delta)
 		if (MET.scale < 6)
 		{
 			MET.scale *= 1.2;
-			//MET.zerosMinMap.x += dx * 0.2;//1.2-1
-			//MET.zerosMinMap.y += dy * 0.2;//1.2-1
+			MET.zerosMinMap.x -= dx * 0.2;//1.2-1
+			MET.zerosMinMap.y -= dy * 0.2;//1.2-1
+			zerosMinMap = MET.zerosMinMap;
 		}
 	}
 }
