@@ -186,13 +186,13 @@ Mat AutomaticTrackingMap::getViewMap()
 	Point minMapPoint = Point(0, 0);
 
 	Size reMapSize = autoMapSize;
-	Point reAutoMapCenter = autoMapCenter;
+	Point2d reAutoMapCenter = autoMapCenter;
 	reMapSize.width = (reMapSize.width * MET.scale);
 	reMapSize.height = (reMapSize.height * MET.scale);
 	reAutoMapCenter = autoMapCenter * MET.scale;
 
-	Point LT = zerosMinMap - reAutoMapCenter;
-	Point RB = zerosMinMap +Point(reMapSize)- reAutoMapCenter;
+	Point2d LT = zerosMinMap - reAutoMapCenter;
+	Point2d RB = zerosMinMap +Point2d(reMapSize)- reAutoMapCenter;
 
 	minMapPoint = LT;
 

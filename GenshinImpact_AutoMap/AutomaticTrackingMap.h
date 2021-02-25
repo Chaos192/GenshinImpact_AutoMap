@@ -60,14 +60,14 @@ public:
 	Size autoWindowSize = Size(300, 300);
 	//悬浮窗大小
 	Size autoMapSize = Size(300, 300);//Size(212, 212);
-	Point autoMapCenter = Point(150, 150);//Point(106,106);
+	Point autoMapCenter = Point(106, 106);//Point(106,106);
 	//完整地图大小
 	Size mapSize = Size(RES.GIMAP.cols, RES.GIMAP.rows);
 	//完整地图世界中心，相对原点
 	Point mapWorldCenter = Point(1416, 3306);
 
 	//悬浮窗中心所对大地图位置
-	Point zerosMinMap = Point(1466, 3272);
+	Point2d zerosMinMap = Point(1466, 3272);
 	//悬浮窗相对原神窗口位置
 	Point offGiMinMap = Point(250, 100);
 	//

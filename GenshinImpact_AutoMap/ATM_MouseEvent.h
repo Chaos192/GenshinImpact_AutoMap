@@ -24,7 +24,7 @@ public:
 	//ÖÐ¼üµ¥»÷
 	bool bMCD = false;
 	bool bMCU = false;
-	Point zerosMinMap;
+	Point2d zerosMinMap;
 	Point offGiMinMap;
 	void setMouseLeftDownPos(int x, int y);
 	void setMouseLeftUpPos(int x, int y);
