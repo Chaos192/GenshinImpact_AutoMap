@@ -74,6 +74,8 @@ public:
 
 	string SystemUserName;
 	string SystemUserLocalLow;
+	string SystemUserCompanyIndex;
+	string ApplicationCompanyName="ÌìÀíÖ®×ù";
 
 	//Qt
 	QImage MainImg;

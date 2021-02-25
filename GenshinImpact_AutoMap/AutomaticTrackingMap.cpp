@@ -9,6 +9,10 @@ AutomaticTrackingMap::AutomaticTrackingMap()
 	SystemUserLocalLow.append("C:\\User\\");
 	SystemUserLocalLow.append(SystemUserName);
 	SystemUserLocalLow.append("\\AppData\\LocalLow\\");
+	SystemUserCompanyIndex = SystemUserLocalLow;
+	SystemUserCompanyIndex.append(ApplicationCompanyName);
+	SystemUserCompanyIndex.append("\\");
+
 }
 
 AutomaticTrackingMap::~AutomaticTrackingMap()
