@@ -77,6 +77,9 @@
     <ClCompile Include="ATM_ActivationKYJG.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QtWidgetsClassMySelectGenshinImpactHandle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutomaticTrackingMap.h">
@@ -214,5 +217,13 @@
     <QtMoc Include="QtClassMyHotKeyObject.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="QtWidgetsClassMySelectGenshinImpactHandle.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="QtWidgetsClassMySelectGenshinImpactHandle.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>
