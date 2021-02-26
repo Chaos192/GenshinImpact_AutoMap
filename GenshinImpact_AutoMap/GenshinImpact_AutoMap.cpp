@@ -134,24 +134,6 @@ void GenshinImpact_AutoMap::mouseDoubleClickEvent(QMouseEvent * event)
 void GenshinImpact_AutoMap::wheelEvent(QWheelEvent * event)
 {
 	map.setScaleMapDelta(event->x(), event->y(), event->delta());
-	//if (event->delta() > 0)
-	//{
-	//	if (map.MET.scale > 0.5)
-	//	{
-	//		map.MET.scale /= 1.2;
-	//		//MET.zerosMinMap.x += dx * 0.2;//1.2-1
-	//		//MET.zerosMinMap.y += dy * 0.2;//1.2-1
-	//	}
-	//}
-	//else
-	//{
-	//	if (map.MET.scale < 6)
-	//	{
-	//		map.MET.scale *= 1.2;
-	//		//MET.zerosMinMap.x += dx * 0.2;//1.2-1
-	//		//MET.zerosMinMap.y += dy * 0.2;//1.2-1
-	//	}
-	//}
 	update();
 }
 
@@ -171,6 +153,12 @@ void GenshinImpact_AutoMap::runMap()
 		isUpdataEnd = false;
 		emit this->mapUpdataFrontEnd();
 		emit this->mapUpdataBackEnd();
+
+		//if (map.isAutoInitFinish == false)
+		//{
+		//	ui.UIButton->setIcon(QIcon(":/IconUI/resource/UI1.ico"));
+		//}
+
 		isUpdataEnd = true;
 		//Æô¶¯ÏÂÒ»Ö¡
 		mapMessageLoopTimer->start(Fps);
@@ -208,16 +196,12 @@ void GenshinImpact_AutoMap::setAutoMode()
 	if (map.isAutoMode)
 	{
 		ui.UIButton->setIcon(QIcon(":/IconUI/resource/UI0.ico"));
-		//ui.UIButton->
 	}
 	else
 	{
 		ui.UIButton->setIcon(QIcon(":/IconUI/resource/UI.ico"));
 	}
-	if (map.isAutoInitFinish == false)
-	{
-		ui.UIButton->setIcon(QIcon(":/IconUI/resource/UI1.ico"));
-	}
+
 }
 
 void GenshinImpact_AutoMap::setAddFlag()
