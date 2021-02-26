@@ -13,11 +13,7 @@
 
 ## 主分支效果
 
-![完美嵌入](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/Image/Snipaste_2021-02-19_20-27-21.png)
-
-![完美嵌入](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/Image/Snipaste_2021-02-19_20-30-23.png)
-
-![完美嵌入](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/Image/Snipaste_2021-02-19_20-32-53.png)
+![完美嵌入](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/Image/Show1.png)
 
 # Qt重构中，已实现追踪+隐现，待添加标记+UI设计+启动绑定+优化
  
