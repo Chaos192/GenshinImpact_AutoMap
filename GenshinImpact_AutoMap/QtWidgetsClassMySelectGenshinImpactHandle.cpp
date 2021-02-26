@@ -43,11 +43,6 @@ void QtWidgetsClassMySelectGenshinImpactHandle::mouseMoveEvent(QMouseEvent * eve
 
 void QtWidgetsClassMySelectGenshinImpactHandle::mousePressEvent(QMouseEvent * event)
 {
-	//QPushButton*  f_sender = qobject_cast<QPushButton*>(sender());
-	//if (f_sender == ui.ButtonSelect)
-	//{
-	//	isStartSelect = true;
-	//}
 }
 
 void QtWidgetsClassMySelectGenshinImpactHandle::mouseReleaseEvent(QMouseEvent * event)
