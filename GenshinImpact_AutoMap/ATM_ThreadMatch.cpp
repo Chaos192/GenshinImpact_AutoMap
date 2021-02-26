@@ -422,15 +422,19 @@ void ATM_TM_SurfMap::SURFMatch()
 
 	if ((dis(hisP[1] - hisP[0]) + dis(hisP[2] - hisP[1])) < 2000)
 	{
-		if (hisP[2].x > 150 && hisP[2].x < img_scene.cols - 150 && hisP[2].y>150 && hisP[2].y < img_scene.rows - 150)
+		if (hisP[2].x > someSizeR && hisP[2].x < img_scene.cols - someSizeR && hisP[2].y>someSizeR && hisP[2].y < img_scene.rows - someSizeR)
 		{
 			isContinuity = true;
 			if (isContinuity)
 			{
-				Mat someMap(img_scene(Rect(hisP[2].x - 150, hisP[2].y - 150, 300, 300)));
+				Mat someMap(img_scene(Rect(hisP[2].x - someSizeR, hisP[2].y - someSizeR, someSizeR*2, someSizeR*2)));
+				Mat minMap(img_object);
+				//resize(someMap, someMap, Size(), MatchMatScale, MatchMatScale, 1);
+				//resize(minMap, minMap, Size(), MatchMatScale, MatchMatScale, 1);
+
 				detectorSomeMap = cv::xfeatures2d::SURF::create(minHessian);
 				detectorSomeMap->detectAndCompute(someMap, noArray(), Kp_SomeMap, Dp_SomeMap);
-				detectorSomeMap->detectAndCompute(img_object, noArray(), Kp_MinMap, Dp_MinMap);
+				detectorSomeMap->detectAndCompute(minMap, noArray(), Kp_MinMap, Dp_MinMap);
 				Ptr<DescriptorMatcher> matcherTmp = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
 				std::vector< std::vector<DMatch> > KNN_mTmp;
 				//std::vector<DMatch> good_matchesTmp;
@@ -444,14 +448,14 @@ void ATM_TM_SurfMap::SURFMatch()
 					if (KNN_mTmp[i][0].distance < ratio_thresh * KNN_mTmp[i][1].distance)
 					{
 						//good_matchesTmp.push_back(KNN_mTmp[i][0]);
-						lisx.push_back(((img_object.cols / 2 - Kp_MinMap[KNN_mTmp[i][0].queryIdx].pt.x)*1.3 + Kp_SomeMap[KNN_mTmp[i][0].trainIdx].pt.x));
-						lisy.push_back(((img_object.rows / 2 - Kp_MinMap[KNN_mTmp[i][0].queryIdx].pt.y)*1.3 + Kp_SomeMap[KNN_mTmp[i][0].trainIdx].pt.y));
+						lisx.push_back(((minMap.cols / 2 - Kp_MinMap[KNN_mTmp[i][0].queryIdx].pt.x)*mapScale + Kp_SomeMap[KNN_mTmp[i][0].trainIdx].pt.x));
+						lisy.push_back(((minMap.rows / 2 - Kp_MinMap[KNN_mTmp[i][0].queryIdx].pt.y)*mapScale + Kp_SomeMap[KNN_mTmp[i][0].trainIdx].pt.y));
 						sumx += lisx.back();
 						sumy += lisy.back();
 					}
 				}
 
-				if (min(lisx.size(), lisy.size()) <= 2)
+				if (min(lisx.size(), lisy.size()) <= 4)
 				{
 					isContinuity = false;
 				}
@@ -461,7 +465,7 @@ void ATM_TM_SurfMap::SURFMatch()
 					double meany = sumy / lisy.size(); //¾ùÖµ
 					int x = (int)meanx;
 					int y = (int)meany;
-					pos = Point(x + hisP[2].x - 150, y + hisP[2].y - 150);
+					pos = Point(x + hisP[2].x - someSizeR, y + hisP[2].y - someSizeR);
 				}
 			}
 		}
@@ -483,8 +487,8 @@ void ATM_TM_SurfMap::SURFMatch()
 			if (KNN_m[i][0].distance < ratio_thresh * KNN_m[i][1].distance)
 			{
 				//good_matches.push_back(KNN_m[i][0]);
-				lisx.push_back(((img_object.cols / 2 - Kp_MinMap[KNN_m[i][0].queryIdx].pt.x)*1.3 + Kp_Map[KNN_m[i][0].trainIdx].pt.x));
-				lisy.push_back(((img_object.rows / 2 - Kp_MinMap[KNN_m[i][0].queryIdx].pt.y)*1.3 + Kp_Map[KNN_m[i][0].trainIdx].pt.y));
+				lisx.push_back(((img_object.cols / 2 - Kp_MinMap[KNN_m[i][0].queryIdx].pt.x)*mapScale + Kp_Map[KNN_m[i][0].trainIdx].pt.x));
+				lisy.push_back(((img_object.rows / 2 - Kp_MinMap[KNN_m[i][0].queryIdx].pt.y)*mapScale + Kp_Map[KNN_m[i][0].trainIdx].pt.y));
 				sumx += lisx.back();
 				sumy += lisy.back();
 			}
