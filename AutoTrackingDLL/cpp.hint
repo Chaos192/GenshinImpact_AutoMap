@@ -1,2 +1,0 @@
-#define AUTOTRACKINGDLL_API __declspec(dllexport)
-#define AUTOTRACKINGDLL_API __declspec(dllimport)
