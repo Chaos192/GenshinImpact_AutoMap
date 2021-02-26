@@ -14,17 +14,14 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 	connect(ui.UIObjList1Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
 	connect(ui.UIObjList2Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
 	connect(ui.UIObjList999Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
-	
 
 
 	//创建刷新定时器
 	mapMessageLoopTimer = new QTimer(this);
 	mapMessageLoopTimer->start(Fps);//1000/30=33.3,1000/24=42
-	//mapMessageLoopTimer->setSingleShot(true);
 	connect(mapMessageLoopTimer, SIGNAL(timeout()), this, SLOT(runMap()));
 	//创建UIObjList激活定时器
 	uiObjListSleepTimer = new QTimer(this);
-	//uiObjListSleepTimer->stop();
 	uiObjListSleepTimer->setSingleShot(true);
 	connect(uiObjListSleepTimer, SIGNAL(timeout()), this, SLOT(setUIObjListHide()));
 
@@ -48,11 +45,15 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 	this->setCursor(*myCursor);
 
 	//设置半透明无边框窗口
-	//setWindowFlags(Qt::CustomizeWindowHint);
-	//this->setWindowOpacity(0.9);
 	this->setWindowFlags(Qt::FramelessWindowHint);
 	this->setAttribute(Qt::WA_TranslucentBackground, true);
 	ui.MainView->setAttribute(Qt::WA_TranslucentBackground);
+
+	//设置UID字体
+	int UIDFontId = QFontDatabase::addApplicationFont(":/UIDFont/resource/UIDFont.ttf");
+	QString UIDFontName = QFontDatabase::applicationFontFamilies(UIDFontId).at(0);
+	QFont UIDFont(UIDFontName,12);
+	ui.UIDLabel->setFont(UIDFont);
 
 	mapInit();
 }
@@ -76,31 +77,26 @@ void GenshinImpact_AutoMap::mouseMoveEvent(QMouseEvent * event)
 {
 	if (map.MET.bLCD)
 	{
-		//qDebug() << "mouse move " << event->x() << "," << event->y();
 		map.setMoveMapMovePos(event->x(), event->y());
 		update();
 	}
 	if (map.MET.bMCD)
 	{
-		qDebug() << "mouse move " << event->globalX() << "," << event->globalY();
 		map.setOffsetMovePos(event->globalX(), event->globalY());
 		map.setWindowsPos();
 	}
-	//if(map.MET)
 }
 
 void GenshinImpact_AutoMap::mousePressEvent(QMouseEvent * event)
 {
-	if (event->button() == Qt::LeftButton /*&& (event->buttons() & Qt::LeftButton)*/)
+	if (event->button() == Qt::LeftButton)
 	{
 		// 左键按下
 		map.MET.bLCD = true;
 		map.setMoveMapDownPos(event->x(), event->y());
-		//qDebug() << "mouse move setMouseLeftDownPos" << event->x() << "," << event->y();
 	}
 	if (event->button() == Qt::MidButton)
 	{
-		qDebug() << "MidButton" << event->globalPos().x() << "," << event->globalX();
 		map.MET.bMCD = true;
 		map.setOffsetDownPos(event->globalPos().x(), event->globalPos().y());
 		map.CustomProcess(0);
@@ -109,32 +105,22 @@ void GenshinImpact_AutoMap::mousePressEvent(QMouseEvent * event)
 
 void GenshinImpact_AutoMap::mouseReleaseEvent(QMouseEvent * event)
 {
-	if (event->button() == Qt::LeftButton /*&& (event->buttons() & Qt::LeftButton)*/)
+	if (event->button() == Qt::LeftButton)
 	{
 		// 左键按下
 		map.MET.bLCD = false;
-		//map.setMouseLeftUpPos(event->x(), event->y());
-		//qDebug() << "mouse move res" << event->x() << "," << event->y();
 	}
 	if (event->button() == Qt::MidButton)
 	{
-		//qDebug() << "MidButton" << event->x() << "," << event->y();
 		map.MET.bMCD = false;
-		//map.setOffsetUpPos(event->globalX(), event->globalY());
-
 	}
 }
 
 void GenshinImpact_AutoMap::mouseDoubleClickEvent(QMouseEvent * event)
 {
-	//static int i = 0;
 	if (event->button() == Qt::LeftButton)
 	{
 		emit this->setAutoMode();
-
-		qDebug() << "mouse move double" << event->x() << "," << event->y();
-		//map.CustomProcess(0);
-		//i++;
 	}
 }
 
@@ -151,6 +137,16 @@ void GenshinImpact_AutoMap::paintEvent(QPaintEvent * event)
 	painter.drawImage(0, 0, map.MainImg);
 }
 
+void GenshinImpact_AutoMap::displayUID(int uid)
+{
+	static int uidTmp=0;
+	if (uidTmp != uid)
+	{
+		ui.UIDLabel->setText(QString::QString("UID: %1").arg(uid));
+		uidTmp = uid;
+	}
+}
+
 void GenshinImpact_AutoMap::runMap()
 {
 	static bool isUpdataEnd = true;
@@ -160,12 +156,6 @@ void GenshinImpact_AutoMap::runMap()
 		isUpdataEnd = false;
 		emit this->mapUpdataFrontEnd();
 		emit this->mapUpdataBackEnd();
-
-		//if (map.isAutoInitFinish == false)
-		//{
-		//	ui.UIButton->setIcon(QIcon(":/IconUI/resource/UI1.ico"));
-		//}
-
 		isUpdataEnd = true;
 		//启动下一帧
 		mapMessageLoopTimer->start(Fps);
@@ -181,19 +171,15 @@ void GenshinImpact_AutoMap::runMap()
 
 void GenshinImpact_AutoMap::updataFrontEnd()
 {
-	//static int count = 0;
-	//qDebug() << "Updata Front-End " << count++ << " ";
-	
 	//更新绘制图像
 	map.FrontEndUpdata();
+	displayUID(map.getUID());
 	//绘制到窗口
 	update();
 }
 
 void GenshinImpact_AutoMap::updataBackEnd()
 {
-	//static int count = 0;
-	//qDebug() << "Updata Back-End " << count++ << " ";
 	map.BackEndUpdata();
 }
 
@@ -240,7 +226,6 @@ void GenshinImpact_AutoMap::setActivationSelectGenshinImpact()
 
 void GenshinImpact_AutoMap::setUIObjListShow()
 {
-	qDebug() << "setUIObjListShow";
 	ui.UIButton->setIcon(QIcon(":/IconUI/resource/UI1.ico"));
 
 	ui.UIObjFlagButton->setVisible(true);
@@ -256,7 +241,6 @@ void GenshinImpact_AutoMap::setUIObjListShow()
 
 void GenshinImpact_AutoMap::setUIObjListHide()
 {
-	qDebug() << "setUIObjListHide";
 	ui.UIObjFlagButton->setVisible(false);
 	ui.UIObjList0Button->setVisible(false);
 	ui.UIObjList1Button->setVisible(false);
@@ -277,24 +261,24 @@ void GenshinImpact_AutoMap::setUIObjListHide()
 void GenshinImpact_AutoMap::setUIObjListToMapData()
 {
 	QPushButton *btn = qobject_cast<QPushButton*>(sender());
-	if (btn == ui.UIObjFlagButton) {
-		qDebug() << "setUIObjListToMapData data 0 FST";
+	if (btn == ui.UIObjFlagButton) 
+	{
 		map.setObjFlagIsShow();
 	}
-	if (btn == ui.UIObjList0Button) {
-		qDebug() << "setUIObjListToMapData data 0 FST";
+	if (btn == ui.UIObjList0Button) 
+	{
 		map.setObjIsShow(0);
 	}
-	if (btn == ui.UIObjList1Button) {
-		qDebug() << "setUIObjListToMapData data 1 YST";
+	if (btn == ui.UIObjList1Button) 
+	{
 		map.setObjIsShow(1);
 	}
-	if (btn == ui.UIObjList2Button) {
-		qDebug() << "setUIObjListToMapData data 2 FHYS";
+	if (btn == ui.UIObjList2Button) 
+	{
 		map.setObjIsShow(2);
 	}
-	if (btn == ui.UIObjList999Button) {
-		qDebug() << "setUIObjListToMapData data 999 LLD";
+	if (btn == ui.UIObjList999Button)
+	{
 		map.setObjIsShow(3);
 	}
 }

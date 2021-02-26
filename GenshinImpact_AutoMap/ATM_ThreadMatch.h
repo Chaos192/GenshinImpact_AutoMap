@@ -28,6 +28,10 @@ class ATM_TM_SurfMap
 
 	Point pos;
 public:
+	ATM_TM_SurfMap();
+	~ATM_TM_SurfMap();
+
+public:
 	bool isInit = false;
 	bool isContinuity = false;
 	void setMap(Mat mapMat);

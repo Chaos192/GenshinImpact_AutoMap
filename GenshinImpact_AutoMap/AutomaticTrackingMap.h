@@ -132,6 +132,8 @@ public:
 	void setKongYingJiuGuanState();
 
 	void setGenshinImpactWndHandle(HWND giHandle);
+
+	int getUID();
 private:
 	void getSystemInfo();
 private:

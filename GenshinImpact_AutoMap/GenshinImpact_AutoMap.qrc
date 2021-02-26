@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="GenshinImpact_AutoMap"/>
+  <qresource prefix="UIDFont">
+    <file>resource/UIDFont.ttf</file>
+  </qresource>
   <qresource prefix="IconUIObjList">
     <file>resource/UIObjFlag.png</file>
     <file>resource/UIObjList0.ico</file>

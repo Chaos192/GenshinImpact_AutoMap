@@ -1,4 +1,6 @@
 #pragma once
+//#include <qfont.h>
+#include <qfontdatabase.h>
 #include <qtimer.h>
 #include <qpainter.h>
 #include <QMouseEvent>
@@ -35,10 +37,6 @@ private:
 	void mapInit();
 
 protected:
-	//bool eventFilter(QObject * watched, QEvent * event)override;
-	//bool nativeEventFilter(const QByteArray &eventType, void *message, long *result);
-
-
 	void mouseMoveEvent(QMouseEvent *event);
 	void mousePressEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);
@@ -46,6 +44,8 @@ protected:
 	void wheelEvent(QWheelEvent *event);
 	void paintEvent(QPaintEvent *event);
 
+private:
+	void displayUID(int uid);
 private:
 	int Fps = 42;//ms
 	QTimer *mapMessageLoopTimer;

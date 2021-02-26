@@ -19,9 +19,9 @@ private:
 	Ui::QtWidgetsClassMySelectGenshinImpactHandle ui;
 
 private:
-	string giName;
-	HWND giHandle;
-	string giClass;
+	string giName="";
+	HWND giHandle = NULL;
+	string giClass="";
 	POINT pos;
 	bool isStartSelect = false;
 

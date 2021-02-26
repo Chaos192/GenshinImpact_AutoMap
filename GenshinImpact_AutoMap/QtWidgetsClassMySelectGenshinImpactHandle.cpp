@@ -4,8 +4,8 @@ QtWidgetsClassMySelectGenshinImpactHandle::QtWidgetsClassMySelectGenshinImpactHa
 	: QWidget(parent)
 {
 	ui.setupUi(this);
-	//setAttribute(Qt::WA_DeleteOnClose);
-	ui.ButtonSelect->setAttribute(Qt::WA_TransparentForMouseEvents, true);;
+	pos.x = 0;
+	pos.y = 0;
 }
 
 QtWidgetsClassMySelectGenshinImpactHandle::~QtWidgetsClassMySelectGenshinImpactHandle()
@@ -14,8 +14,9 @@ QtWidgetsClassMySelectGenshinImpactHandle::~QtWidgetsClassMySelectGenshinImpactH
 
 void QtWidgetsClassMySelectGenshinImpactHandle::displayWndInfo()
 {
+	int nHandle = (int)giHandle;
 	ui.lineEditName->setText(QString::fromLocal8Bit(giName.data()));
-	ui.lineEditHandle->setText(QString::number((unsigned int)giHandle));
+	ui.lineEditHandle->setText(QString::number(nHandle));
 	ui.lineEditClass->setText(QString::fromLocal8Bit(giClass.data()));
 }
 

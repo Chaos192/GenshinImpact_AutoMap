@@ -12,26 +12,15 @@ AutomaticTrackingMap::~AutomaticTrackingMap()
 
 void AutomaticTrackingMap::Init(HWND mapWindowsHandle)
 {
-	/*
-	数据状态初始化
-	*/
+	//数据状态初始化
 	MET.zerosMinMap = zerosMinMap;
 	MET.offGiMinMap = offGiMinMap;
 	SST.setPort(23333);//6666
 
-
 	getGiHandle();
 	getThisHandle(mapWindowsHandle);
-
-
-	/*
-	后端数据更新
-	*/
+	//后端数据更新
 	BackEndUpdata();
-
-
-	
-	/**/
 }
 
 void AutomaticTrackingMap::Exit()
@@ -41,29 +30,20 @@ void AutomaticTrackingMap::Exit()
 //前端显示
 void AutomaticTrackingMap::FrontEndUpdata()
 {
-	/*
-	设置部分
-	*/
-
+	//设置部分
 	setThisState();
 	setThreadMatchMat();
 
-	/*
-	显示部分
-	*/
+	//显示部分
 
 	//获取显示区域地图
 	MainMat = getViewMap();
-	//MainMat(Rect(0, 0, 212, 212)) = getViewMap();
-	//getViewMap().copyTo(MainMat(Rect(0,0,212,212))) ;
 	//添加物品图标
 	drawObjectLists();
 
 	//添加当前位置图标
 
-	/*
-	显示输出部分
-	*/
+	//显示输出部分
 
 	//图片输出到Qt显示
 	Mat2QImage();
@@ -72,10 +52,8 @@ void AutomaticTrackingMap::FrontEndUpdata()
 //后端状态数据
 void AutomaticTrackingMap::BackEndUpdata()
 {
-	/*
-	数据处理部分
-	*/
-
+	
+	//数据处理部分
 	if (isAutoMode)
 	{
 		//多线程检查输出
@@ -103,11 +81,8 @@ void AutomaticTrackingMap::BackEndUpdata()
 			}
 		}
 	}
-
-	/*
-	获取部分
-	*/
-
+	//获取部分
+	
 	//获取原神窗口状态
 	getGiState();
 	getKYJGState();
@@ -115,42 +90,27 @@ void AutomaticTrackingMap::BackEndUpdata()
 	getThisOffset();
 	getThisState();
 
-	/*
-	状态转移部分
-	*/
-
+	//状态转移部分
 
 	//判断当前本身窗口状态
 	thisStateMode = getThisState();
-
-
 }
 
 void AutomaticTrackingMap::Mat2QImage()
 {
 	std::vector<Mat> mv0;
 	std::vector<Mat> mv1;
-	//MainMat = Scalar(0, 0, 0);
-
 	//通道分离
 	split(MainMat, mv0);
 	split(RES.MAINMASK, mv1);
 	mv0.push_back(mv1[0]);
-	//mv0[3] = mv1[0];
 	merge(mv0, MainMat);
 	MainImg = QImage((uchar*)(MainMat.data), MainMat.cols, MainMat.rows, MainMat.cols*(MainMat.channels()), QImage::Format_ARGB32);
 }
 
 void AutomaticTrackingMap::CustomProcess(int i)
 {
-	GIS.getGiFrame();
-	string name("OutputPNG_id_");
-	name.append(to_string(i));
-	name.append("_GiFrame.png");
-	if (GIS.isRunning)
-	{
-		;
-	}
+
 }
 
 Mat AutomaticTrackingMap::getViewMap()
@@ -189,8 +149,6 @@ Mat AutomaticTrackingMap::getViewMap()
 	minMapRect = Rect(minMapPoint, reMapSize);
 
 	resize(RES.GIMAP(minMapRect), minMap, autoMapSize);
-	//minMap = matMap(Rect(minMapPoint, reMapSize));
-	//cvtColor(minMap, minMap, CV_RGB2RGBA);
 	return minMap;
 
 }
@@ -207,7 +165,6 @@ void AutomaticTrackingMap::getGiState()
 void AutomaticTrackingMap::setThisState_Normal()
 {
 	//设置窗口位置
-	//setWindowsPos();
 	SetWindowPos(thisHandle, HWND_TOP, GIS.giRect.left + offGiMinMap.x, GIS.giRect.top + offGiMinMap.y, 0, 0, SWP_NOSIZE);
 }
 
@@ -225,7 +182,6 @@ void AutomaticTrackingMap::setThisState_Top()
 	//设置窗口位置
 	setWindowsPos();
 	//还原显示窗口
-	//ShowWindow(thisHandle, SW_SHOW);
 	ShowWindow(thisHandle, SW_RESTORE);
 }
 
@@ -234,7 +190,6 @@ void AutomaticTrackingMap::setThisState_TopShow()
 	//设置窗口位置
 	setWindowsPos();
 	//还原显示窗口
-	//ShowWindow(thisHandle, SW_SHOW);
 	ShowWindow(thisHandle, SW_RESTORE);
 	//设置原神窗口为前台
 	SetForegroundWindow(GIS.giHandle);/* 对原神窗口的操作 */
@@ -300,9 +255,7 @@ void AutomaticTrackingMap::setMoveMapMovePos(int x, int y)
 
 void AutomaticTrackingMap::setOffsetDownPos(int x, int y)
 {
-	//MET.offGiMinMap = offGiMinMap;
 	MET.setMouseMidDownPos(x, y);
-
 }
 
 void AutomaticTrackingMap::setOffsetUpPos(int x, int y)
@@ -380,6 +333,11 @@ void AutomaticTrackingMap::setKongYingJiuGuanState()
 void AutomaticTrackingMap::setGenshinImpactWndHandle(HWND giHandle)
 {
 	GIS.setGiHandle(giHandle);
+}
+
+int AutomaticTrackingMap::getUID()
+{
+	return TMS.uid;
 }
 
 void AutomaticTrackingMap::getSystemInfo()
@@ -477,7 +435,6 @@ void AutomaticTrackingMap::getKYJGState()
 
 void AutomaticTrackingMap::setThisState()
 {
-	//if (thisStateModeNext == ThisWinState::Wait)return;
 	if (isFristChangeThisState != true)
 	{
 		return;
@@ -527,7 +484,6 @@ void AutomaticTrackingMap::setThreadMatchMat()
 		TMS.getObjMinMap(matRGB2GRAY);
 		cvtColor(GIS.giFramePaimon, matRGB2GRAY, CV_RGB2GRAY);
 		TMS.getObjPaimon(matRGB2GRAY);
-		//cvtColor(GIS.giFrameUID, matRGB2GRAY, CV_RGB2GRAY);
 		TMS.getObjUID(GIS.giFrameUID);
 	}
 	else
@@ -559,7 +515,6 @@ void AutomaticTrackingMap::drawObjectLists()
 					if (x > 0 && y > 0 && x + RES.GIOBJICON[objKlass].cols < autoMapSize.width&&y + RES.GIOBJICON[objKlass].rows < autoMapSize.height)
 					{
 						ObjIconROIMat = MainMat(Rect(x, y, RES.GIOBJICON[objKlass].cols, RES.GIOBJICON[objKlass].rows));
-						//RES.GIOBJICON[objKlass].copyTo(ObjIconROIMat, RES.GIOBJICONMASK[objKlass]);
 						addWeightedAlpha(ObjIconROIMat, RES.GIOBJICON[objKlass], RES.GIOBJICONMASK[objKlass]);
 					}
 				}
@@ -579,7 +534,6 @@ void AutomaticTrackingMap::drawObjectLists()
 				if (x > 0 && y > 0 && x + RES.GIOBJFLAGICON[0].cols < autoMapSize.width&&y + RES.GIOBJFLAGICON[0].rows < autoMapSize.height)
 				{
 					ObjIconROIMat = MainMat(Rect(x, y, RES.GIOBJFLAGICON[0].cols, RES.GIOBJFLAGICON[0].rows));
-					//RES.GIOBJICON[objKlass].copyTo(ObjIconROIMat, RES.GIOBJICONMASK[objKlass]);
 					addWeightedAlpha(ObjIconROIMat, RES.GIOBJFLAGICON[0], RES.GIOBJFLAGICONMASK[0]);
 				}
 			}

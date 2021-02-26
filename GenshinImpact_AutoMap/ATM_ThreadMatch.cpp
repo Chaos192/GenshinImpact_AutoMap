@@ -122,7 +122,7 @@ void ATM_ThreadMatch::cThreadTemplateUIDInit(Mat * TemplateUID)
 
 void ATM_ThreadMatch::cThreadTemplateUIDMatch()
 {
-	if (tTemplateUIDMatch == nullptr && tIsEndTemplateUIDInit && isExistObjUID)
+	if (tTemplateUIDMatch == nullptr && isExistObjUID)
 	{
 		tTemplateUIDMatch = new thread(&ATM_ThreadMatch::thread_TemplateUIDMatch, this, ref(objUID));
 		tIsEndTemplateUIDMatch = false;
@@ -357,14 +357,40 @@ void ATM_ThreadMatch::thread_TemplateUIDMatch(Mat & Obj)
 
 void ATM_ThreadMatch::GetMatchResults()
 {
-	if (surfMap.getLocalPos().x != 0 && surfMap.getLocalPos().y != 0)
+	if (tIsEndSurfMapMatch)
 	{
-		pos = surfMap.getLocalPos();
+		if (surfMap.getLocalPos().x > 0 && surfMap.getLocalPos().y > 0)
+		{
+			pos = surfMap.getLocalPos();
+		}
 	}
-	isContinuity = surfMap.getIsContinuity();
-	isPaimonVisial = tempPaimon.getPaimonVisible();
-	rotationAngle = orbAvatar.getRotationAngle();
-	uid = tempUID.getUID();
+	if (tIsEndSurfMapMatch)
+	{
+		isContinuity = surfMap.getIsContinuity();
+	}	
+	if (tIsEndTemplatePaimonMatch)
+	{
+		isPaimonVisial = tempPaimon.getPaimonVisible();
+	}	
+	if (tIsEndOrbAvatarMatch)
+	{
+		rotationAngle = orbAvatar.getRotationAngle();
+	}	
+	if (tIsEndTemplateUIDMatch)
+	{
+		uid = tempUID.getUID();
+	}
+}
+
+ATM_TM_SurfMap::ATM_TM_SurfMap()
+{
+	hisP[0] = Point();
+	hisP[1] = Point();
+	hisP[2] = Point();
+}
+
+ATM_TM_SurfMap::~ATM_TM_SurfMap()
+{
 }
 
 void ATM_TM_SurfMap::setMap(Mat mapMat)
@@ -425,17 +451,18 @@ void ATM_TM_SurfMap::SURFMatch()
 					}
 				}
 
-				if (min(lisx.size(), lisy.size()) < 2)
+				if (min(lisx.size(), lisy.size()) <= 2)
 				{
 					isContinuity = false;
 				}
-
-				double meanx = sumx / lisx.size(); //均值
-				double meany = sumy / lisy.size(); //均值
-				int x = (int)meanx;
-				int y = (int)meany;
-				pos = Point(x + hisP[2].x - 150, y + hisP[2].y - 150);
-
+				else
+				{
+					double meanx = sumx / lisx.size(); //均值
+					double meany = sumy / lisy.size(); //均值
+					int x = (int)meanx;
+					int y = (int)meany;
+					pos = Point(x + hisP[2].x - 150, y + hisP[2].y - 150);
+				}
 			}
 		}
 	}
@@ -467,56 +494,59 @@ void ATM_TM_SurfMap::SURFMatch()
 			cout << "SURF Match Fail" << endl;
 			return;
 		}
-		cout << "SURF Match Point Number: " << lisx.size() << "," << lisy.size() << endl;
-
-
-		double meanx = sumx / lisx.size(); //均值
-		double meany = sumy / lisy.size(); //均值
-		int x = (int)meanx;
-		int y = (int)meany;
-		if (min(lisx.size(), lisy.size()) > 15)
-		{
-			double accumx = 0.0;
-			double accumy = 0.0;
-			for (int i = 0; i < min(lisx.size(), lisy.size()); i++)
-			{
-				accumx += (lisx[i] - meanx)*(lisx[i] - meanx);
-				accumy += (lisy[i] - meany)*(lisy[i] - meany);
-			}
-
-			double stdevx = sqrt(accumx / (lisx.size() - 1)); //标准差
-			double stdevy = sqrt(accumy / (lisy.size() - 1)); //标准差
-
-			sumx = 0;
-			sumy = 0;
-			int numx = 0;
-			int numy = 0;
-			for (int i = 0; i < min(lisx.size(), lisy.size()); i++)
-			{
-				if (abs(lisx[i] - meanx) < 3 * stdevx)
-				{
-					sumx += lisx[i];
-					numx++;
-				}
-				if (abs(lisy[i] - meany) < 3 * stdevy)
-				{
-					sumy += lisy[i];
-					numy++;
-				}
-			}
-			int x = (int)(sumx / numx);
-			int y = (int)(sumy / numy);
-			pos = Point(x, y);
-		}
 		else
 		{
-			pos = Point(x, y);
+			cout << "SURF Match Point Number: " << lisx.size() << "," << lisy.size() << endl;
+
+			double meanx = sumx / lisx.size(); //均值
+			double meany = sumy / lisy.size(); //均值
+			int x = (int)meanx;
+			int y = (int)meany;
+			if (min(lisx.size(), lisy.size()) > 15)
+			{
+				double accumx = 0.0;
+				double accumy = 0.0;
+				for (int i = 0; i < min(lisx.size(), lisy.size()); i++)
+				{
+					accumx += (lisx[i] - meanx)*(lisx[i] - meanx);
+					accumy += (lisy[i] - meany)*(lisy[i] - meany);
+				}
+
+				double stdevx = sqrt(accumx / (lisx.size() - 1)); //标准差
+				double stdevy = sqrt(accumy / (lisy.size() - 1)); //标准差
+
+				sumx = 0;
+				sumy = 0;
+				int numx = 0;
+				int numy = 0;
+				for (int i = 0; i < min(lisx.size(), lisy.size()); i++)
+				{
+					if (abs(lisx[i] - meanx) < 3 * stdevx)
+					{
+						sumx += lisx[i];
+						numx++;
+					}
+					if (abs(lisy[i] - meany) < 3 * stdevy)
+					{
+						sumy += lisy[i];
+						numy++;
+					}
+				}
+				int x = (int)(sumx / numx);
+				int y = (int)(sumy / numy);
+				pos = Point(x, y);
+			}
+			else
+			{
+				pos = Point(x, y);
+			}
 		}
 	}
 
 	hisP[0] = hisP[1];
 	hisP[1] = hisP[2];
 	hisP[2] = pos;
+
 }
 
 Point ATM_TM_SurfMap::SURFMatch(Mat minMapMat)
