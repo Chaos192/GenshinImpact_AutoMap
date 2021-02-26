@@ -48,6 +48,7 @@ public:
 
 	Mat giFrameUID;
 
+	string giWndClass = "UnityWndClass";
 	string giName = "原神";
 
 	//原神是否运行中

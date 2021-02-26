@@ -2,14 +2,14 @@
 
 bool ATM_GiState::isRun()
 {
-	giHandle = FindWindowA(NULL, giName.c_str());/* 对原神窗口的操作 */
+	giHandle = FindWindowA(giWndClass.c_str(), giName.c_str());/* 对原神窗口的操作 */
 	isRunning = giHandle != NULL ? true : false;
 	return isRunning;
 }
 
 void ATM_GiState::getHandle()
 {
-	giHandle = FindWindowA(NULL, giName.c_str());
+	giHandle = FindWindowA(giWndClass.c_str(), giName.c_str());
 	getRect();
 }
 
