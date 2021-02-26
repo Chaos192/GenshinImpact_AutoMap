@@ -133,22 +133,26 @@ void GenshinImpact_AutoMap::mouseDoubleClickEvent(QMouseEvent * event)
 
 void GenshinImpact_AutoMap::wheelEvent(QWheelEvent * event)
 {
-	if (event->delta() > 0) {
-		if (map.MET.scale > 0.5)
-		{
-			map.MET.scale /= 1.2;
-			update();
-
-		}
-	}
-	else {
-		if (map.MET.scale < 6)
-		{
-			map.MET.scale *= 1.2;
-			update();
-
-		}
-	}
+	map.setScaleMapDelta(event->x(), event->y(), event->delta());
+	//if (event->delta() > 0)
+	//{
+	//	if (map.MET.scale > 0.5)
+	//	{
+	//		map.MET.scale /= 1.2;
+	//		//MET.zerosMinMap.x += dx * 0.2;//1.2-1
+	//		//MET.zerosMinMap.y += dy * 0.2;//1.2-1
+	//	}
+	//}
+	//else
+	//{
+	//	if (map.MET.scale < 6)
+	//	{
+	//		map.MET.scale *= 1.2;
+	//		//MET.zerosMinMap.x += dx * 0.2;//1.2-1
+	//		//MET.zerosMinMap.y += dy * 0.2;//1.2-1
+	//	}
+	//}
+	update();
 }
 
 void GenshinImpact_AutoMap::paintEvent(QPaintEvent * event)

@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>250</width>
-    <height>200</height>
+    <width>300</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="mouseTracking">
@@ -30,10 +30,10 @@
    <widget class="QLabel" name="MainView">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>250</width>
-      <height>200</height>
+      <x>-11</x>
+      <y>-1</y>
+      <width>311</width>
+      <height>301</height>
      </rect>
     </property>
     <property name="mouseTracking">
@@ -55,8 +55,8 @@
    <widget class="QtClassMyExitButton" name="ExitButton">
     <property name="geometry">
      <rect>
-      <x>3</x>
-      <y>3</y>
+      <x>268</x>
+      <y>60</y>
       <width>32</width>
       <height>32</height>
      </rect>
@@ -84,8 +84,8 @@
    <widget class="QPushButton" name="UIButton">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>160</y>
+      <x>260</x>
+      <y>260</y>
       <width>32</width>
       <height>32</height>
      </rect>
@@ -113,8 +113,8 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>88</y>
+      <x>260</x>
+      <y>188</y>
       <width>32</width>
       <height>32</height>
      </rect>
@@ -145,8 +145,8 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>56</y>
+      <x>260</x>
+      <y>156</y>
       <width>32</width>
       <height>32</height>
      </rect>
@@ -177,8 +177,8 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>24</y>
+      <x>260</x>
+      <y>124</y>
       <width>32</width>
       <height>32</height>
      </rect>
@@ -209,8 +209,8 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>160</y>
+      <x>220</x>
+      <y>260</y>
       <width>32</width>
       <height>32</height>
      </rect>
@@ -241,8 +241,8 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>120</y>
+      <x>260</x>
+      <y>220</y>
       <width>32</width>
       <height>32</height>
      </rect>
