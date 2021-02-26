@@ -227,7 +227,7 @@ void GenshinImpact_AutoMap::setActivationSelectGenshinImpact()
 	if (widgetsSelectGI == nullptr)
 	{
 		widgetsSelectGI = new QtWidgetsClassMySelectGenshinImpactHandle();
-		
+		connect(widgetsSelectGI, SIGNAL(SendGenshinImpactWndHandleToATM(HWND)), this, SLOT(getGenshinImpactWndHandleFromWidgets(HWND)));
 		widgetsSelectGI->show();
 
 	}
@@ -297,6 +297,11 @@ void GenshinImpact_AutoMap::setUIObjListToMapData()
 		qDebug() << "setUIObjListToMapData data 999 LLD";
 		map.setObjIsShow(3);
 	}
+}
+
+void GenshinImpact_AutoMap::getGenshinImpactWndHandleFromWidgets(HWND giHandle)
+{
+	map.setGenshinImpactWndHandle(giHandle);
 }
 
 

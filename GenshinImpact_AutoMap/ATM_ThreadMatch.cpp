@@ -601,41 +601,10 @@ bool GreaterSort(DMatch a, DMatch b)
 void ATM_TM_ORBAvatar::ORBMatch()
 {
 	orb->detectAndCompute(_avatarMat, Mat(), Kp_Avatar, Dp_Avatar, false);
-
-	//BruteForceMatcher<HammingLUT> matcher;
-	//vector<DMatch> matches;
-	//matcher.match(Dp_Template, Dp_Avatar, matches);
-
-	//特征匹配是通过使用合适的相似度度量比较特征描述子来执行的。
-   //定义特征描述子匹配器
-	//Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::MatcherType::BRUTEFORCE);
-	////参数MatcherType：匹配器类型，这里使用MatcherType::BRUTEFORCE（暴力匹配算法）
-
-	//vector<DMatch> matches;
-	////通过描述子匹配器，对两幅图像的描述子进行匹配，也就是将两幅图像中的对应特征点进行匹配；输出的是一个DMatch结构体向量，其每一个DMatch结构体包含一组对应特征点的信息。
-	//matcher->match(Dp_Template, Dp_Avatar, matches);
-
-	//double max_dist = 0; double min_dist = 1000;
-	////-- Quick calculation of max and min distances between keypoints     
-	//for (int i = 0; i < Dp_Template.rows; i++)
-	//{
-	//	double dist = matches[i].distance;
-	//	if (dist < min_dist) min_dist = dist;
-	//	if (dist > max_dist) max_dist = dist;
-	//}
-	//printf("-- Max dist : %f \n", max_dist);
-	//printf("-- Min dist : %f \n", min_dist);
-	////-- Draw only "good" matches (i.e. whose distance is less than 0.6*max_dist )     
-	////-- PS.- radiusMatch can also be used here.     
-	//std::vector< DMatch > good_matches;
-	//for (int i = 0; i < Dp_Template.rows; i++)
-	//{
-	//	if (matches[i].distance < 0.6*max_dist)
-	//	{
-	//		good_matches.push_back(matches[i]);
-	//	}
-	//}
-
+	if(Kp_Avatar.size()==0)
+	{
+		return;
+	}
 	Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::BRUTEFORCE);
 	std::vector< std::vector<DMatch> > KNN_m;
 	vector<DMatch> KNN_m2;

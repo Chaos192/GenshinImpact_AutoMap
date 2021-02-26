@@ -20,7 +20,7 @@
    <iconset resource="GenshinImpact_AutoMap.qrc">
     <normaloff>:/IconExit/resource/icon16.ico</normaloff>:/IconExit/resource/icon16.ico</iconset>
   </property>
-  <widget class="QPushButton" name="ButtonOK">
+  <widget class="QPushButton" name="ButtonOk">
    <property name="geometry">
     <rect>
      <x>79</x>
@@ -59,7 +59,7 @@
     <string>窗口句柄</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="lineEditName">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -81,8 +81,12 @@
      <height>61</height>
     </rect>
    </property>
+   <property name="mouseTracking">
+    <bool>false</bool>
+   </property>
    <property name="text">
-    <string/>
+    <string>选择
+原神</string>
    </property>
   </widget>
   <widget class="QLabel" name="labelName">
@@ -111,7 +115,7 @@
     <string>窗口类名</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_2">
+  <widget class="QLineEdit" name="lineEditClass">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -124,7 +128,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_3">
+  <widget class="QLineEdit" name="lineEditHandle">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -142,5 +146,58 @@
  <resources>
   <include location="GenshinImpact_AutoMap.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>ButtonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>QtWidgetsClassMySelectGenshinImpactHandle</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>194</x>
+     <y>148</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>207</x>
+     <y>107</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ButtonOk</sender>
+   <signal>clicked()</signal>
+   <receiver>QtWidgetsClassMySelectGenshinImpactHandle</receiver>
+   <slot>SelectGenshinImpactWndOk()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>116</x>
+     <y>149</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>109</x>
+     <y>108</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ButtonSelect</sender>
+   <signal>pressed()</signal>
+   <receiver>QtWidgetsClassMySelectGenshinImpactHandle</receiver>
+   <slot>SelectGenshinImpactWndStart()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>35</x>
+     <y>117</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>85</x>
+     <y>104</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>SelectGenshinImpactWndOk()</slot>
+  <slot>SelectGenshinImpactWndStart()</slot>
+ </slots>
 </ui>

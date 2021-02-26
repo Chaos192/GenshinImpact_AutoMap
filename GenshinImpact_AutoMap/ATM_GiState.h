@@ -79,5 +79,6 @@ public:
 
 	void setGiNameClass(LANGID SystemLanguageID);
 
+	void setGiHandle(HWND GiHandle);
 };
 

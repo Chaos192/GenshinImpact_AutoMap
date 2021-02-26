@@ -377,6 +377,11 @@ void AutomaticTrackingMap::setKongYingJiuGuanState()
 	}
 }
 
+void AutomaticTrackingMap::setGenshinImpactWndHandle(HWND giHandle)
+{
+	GIS.setGiHandle(giHandle);
+}
+
 void AutomaticTrackingMap::getSystemInfo()
 {
 	char strBuffer[256] = { 0 };
@@ -391,6 +396,7 @@ void AutomaticTrackingMap::getSystemInfo()
 	SystemUserCompanyIndex.append("\\");
 
 	SystemLanguageID = GetSystemDefaultLangID();
+	GIS.setGiNameClass(SystemLanguageID);
 	switch (SystemLanguageID)
 	{
 		case 0X0804:
