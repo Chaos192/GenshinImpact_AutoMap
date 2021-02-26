@@ -430,3 +430,17 @@ void ATM_GiState::setGiNameClass(LANGID SystemLanguageID)
 		}
 	}
 }
+
+void ATM_GiState::setGiHandle(HWND GiHandle)
+{
+	if (GiHandle != NULL)
+	{
+		char classNameLis[256];
+		char nameLis[256];
+		giHandle = GiHandle;
+		GetClassNameA(GiHandle, classNameLis, 256);
+		giWndClass = classNameLis;
+		GetWindowTextA(GiHandle, nameLis, 256);
+		giName = nameLis;
+	}
+}

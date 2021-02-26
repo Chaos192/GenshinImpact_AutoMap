@@ -64,6 +64,8 @@ private slots:
 	void setUIObjListShow();
 	void setUIObjListHide();
 	void setUIObjListToMapData();
+
+	void getGenshinImpactWndHandleFromWidgets(HWND giHandle);
 signals:
 
 	void mapUpdata();

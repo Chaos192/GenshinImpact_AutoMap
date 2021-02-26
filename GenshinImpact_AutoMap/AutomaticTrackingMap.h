@@ -52,7 +52,7 @@ public:
 	ATM_MouseEvent MET;
 
 	//自动悬浮窗句柄
-	HWND thisHandle;
+	HWND thisHandle=NULL;
 	//是否启用自动追踪
 	bool isAutoMode = false;
 	bool isAutoInitFinish = false;
@@ -76,11 +76,11 @@ public:
 
 	//原神是否正在运行标志
 
-	string SystemUserName;
-	string SystemUserLocalLow;
-	string SystemUserCompanyIndex;
+	string SystemUserName="";
+	string SystemUserLocalLow="";
+	string SystemUserCompanyIndex="";
 	string ApplicationCompanyName="天理之座";
-	LANGID SystemLanguageID;
+	LANGID SystemLanguageID=0;
 	string SystemLanguage = "Chinese";
 	//Qt
 	QImage MainImg;
@@ -130,6 +130,8 @@ public:
 	void setObjFlagIsShow();
 	void setAddFlagOnPos();
 	void setKongYingJiuGuanState();
+
+	void setGenshinImpactWndHandle(HWND giHandle);
 private:
 	void getSystemInfo();
 private:
