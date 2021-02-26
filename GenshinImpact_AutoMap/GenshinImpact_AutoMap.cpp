@@ -35,7 +35,8 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 	connect(hotKeyAddFlag, SIGNAL(Activated()), this, SLOT(setAddFlag()));
 	hotKeyActivationKongYingJiuGuan = new QtClassMyHotKeyObject("Alt+M", this);
 	connect(hotKeyActivationKongYingJiuGuan, SIGNAL(Activated()), this, SLOT(setActivationKongYingJiuGuan()));
-
+	hotKeyActivationSelectGenshinImpact = new QtClassMyHotKeyObject("Alt+F8", this);
+	connect(hotKeyActivationSelectGenshinImpact, SIGNAL(Activated()), this, SLOT(setActivationSelectGenshinImpact()));
 
 	connect(ui.UIButton, SIGNAL(clicked()), this, SLOT(setUIObjListShow()));
 	connect(ui.ExitButton, SIGNAL(mouseDoubleClickExitExe()), this, SLOT(close()));
@@ -58,6 +59,12 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 
 GenshinImpact_AutoMap::~GenshinImpact_AutoMap()
 {
+	delete myCursor;
+	delete hotKeyAutoMode;
+	delete hotKeyAddFlag;
+	delete hotKeyActivationKongYingJiuGuan;
+	delete hotKeyActivationSelectGenshinImpact;
+	delete widgetsSelectGI;
 }
 
 void GenshinImpact_AutoMap::mapInit()
@@ -213,6 +220,22 @@ void GenshinImpact_AutoMap::setAddFlag()
 void GenshinImpact_AutoMap::setActivationKongYingJiuGuan()
 {
 	map.setKongYingJiuGuanState();
+}
+
+void GenshinImpact_AutoMap::setActivationSelectGenshinImpact()
+{
+	if (widgetsSelectGI == nullptr)
+	{
+		widgetsSelectGI = new QtWidgetsClassMySelectGenshinImpactHandle();
+		
+		widgetsSelectGI->show();
+
+	}
+	else
+	{
+		widgetsSelectGI->show();
+
+	}
 }
 
 void GenshinImpact_AutoMap::setUIObjListShow()

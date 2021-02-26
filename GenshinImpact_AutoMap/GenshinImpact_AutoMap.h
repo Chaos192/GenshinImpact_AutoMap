@@ -6,6 +6,7 @@
 #include "ui_GenshinImpact_AutoMap.h"
 #include "AutomaticTrackingMap.h"
 #include "QtClassMyHotKeyObject.h"
+#include "QtWidgetsClassMySelectGenshinImpactHandle.h"
 
 ////
 #include <QDebug>
@@ -28,6 +29,8 @@ private:
 	QtClassMyHotKeyObject *hotKeyAutoMode;
 	QtClassMyHotKeyObject *hotKeyAddFlag;
 	QtClassMyHotKeyObject *hotKeyActivationKongYingJiuGuan;
+	QtClassMyHotKeyObject *hotKeyActivationSelectGenshinImpact;
+	QtWidgetsClassMySelectGenshinImpactHandle *widgetsSelectGI = nullptr;
 
 	void mapInit();
 
@@ -47,7 +50,6 @@ private:
 	int Fps = 42;//ms
 	QTimer *mapMessageLoopTimer;
 	QTimer *uiObjListSleepTimer;
-
 private slots:
 	void runMap();
 
@@ -57,6 +59,7 @@ private slots:
 	void setAutoMode();
 	void setAddFlag();
 	void setActivationKongYingJiuGuan();
+	void setActivationSelectGenshinImpact();
 
 	void setUIObjListShow();
 	void setUIObjListHide();

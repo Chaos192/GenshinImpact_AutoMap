@@ -219,6 +219,7 @@
     <ClCompile Include="QtClassMyExitButton.cpp" />
     <ClCompile Include="QtClassMyHotKayNativeEventFilter.cpp" />
     <ClCompile Include="QtClassMyHotKeyObject.cpp" />
+    <ClCompile Include="QtWidgetsClassMySelectGenshinImpactHandle.cpp" />
     <QtRcc Include="GenshinImpact_AutoMap.qrc" />
     <QtUic Include="GenshinImpact_AutoMap.ui" />
     <QtMoc Include="GenshinImpact_AutoMap.h" />
@@ -228,6 +229,7 @@
     <ClCompile Include="AutomaticTrackingMap.cpp" />
     <ClCompile Include="GenshinImpact_AutoMap.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="QtWidgetsClassMySelectGenshinImpactHandle.ui" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ATM_ActivationKYJG.h" />
@@ -242,6 +244,7 @@
     <QtMoc Include="QtClassMyExitButton.h" />
     <ClInclude Include="QtClassMyHotKayNativeEventFilter.h" />
     <QtMoc Include="QtClassMyHotKeyObject.h" />
+    <QtMoc Include="QtWidgetsClassMySelectGenshinImpactHandle.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
