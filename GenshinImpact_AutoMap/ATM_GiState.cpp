@@ -420,12 +420,12 @@ void ATM_GiState::setGiNameClass(LANGID SystemLanguageID)
 		}
 		case 0x0409:
 		{
-			giName = "Genshin Impact";
+			giName = "GenshinImpact";
 			break;
 		}
 		default:
 		{
-			giName = "Genshin Impact";
+			giName = "GenshinImpact";//GenshinImpact.
 			break;
 		}
 	}
