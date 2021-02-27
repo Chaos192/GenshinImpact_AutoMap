@@ -89,7 +89,7 @@ void ATM_ThreadMatch::cThreadOrbAvatarInit(Mat & TemplatAvatar)
 	if (tOrbAvatarInit == nullptr && orbAvatar.isInit == false)
 	{
 		cvtColor(TemplatAvatar, templateAvatar, CV_RGB2GRAY);
-		resize(templateAvatar, templateAvatar, Size(150, 150), 0, 0, INTER_CUBIC);//INTER_CUBIC INTER_AREAz
+		resize(templateAvatar, templateAvatar, Size(0, 0), 2/1.3, 2/1.3, 4);//INTER_CUBIC INTER_AREAz
 		tOrbAvatarInit = new thread(&ATM_ThreadMatch::thread_OrbAvatarInit, this, ref(templateAvatar));
 		tIsEndOrbAvatarInit = false;
 	}
@@ -99,7 +99,7 @@ void ATM_ThreadMatch::cThreadOrbAvatarMatch()
 {
 	if (tOrbAvatarMatch == nullptr && tIsEndOrbAvatarInit && isExistObjMinMap && isPaimonVisial)
 	{
-		resize(objAvatar, objAvatar, Size(150, 150), 0, 0, INTER_CUBIC);//INTER_CUBIC INTER_AREAz
+		resize(objAvatar, objAvatar, Size(0, 0), 2, 2, 4);//INTER_CUBIC INTER_AREAz
 		tOrbAvatarMatch = new thread(&ATM_ThreadMatch::thread_OrbAvatarMatch, this, ref(objAvatar));
 		tIsEndOrbAvatarMatch = false;
 	}
@@ -137,7 +137,7 @@ void ATM_ThreadMatch::setUID(Mat UIDMat)
 void ATM_ThreadMatch::getObjMinMap(Mat & obj)
 {
 	obj.copyTo(objMinMap);
-	obj(Rect(obj.cols / 2 - 24, obj.rows / 2 - 24, 48, 48)).copyTo(objAvatar);
+	obj(Rect(obj.cols / 2 - 18, obj.rows / 2 - 18, 36, 36)).copyTo(objAvatar);
 	isExistObjMinMap = true;
 }
 
@@ -634,46 +634,129 @@ bool GreaterSort(DMatch a, DMatch b)
 
 void ATM_TM_ORBAvatar::ORBMatch()
 {
-	using namespace cv;
-	using namespace cv::cuda;
-	cv::cuda::printShortCudaDeviceInfo(cv::cuda::getDevice());
 
-	Mat t1;
-	_avatarTemplate.copyTo(t1);
+	cv::Mat imageL = _avatarTemplate;
+	cv::Mat imageR = _avatarMat;
+	double res = 0;
+	//提取特征点方法
+	//SIFT
+	//cv::Ptr<cv::xfeatures2d::SIFT> sift = cv::xfeatures2d::SIFT::create();
+	//cv::Ptr<cv::SIFT> sift = cv::SIFT::Creat(); //OpenCV 4.4.0 及之后版本
+	//ORB
+	//cv::Ptr<cv::ORB> surf = cv::ORB::create();//(100,1.05);
+	//SURF
+	cv::Ptr<cv::xfeatures2d::SURF> surf = cv::xfeatures2d::SURF::create(400);
 
-	GpuMat src_gpu;
-	GpuMat dst_gpu; 
-	src_gpu.upload(t1);
-	dst_gpu.upload(_avatarMat);
-	std::vector<KeyPoint> keypoints_src;
-	std::vector<KeyPoint> keypoints_dst;
-	std::vector<DMatch> matches;
-	SURF_CUDA surf(400);
+	//特征点
+	std::vector<cv::KeyPoint> keyPointL, keyPointR;
+	//单独提取特征点
+	surf->detect(imageL, keyPointL);
+	surf->detect(imageR, keyPointR);
 
-	GpuMat keypoints1GPU, keypoints2GPU;
-	GpuMat descriptors1GPU, descriptors2GPU;
-	surf(src_gpu, GpuMat(), keypoints1GPU, descriptors1GPU);
-	surf(dst_gpu, GpuMat(), keypoints2GPU, descriptors2GPU);
+	//画特征点
+	cv::Mat keyPointImageL;
+	cv::Mat keyPointImageR;
+	drawKeypoints(imageL, keyPointL, keyPointImageL, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+	drawKeypoints(imageR, keyPointR, keyPointImageR, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 
-	cout << "FOUND " << keypoints1GPU.cols << " keypoints on first image" << endl;
-	cout << "FOUND " << keypoints2GPU.cols << " keypoints on second image" << endl;
+	////显示窗口
+	//cv::namedWindow("KeyPoints of imageL");
+	//cv::namedWindow("KeyPoints of imageR");
 
-	// matching descriptors
-	Ptr<DescriptorMatcher> matcher =DescriptorMatcher::create(DescriptorMatcher::BRUTEFORCE_HAMMING);
-	//vector<DMatch> matches;
-	matcher->match(descriptors1GPU, descriptors2GPU, matches);
+	////显示特征点
+	//cv::imshow("KeyPoints of imageL", keyPointImageL);
+	//cv::imshow("KeyPoints of imageR", keyPointImageR);
 
-	// downloading results
-	vector<KeyPoint> keypoints1, keypoints2;
-	vector<float> descriptors1, descriptors2;
-	surf.downloadKeypoints(keypoints1GPU, keypoints1);
-	surf.downloadKeypoints(keypoints2GPU, keypoints2);
-	surf.downloadDescriptors(descriptors1GPU, descriptors1);
-	surf.downloadDescriptors(descriptors2GPU, descriptors2);
+	//特征点匹配
+	cv::Mat despL, despR;
+	//提取特征点并计算特征描述子
+	surf->detectAndCompute(imageL, cv::Mat(), keyPointL, despL);
+	surf->detectAndCompute(imageR, cv::Mat(), keyPointR, despR);
 
-	// drawing the results
-	Mat img_matches;
-	drawMatches(Mat(src_gpu), keypoints1, Mat(dst_gpu), keypoints2, matches, img_matches);
+	//Struct for DMatch: query descriptor index, train descriptor index, train image index and distance between descriptors.
+	//int queryIdx –>是测试图像的特征点描述符（descriptor）的下标，同时也是描述符对应特征点（keypoint)的下标。
+	//int trainIdx –> 是样本图像的特征点描述符的下标，同样也是相应的特征点的下标。
+	//int imgIdx –>当样本是多张图像的话有用。
+	//float distance –>代表这一对匹配的特征点描述符（本质是向量）的欧氏距离，数值越小也就说明两个特征点越相像。
+	std::vector<cv::DMatch> matches;
+
+	//如果采用flannBased方法 那么 desp通过orb的到的类型不同需要先转换类型
+	if (despL.type() != CV_32F || despR.type() != CV_32F)
+	{
+		despL.convertTo(despL, CV_32F);
+		despR.convertTo(despR, CV_32F);
+	}
+
+	cv::Ptr<cv::DescriptorMatcher> matcher = cv::DescriptorMatcher::create("FlannBased");
+	matcher->match(despL, despR, matches);
+
+	//计算特征点距离的最大值 
+	double maxDist = 0;
+	for (int i = 0; i < despL.rows; i++)
+	{
+		double dist = matches[i].distance;
+		if (dist > maxDist)
+			maxDist = dist;
+	}
+
+	//挑选好的匹配点
+	std::vector< cv::DMatch > good_matches;
+	for (int i = 0; i < despL.rows; i++)
+	{
+		if (matches[i].distance < 0.66*maxDist)
+		{
+			good_matches.push_back(matches[i]);
+			res =res+ keyPointR[matches[i].trainIdx].angle - keyPointL[matches[i].queryIdx].angle;
+		}
+	}
+	cv::Mat imageOutput;
+	cv::drawMatches(imageL, keyPointL, imageR, keyPointR, good_matches, imageOutput);
+	//rotationAngle=0;
+	if (good_matches.size() != 0)
+	{
+		rotationAngle = -res / good_matches.size();
+	}
+	/////////////////////////////
+	//using namespace cv;
+	//using namespace cv::cuda;
+	//cv::cuda::printShortCudaDeviceInfo(cv::cuda::getDevice());
+
+	//Mat t1;
+	//_avatarTemplate.copyTo(t1);
+
+	//GpuMat src_gpu;
+	//GpuMat dst_gpu; 
+	//src_gpu.upload(t1);
+	//dst_gpu.upload(_avatarMat);
+	//std::vector<KeyPoint> keypoints_src;
+	//std::vector<KeyPoint> keypoints_dst;
+	//std::vector<DMatch> matches;
+	//SURF_CUDA surf(400);
+
+	//GpuMat keypoints1GPU, keypoints2GPU;
+	//GpuMat descriptors1GPU, descriptors2GPU;
+	//surf(src_gpu, GpuMat(), keypoints1GPU, descriptors1GPU);
+	//surf(dst_gpu, GpuMat(), keypoints2GPU, descriptors2GPU);
+
+	//cout << "FOUND " << keypoints1GPU.cols << " keypoints on first image" << endl;
+	//cout << "FOUND " << keypoints2GPU.cols << " keypoints on second image" << endl;
+
+	//// matching descriptors
+	//Ptr<DescriptorMatcher> matcher =DescriptorMatcher::create(DescriptorMatcher::BRUTEFORCE_HAMMING);
+	////vector<DMatch> matches;
+	//matcher->match(descriptors1GPU, descriptors2GPU, matches);
+
+	//// downloading results
+	//vector<KeyPoint> keypoints1, keypoints2;
+	//vector<float> descriptors1, descriptors2;
+	//surf.downloadKeypoints(keypoints1GPU, keypoints1);
+	//surf.downloadKeypoints(keypoints2GPU, keypoints2);
+	//surf.downloadDescriptors(descriptors1GPU, descriptors1);
+	//surf.downloadDescriptors(descriptors2GPU, descriptors2);
+
+	//// drawing the results
+	//Mat img_matches;
+	//drawMatches(Mat(src_gpu), keypoints1, Mat(dst_gpu), keypoints2, matches, img_matches);
 	////////////////////////////////////
 
 
