@@ -19,7 +19,7 @@ void AutomaticTrackingMap::Init(HWND mapWindowsHandle)
 	//数据状态初始化
 	MET.zerosMinMap = zerosMinMap;
 	MET.offGiMinMap = offGiMinMap;
-	SST.setPort(23233);//6666
+	SST.setPort(23333);//6666
 
 	getGiHandle();
 	getThisHandle(mapWindowsHandle);
