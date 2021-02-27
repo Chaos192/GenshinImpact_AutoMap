@@ -589,7 +589,7 @@ void AutomaticTrackingMap::CopyToThis()
 	OLS.copyFrom(0, SLF._stateFST);
 	OLS.copyFrom(1, SLF._stateYST);
 	OLS.copyFrom(2, SLF._stateFHYS);
-	OLS.copyFrom(3,SLF._stateFlag);
+	OLS.copyFrom(3, SLF._stateFlag);
 }
 
 void AutomaticTrackingMap::CopyToLocal()

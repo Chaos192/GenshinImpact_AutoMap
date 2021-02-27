@@ -95,6 +95,7 @@ public:
 
 public:
 	int at(int i, int j);
+	void set(int i, int j,int value);
 
 	bool reSet(int _cols, int _rows);
 	bool reRand();
@@ -142,6 +143,7 @@ public:
 
 	int * data();
 	void data(int **matlis);
+	void copyTo(ATM_MatrixI &_Mat);
 
 	friend std::ostream & operator<<(std::ostream& out, ATM_MatrixI &_Mat);
 	//friend std::ostream & operator<<(std::ostream& out, ATM_MatrixI _Mat);

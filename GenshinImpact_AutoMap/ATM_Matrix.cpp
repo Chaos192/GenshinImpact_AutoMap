@@ -900,6 +900,18 @@ int ATM_MatrixI::at(int i, int j)
 	return mat[0][0];
 }
 
+void ATM_MatrixI::set(int i, int j,int value)
+{
+	if (cols == 0 || rows == 0)
+	{
+		return ;
+	}
+	if (i >= 0 && j >= 0 && i < cols&&j < rows)
+	{
+		mat[i][j]=value;
+	}
+}
+
 bool ATM_MatrixI::reSet(int _cols, int _rows)
 {
 	if (!DeleteMatrix())
@@ -1587,6 +1599,24 @@ void ATM_MatrixI::data(int **matlis)
 		}
 	}
 	//*matlis = matlisOut;
+}
+
+void ATM_MatrixI::copyTo(ATM_MatrixI & _Mat)
+{
+	if (cols != _Mat.cols || rows != _Mat.rows)
+	{
+		DeleteMatrix();
+		cols = _Mat.cols;
+		rows = _Mat.rows;
+		CreatMatrix();
+	}
+	for (int i = 0; i < cols; i++)
+	{
+		for (int j = 0; j < rows; j++)
+		{
+			mat[i][j] = _Mat.mat[i][j];
+		}
+	}
 }
 
 bool ATM_MatrixI::CreatMatrix()

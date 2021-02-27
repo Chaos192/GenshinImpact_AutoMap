@@ -289,14 +289,13 @@ void ATM_ObjectLists::appendFlag(int x, int y)
 		}
 		_collectionStateFlag = stateFlagTmp;
 	}
-	_collectionStateFlag[0][_objFlag.getSize() - 1];
-	_collectionStateFlag[1][_objFlag.getSize() - 1];
-	
+	_collectionStateFlag.set(0, _objFlag.getSize() - 1, x);
+	_collectionStateFlag.set(1,_objFlag.getSize() - 1, y);
 }
 
 void ATM_ObjectLists::setCollectionState(int klass, int i, int state)
 {
-	(*collectionState[klass])[1][i] = state;
+	(*collectionState[klass]).set(1,i, state);
 }
 
 int ATM_ObjectLists::getCollectionState(int klass, int i)
@@ -306,12 +305,12 @@ int ATM_ObjectLists::getCollectionState(int klass, int i)
 
 void ATM_ObjectLists::copyFrom(int klass, ATM_Matrix & mat)
 {
-	(*collectionState[klass]) = mat;
+	 mat.copyTo((*collectionState[klass]));
 }
 
 void ATM_ObjectLists::copyTo(int klass, ATM_Matrix & mat)
 {
-	mat = (*collectionState[klass]);
+	 (*collectionState[klass]).copyTo(mat);
 }
 
 void ATM_ObjectLists::Init0()
