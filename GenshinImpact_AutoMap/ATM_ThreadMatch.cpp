@@ -634,6 +634,7 @@ bool GreaterSort(DMatch a, DMatch b)
 
 void ATM_TM_ORBAvatar::ORBMatch()
 {
+	//////////////////////////////////
 	orb->detectAndCompute(_avatarMat, Mat(), Kp_Avatar, Dp_Avatar, false);
 	if(Kp_Avatar.size()==0)
 	{
@@ -678,7 +679,8 @@ void ATM_TM_ORBAvatar::ORBMatch()
 	{
 		rotationAngle = -res/ good_matches.size();
 	}
-	
+	//////////////////////////////////
+
 }
 
 double ATM_TM_ORBAvatar::getRotationAngle()
