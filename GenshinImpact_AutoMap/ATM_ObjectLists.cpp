@@ -169,9 +169,10 @@ ATM_ObjectLists::ATM_ObjectLists()
 		_objList[i] = ATM_ObjectList(_objectMaxNumbers[i]);
 	}
 	
-	_collectionState[0] = &_collectionStateFST;
-	_collectionState[1] = &_collectionStateYST;
-	_collectionState[2] = &_collectionStateFHYS;
+	collectionState[0] = &_collectionStateFST;
+	collectionState[1] = &_collectionStateYST;
+	collectionState[2] = &_collectionStateFHYS;
+	collectionState[3] = &_collectionStateFlag;
 
 	Init();
 }
@@ -276,16 +277,41 @@ void ATM_ObjectLists::setShowFlag(bool isShow)
 void ATM_ObjectLists::appendFlag(int x, int y)
 {
 	_objFlag.append(x, y);
+	if (_collectionStateFlag.row()<= _objFlag.getSize())
+	{
+		ATM_Matrix stateFlagTmp = ATM_Matrix(2, _collectionStateFlag.row() + 10);
+		for (int i = 0; i < _collectionStateFlag.col(); i++)
+		{
+			for (int ii = 0; ii < _collectionStateFlag.row(); ii++)
+			{
+				stateFlagTmp[1][ii] = _collectionStateFlag[i][ii];
+			}
+		}
+		_collectionStateFlag = stateFlagTmp;
+	}
+	_collectionStateFlag[0][_objFlag.getSize() - 1];
+	_collectionStateFlag[1][_objFlag.getSize() - 1];
+	
 }
 
-void ATM_ObjectLists::setCollectionState(int kalss, int i, int state)
+void ATM_ObjectLists::setCollectionState(int klass, int i, int state)
 {
-	(*_collectionState[kalss])[1][i] = state;
+	(*collectionState[klass])[1][i] = state;
 }
 
-int ATM_ObjectLists::getCollectionState(int kalss, int i)
+int ATM_ObjectLists::getCollectionState(int klass, int i)
 {
-	return (*_collectionState[kalss]).at(1, i);
+	return (*collectionState[klass]).at(1, i);
+}
+
+void ATM_ObjectLists::copyFrom(int klass, ATM_Matrix & mat)
+{
+	(*collectionState[klass]) = mat;
+}
+
+void ATM_ObjectLists::copyTo(int klass, ATM_Matrix & mat)
+{
+	mat = (*collectionState[klass]);
 }
 
 void ATM_ObjectLists::Init0()

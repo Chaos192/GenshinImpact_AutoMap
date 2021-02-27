@@ -19,7 +19,7 @@ void AutomaticTrackingMap::Init(HWND mapWindowsHandle)
 	//数据状态初始化
 	MET.zerosMinMap = zerosMinMap;
 	MET.offGiMinMap = offGiMinMap;
-	SST.setPort(23333);//6666
+	SST.setPort(23233);//6666
 
 	getGiHandle();
 	getThisHandle(mapWindowsHandle);
@@ -35,7 +35,16 @@ void AutomaticTrackingMap::Exit()
 void AutomaticTrackingMap::FrontEndUpdata()
 {
 	//设置部分
-	setThisState();
+	//setThisState();
+
+	if (!IsIconic(thisHandle))
+	{
+		//最小化显示窗口
+		ShowWindow(thisHandle, SW_MINIMIZE);
+		//设置原神窗口为前台
+		SetForegroundWindow(GIS.giHandle);/* 对原神窗口的操作 */
+	}
+
 	setThreadMatchMat();
 
 	//显示部分
@@ -85,19 +94,34 @@ void AutomaticTrackingMap::BackEndUpdata()
 			}
 		}
 	}
+
+	if (SLF._uid != TMS.uid)
+	{
+		SLF.setUID(TMS.uid);
+		if (SLF.tryLoad())
+		{
+			SLF.load();
+			loadLocal();
+		}
+		else
+		{
+			SLF.save();
+		}
+	}
+
 	//获取部分
 	
 	//获取原神窗口状态
 	getGiState();
 	getKYJGState();
 	//获取本身相对原神位置
-	getThisOffset();
-	getThisState();
+	//getThisOffset();
+	//getThisState();
 
 	//状态转移部分
 
 	//判断当前本身窗口状态
-	thisStateMode = getThisState();
+	//thisStateMode = getThisState();
 }
 
 void AutomaticTrackingMap::Mat2QImage()
@@ -324,6 +348,7 @@ void AutomaticTrackingMap::setObjFlagIsShow()
 void AutomaticTrackingMap::setAddFlagOnPos()
 {
 	OLS.appendFlag(zerosMinMap.x, zerosMinMap.y);
+	saveLocal();
 }
 
 void AutomaticTrackingMap::setKongYingJiuGuanState()
@@ -342,6 +367,26 @@ void AutomaticTrackingMap::setGenshinImpactWndHandle(HWND giHandle)
 int AutomaticTrackingMap::getUID()
 {
 	return TMS.uid;
+}
+
+void AutomaticTrackingMap::saveLocal()
+{
+	if (SLF._uid != TMS.uid)
+	{
+		SLF.setUID(TMS.uid);
+	}
+	CopyToLocal();
+	SLF.save();
+}
+
+void AutomaticTrackingMap::loadLocal()
+{
+	if (SLF._uid != TMS.uid)
+	{
+		SLF.setUID(TMS.uid);
+	}
+	SLF.load();
+	CopyToThis();
 }
 
 void AutomaticTrackingMap::getSystemInfo()
@@ -420,6 +465,7 @@ int AutomaticTrackingMap::getThisState()
 	{
 		thisStateModeNext = ThisWinState::Normal;
 	}
+	thisStateModeNext = ThisWinState::Minimize;
 	//如果状态与上一帧不同，就设置状态，否则跳过
 	if (isFristChangeThisState||thisStateModeNext != thisStateMode)
 	{
@@ -430,7 +476,6 @@ int AutomaticTrackingMap::getThisState()
 	{
 		thisStateModeNext = ThisWinState::Wait;
 	}
-
 	return thisStateMode;
 }
 
@@ -546,6 +591,22 @@ void AutomaticTrackingMap::drawObjectLists()
 		}
 	}
 
+}
+
+void AutomaticTrackingMap::CopyToThis()
+{
+	OLS.copyFrom(0, SLF._stateFST);
+	OLS.copyFrom(1, SLF._stateYST);
+	OLS.copyFrom(2, SLF._stateFHYS);
+	OLS.copyFrom(3,SLF._stateFlag);
+}
+
+void AutomaticTrackingMap::CopyToLocal()
+{
+	OLS.copyTo(0, SLF._stateFST);
+	OLS.copyTo(1, SLF._stateYST);
+	OLS.copyTo(2, SLF._stateFHYS);
+	OLS.copyTo(3, SLF._stateFlag);
 }
 
 bool AutomaticTrackingMap::isContains(Rect & r, Point & p)

@@ -138,6 +138,9 @@ public:
 	void setGenshinImpactWndHandle(HWND giHandle);
 
 	int getUID();
+	void saveLocal();
+	void loadLocal();
+
 private:
 	void getSystemInfo();
 private:
@@ -147,7 +150,8 @@ private:
 	void setThreadMatchMat();
 
 	void drawObjectLists();
-
+	void CopyToThis();
+	void CopyToLocal();
 private:
 	bool isContains(Rect &r, Point &p);
 	void addWeightedAlpha(Mat &backgroundImage, Mat& Image,Mat &maskImage);

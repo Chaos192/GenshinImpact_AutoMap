@@ -55,8 +55,9 @@ class ATM_ObjectLists
 	ATM_Matrix _collectionStateFST = ATM_Matrix(1, 65);
 	ATM_Matrix _collectionStateYST = ATM_Matrix(1, 131);
 	ATM_Matrix _collectionStateFHYS = ATM_Matrix(1, 80);
-	ATM_Matrix *_collectionState[3];
+	ATM_Matrix _collectionStateFlag;
 public:
+	ATM_Matrix *collectionState[4];
 	ATM_ObjectLists();
 	~ATM_ObjectLists();
 	void Init();
@@ -76,9 +77,10 @@ public:
 
 	void appendFlag(int x, int y);
 
-	void setCollectionState(int kalss, int i, int state);
-	int getCollectionState(int kalss, int i);
-
+	void setCollectionState(int klass, int i, int state);
+	int getCollectionState(int klass, int i);
+	void copyFrom(int klass, ATM_Matrix &mat);
+	void copyTo(int klass, ATM_Matrix &mat);
 private:
 	void Init0();
 	void Init1();

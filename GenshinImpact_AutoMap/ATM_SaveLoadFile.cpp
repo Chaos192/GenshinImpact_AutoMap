@@ -81,6 +81,20 @@ void ATM_SaveLoadFile::load()
 	fclose(fpLoad);
 }
 
+//ATM_Matrix * ATM_SaveLoadFile::StateClass(int klass)
+//{
+//	//switch (klass)
+//	//{
+//	//	case 0:
+//	//	{
+//	//		return _stateFST;
+//	//	}
+//	//	default:
+//	//		break;
+//	//}
+//	return nullptr;
+//}
+
 bool ATM_SaveLoadFile::tryLoad()
 {
 	if (_access(_uidFilePath.c_str(), 0) == -1)
