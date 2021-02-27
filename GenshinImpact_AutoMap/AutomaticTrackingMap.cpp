@@ -35,15 +35,7 @@ void AutomaticTrackingMap::Exit()
 void AutomaticTrackingMap::FrontEndUpdata()
 {
 	//设置部分
-	//setThisState();
-
-	if (!IsIconic(thisHandle))
-	{
-		//最小化显示窗口
-		ShowWindow(thisHandle, SW_MINIMIZE);
-		//设置原神窗口为前台
-		SetForegroundWindow(GIS.giHandle);/* 对原神窗口的操作 */
-	}
+	setThisState();
 
 	setThreadMatchMat();
 
@@ -115,13 +107,13 @@ void AutomaticTrackingMap::BackEndUpdata()
 	getGiState();
 	getKYJGState();
 	//获取本身相对原神位置
-	//getThisOffset();
-	//getThisState();
+	getThisOffset();
+	getThisState();
 
 	//状态转移部分
 
 	//判断当前本身窗口状态
-	//thisStateMode = getThisState();
+	thisStateMode = getThisState();
 }
 
 void AutomaticTrackingMap::Mat2QImage()
@@ -465,7 +457,6 @@ int AutomaticTrackingMap::getThisState()
 	{
 		thisStateModeNext = ThisWinState::Normal;
 	}
-	thisStateModeNext = ThisWinState::Minimize;
 	//如果状态与上一帧不同，就设置状态，否则跳过
 	if (isFristChangeThisState||thisStateModeNext != thisStateMode)
 	{

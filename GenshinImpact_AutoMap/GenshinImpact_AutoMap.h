@@ -47,7 +47,7 @@ protected:
 private:
 	void displayUID(int uid);
 private:
-	int Fps = 1000;//ms
+	int Fps = 42;//ms
 	QTimer *mapMessageLoopTimer;
 	QTimer *uiObjListSleepTimer;
 private slots:
