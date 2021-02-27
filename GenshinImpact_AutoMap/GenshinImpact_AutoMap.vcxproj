@@ -213,6 +213,7 @@
   <ItemGroup>
     <ClCompile Include="ATM_ActivationKYJG.cpp" />
     <ClCompile Include="ATM_GI_ScreenResolution.cpp" />
+    <ClCompile Include="ATM_Matrix.cpp" />
     <ClCompile Include="ATM_ObjectLists.cpp" />
     <ClCompile Include="ATM_SendSocket.cpp" />
     <ClCompile Include="ATM_ThreadMatch.cpp" />
@@ -235,6 +236,7 @@
     <ClInclude Include="ATM_ActivationKYJG.h" />
     <ClInclude Include="ATM_GiState.h" />
     <ClInclude Include="ATM_GI_ScreenResolution.h" />
+    <ClInclude Include="ATM_Matrix.h" />
     <ClInclude Include="ATM_MouseEvent.h" />
     <ClInclude Include="ATM_ObjectLists.h" />
     <ClInclude Include="ATM_Resource.h" />
