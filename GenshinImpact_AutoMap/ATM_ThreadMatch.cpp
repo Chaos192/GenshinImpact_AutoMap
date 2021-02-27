@@ -634,52 +634,95 @@ bool GreaterSort(DMatch a, DMatch b)
 
 void ATM_TM_ORBAvatar::ORBMatch()
 {
-	//////////////////////////////////
-	orb->detectAndCompute(_avatarMat, Mat(), Kp_Avatar, Dp_Avatar, false);
-	if(Kp_Avatar.size()==0)
-	{
-		return;
-	}
-	Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::BRUTEFORCE);
-	std::vector< std::vector<DMatch> > KNN_m;
-	vector<DMatch> KNN_m2;
-	std::vector<DMatch> good_matches;
-	matcher->knnMatch(Dp_Template, Dp_Avatar, KNN_m,1);
+	using namespace cv;
+	using namespace cv::cuda;
+	cv::cuda::printShortCudaDeviceInfo(cv::cuda::getDevice());
 
-	double max_dist = 0; double min_dist = 1000;
-	std::vector<double> angle;
-	//-- Quick calculation of max and min distances between keypoints     
-	for (int i = 0; i < Dp_Template.rows; i++)
-	{
-		double dist = KNN_m[i][0].distance;
-		KNN_m2.push_back( KNN_m[i][0]);
-		
-		if (dist < min_dist) min_dist = dist;
-		if (dist > max_dist) max_dist = dist;
-	}
+	Mat t1;
+	_avatarTemplate.copyTo(t1);
 
-	sort(KNN_m2.begin(), KNN_m2.end(), GreaterSort);
+	GpuMat src_gpu;
+	GpuMat dst_gpu; 
+	src_gpu.upload(t1);
+	dst_gpu.upload(_avatarMat);
+	std::vector<KeyPoint> keypoints_src;
+	std::vector<KeyPoint> keypoints_dst;
+	std::vector<DMatch> matches;
+	SURF_CUDA surf(400);
 
-	double res = 0;
-	for (size_t i = 0; i < KNN_m.size(); i++)
-	{
-		if (KNN_m[i][0].distance < 0.66 * max_dist)
-		{
-			good_matches.push_back(KNN_m[i][0]);
-			angle.push_back(Kp_Avatar[KNN_m[i][0].trainIdx].angle - Kp_Template[KNN_m[i][0].queryIdx].angle);
-			res =res+ angle[angle.size()-1];
-		}
-	}
+	GpuMat keypoints1GPU, keypoints2GPU;
+	GpuMat descriptors1GPU, descriptors2GPU;
+	surf(src_gpu, GpuMat(), keypoints1GPU, descriptors1GPU);
+	surf(dst_gpu, GpuMat(), keypoints2GPU, descriptors2GPU);
 
+	cout << "FOUND " << keypoints1GPU.cols << " keypoints on first image" << endl;
+	cout << "FOUND " << keypoints2GPU.cols << " keypoints on second image" << endl;
+
+	// matching descriptors
+	Ptr<DescriptorMatcher> matcher =DescriptorMatcher::create(DescriptorMatcher::BRUTEFORCE_HAMMING);
+	//vector<DMatch> matches;
+	matcher->match(descriptors1GPU, descriptors2GPU, matches);
+
+	// downloading results
+	vector<KeyPoint> keypoints1, keypoints2;
+	vector<float> descriptors1, descriptors2;
+	surf.downloadKeypoints(keypoints1GPU, keypoints1);
+	surf.downloadKeypoints(keypoints2GPU, keypoints2);
+	surf.downloadDescriptors(descriptors1GPU, descriptors1);
+	surf.downloadDescriptors(descriptors2GPU, descriptors2);
+
+	// drawing the results
 	Mat img_matches;
-	drawMatches(_avatarTemplate, Kp_Template, _avatarMat, Kp_Avatar,
-		good_matches, img_matches, Scalar::all(-1), Scalar::all(-1),
-		vector<char>());
-	if (good_matches.size() != 0)
-	{
-		rotationAngle = -res/ good_matches.size();
-	}
-	//////////////////////////////////
+	drawMatches(Mat(src_gpu), keypoints1, Mat(dst_gpu), keypoints2, matches, img_matches);
+	////////////////////////////////////
+
+
+	////////////////////////////////////
+	//orb->detectAndCompute(_avatarMat, Mat(), Kp_Avatar, Dp_Avatar, false);
+	//if(Kp_Avatar.size()==0)
+	//{
+	//	return;
+	//}
+	//Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::BRUTEFORCE);
+	//std::vector< std::vector<DMatch> > KNN_m;
+	//vector<DMatch> KNN_m2;
+	//std::vector<DMatch> good_matches;
+	//matcher->knnMatch(Dp_Template, Dp_Avatar, KNN_m,1);
+
+	//double max_dist = 0; double min_dist = 1000;
+	//std::vector<double> angle;
+	////-- Quick calculation of max and min distances between keypoints     
+	//for (int i = 0; i < Dp_Template.rows; i++)
+	//{
+	//	double dist = KNN_m[i][0].distance;
+	//	KNN_m2.push_back( KNN_m[i][0]);
+	//	
+	//	if (dist < min_dist) min_dist = dist;
+	//	if (dist > max_dist) max_dist = dist;
+	//}
+
+	//sort(KNN_m2.begin(), KNN_m2.end(), GreaterSort);
+
+	//double res = 0;
+	//for (size_t i = 0; i < KNN_m.size(); i++)
+	//{
+	//	if (KNN_m[i][0].distance < 0.66 * max_dist)
+	//	{
+	//		good_matches.push_back(KNN_m[i][0]);
+	//		angle.push_back(Kp_Avatar[KNN_m[i][0].trainIdx].angle - Kp_Template[KNN_m[i][0].queryIdx].angle);
+	//		res =res+ angle[angle.size()-1];
+	//	}
+	//}
+
+	//Mat img_matches;
+	//drawMatches(_avatarTemplate, Kp_Template, _avatarMat, Kp_Avatar,
+	//	good_matches, img_matches, Scalar::all(-1), Scalar::all(-1),
+	//	vector<char>());
+	//if (good_matches.size() != 0)
+	//{
+	//	rotationAngle = -res/ good_matches.size();
+	//}
+	////////////////////////////////////
 
 }
 
