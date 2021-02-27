@@ -42,7 +42,7 @@ void AutomaticTrackingMap::FrontEndUpdata()
 		//最小化显示窗口
 		ShowWindow(thisHandle, SW_MINIMIZE);
 		//设置原神窗口为前台
-		SetForegroundWindow(GIS.giHandle);/* 对原神窗口的操作 */
+		//SetForegroundWindow(GIS.giHandle);/* 对原神窗口的操作 */
 	}
 
 	setThreadMatchMat();
@@ -95,19 +95,19 @@ void AutomaticTrackingMap::BackEndUpdata()
 		}
 	}
 
-	if (SLF._uid != TMS.uid)
-	{
-		SLF.setUID(TMS.uid);
-		if (SLF.tryLoad())
-		{
-			SLF.load();
-			loadLocal();
-		}
-		else
-		{
-			SLF.save();
-		}
-	}
+	//if (SLF._uid != TMS.uid)
+	//{
+	//	SLF.setUID(TMS.uid);
+	//	if (SLF.tryLoad())
+	//	{
+	//		SLF.load();
+	//		loadLocal();
+	//	}
+	//	else
+	//	{
+	//		SLF.save();
+	//	}
+	//}
 
 	//获取部分
 	
@@ -115,8 +115,8 @@ void AutomaticTrackingMap::BackEndUpdata()
 	getGiState();
 	getKYJGState();
 	//获取本身相对原神位置
-	//getThisOffset();
-	//getThisState();
+	getThisOffset();
+	getThisState();
 
 	//状态转移部分
 
