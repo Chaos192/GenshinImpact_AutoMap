@@ -23,6 +23,7 @@ void AutomaticTrackingMap::Init(HWND mapWindowsHandle)
 
 	getGiHandle();
 	getThisHandle(mapWindowsHandle);
+	SetWindowLong(thisHandle, GWL_EXSTYLE, (GetWindowLong(thisHandle, GWL_EXSTYLE) | WS_EX_TOOLWINDOW) & ~WS_EX_APPWINDOW);
 	//后端数据更新
 	BackEndUpdata();
 }
@@ -47,7 +48,7 @@ void AutomaticTrackingMap::FrontEndUpdata()
 	drawObjectLists();
 
 	//添加当前位置图标
-
+	drawAvatar();
 	//显示输出部分
 
 	//图片输出到Qt显示
@@ -584,6 +585,16 @@ void AutomaticTrackingMap::drawObjectLists()
 
 }
 
+void AutomaticTrackingMap::drawAvatar()
+{
+	if (isAutoMode)
+	{
+		Mat avatar= rotateAvatar(TMS.rotationAngle);
+		
+		addWeightedPNG(MainMat(Rect(autoMapCenter.x - RES.GIAVATARMASK.cols / 2, autoMapCenter.y - avatar.rows / 2, avatar.cols, avatar.rows)), avatar);
+	}
+}
+
 void AutomaticTrackingMap::CopyToThis()
 {
 	OLS.copyFrom(0, SLF._stateFST);
@@ -630,4 +641,30 @@ void AutomaticTrackingMap::addWeightedAlpha(Mat & backgroundImage, Mat & Image, 
 		dstt_channels[i] += scr_channels[i].mul(1.0 - Alpha / 255.0);
 	}
 	merge(dstt_channels, backgroundImage);
+}
+
+void AutomaticTrackingMap::addWeightedPNG(Mat & backgroundImage, Mat & Image)
+{
+	std::vector<cv::Mat>scr_channels;
+	std::vector<cv::Mat>dstt_channels;
+	split(Image, scr_channels);
+	split(backgroundImage, dstt_channels);
+
+	Mat Alpha = scr_channels[3];
+
+	for (int i = 0; i < 3; i++)
+	{
+		dstt_channels[i] = dstt_channels[i].mul(1.0 - Alpha / 255.0);
+		dstt_channels[i] += scr_channels[i].mul(Alpha / 255.0);
+	}
+	merge(dstt_channels, backgroundImage);
+}
+
+Mat AutomaticTrackingMap::rotateAvatar(double angle)
+{
+	Mat avatar;
+	Point2f pt(RES.GIAVATARMASK.cols / 2., RES.GIAVATARMASK.rows / 2.);
+	Mat r = getRotationMatrix2D(pt, angle, 1.0);
+	warpAffine(RES.GIAVATARMASK, avatar, r, Size(pt*2));
+	return avatar;
 }

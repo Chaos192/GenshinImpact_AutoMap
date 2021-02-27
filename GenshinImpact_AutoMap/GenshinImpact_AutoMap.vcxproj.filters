@@ -221,6 +221,9 @@
     <Image Include="resource\NumUID\uid9.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="resource\GIAVATARMASK.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtClassMyExitButton.h">

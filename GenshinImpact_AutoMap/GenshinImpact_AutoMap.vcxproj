@@ -257,6 +257,7 @@
   <ItemGroup>
     <Image Include="resource\BackGroundMask.bmp" />
     <Image Include="resource\GIAVATAR.bmp" />
+    <Image Include="resource\GIAVATARMASK.bmp" />
     <Image Include="resource\GIMAP.bmp" />
     <Image Include="resource\mainicon.ico" />
     <Image Include="resource\NumUID\uid0.bmp" />

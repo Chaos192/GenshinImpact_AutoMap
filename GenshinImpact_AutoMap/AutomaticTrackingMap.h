@@ -150,11 +150,14 @@ private:
 	void setThreadMatchMat();
 
 	void drawObjectLists();
+	void drawAvatar();
 	void CopyToThis();
 	void CopyToLocal();
 private:
 	bool isContains(Rect &r, Point &p);
-	void addWeightedAlpha(Mat &backgroundImage, Mat& Image,Mat &maskImage);
+	void addWeightedAlpha(Mat &backgroundImage, Mat& Image, Mat &maskImage);
+	void addWeightedPNG(Mat &backgroundImage, Mat& Image);
+	Mat rotateAvatar(double angle);
 };
 
 typedef AutomaticTrackingMap ATmap;

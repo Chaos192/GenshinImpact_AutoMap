@@ -89,7 +89,7 @@ void ATM_ThreadMatch::cThreadOrbAvatarInit(Mat & TemplatAvatar)
 	if (tOrbAvatarInit == nullptr && orbAvatar.isInit == false)
 	{
 		cvtColor(TemplatAvatar, templateAvatar, CV_RGB2GRAY);
-		resize(templateAvatar, templateAvatar, Size(150, 150), 0, 0, INTER_LANCZOS4);//INTER_CUBIC INTER_AREAz
+		resize(templateAvatar, templateAvatar, Size(150, 150), 0, 0, INTER_CUBIC);//INTER_CUBIC INTER_AREAz
 		tOrbAvatarInit = new thread(&ATM_ThreadMatch::thread_OrbAvatarInit, this, ref(templateAvatar));
 		tIsEndOrbAvatarInit = false;
 	}
@@ -99,7 +99,7 @@ void ATM_ThreadMatch::cThreadOrbAvatarMatch()
 {
 	if (tOrbAvatarMatch == nullptr && tIsEndOrbAvatarInit && isExistObjMinMap && isPaimonVisial)
 	{
-		resize(objAvatar, objAvatar, Size(150, 150), 0, 0, INTER_LANCZOS4);//INTER_CUBIC INTER_AREAz
+		resize(objAvatar, objAvatar, Size(150, 150), 0, 0, INTER_CUBIC);//INTER_CUBIC INTER_AREAz
 		tOrbAvatarMatch = new thread(&ATM_ThreadMatch::thread_OrbAvatarMatch, this, ref(objAvatar));
 		tIsEndOrbAvatarMatch = false;
 	}

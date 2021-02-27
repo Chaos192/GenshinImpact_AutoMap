@@ -290,7 +290,7 @@ void ATM_ObjectLists::appendFlag(int x, int y)
 		_collectionStateFlag = stateFlagTmp;
 	}
 	_collectionStateFlag.set(0, _objFlag.getSize() - 1, x);
-	_collectionStateFlag.set(1,_objFlag.getSize() - 1, y);
+	_collectionStateFlag.set(1, _objFlag.getSize() - 1, y);
 }
 
 void ATM_ObjectLists::setCollectionState(int klass, int i, int state)
