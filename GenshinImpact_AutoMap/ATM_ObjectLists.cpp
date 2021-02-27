@@ -168,6 +168,11 @@ ATM_ObjectLists::ATM_ObjectLists()
 	{
 		_objList[i] = ATM_ObjectList(_objectMaxNumbers[i]);
 	}
+	
+	_collectionState[0] = &_collectionStateFST;
+	_collectionState[1] = &_collectionStateYST;
+	_collectionState[2] = &_collectionStateFHYS;
+
 	Init();
 }
 
@@ -271,6 +276,16 @@ void ATM_ObjectLists::setShowFlag(bool isShow)
 void ATM_ObjectLists::appendFlag(int x, int y)
 {
 	_objFlag.append(x, y);
+}
+
+void ATM_ObjectLists::setCollectionState(int kalss, int i, int state)
+{
+	(*_collectionState[kalss])[1][i] = state;
+}
+
+int ATM_ObjectLists::getCollectionState(int kalss, int i)
+{
+	return (*_collectionState[kalss]).at(1, i);
 }
 
 void ATM_ObjectLists::Init0()

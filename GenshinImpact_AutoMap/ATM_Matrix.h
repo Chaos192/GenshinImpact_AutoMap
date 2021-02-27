@@ -153,4 +153,4 @@ public:
 	int row();
 };
 
-typedef ATM_MatrixD ATM_Matrix;
+typedef ATM_MatrixI ATM_Matrix;

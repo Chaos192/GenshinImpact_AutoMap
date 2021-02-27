@@ -1,6 +1,8 @@
 #pragma once
 #include <opencv2/opencv.hpp>
 #include <vector>
+#include "ATM_Matrix.h"
+
 using namespace std;
 class ATM_ObjectList
 {
@@ -50,6 +52,10 @@ class ATM_ObjectLists
 	ATM_ObjectList *_objList = nullptr;
 	ATM_ObjectFlag _objFlag;
 
+	ATM_Matrix _collectionStateFST = ATM_Matrix(1, 65);
+	ATM_Matrix _collectionStateYST = ATM_Matrix(1, 131);
+	ATM_Matrix _collectionStateFHYS = ATM_Matrix(1, 80);
+	ATM_Matrix *_collectionState[3];
 public:
 	ATM_ObjectLists();
 	~ATM_ObjectLists();
@@ -70,6 +76,8 @@ public:
 
 	void appendFlag(int x, int y);
 
+	void setCollectionState(int kalss, int i, int state);
+	int getCollectionState(int kalss, int i);
 
 private:
 	void Init0();

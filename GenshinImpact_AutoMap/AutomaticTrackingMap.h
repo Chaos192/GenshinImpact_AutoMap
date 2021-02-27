@@ -10,6 +10,7 @@
 #include "ATM_ObjectLists.h"
 #include "ATM_SendSocket.h"
 #include "ATM_ActivationKYJG.h"
+#include "ATM_SaveLoadFile.h"
 
 enum ThisWinState
 {
@@ -35,6 +36,8 @@ class AutomaticTrackingMap
 	ATM_SendSocket SST;
 	//空荧酒馆激活
 	ATM_ActivationKYJG AKY;
+	//存档
+	ATM_SaveLoadFile SLF;
 
 	cv::Mat MainMat;
 	cv::Mat MainMatTmp;
@@ -78,8 +81,9 @@ public:
 
 	string SystemUserName="";
 	string SystemUserLocalLow="";
-	string SystemUserCompanyIndex="";
-	string ApplicationCompanyName="天理之座";
+	string SystemUserFileIndex="";
+	string ApplicationCompanyName = "天理之座";
+	string ApplicationName="自动地图";
 	LANGID SystemLanguageID=0;
 	string SystemLanguage = "Chinese";
 	//Qt

@@ -3,11 +3,15 @@
 AutomaticTrackingMap::AutomaticTrackingMap()
 {
 	getSystemInfo();
+	SLF.setIndex(SystemUserFileIndex);
+	SLF.load();
+
 }
 
 AutomaticTrackingMap::~AutomaticTrackingMap()
 {
 	Exit();
+	SLF.save();
 }
 
 void AutomaticTrackingMap::Init(HWND mapWindowsHandle)
@@ -346,12 +350,14 @@ void AutomaticTrackingMap::getSystemInfo()
 	DWORD dwSize = 256;
 	GetUserNameA(strBuffer, &dwSize);
 	SystemUserName = strBuffer;
-	SystemUserLocalLow.append("C:\\User\\");
+	SystemUserLocalLow.append("C:\\Users\\");
 	SystemUserLocalLow.append(SystemUserName);
 	SystemUserLocalLow.append("\\AppData\\LocalLow\\");
-	SystemUserCompanyIndex = SystemUserLocalLow;
-	SystemUserCompanyIndex.append(ApplicationCompanyName);
-	SystemUserCompanyIndex.append("\\");
+	SystemUserFileIndex = SystemUserLocalLow;
+	SystemUserFileIndex.append(ApplicationCompanyName);
+	SystemUserFileIndex.append("\\");
+	SystemUserFileIndex.append(ApplicationName);
+	SystemUserFileIndex.append("\\");
 
 	SystemLanguageID = GetSystemDefaultLangID();
 	GIS.setGiNameClass(SystemLanguageID);

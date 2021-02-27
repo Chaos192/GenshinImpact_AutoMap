@@ -215,6 +215,7 @@
     <ClCompile Include="ATM_GI_ScreenResolution.cpp" />
     <ClCompile Include="ATM_Matrix.cpp" />
     <ClCompile Include="ATM_ObjectLists.cpp" />
+    <ClCompile Include="ATM_SaveLoadFile.cpp" />
     <ClCompile Include="ATM_SendSocket.cpp" />
     <ClCompile Include="ATM_ThreadMatch.cpp" />
     <ClCompile Include="QtClassMyExitButton.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="ATM_MouseEvent.h" />
     <ClInclude Include="ATM_ObjectLists.h" />
     <ClInclude Include="ATM_Resource.h" />
+    <ClInclude Include="ATM_SaveLoadFile.h" />
     <ClInclude Include="ATM_SendSocket.h" />
     <ClInclude Include="ATM_ThreadMatch.h" />
     <ClInclude Include="AutomaticTrackingMap.h" />
