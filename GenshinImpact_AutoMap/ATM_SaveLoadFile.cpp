@@ -13,7 +13,16 @@ void ATM_SaveLoadFile::setIndex(string index)
 {
 	if (_access(index.c_str(), 0) == -1)
 	{
-		_mkdir(index.c_str());
+		int e= _mkdir(index.c_str());//error 3
+		if (e == -1 && GetLastError() == 3)
+		{
+			int i = 0;
+			string _index(index);
+			i = index.rfind("\\",index.size()-2);
+			_index.erase(_index.begin()+ i,_index.end());
+			_mkdir(_index.c_str());
+			_mkdir(index.c_str());
+		}
 	}
 	_saveIndex = index;
 	getFilePath();

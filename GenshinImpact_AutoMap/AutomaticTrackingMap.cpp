@@ -631,10 +631,6 @@ void AutomaticTrackingMap::drawAvatar()
 
 void AutomaticTrackingMap::CopyToThis()
 {
-	//OLS.copyFrom(0, SLF._stateFST);
-	//OLS.copyFrom(1, SLF._stateYST);
-	//OLS.copyFrom(2, SLF._stateFHYS);
-	//OLS.copyFrom(3, SLF._stateFlag);
 	if (SLF._stateFST.row() != 0)
 	{
 		OLS._collectionStateFST = SLF._stateFST;
@@ -656,10 +652,6 @@ void AutomaticTrackingMap::CopyToThis()
 
 void AutomaticTrackingMap::CopyToLocal()
 {
-	//OLS.copyTo(0, &SLF._stateFST);
-	//OLS.copyTo(1, &SLF._stateYST);
-	//OLS.copyTo(2, &SLF._stateFHYS);
-	//OLS.copyTo(3, &SLF._stateFlag);
 	SLF._stateFST = OLS._collectionStateFST;
 	SLF._stateYST = OLS._collectionStateYST;
 	SLF._stateFHYS = OLS._collectionStateFHYS;
