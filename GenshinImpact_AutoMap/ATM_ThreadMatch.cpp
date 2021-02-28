@@ -1004,3 +1004,20 @@ int ATM_TM_TemplateUID::getUID()
 {
 	return _uid;
 }
+
+void ATM_TM_TemplateStar::setStarTemplate(Mat starTemplateMat)
+{
+}
+
+void ATM_TM_TemplateStar::setStarMat(Mat starMat)
+{
+}
+
+void ATM_TM_TemplateStar::TemplateStar()
+{
+}
+
+bool ATM_TM_TemplateStar::getStar()
+{
+	return false;
+}

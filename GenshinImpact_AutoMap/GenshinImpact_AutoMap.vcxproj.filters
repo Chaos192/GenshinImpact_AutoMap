@@ -236,6 +236,12 @@
     <Image Include="resource\ObjectIcons\ObjectFlagList1Mask.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="resource\GISTAR.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\GISTARMASK.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtClassMyExitButton.h">

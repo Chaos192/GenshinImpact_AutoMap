@@ -2,7 +2,7 @@
 // Microsoft Visual C++ 生成的包含文件。
 // 供 GenshinImpact_AutoMap.rc 使用
 //
-#define IDI_ICON1                       101
+#define IDI_ICON                        101
 #define IDB_GIMAP                       102
 #define IDB_MAINMASK                    103
 #define IDB_PAIMON1920X1080             104
@@ -31,17 +31,17 @@
 #define IDB_GINUMUID7_ARGB              127
 #define IDB_GINUMUID8_ARGB              128
 #define IDB_GINUMUID9_ARGB              129
-#define IDB_BITMAP1                     130
 #define IDB_GIAVATARMASK                130
 #define IDB_OBJFLAGICON1                131
-#define IDB_BITMAP3                     132
 #define IDB_OBJFLAGICON1MASK            132
+#define IDB_GISTAR                      133
+#define IDB_GISTARMASK                  134
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        133
+#define _APS_NEXT_RESOURCE_VALUE        135
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101

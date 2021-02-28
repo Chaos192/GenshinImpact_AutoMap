@@ -17,6 +17,8 @@ public:
 	Mat MAINMASK;
 	Mat GIAVATAR;
 	Mat GIAVATARMASK;
+	Mat GISTAR;
+	Mat GISTARMASK;
 	Mat *GIOBJICON;
 	Mat *GIOBJICONMASK;
 	Mat *GIOBJFLAGICON;
@@ -29,6 +31,8 @@ private:
 	HBITMAP hMAINMASK;
 	HBITMAP hGIAVATAR;
 	HBITMAP hGIAVATARMASK;
+	HBITMAP hGISTAR;
+	HBITMAP hGISTARMASK;
 	HBITMAP *hGIOBJICON;
 	HBITMAP *hGIOBJICONMASK;
 	HBITMAP *hGIOBJFLAGICON;
@@ -40,6 +44,8 @@ private:
 	void loadMainMask();
 	void loadGiAvatar();
 	void loadGiAvatarMask();
+	void loadGiStar();
+	void loadGiStarMask();
 	void loadGiPaimon();
 	void loadGiObjIcon();
 	void loadGiObjIconMask();

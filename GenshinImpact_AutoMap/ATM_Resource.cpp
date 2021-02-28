@@ -21,6 +21,8 @@ ATM_Resource::ATM_Resource()
 	loadMainMask();
 	loadGiAvatar();
 	loadGiAvatarMask();
+	loadGiStar();
+	loadGiStarMask();
 	loadGiPaimon();
 	loadGiObjIcon();
 	loadGiObjIconMask();
@@ -68,6 +70,18 @@ void ATM_Resource::loadGiAvatarMask()
 {
 	hGIAVATARMASK = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_GIAVATARMASK));
 	HBitmap2MatAlpha(hGIAVATARMASK, GIAVATARMASK);
+}
+
+void ATM_Resource::loadGiStar()
+{
+	hGISTAR = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_GISTAR));
+	HBitmap2Mat(hGISTAR, GISTAR);
+}
+
+void ATM_Resource::loadGiStarMask()
+{
+	hGISTARMASK = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_GISTARMASK));
+	HBitmap2Mat(hGISTARMASK, GISTARMASK);
 }
 
 void ATM_Resource::loadGiPaimon()

@@ -261,6 +261,8 @@
     <Image Include="resource\GIAVATAR.bmp" />
     <Image Include="resource\GIAVATARMASK.bmp" />
     <Image Include="resource\GIMAP.bmp" />
+    <Image Include="resource\GISTAR.bmp" />
+    <Image Include="resource\GISTARMASK.bmp" />
     <Image Include="resource\mainicon.ico" />
     <Image Include="resource\NumUID\uid0.bmp" />
     <Image Include="resource\NumUID\uid1.bmp" />

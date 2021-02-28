@@ -113,6 +113,25 @@ public:
 	int getUID();
 };
 
+class ATM_TM_TemplateStar
+{
+	Mat _starTemplate;
+	Mat _starMat;
+	bool isStarVisible = false;
+public:
+	void setStarTemplate(Mat starTemplateMat);
+	void setStarMat(Mat starMat);
+	void TemplateStar();
+	bool getStar();
+
+};
+
+//实现线程的单独控制
+/*
+应对两张图片匹配的过程
+应对存在一张目标图像需要在给定源图像中匹配的场景
+其中目标图像是固定的，需要使用时前初始化
+*/
 class ATM_TM_Thread
 {
 	Mat workInput;
@@ -126,6 +145,7 @@ class ATM_TM_Thread
 	void run();
 
 public:
+	bool isInit = false;
 	ATM_TM_Thread();
 	~ATM_TM_Thread();
 	ATM_TM_Thread(void(*funPtr)(Mat &inMat));
@@ -182,6 +202,9 @@ public:
 	thread * tOrbAvatarMatch = nullptr;	
 	thread * tTemplateUIDInit = nullptr;
 	thread * tTemplateUIDMatch = nullptr;
+
+	//Init
+	void cThreadInit();
 
 	//SURF Match Map
 	void cThreadSurfMapInit(Mat &Map);
