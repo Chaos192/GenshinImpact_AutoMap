@@ -768,7 +768,7 @@ void ATM_TM_ORBAvatar::ORBMatch()
 	//drawMatches(Mat(src_gpu), keypoints1, Mat(dst_gpu), keypoints2, matches, img_matches);
 	////////////////////////////////////
 
-
+	//ORB
 	//////////////////////////////////
 	orb->detectAndCompute(_avatarMat, Mat(), Kp_Avatar, Dp_Avatar, false);
 	if(Kp_Avatar.size()==0)
