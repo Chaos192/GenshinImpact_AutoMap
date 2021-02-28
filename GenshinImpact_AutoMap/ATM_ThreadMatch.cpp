@@ -768,53 +768,53 @@ void ATM_TM_ORBAvatar::ORBMatch()
 	//drawMatches(Mat(src_gpu), keypoints1, Mat(dst_gpu), keypoints2, matches, img_matches);
 	////////////////////////////////////
 
-	//ORB
-	//////////////////////////////////
-	orb->detectAndCompute(_avatarMat, Mat(), Kp_Avatar, Dp_Avatar, false);
-	if(Kp_Avatar.size()==0)
-	{
-		return;
-	}
-	Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::BRUTEFORCE);
-	std::vector< std::vector<DMatch> > KNN_m;
-	vector<DMatch> KNN_m2;
-	std::vector<DMatch> good_matches;
-	matcher->knnMatch(Dp_Template, Dp_Avatar, KNN_m,1);
+	////ORB
+	////////////////////////////////////
+	//orb->detectAndCompute(_avatarMat, Mat(), Kp_Avatar, Dp_Avatar, false);
+	//if(Kp_Avatar.size()==0)
+	//{
+	//	return;
+	//}
+	//Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::BRUTEFORCE);
+	//std::vector< std::vector<DMatch> > KNN_m;
+	//vector<DMatch> KNN_m2;
+	//std::vector<DMatch> good_matches;
+	//matcher->knnMatch(Dp_Template, Dp_Avatar, KNN_m,1);
 
-	double max_dist = 0; double min_dist = 1000;
-	std::vector<double> angle;
-	//-- Quick calculation of max and min distances between keypoints     
-	for (int i = 0; i < Dp_Template.rows; i++)
-	{
-		double dist = KNN_m[i][0].distance;
-		KNN_m2.push_back( KNN_m[i][0]);
-		
-		if (dist < min_dist) min_dist = dist;
-		if (dist > max_dist) max_dist = dist;
-	}
+	//double max_dist = 0; double min_dist = 1000;
+	//std::vector<double> angle;
+	////-- Quick calculation of max and min distances between keypoints     
+	//for (int i = 0; i < Dp_Template.rows; i++)
+	//{
+	//	double dist = KNN_m[i][0].distance;
+	//	KNN_m2.push_back( KNN_m[i][0]);
+	//	
+	//	if (dist < min_dist) min_dist = dist;
+	//	if (dist > max_dist) max_dist = dist;
+	//}
 
-	sort(KNN_m2.begin(), KNN_m2.end(), GreaterSort);
+	//sort(KNN_m2.begin(), KNN_m2.end(), GreaterSort);
 
-	double res = 0;
-	for (size_t i = 0; i < KNN_m.size(); i++)
-	{
-		if (KNN_m[i][0].distance < 0.66 * max_dist)
-		{
-			good_matches.push_back(KNN_m[i][0]);
-			angle.push_back(Kp_Avatar[KNN_m[i][0].trainIdx].angle - Kp_Template[KNN_m[i][0].queryIdx].angle);
-			res =res+ angle[angle.size()-1];
-		}
-	}
+	//double res = 0;
+	//for (size_t i = 0; i < KNN_m.size(); i++)
+	//{
+	//	if (KNN_m[i][0].distance < 0.66 * max_dist)
+	//	{
+	//		good_matches.push_back(KNN_m[i][0]);
+	//		angle.push_back(Kp_Avatar[KNN_m[i][0].trainIdx].angle - Kp_Template[KNN_m[i][0].queryIdx].angle);
+	//		res =res+ angle[angle.size()-1];
+	//	}
+	//}
 
-	Mat img_matches;
-	drawMatches(_avatarTemplate, Kp_Template, _avatarMat, Kp_Avatar,
-		good_matches, img_matches, Scalar::all(-1), Scalar::all(-1),
-		vector<char>());
-	if (good_matches.size() != 0)
-	{
-		rotationAngle = -res/ good_matches.size();
-	}
-	//////////////////////////////////
+	//Mat img_matches;
+	//drawMatches(_avatarTemplate, Kp_Template, _avatarMat, Kp_Avatar,
+	//	good_matches, img_matches, Scalar::all(-1), Scalar::all(-1),
+	//	vector<char>());
+	//if (good_matches.size() != 0)
+	//{
+	//	rotationAngle = -res/ good_matches.size();
+	//}
+	////////////////////////////////////
 
 }
 
