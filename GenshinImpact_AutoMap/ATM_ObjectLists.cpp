@@ -116,6 +116,17 @@ void ATM_ObjectFlag::append(int x, int y)
 	_maxNumber++;
 }
 
+void ATM_ObjectFlag::deleteId(int id)
+{
+	if (id < _maxNumber)
+	{
+		_x.erase(_x.begin() + id + 1);
+		_y.erase(_y.begin() + id + 1);
+		_maxNumber--;
+	}
+
+}
+
 int ATM_ObjectFlag::x(int i)
 {
 	if (i < 0)
@@ -287,7 +298,26 @@ void ATM_ObjectLists::appendFlag(int x, int y)
 	_objFlag.append(x, y);
 	if (_collectionStateFlag.row()<= _objFlag.getSize())
 	{
-		ATM_Matrix stateFlagTmp = ATM_Matrix(2, _collectionStateFlag.row() + 1);
+		ATM_Matrix stateFlagTmp = ATM_Matrix(2, _objFlag.getSize());
+		for (int i = 0; i < _collectionStateFlag.col(); i++)
+		{
+			for (int ii = 0; ii < _collectionStateFlag.row(); ii++)
+			{
+				stateFlagTmp[i][ii] = _collectionStateFlag[i][ii];
+			}
+		}
+		_collectionStateFlag = stateFlagTmp;
+	}
+	_collectionStateFlag.set(0, _objFlag.getSize() - 1, x);
+	_collectionStateFlag.set(1, _objFlag.getSize() - 1, y);
+}
+
+void ATM_ObjectLists::deleteFlag(int id)
+{
+	_objFlag.deleteId(id);
+	if (_collectionStateFlag.row() > _objFlag.getSize())
+	{
+		ATM_Matrix stateFlagTmp = ATM_Matrix(2, _objFlag.getSize());
 		for (int i = 0; i < _collectionStateFlag.col(); i++)
 		{
 			for (int ii = 0; ii < _collectionStateFlag.row(); ii++)
@@ -755,6 +785,10 @@ void ATM_ObjectLists::reAppendFlag()
 	{
 		_objFlag.append(_collectionStateFlag[0][ii], _collectionStateFlag[1][ii]);
 	}
+}
+
+void ATM_ObjectLists::reDeleteFlag()
+{
 }
 
 

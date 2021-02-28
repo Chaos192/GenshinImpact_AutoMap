@@ -35,6 +35,7 @@ public:
 	~ATM_ObjectFlag();
 
 	void append(int x, int y);
+	void deleteId(int id);
 
 	int x(int i);
 	int y(int i);
@@ -60,6 +61,11 @@ public:
 	ATM_Matrix _collectionStateFHYS = ATM_Matrix(1, 80);
 	ATM_Matrix _collectionStateFlag;
 	ATM_Matrix *collectionState[4];
+
+	bool isSelect = false;
+	int selectID = -1;
+
+
 	ATM_ObjectLists();
 	~ATM_ObjectLists();
 	void Init();
@@ -78,7 +84,9 @@ public:
 	void setShowFlag(bool isShow);
 
 	void appendFlag(int x, int y);
+	void deleteFlag(int id);
 	void reAppendFlag();
+	void reDeleteFlag();
 
 	void setCollectionState(int klass, int i, int state);
 	int getCollectionState(int klass, int i);

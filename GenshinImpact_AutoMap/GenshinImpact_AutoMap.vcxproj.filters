@@ -86,6 +86,9 @@
     <ClCompile Include="ATM_SaveLoadFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ATM_Modules.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutomaticTrackingMap.h">
@@ -125,6 +128,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ATM_SaveLoadFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ATM_Modules.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -222,6 +228,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="resource\GIAVATARMASK.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectFlagList1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectFlagList1Mask.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

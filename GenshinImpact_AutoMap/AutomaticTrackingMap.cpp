@@ -340,7 +340,14 @@ void AutomaticTrackingMap::setObjFlagIsShow()
 
 void AutomaticTrackingMap::setAddFlagOnPos()
 {
-	OLS.appendFlag(zerosMinMap.x, zerosMinMap.y);
+	if (OLS.isSelect)
+	{
+
+	}
+	else
+	{
+		OLS.appendFlag(zerosMinMap.x, zerosMinMap.y);
+	}
 	saveLocal();
 }
 
@@ -566,6 +573,7 @@ void AutomaticTrackingMap::drawObjectLists()
 			}
 		}
 	}
+	double minDist = 9999;
 	if (OLS.isShowFlag())
 	{
 		for (int objOrder = 0; objOrder < OLS.flagNumber(); objOrder++)
@@ -580,8 +588,32 @@ void AutomaticTrackingMap::drawObjectLists()
 				{
 					ObjIconROIMat = MainMat(Rect(x, y, RES.GIOBJFLAGICON[0].cols, RES.GIOBJFLAGICON[0].rows));
 					addWeightedAlpha(ObjIconROIMat, RES.GIOBJFLAGICON[0], RES.GIOBJFLAGICONMASK[0]);
+
+					double dis = ATM_Modules::dis(zerosMinMap, p);
+					if (dis<minDist)
+					{
+						minDist = dis;
+						OLS.selectID = objOrder;
+					}
+
 				}
 			}
+		}
+		if (minDist < 100) 
+		{
+			p = OLS.fp(OLS.selectID);
+			x = (int)((p.x - minMapRect.x) / MET.scale) - dx;
+			y = (int)((p.y - minMapRect.y) / MET.scale) - dy;
+			ObjIconROIMat = MainMat(Rect(x, y, RES.GIOBJFLAGICON[1].cols, RES.GIOBJFLAGICON[1].rows));
+			addWeightedAlpha(ObjIconROIMat, RES.GIOBJFLAGICON[1], RES.GIOBJFLAGICONMASK[1]);
+
+			OLS.isSelect = true;
+		}
+		else
+		{
+			OLS.isSelect = false;
+			OLS.selectID = -1;
+			
 		}
 	}
 

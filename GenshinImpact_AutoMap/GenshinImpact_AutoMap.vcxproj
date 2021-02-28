@@ -214,6 +214,7 @@
     <ClCompile Include="ATM_ActivationKYJG.cpp" />
     <ClCompile Include="ATM_GI_ScreenResolution.cpp" />
     <ClCompile Include="ATM_Matrix.cpp" />
+    <ClCompile Include="ATM_Modules.cpp" />
     <ClCompile Include="ATM_ObjectLists.cpp" />
     <ClCompile Include="ATM_SaveLoadFile.cpp" />
     <ClCompile Include="ATM_SendSocket.cpp" />
@@ -238,6 +239,7 @@
     <ClInclude Include="ATM_GiState.h" />
     <ClInclude Include="ATM_GI_ScreenResolution.h" />
     <ClInclude Include="ATM_Matrix.h" />
+    <ClInclude Include="ATM_Modules.h" />
     <ClInclude Include="ATM_MouseEvent.h" />
     <ClInclude Include="ATM_ObjectLists.h" />
     <ClInclude Include="ATM_Resource.h" />
@@ -273,6 +275,8 @@
     <Image Include="resource\NumUID\UID_.bmp" />
     <Image Include="resource\ObjectIcons\ObjectFlagList0.bmp" />
     <Image Include="resource\ObjectIcons\ObjectFlagList0Mask.bmp" />
+    <Image Include="resource\ObjectIcons\ObjectFlagList1.bmp" />
+    <Image Include="resource\ObjectIcons\ObjectFlagList1Mask.bmp" />
     <Image Include="resource\ObjectIcons\ObjectList0.bmp" />
     <Image Include="resource\ObjectIcons\ObjectList0Mask.bmp" />
     <Image Include="resource\ObjectIcons\ObjectList1.bmp" />

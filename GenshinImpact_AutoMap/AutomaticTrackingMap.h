@@ -11,6 +11,7 @@
 #include "ATM_SendSocket.h"
 #include "ATM_ActivationKYJG.h"
 #include "ATM_SaveLoadFile.h"
+#include "ATM_Modules.h"
 
 enum ThisWinState
 {
