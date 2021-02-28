@@ -23,7 +23,7 @@ void AutomaticTrackingMap::Init(HWND mapWindowsHandle)
 
 	getGiHandle();
 	getThisHandle(mapWindowsHandle);
-	SetWindowLong(thisHandle, GWL_EXSTYLE, (GetWindowLong(thisHandle, GWL_EXSTYLE) | WS_EX_TOOLWINDOW) & ~WS_EX_APPWINDOW);
+	SetWindowLong(thisHandle, GWL_EXSTYLE, (GetWindowLong(thisHandle, GWL_EXSTYLE) | WS_EX_TOOLWINDOW) );
 	//后端数据更新
 	BackEndUpdata();
 }

@@ -88,8 +88,10 @@ void ATM_ThreadMatch::cThreadOrbAvatarInit(Mat & TemplatAvatar)
 {
 	if (tOrbAvatarInit == nullptr && orbAvatar.isInit == false)
 	{
-		cvtColor(TemplatAvatar, templateAvatar, CV_RGB2GRAY);
-		resize(templateAvatar, templateAvatar, Size(0, 0), 2/1.3, 2/1.3, 4);//INTER_CUBIC INTER_AREAz
+		templateAvatar = Mat(300, 300, CV_8UC1,Scalar(0,0,0));
+		cvtColor(TemplatAvatar(Rect(TemplatAvatar.cols/2-16, TemplatAvatar.rows/2-16,32,32)), templateAvatar(Rect(134,134,32,32)), CV_RGB2GRAY);
+		threshold(templateAvatar, templateAvatar, 185, 255, THRESH_TOZERO);
+		//resize(templateAvatar, templateAvatar, Size(0, 0), 1, 1, 3);//INTER_CUBIC INTER_AREAz
 		tOrbAvatarInit = new thread(&ATM_ThreadMatch::thread_OrbAvatarInit, this, ref(templateAvatar));
 		tIsEndOrbAvatarInit = false;
 	}
@@ -99,7 +101,13 @@ void ATM_ThreadMatch::cThreadOrbAvatarMatch()
 {
 	if (tOrbAvatarMatch == nullptr && tIsEndOrbAvatarInit && isExistObjMinMap && isPaimonVisial)
 	{
-		resize(objAvatar, objAvatar, Size(0, 0), 2, 2, 4);//INTER_CUBIC INTER_AREAz
+		Mat temp = Mat(300, 300, CV_8UC1, Scalar(0, 0, 0));
+		objAvatar.copyTo(temp(Rect(138, 138, 24, 24)));
+		objAvatar = temp;
+		threshold(objAvatar, objAvatar, 185, 255, THRESH_TOZERO);
+
+		//resize(objAvatar, objAvatar, Size(0, 0), 1*1.3, 1*1.3, 3);//INTER_CUBIC INTER_AREAz
+
 		tOrbAvatarMatch = new thread(&ATM_ThreadMatch::thread_OrbAvatarMatch, this, ref(objAvatar));
 		tIsEndOrbAvatarMatch = false;
 	}
@@ -137,7 +145,7 @@ void ATM_ThreadMatch::setUID(Mat UIDMat)
 void ATM_ThreadMatch::getObjMinMap(Mat & obj)
 {
 	obj.copyTo(objMinMap);
-	obj(Rect(obj.cols / 2 - 18, obj.rows / 2 - 18, 36, 36)).copyTo(objAvatar);
+	obj(Rect(obj.cols / 2 - 12, obj.rows / 2 - 12, 24, 24)).copyTo(objAvatar);
 	isExistObjMinMap = true;
 }
 
@@ -643,9 +651,9 @@ void ATM_TM_ORBAvatar::ORBMatch()
 	//cv::Ptr<cv::xfeatures2d::SIFT> sift = cv::xfeatures2d::SIFT::create();
 	//cv::Ptr<cv::SIFT> sift = cv::SIFT::Creat(); //OpenCV 4.4.0 及之后版本
 	//ORB
-	//cv::Ptr<cv::ORB> surf = cv::ORB::create();//(100,1.05);
+	cv::Ptr<cv::ORB> surf = cv::ORB::create();//(100,1.05);
 	//SURF
-	cv::Ptr<cv::xfeatures2d::SURF> surf = cv::xfeatures2d::SURF::create(400);
+	//cv::Ptr<cv::xfeatures2d::SURF> surf = cv::xfeatures2d::SURF::create(400);
 
 	//特征点
 	std::vector<cv::KeyPoint> keyPointL, keyPointR;
@@ -653,19 +661,16 @@ void ATM_TM_ORBAvatar::ORBMatch()
 	surf->detect(imageL, keyPointL);
 	surf->detect(imageR, keyPointR);
 
+	if (keyPointR.empty())
+	{
+		return;
+	}
+
 	//画特征点
 	cv::Mat keyPointImageL;
 	cv::Mat keyPointImageR;
 	drawKeypoints(imageL, keyPointL, keyPointImageL, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 	drawKeypoints(imageR, keyPointR, keyPointImageR, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-
-	////显示窗口
-	//cv::namedWindow("KeyPoints of imageL");
-	//cv::namedWindow("KeyPoints of imageR");
-
-	////显示特征点
-	//cv::imshow("KeyPoints of imageL", keyPointImageL);
-	//cv::imshow("KeyPoints of imageR", keyPointImageR);
 
 	//特征点匹配
 	cv::Mat despL, despR;
@@ -814,65 +819,65 @@ double ATM_TM_ORBAvatar::getRotationAngle()
 	return rotationAngle;
 }
 
-//void ATM_TM_Thread::run()
-//{
-//	while (isExitThread == false)
-//	{
-//		if (isRunWork && (*ptr) != nullptr)
-//		{
-//			ptr(workInput);
-//			isRunWork = false;
-//			isEndWork = true;
-//		}
-//		else
-//		{
-//			std::this_thread::sleep_for(std::chrono::milliseconds(1));
-//		}
-//	}
-//}
-//
-//ATM_TM_Thread::ATM_TM_Thread()
-//{
-//	tLoopWork = new thread(&ATM_TM_Thread::run, this);
-//}
-//
-//ATM_TM_Thread::~ATM_TM_Thread()
-//{
-//	if (tLoopWork != nullptr)
-//	{
-//		isExitThread = true;
-//		tLoopWork->join();
-//		delete tLoopWork;
-//	}
-//}
-//
-//ATM_TM_Thread::ATM_TM_Thread(void(*funPtr)(Mat &inMat))
-//{
-//	setFunction(funPtr);
-//	tLoopWork = new thread(&ATM_TM_Thread::run, this);
-//}
-//
-//void ATM_TM_Thread::setFunction(void(*funPtr)(Mat &inMat))
-//{
-//	ptr = funPtr;
-//	isExistFunction = true;
-//}
-//
-//void ATM_TM_Thread::start(Mat & inMat)
-//{
-//	if (isExistFunction == false)
-//	{
-//		throw"Not Found Work Function";
-//	}
-//	workInput = inMat;
-//	isRunWork = true;
-//	isEndWork = false;
-//}
-//
-//bool ATM_TM_Thread::isEnd()
-//{
-//	return isEndWork;
-//}
+void ATM_TM_Thread::run()
+{
+	while (isExitThread == false)
+	{
+		if (isRunWork && (*ptr) != nullptr)
+		{
+			ptr(workInput);
+			isRunWork = false;
+			isEndWork = true;
+		}
+		else
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(1));
+		}
+	}
+}
+
+ATM_TM_Thread::ATM_TM_Thread()
+{
+	tLoopWork = new thread(&ATM_TM_Thread::run, this);
+}
+
+ATM_TM_Thread::~ATM_TM_Thread()
+{
+	if (tLoopWork != nullptr)
+	{
+		isExitThread = true;
+		tLoopWork->join();
+		delete tLoopWork;
+	}
+}
+
+ATM_TM_Thread::ATM_TM_Thread(void(*funPtr)(Mat &inMat))
+{
+	setFunction(funPtr);
+	tLoopWork = new thread(&ATM_TM_Thread::run, this);
+}
+
+void ATM_TM_Thread::setFunction(void(*funPtr)(Mat &inMat))
+{
+	ptr = funPtr;
+	isExistFunction = true;
+}
+
+void ATM_TM_Thread::start(Mat & inMat)
+{
+	if (isExistFunction == false)
+	{
+		throw"Not Found Work Function";
+	}
+	workInput = inMat;
+	isRunWork = true;
+	isEndWork = false;
+}
+
+bool ATM_TM_Thread::isEnd()
+{
+	return isEndWork;
+}
 
 int ATM_TM_TemplateUID::getMaxID(double lis[], int len)
 {

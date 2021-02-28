@@ -113,27 +113,27 @@ public:
 	int getUID();
 };
 
-//class ATM_TM_Thread
-//{
-//	Mat workInput;
-//	thread *tLoopWork = nullptr;
-//	void(*ptr)(Mat &inMat) = nullptr;
-//	bool isExitThread = false;
-//	bool isExistFunction = false;
-//	bool isRunWork = false;
-//	bool isEndWork = false;
-//
-//	void run();
-//
-//public:
-//	ATM_TM_Thread();
-//	~ATM_TM_Thread();
-//	ATM_TM_Thread(void(*funPtr)(Mat &inMat));
-//	void setFunction(void(*funPtr)(Mat &inMat));
-//
-//	void start(Mat & inMat);
-//	bool isEnd();
-//};
+class ATM_TM_Thread
+{
+	Mat workInput;
+	thread *tLoopWork = nullptr;
+	void(*ptr)(Mat &inMat) = nullptr;
+	bool isExitThread = false;
+	bool isExistFunction = false;
+	bool isRunWork = false;
+	bool isEndWork = false;
+
+	void run();
+
+public:
+	ATM_TM_Thread();
+	~ATM_TM_Thread();
+	ATM_TM_Thread(void(*funPtr)(Mat &inMat));
+	void setFunction(void(*funPtr)(Mat &inMat));
+
+	void start(Mat & inMat);
+	bool isEnd();
+};
 
 class ATM_ThreadMatch
 {
