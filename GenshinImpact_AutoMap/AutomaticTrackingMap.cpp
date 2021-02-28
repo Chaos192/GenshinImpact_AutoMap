@@ -524,7 +524,8 @@ void AutomaticTrackingMap::setThreadMatchMat()
 	{
 		Mat matRGB2GRAY;
 		cvtColor(GIS.giFrameMap, matRGB2GRAY, CV_RGB2GRAY);
-		TMS.getObjMinMap(matRGB2GRAY);
+		TMS.getObjMinMap(GIS.giFrameMap);
+		//TMS.getObjMinMap(matRGB2GRAY);
 		cvtColor(GIS.giFramePaimon, matRGB2GRAY, CV_RGB2GRAY);
 		TMS.getObjPaimon(matRGB2GRAY);
 		TMS.getObjUID(GIS.giFrameUID);
