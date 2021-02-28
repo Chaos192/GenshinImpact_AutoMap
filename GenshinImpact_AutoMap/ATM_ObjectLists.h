@@ -41,6 +41,7 @@ public:
 	cv::Point p(int i);
 
 	int getSize();
+	void clear();
 };
 
 class ATM_ObjectLists
@@ -52,11 +53,12 @@ class ATM_ObjectLists
 	ATM_ObjectList *_objList = nullptr;
 	ATM_ObjectFlag _objFlag;
 
+
+public:
 	ATM_Matrix _collectionStateFST = ATM_Matrix(1, 65);
 	ATM_Matrix _collectionStateYST = ATM_Matrix(1, 131);
 	ATM_Matrix _collectionStateFHYS = ATM_Matrix(1, 80);
 	ATM_Matrix _collectionStateFlag;
-public:
 	ATM_Matrix *collectionState[4];
 	ATM_ObjectLists();
 	~ATM_ObjectLists();
@@ -76,11 +78,13 @@ public:
 	void setShowFlag(bool isShow);
 
 	void appendFlag(int x, int y);
+	void reAppendFlag();
 
 	void setCollectionState(int klass, int i, int state);
 	int getCollectionState(int klass, int i);
 	void copyFrom(int klass, ATM_Matrix &mat);
-	void copyTo(int klass, ATM_Matrix &mat);
+	void copyTo(int klass, ATM_Matrix *mat);
+
 private:
 	void Init0();
 	void Init1();

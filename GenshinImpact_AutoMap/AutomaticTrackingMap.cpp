@@ -5,7 +5,7 @@ AutomaticTrackingMap::AutomaticTrackingMap()
 	getSystemInfo();
 	SLF.setIndex(SystemUserFileIndex);
 	SLF.load();
-
+	loadLocal();
 }
 
 AutomaticTrackingMap::~AutomaticTrackingMap()
@@ -23,7 +23,7 @@ void AutomaticTrackingMap::Init(HWND mapWindowsHandle)
 
 	getGiHandle();
 	getThisHandle(mapWindowsHandle);
-	SetWindowLong(thisHandle, GWL_EXSTYLE, (GetWindowLong(thisHandle, GWL_EXSTYLE) | WS_EX_TOOLWINDOW) );
+	//SetWindowLong(thisHandle, GWL_EXSTYLE, (GetWindowLong(thisHandle, GWL_EXSTYLE) | WS_EX_TOOLWINDOW) );
 	//后端数据更新
 	BackEndUpdata();
 }
@@ -380,6 +380,7 @@ void AutomaticTrackingMap::loadLocal()
 	}
 	SLF.load();
 	CopyToThis();
+	OLS.reAppendFlag();
 }
 
 void AutomaticTrackingMap::getSystemInfo()
@@ -598,18 +599,26 @@ void AutomaticTrackingMap::drawAvatar()
 
 void AutomaticTrackingMap::CopyToThis()
 {
-	OLS.copyFrom(0, SLF._stateFST);
-	OLS.copyFrom(1, SLF._stateYST);
-	OLS.copyFrom(2, SLF._stateFHYS);
-	OLS.copyFrom(3, SLF._stateFlag);
+	//OLS.copyFrom(0, SLF._stateFST);
+	//OLS.copyFrom(1, SLF._stateYST);
+	//OLS.copyFrom(2, SLF._stateFHYS);
+	//OLS.copyFrom(3, SLF._stateFlag);
+	OLS._collectionStateFST = SLF._stateFST;
+	OLS._collectionStateYST = SLF._stateYST;
+	OLS._collectionStateFHYS = SLF._stateFHYS;
+	OLS._collectionStateFlag = SLF._stateFlag;
 }
 
 void AutomaticTrackingMap::CopyToLocal()
 {
-	OLS.copyTo(0, SLF._stateFST);
-	OLS.copyTo(1, SLF._stateYST);
-	OLS.copyTo(2, SLF._stateFHYS);
-	OLS.copyTo(3, SLF._stateFlag);
+	//OLS.copyTo(0, &SLF._stateFST);
+	//OLS.copyTo(1, &SLF._stateYST);
+	//OLS.copyTo(2, &SLF._stateFHYS);
+	//OLS.copyTo(3, &SLF._stateFlag);
+	SLF._stateFST = OLS._collectionStateFST;
+	SLF._stateYST = OLS._collectionStateYST;
+	SLF._stateFHYS = OLS._collectionStateFHYS;
+	SLF._stateFlag = OLS._collectionStateFlag;
 }
 
 bool AutomaticTrackingMap::isContains(Rect & r, Point & p)

@@ -1601,7 +1601,7 @@ void ATM_MatrixI::data(int **matlis)
 	//*matlis = matlisOut;
 }
 
-void ATM_MatrixI::copyTo(ATM_MatrixI & _Mat)
+void ATM_MatrixI::copyTo(ATM_MatrixI _Mat)
 {
 	if (cols != _Mat.cols || rows != _Mat.rows)
 	{

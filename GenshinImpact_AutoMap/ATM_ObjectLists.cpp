@@ -160,6 +160,14 @@ int ATM_ObjectFlag::getSize()
 	return _maxNumber;
 }
 
+void ATM_ObjectFlag::clear()
+{
+	_maxNumber = 0;
+	_orderPtr = 0;
+	_x.clear();
+	_y.clear();
+}
+
 
 ATM_ObjectLists::ATM_ObjectLists()
 {
@@ -306,11 +314,15 @@ int ATM_ObjectLists::getCollectionState(int klass, int i)
 void ATM_ObjectLists::copyFrom(int klass, ATM_Matrix & mat)
 {
 	 mat.copyTo((*collectionState[klass]));
+	 if (klass == 3)
+	 {
+		 reAppendFlag();
+	 }
 }
 
-void ATM_ObjectLists::copyTo(int klass, ATM_Matrix & mat)
+void ATM_ObjectLists::copyTo(int klass, ATM_Matrix * mat)
 {
-	 (*collectionState[klass]).copyTo(mat);
+	 (collectionState[klass])->copyTo(*mat);
 }
 
 void ATM_ObjectLists::Init0()
@@ -733,6 +745,16 @@ void ATM_ObjectLists::append(int i, int x, int y)
 		throw"Lists Full";
 	}
 	_objList[i].append(x, y);
+}
+
+void ATM_ObjectLists::reAppendFlag()
+{
+	_objFlag.clear();
+
+	for (int ii = 0; ii < _collectionStateFlag.row(); ii++)
+	{
+		appendFlag(_collectionStateFlag[0][ii], _collectionStateFlag[1][ii]);
+	}
 }
 
 

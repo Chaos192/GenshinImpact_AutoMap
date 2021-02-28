@@ -146,7 +146,7 @@ void ATM_SaveLoadFile::saveMatrix(FILE * fpSave, ATM_Matrix & mat)
 void ATM_SaveLoadFile::loadMatrix(FILE * fpLoad, ATM_Matrix & mat)
 {
 	int x = 0, y = 0;
-	fscanf_s(fpLoad, "%d %d", &x, &y);
+	fscanf_s(fpLoad, "%d%d", &x, &y);
 	mat.reSet(x, y);
 	for (int i = 0; i < mat.col(); i++)
 	{

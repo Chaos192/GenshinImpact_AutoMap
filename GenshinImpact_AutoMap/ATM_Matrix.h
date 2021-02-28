@@ -143,7 +143,7 @@ public:
 
 	int * data();
 	void data(int **matlis);
-	void copyTo(ATM_MatrixI &_Mat);
+	void copyTo(ATM_MatrixI _Mat);
 
 	friend std::ostream & operator<<(std::ostream& out, ATM_MatrixI &_Mat);
 	//friend std::ostream & operator<<(std::ostream& out, ATM_MatrixI _Mat);
