@@ -287,12 +287,12 @@ void ATM_ObjectLists::appendFlag(int x, int y)
 	_objFlag.append(x, y);
 	if (_collectionStateFlag.row()<= _objFlag.getSize())
 	{
-		ATM_Matrix stateFlagTmp = ATM_Matrix(2, _collectionStateFlag.row() + 10);
+		ATM_Matrix stateFlagTmp = ATM_Matrix(2, _collectionStateFlag.row() + 1);
 		for (int i = 0; i < _collectionStateFlag.col(); i++)
 		{
 			for (int ii = 0; ii < _collectionStateFlag.row(); ii++)
 			{
-				stateFlagTmp[1][ii] = _collectionStateFlag[i][ii];
+				stateFlagTmp[i][ii] = _collectionStateFlag[i][ii];
 			}
 		}
 		_collectionStateFlag = stateFlagTmp;
@@ -753,7 +753,7 @@ void ATM_ObjectLists::reAppendFlag()
 
 	for (int ii = 0; ii < _collectionStateFlag.row(); ii++)
 	{
-		appendFlag(_collectionStateFlag[0][ii], _collectionStateFlag[1][ii]);
+		_objFlag.append(_collectionStateFlag[0][ii], _collectionStateFlag[1][ii]);
 	}
 }
 

@@ -1638,7 +1638,7 @@ bool ATM_MatrixI::DeleteMatrix()
 {
 	if (mat == nullptr)
 	{
-		return false;
+		return true;
 	}
 	for (int i = 0; i < cols; i++)
 	{

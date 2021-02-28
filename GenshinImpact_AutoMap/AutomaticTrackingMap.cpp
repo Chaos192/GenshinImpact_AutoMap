@@ -4,7 +4,7 @@ AutomaticTrackingMap::AutomaticTrackingMap()
 {
 	getSystemInfo();
 	SLF.setIndex(SystemUserFileIndex);
-	SLF.load();
+	//SLF.load();
 	loadLocal();
 }
 
@@ -603,10 +603,23 @@ void AutomaticTrackingMap::CopyToThis()
 	//OLS.copyFrom(1, SLF._stateYST);
 	//OLS.copyFrom(2, SLF._stateFHYS);
 	//OLS.copyFrom(3, SLF._stateFlag);
-	OLS._collectionStateFST = SLF._stateFST;
-	OLS._collectionStateYST = SLF._stateYST;
-	OLS._collectionStateFHYS = SLF._stateFHYS;
-	OLS._collectionStateFlag = SLF._stateFlag;
+	if (SLF._stateFST.row() != 0)
+	{
+		OLS._collectionStateFST = SLF._stateFST;
+	}
+	if (SLF._stateFST.row() != 0)
+
+	{
+		OLS._collectionStateYST = SLF._stateYST;
+	}
+	if (SLF._stateFST.row() != 0)
+	{
+		OLS._collectionStateFHYS = SLF._stateFHYS;
+	}
+	if (SLF._stateFST.row() != 0)
+	{
+		OLS._collectionStateFlag = SLF._stateFlag;
+	}
 }
 
 void AutomaticTrackingMap::CopyToLocal()

@@ -14,9 +14,9 @@ class ATM_SaveLoadFile
 	string _uidFilePath = "";
 	const string _uid_ = "UID-";
 public:
-	ATM_Matrix _stateFST;// = ATM_Matrix(1, 65);
-	ATM_Matrix _stateYST;// = ATM_Matrix(1, 131);
-	ATM_Matrix _stateFHYS;// = ATM_Matrix(1, 80);
+	ATM_Matrix _stateFST = ATM_Matrix(1, 65);
+	ATM_Matrix _stateYST = ATM_Matrix(1, 131);
+	ATM_Matrix _stateFHYS = ATM_Matrix(1, 80);
 	ATM_Matrix _stateFlag;
 	int _uid = 0;
 
