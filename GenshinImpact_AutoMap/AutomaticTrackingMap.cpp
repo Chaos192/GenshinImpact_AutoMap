@@ -342,7 +342,7 @@ void AutomaticTrackingMap::setAddFlagOnPos()
 {
 	if (OLS.isSelect)
 	{
-
+		OLS.deleteFlag(OLS.selectID);
 	}
 	else
 	{
@@ -559,7 +559,7 @@ void AutomaticTrackingMap::drawObjectLists()
 			for (int objOrder = 0; objOrder < OLS.objectsNumber(objKlass); objOrder++)
 			{
 				p= OLS.p(objKlass, objOrder);
-				if (isContains(minMapRect, p))
+				if (ATM_Modules::isContains(minMapRect, p))
 				{
 					x = (int)((p.x - minMapRect.x) / MET.scale) - dx;
 					y = (int)((p.y - minMapRect.y) / MET.scale) - dy;
@@ -579,7 +579,7 @@ void AutomaticTrackingMap::drawObjectLists()
 		for (int objOrder = 0; objOrder < OLS.flagNumber(); objOrder++)
 		{
 			p = OLS.fp(objOrder);
-			if (isContains(minMapRect, p))
+			if (ATM_Modules::isContains(minMapRect, p))
 			{
 				x = (int)((p.x - minMapRect.x) / MET.scale) - dx;
 				y = (int)((p.y - minMapRect.y) / MET.scale) - dy;
@@ -599,7 +599,7 @@ void AutomaticTrackingMap::drawObjectLists()
 				}
 			}
 		}
-		if (minDist < 100) 
+		if (minDist < 16) 
 		{
 			p = OLS.fp(OLS.selectID);
 			x = (int)((p.x - minMapRect.x) / MET.scale) - dx;
@@ -664,19 +664,6 @@ void AutomaticTrackingMap::CopyToLocal()
 	SLF._stateYST = OLS._collectionStateYST;
 	SLF._stateFHYS = OLS._collectionStateFHYS;
 	SLF._stateFlag = OLS._collectionStateFlag;
-}
-
-bool AutomaticTrackingMap::isContains(Rect & r, Point & p)
-{
-	if (p.x<r.x || p.x>(r.x + r.width) || p.y<r.y || p.y>(r.y + r.height))
-	{
-		return false;
-	}
-	else
-	{
-		return true;
-	}
-	return false;
 }
 
 void AutomaticTrackingMap::addWeightedAlpha(Mat & backgroundImage, Mat & Image, Mat &maskImage)
