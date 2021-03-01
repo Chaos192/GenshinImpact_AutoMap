@@ -75,6 +75,8 @@ void AutomaticTrackingMap::BackEndUpdata()
 		TMS.cThreadTemplateUIDMatch();
 		TMS.cThreadTemplateStarInit(RES.GISTAR);
 		TMS.cThreadTemplateStarMatch();
+		
+
 
 		if (TMS.tIsEndSurfMapInit)
 		{
@@ -95,6 +97,7 @@ void AutomaticTrackingMap::BackEndUpdata()
 	//神瞳识别部分
 	if (isAutoMode)
 	{
+		bool isSave = false;
 		if (TMS.tIsEndSurfMapInit)
 		{
 			if (TMS.continuityState.getIsContinuity())
@@ -104,11 +107,105 @@ void AutomaticTrackingMap::BackEndUpdata()
 				//判断周围是否存在特殊标记，即神瞳是否应该出现在小地图视野之中
 				//如果应该存在，那么便去尝试匹配，匹配结果如果为没有，那么视为已收集，否则视为发现，并且获得其坐标。
 				//如果此前该标记状态，emmm先不考虑
-				if (TMS.isStarExist)
+				if (TMS.isStarVisible)
 				{
-
+					//对匹配到的star对应到对应的id
+					vector<int> starPosKlass;
+					vector<int> starPosId;
+					for (int i = 0; i < TMS.starPos.size(); i++)
+					{
+						Point p = TMS.starPos[i] * 1.3 + (Point)zerosMinMap;
+						double minDis = 999;
+						vector<double> dis;
+						int klass = 0, id = 0;
+						for (int ii = 0; ii < OLS.visualStarIdList.size(); ii++)
+						{
+							dis.push_back(ATM_Modules::dis(p, OLS.p(OLS.visualStarKlassList[ii], OLS.visualStarIdList[ii])));
+							if (dis[ii] < minDis)
+							{
+								minDis = dis[ii];
+								klass = OLS.visualStarKlassList[ii];
+								id = OLS.visualStarIdList[ii];
+							}
+						}
+						starPosKlass.push_back(klass);
+						starPosId.push_back(id);
+					}
+					//遍历已匹配配对的地图点和数据点
+					for (int i = 0; i < TMS.starPos.size(); i++)
+					{
+						switch (OLS.getCollectionState(starPosKlass[i], starPosId[i]))
+						{
+							case 0:
+							{
+								OLS.setCollectionState(starPosKlass[i], starPosId[i], 2);
+								isSave = true;
+								break;
+							}
+							case 1:
+							{
+								OLS.setCollectionState(starPosKlass[i], starPosId[i], 2);
+								isSave = true;
+								break;
+							}
+							case 2:
+							{
+								OLS.setCollectionState(starPosKlass[i], starPosId[i], 2);
+								break;
+							}
+							default:
+								break;
+						}
+					}
+					//对应能看到的star,删除已发现的，这些即为已发现但没有了即已收集
+					for (int i = 0; i < OLS.visualStarIdList.size(); i++)
+					{
+						//已发现，已经在上一步处理
+						bool isFind = false;
+						for (int ii = 0; ii < TMS.starPos.size(); ii++)
+						{
+							if (OLS.visualStarKlassList[ii]== starPosKlass[ii] && OLS.visualStarIdList[ii] == starPosId[ii])
+							{
+								isFind = true;
+							}
+						}
+						if (isFind)
+						{
+							break;
+						}
+						else
+						{
+							switch (OLS.getCollectionState(OLS.visualStarKlassList[i], OLS.visualStarIdList[i]))
+							{
+								case 0:
+								{
+									OLS.setCollectionState(OLS.visualStarKlassList[i], OLS.visualStarIdList[i], 1);
+									isSave = true;
+									break;
+								}
+								case 1:
+								{
+									OLS.setCollectionState(OLS.visualStarKlassList[i], OLS.visualStarIdList[i], 1);
+									break;
+								}
+								case 2:
+								{
+									OLS.setCollectionState(OLS.visualStarKlassList[i], OLS.visualStarIdList[i], 1);
+									isSave = true;
+									break;
+								}
+								default:
+									break;
+							}
+						}
+					}
 				}
 			}
+		}
+
+		if (isSave)
+		{
+			saveLocal();
 		}
 	}
 
@@ -579,12 +676,15 @@ void AutomaticTrackingMap::drawObjectLists()
 	Mat ObjIconROIMat;
 	const int dx = 16, dy = 16;//图标顶点到图标中心的偏移
 	double minDist = 9999;
+	OLS.visualStarKlassList.clear();
+	OLS.visualStarIdList.clear();
 	for (int objKlass = 0; objKlass < OLS.objectListsNumber(); objKlass++)
 	{
 		if (OLS.isShow(objKlass))
 		{
 			for (int objOrder = 0; objOrder < OLS.objectsNumber(objKlass); objOrder++)
 			{
+				//0 未发现 1 未发现即已收集 2 已发现未收集  
 				switch (OLS.getCollectionState(objKlass, objOrder))
 				{
 					case 0:
@@ -619,7 +719,7 @@ void AutomaticTrackingMap::drawObjectLists()
 						}
 						break;
 					}
-					default:
+					case 2: 
 					{
 						p = OLS.p(objKlass, objOrder);
 						if (ATM_Modules::isContains(minMapRect, p))
@@ -630,14 +730,17 @@ void AutomaticTrackingMap::drawObjectLists()
 							if (x > 0 && y > 0 && x + RES.GIOBJICON[objKlass].cols < autoMapSize.width&&y + RES.GIOBJICON[objKlass].rows < autoMapSize.height)
 							{
 								ObjIconROIMat = MainMat(Rect(x, y, RES.GIOBJICON[objKlass].cols, RES.GIOBJICON[objKlass].rows));
-								addWeightedAlpha(ObjIconROIMat, RES.GIOBJICON[objKlass], RES.GIOBJICONMASK[objKlass]);
+								addWeightedAlpha(ObjIconROIMat, RES.GIOBJICON[objKlass], RES.GIOBJICONMASK[objKlass], 0.2);
 							}
 						}
 						break;
 					}
+					default:
+						break;
+					
 				}
 				double dis = ATM_Modules::dis(TMS.pos, p);
-				if (dis < 64)
+				if (dis < 32)//64)
 				{
 					TMS.isStarExist = true;
 					OLS.visualStarKlassList.push_back(objKlass);
@@ -655,8 +758,8 @@ void AutomaticTrackingMap::drawObjectLists()
 				for (int i = 0; i < OLS.visualStarIdList.size(); i++)
 				{
 					p = OLS.p(OLS.visualStarKlassList[i], OLS.visualStarIdList[i]);
-					x = (int)((p.x - minMapRect.x) / MET.scale) - dx;
-					y = (int)((p.y - minMapRect.y) / MET.scale) - dy;
+					x = (int)((p.x - minMapRect.x) / MET.scale) - RES.GISTAR.cols / 2;
+					y = (int)((p.y - minMapRect.y) / MET.scale) - RES.GISTAR.rows / 2;
 					ObjIconROIMat = MainMat(Rect(x, y, RES.GISTAR.cols, RES.GISTAR.rows));
 					addWeightedAlpha(ObjIconROIMat, RES.GISTAR, RES.GISTARMASK, 0.5);
 				}

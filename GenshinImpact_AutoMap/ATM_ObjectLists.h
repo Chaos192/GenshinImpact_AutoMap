@@ -93,7 +93,9 @@ public:
 	void reAppendFlag();
 	void reDeleteFlag();
 
+	//0 未发现 1 未发现即已收集 2 已发现未收集  
 	void setCollectionState(int klass, int i, int state);
+	//0 未发现 1 未发现即已收集 2 已发现未收集  
 	int getCollectionState(int klass, int i);
 	void copyFrom(int klass, ATM_Matrix &mat);
 	void copyTo(int klass, ATM_Matrix *mat);

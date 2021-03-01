@@ -159,7 +159,7 @@ void ATM_ThreadMatch::cThreadTemplateStarInit(Mat & TemplateStar)
 
 void ATM_ThreadMatch::cThreadTemplateStarMatch()
 {
-	if (tTemplateStarMatch == nullptr && isExistObjMinMap)
+	if (tTemplateStarMatch == nullptr && isExistObjMinMap && isStarExist)
 	{
 		tTemplateStarMatch = new thread(&ATM_ThreadMatch::thread_TemplateStarMatch, this, ref(objStar));
 		tIsEndTemplateStarMatch = false;
@@ -1123,22 +1123,46 @@ void ATM_TM_TemplateStar::setStarMat(Mat starMat)
 
 void ATM_TM_TemplateStar::TemplateStar()
 {
+	int MAXLOOP = 0;
+	bool isLoopMatch = false;
 	Mat tmp;
-	cv::matchTemplate(_starTemplate, _starMat, tmp, cv::TM_CCOEFF_NORMED);
-
 	double minVal, maxVal;
 	cv::Point minLoc, maxLoc;
-	//—∞’“◊Óº—∆•≈‰Œª÷√
+
+	pos.clear();
+	
+	cv::matchTemplate(_starTemplate, _starMat, tmp, cv::TM_CCOEFF_NORMED);
 	cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
 	cout << "Match Star MinVal & MaxVal : " << minVal << " , " << maxVal << endl;
-	if (minVal < 0.75 || maxVal == 1)
+
+	if (maxVal < 0.66)
 	{
 		isStarVisible = false;
 	}
 	else
 	{
+		isLoopMatch = true;
+
 		isStarVisible = true;
-		pos = maxLoc + Point(_starTemplate.cols / 2, _starTemplate.rows / 2);
+		pos.push_back(maxLoc + Point(_starTemplate.cols / 2, _starTemplate.rows / 2));
+	}
+
+	while (isLoopMatch)
+	{
+		_starMat(Rect(maxLoc.x, maxLoc.y, _starTemplate.cols, _starTemplate.rows)) = Scalar(0, 0, 0);
+		cv::matchTemplate(_starTemplate, _starMat, tmp, cv::TM_CCOEFF_NORMED);
+		cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
+		cout << "Match Star MinVal & MaxVal : " << minVal << " , " << maxVal << endl;
+		if (maxVal < 0.66)
+		{
+			isLoopMatch = false;
+		}
+		else
+		{
+			pos.push_back(maxLoc + Point(_starTemplate.cols / 2, _starTemplate.rows / 2));
+		}
+
+		MAXLOOP > 10 ? isLoopMatch = false : MAXLOOP++;
 	}
 }
 
@@ -1147,7 +1171,7 @@ bool ATM_TM_TemplateStar::getStar()
 	return isStarVisible;
 }
 
-Point ATM_TM_TemplateStar::getStarPos()
+vector<Point> ATM_TM_TemplateStar::getStarPos()
 {
 	return pos;
 }
