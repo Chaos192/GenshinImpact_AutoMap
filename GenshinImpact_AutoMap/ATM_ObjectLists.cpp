@@ -328,12 +328,12 @@ void ATM_ObjectLists::deleteFlag(int id)
 
 void ATM_ObjectLists::setCollectionState(int klass, int i, int state)
 {
-	(*collectionState[klass]).set(1,i, state);
+	(*collectionState[klass]).set(0,i, state);
 }
 
 int ATM_ObjectLists::getCollectionState(int klass, int i)
 {
-	return (*collectionState[klass]).at(1, i);
+	return (*collectionState[klass]).at(0, i);
 }
 
 void ATM_ObjectLists::copyFrom(int klass, ATM_Matrix & mat)

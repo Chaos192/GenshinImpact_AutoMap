@@ -157,6 +157,7 @@ private:
 	void CopyToLocal();
 private:
 	void addWeightedAlpha(Mat &backgroundImage, Mat& Image, Mat &maskImage);
+	void addWeightedAlpha(Mat &backgroundImage, Mat& Image, Mat &maskImage,double alpha);
 	void addWeightedPNG(Mat &backgroundImage, Mat& Image);
 	Mat rotateAvatar(double angle);
 };

@@ -82,7 +82,6 @@ void AutomaticTrackingMap::BackEndUpdata()
 			zerosMinMap = TMS.pos;
 			MET.zerosMinMap = zerosMinMap;
 			GIS.isPaimonVisible = TMS.isPaimonVisial;
-
 			if (TMS.isPaimonVisial)
 			{
 				TMS.continuityState.setState(TMS.isContinuity);
@@ -91,11 +90,19 @@ void AutomaticTrackingMap::BackEndUpdata()
 					SST.AutoMapUdpSocketSend(zerosMinMap.x, zerosMinMap.y, TMS.rotationAngle, TMS.uid);
 				}
 			}
+		}
+	}
+	//神瞳识别部分
+	if (isAutoMode)
+	{
+		if (TMS.tIsEndSurfMapInit)
+		{
 			if (TMS.continuityState.getIsContinuity())
 			{
 				//高连续性视为角色当前位置较为准确
 				//判断周围是否存在特殊标记，即神瞳是否应该出现在小地图视野之中
-
+				//如果应该存在，那么便去尝试匹配，匹配结果如果为没有，那么视为已收集，否则视为发现，并且获得其坐标。
+				//如果此前该标记状态，emmm先不考虑
 				if (TMS.isStarExist)
 				{
 
@@ -103,6 +110,7 @@ void AutomaticTrackingMap::BackEndUpdata()
 			}
 		}
 	}
+
 
 	if (SLF._uid != TMS.uid)
 	{
@@ -575,16 +583,55 @@ void AutomaticTrackingMap::drawObjectLists()
 		{
 			for (int objOrder = 0; objOrder < OLS.objectsNumber(objKlass); objOrder++)
 			{
-				p= OLS.p(objKlass, objOrder);
-				if (ATM_Modules::isContains(minMapRect, p))
+				switch (OLS.getCollectionState(objKlass, objOrder))
 				{
-					x = (int)((p.x - minMapRect.x) / MET.scale) - dx;
-					y = (int)((p.y - minMapRect.y) / MET.scale) - dy;
-					//该x，y周围要有足够的空间来填充图标
-					if (x > 0 && y > 0 && x + RES.GIOBJICON[objKlass].cols < autoMapSize.width&&y + RES.GIOBJICON[objKlass].rows < autoMapSize.height)
+					case 0:
 					{
-						ObjIconROIMat = MainMat(Rect(x, y, RES.GIOBJICON[objKlass].cols, RES.GIOBJICON[objKlass].rows));
-						addWeightedAlpha(ObjIconROIMat, RES.GIOBJICON[objKlass], RES.GIOBJICONMASK[objKlass]);
+						p = OLS.p(objKlass, objOrder);
+						if (ATM_Modules::isContains(minMapRect, p))
+						{
+							x = (int)((p.x - minMapRect.x) / MET.scale) - dx;
+							y = (int)((p.y - minMapRect.y) / MET.scale) - dy;
+							//该x，y周围要有足够的空间来填充图标
+							if (x > 0 && y > 0 && x + RES.GIOBJICON[objKlass].cols < autoMapSize.width&&y + RES.GIOBJICON[objKlass].rows < autoMapSize.height)
+							{
+								ObjIconROIMat = MainMat(Rect(x, y, RES.GIOBJICON[objKlass].cols, RES.GIOBJICON[objKlass].rows));
+								addWeightedAlpha(ObjIconROIMat, RES.GIOBJICON[objKlass], RES.GIOBJICONMASK[objKlass]);
+							}
+						}
+						break;
+					}
+					case 1:
+					{
+						p = OLS.p(objKlass, objOrder);
+						if (ATM_Modules::isContains(minMapRect, p))
+						{
+							x = (int)((p.x - minMapRect.x) / MET.scale) - dx;
+							y = (int)((p.y - minMapRect.y) / MET.scale) - dy;
+							//该x，y周围要有足够的空间来填充图标
+							if (x > 0 && y > 0 && x + RES.GIOBJICON[objKlass].cols < autoMapSize.width&&y + RES.GIOBJICON[objKlass].rows < autoMapSize.height)
+							{
+								ObjIconROIMat = MainMat(Rect(x, y, RES.GIOBJICON[objKlass].cols, RES.GIOBJICON[objKlass].rows));
+								addWeightedAlpha(ObjIconROIMat, RES.GIOBJICON[objKlass], RES.GIOBJICONMASK[objKlass],0.6);
+							}
+						}
+						break;
+					}
+					default:
+					{
+						p = OLS.p(objKlass, objOrder);
+						if (ATM_Modules::isContains(minMapRect, p))
+						{
+							x = (int)((p.x - minMapRect.x) / MET.scale) - dx;
+							y = (int)((p.y - minMapRect.y) / MET.scale) - dy;
+							//该x，y周围要有足够的空间来填充图标
+							if (x > 0 && y > 0 && x + RES.GIOBJICON[objKlass].cols < autoMapSize.width&&y + RES.GIOBJICON[objKlass].rows < autoMapSize.height)
+							{
+								ObjIconROIMat = MainMat(Rect(x, y, RES.GIOBJICON[objKlass].cols, RES.GIOBJICON[objKlass].rows));
+								addWeightedAlpha(ObjIconROIMat, RES.GIOBJICON[objKlass], RES.GIOBJICONMASK[objKlass]);
+							}
+						}
+						break;
 					}
 				}
 			}
@@ -696,8 +743,27 @@ void AutomaticTrackingMap::addWeightedAlpha(Mat & backgroundImage, Mat & Image, 
 
 	for (int i = 0; i < 3; i++)
 	{
-		dstt_channels[i] = dstt_channels[i].mul(Alpha / 255.0);
-		dstt_channels[i] += scr_channels[i].mul(1.0 - Alpha / 255.0);
+		dstt_channels[i] = dstt_channels[i].mul(Alpha, 1.0 / 255.0);
+		dstt_channels[i] += scr_channels[i].mul(~Alpha, 1.0 / 255.0);
+	}
+	merge(dstt_channels, backgroundImage);
+}
+
+void AutomaticTrackingMap::addWeightedAlpha(Mat & backgroundImage, Mat & Image, Mat & maskImage, double alpha)
+{
+	std::vector<cv::Mat>scr_channels;
+	std::vector<cv::Mat>dstt_channels;
+	std::vector<cv::Mat>alpha_channels;
+	split(Image, scr_channels);
+	split(backgroundImage, dstt_channels);
+	split(maskImage, alpha_channels);
+
+	Mat Alpha = alpha_channels[0]+(unsigned char)(alpha*255);
+
+	for (int i = 0; i < 3; i++)
+	{
+		dstt_channels[i] = dstt_channels[i].mul(Alpha,1.0 / 255.0 );
+		dstt_channels[i] += scr_channels[i].mul(~Alpha, 1.0/ 255.0);
 	}
 	merge(dstt_channels, backgroundImage);
 }
@@ -713,8 +779,8 @@ void AutomaticTrackingMap::addWeightedPNG(Mat & backgroundImage, Mat & Image)
 
 	for (int i = 0; i < 3; i++)
 	{
-		dstt_channels[i] = dstt_channels[i].mul(1.0 - Alpha / 255.0);
-		dstt_channels[i] += scr_channels[i].mul(Alpha / 255.0);
+		dstt_channels[i] = dstt_channels[i].mul(~Alpha,1.0 / 255.0);
+		dstt_channels[i] += scr_channels[i].mul(Alpha, 1.0/ 255.0);
 	}
 	merge(dstt_channels, backgroundImage);
 }
