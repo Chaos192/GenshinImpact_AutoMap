@@ -71,6 +71,8 @@ public:
 	int getGiState();
 	Point getOffset();
 
+	void getAllScreen();
+
 	void getGiScreen();
 	void getGiFrame();
 	void getGiFramePaimon();

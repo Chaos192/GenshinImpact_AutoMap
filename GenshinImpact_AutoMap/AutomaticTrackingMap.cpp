@@ -190,7 +190,7 @@ Mat AutomaticTrackingMap::getViewMap()
 void AutomaticTrackingMap::getGiState()
 {
 	GIS.getGiState();
-	if (GIS.giRectMode > 0)
+	if (GIS.giRectMode != 0)
 	{
 		GIS.getGiFrame();
 	}

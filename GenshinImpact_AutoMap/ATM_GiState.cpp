@@ -153,6 +153,55 @@ Point ATM_GiState::getOffset()
 	return res;
 }
 
+void ATM_GiState::getAllScreen()
+{
+	static HBITMAP	hBmp;
+	BITMAP bmp;
+
+	DeleteObject(hBmp);
+
+	if (giHandle == NULL)return;
+
+	//获取目标句柄的窗口大小RECT
+	//GetWindowRect(giHandle, &giRect);/* 对原神窗口的操作 */
+
+	//获取目标句柄的DC
+	HDC hScreen = CreateDCA("DISPLAY", NULL, NULL, NULL);//GetDC(giHandle);/* 对原神窗口的操作 */
+	//为屏幕设备描述表创建兼容的内存设备描述表   
+	HDC hCompDC = CreateCompatibleDC(hScreen);
+
+	giRect.left = 0;
+	giRect.top = 0;
+	giRect.right = GetDeviceCaps(hScreen, HORZRES);
+	giRect.bottom = GetDeviceCaps(hScreen, VERTRES);
+
+	//获取目标句柄的宽度和高度
+	int	nWidth = giRect.right - giRect.left;
+	int	nHeight = giRect.bottom - giRect.top;
+
+	//创建Bitmap对象
+	hBmp = CreateCompatibleBitmap(hScreen, nWidth, nHeight);//得到位图
+
+	SelectObject(hCompDC, hBmp); //不写就全黑
+	BitBlt(hCompDC, 0, 0, nWidth, nHeight, hScreen, 0, 0, SRCCOPY);
+
+	//释放对象
+	DeleteDC(hScreen);
+	DeleteDC(hCompDC);
+
+	//类型转换
+	GetObject(hBmp, sizeof(BITMAP), &bmp);
+
+	int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
+	int depth = bmp.bmBitsPixel == 1 ? IPL_DEPTH_1U : IPL_DEPTH_8U;
+
+	//mat操作
+	giFrame.create(cv::Size(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8U, nChannels));
+
+	GetBitmapBits(hBmp, bmp.bmHeight*bmp.bmWidth*nChannels, giFrame.data);
+
+}
+
 void ATM_GiState::getGiScreen()
 {
 	static HBITMAP	hBmp;
@@ -197,7 +246,14 @@ void ATM_GiState::getGiScreen()
 
 void ATM_GiState::getGiFrame()
 {
-	getGiScreen();
+	if (giWndClass == "UnityWndClass")
+	{
+		getGiScreen();
+	}
+	else
+	{
+		getAllScreen();
+	}
 	getGiRectMode();
 	if (giRectMode > 0)
 	{
