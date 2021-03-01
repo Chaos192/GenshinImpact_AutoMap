@@ -93,6 +93,9 @@ void AutomaticTrackingMap::BackEndUpdata()
 			}
 			if (TMS.continuityState.getIsContinuity())
 			{
+				//高连续性视为角色当前位置较为准确
+				//判断周围是否存在特殊标记，即神瞳是否应该出现在小地图视野之中
+
 				if (TMS.isStarExist)
 				{
 
