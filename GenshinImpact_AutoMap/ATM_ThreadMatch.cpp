@@ -150,13 +150,14 @@ void ATM_ThreadMatch::cThreadTemplateStarInit(Mat & TemplateStar)
 {
 	if (tTemplateStarInit == nullptr && tempStar.isInit == false)
 	{
-		templateStar = TemplateStar;
+		//templateStar = TemplateStar;
+		cvtColor(TemplateStar, templateStar, CV_RGB2GRAY);
 		tTemplateStarInit = new thread(&ATM_ThreadMatch::thread_TemplateStarInit, this, templateStar);
 		tIsEndTemplateStarInit = false;
 	}
 }
 
-void ATM_ThreadMatch::cThreadTemplateStarMatch(Mat & Template)
+void ATM_ThreadMatch::cThreadTemplateStarMatch()
 {
 	if (tTemplateStarMatch == nullptr && isExistObjMinMap)
 	{
@@ -177,10 +178,11 @@ void ATM_ThreadMatch::setStar(Mat StarMat)
 
 void ATM_ThreadMatch::getObjMinMap(Mat & obj)
 {
-	obj.copyTo(objMinMap);
-	cvtColor(objMinMap, objMinMap, CV_RGB2GRAY);
+	//obj.copyTo(objMinMap);
+	cvtColor(obj, objMinMap, CV_RGB2GRAY);
 	obj(Rect(obj.cols / 2 - 14, obj.rows / 2 - 14, 28, 28)).copyTo(objAvatar);
-	obj(Rect(36, 36, obj.cols - 72, obj.rows - 72)).copyTo(objStar);
+	//obj(Rect(36, 36, obj.cols - 72, obj.rows - 72)).copyTo(objStar);
+	cvtColor(obj(Rect(36, 36, obj.cols - 72, obj.rows - 72)), objStar, CV_RGBA2GRAY);
 	isExistObjMinMap = true;
 }
 
@@ -1136,7 +1138,7 @@ void ATM_TM_TemplateStar::TemplateStar()
 	else
 	{
 		isStarVisible = true;
-		pos = maxLoc;
+		pos = maxLoc + Point(_starTemplate.cols / 2, _starTemplate.rows / 2);
 	}
 }
 
@@ -1148,4 +1150,16 @@ bool ATM_TM_TemplateStar::getStar()
 Point ATM_TM_TemplateStar::getStarPos()
 {
 	return pos;
+}
+
+void ATM_TM_Continuity::setState(bool state)
+{
+	continuity[0] = continuity[1];
+	continuity[1] = continuity[2];
+	continuity[2] = state;
+}
+
+bool ATM_TM_Continuity::getIsContinuity()
+{
+	return continuity[0] && continuity[1] && continuity[2];
 }

@@ -46,7 +46,7 @@ void AutomaticTrackingMap::FrontEndUpdata()
 	MainMat = getViewMap();
 	//添加物品图标
 	drawObjectLists();
-
+	drawFlagLists();
 	//添加当前位置图标
 	drawAvatar();
 	//显示输出部分
@@ -73,6 +73,8 @@ void AutomaticTrackingMap::BackEndUpdata()
 		TMS.cThreadOrbAvatarMatch();
 		TMS.cThreadTemplateUIDInit(RES.GINUMUID);
 		TMS.cThreadTemplateUIDMatch();
+		TMS.cThreadTemplateStarInit(RES.GISTAR);
+		TMS.cThreadTemplateStarMatch();
 
 		if (TMS.tIsEndSurfMapInit)
 		{
@@ -81,9 +83,20 @@ void AutomaticTrackingMap::BackEndUpdata()
 			MET.zerosMinMap = zerosMinMap;
 			GIS.isPaimonVisible = TMS.isPaimonVisial;
 
-			if (TMS.isPaimonVisial&&TMS.isContinuity)
+			if (TMS.isPaimonVisial)
 			{
-				SST.AutoMapUdpSocketSend(zerosMinMap.x, zerosMinMap.y, TMS.rotationAngle,TMS.uid);
+				TMS.continuityState.setState(TMS.isContinuity);
+				if(TMS.isContinuity)
+				{
+					SST.AutoMapUdpSocketSend(zerosMinMap.x, zerosMinMap.y, TMS.rotationAngle, TMS.uid);
+				}
+			}
+			if (TMS.continuityState.getIsContinuity())
+			{
+				if (TMS.isStarExist)
+				{
+
+				}
 			}
 		}
 	}
@@ -548,6 +561,7 @@ void AutomaticTrackingMap::setThreadMatchMat()
 
 void AutomaticTrackingMap::drawObjectLists()
 {
+	//draw Star
 	int x = 0, y = 0;
 	Point p;
 	Mat ObjIconROIMat;
@@ -573,6 +587,15 @@ void AutomaticTrackingMap::drawObjectLists()
 			}
 		}
 	}
+}
+
+void AutomaticTrackingMap::drawFlagLists()
+{
+	//draw Flag
+	int x = 0, y = 0;
+	Point p;
+	Mat ObjIconROIMat;
+	const int dx = 16, dy = 16;//图标顶点到图标中心的偏移
 	double minDist = 9999;
 	if (OLS.isShowFlag())
 	{
@@ -590,7 +613,7 @@ void AutomaticTrackingMap::drawObjectLists()
 					addWeightedAlpha(ObjIconROIMat, RES.GIOBJFLAGICON[0], RES.GIOBJFLAGICONMASK[0]);
 
 					double dis = ATM_Modules::dis(zerosMinMap, p);
-					if (dis<minDist)
+					if (dis < minDist)
 					{
 						minDist = dis;
 						OLS.selectID = objOrder;
@@ -599,7 +622,7 @@ void AutomaticTrackingMap::drawObjectLists()
 				}
 			}
 		}
-		if (minDist < 16) 
+		if (minDist < 16)
 		{
 			p = OLS.fp(OLS.selectID);
 			x = (int)((p.x - minMapRect.x) / MET.scale) - dx;
@@ -613,10 +636,9 @@ void AutomaticTrackingMap::drawObjectLists()
 		{
 			OLS.isSelect = false;
 			OLS.selectID = -1;
-			
+
 		}
 	}
-
 }
 
 void AutomaticTrackingMap::drawAvatar()

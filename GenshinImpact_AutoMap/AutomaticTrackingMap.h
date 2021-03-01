@@ -151,6 +151,7 @@ private:
 	void setThreadMatchMat();
 
 	void drawObjectLists();
+	void drawFlagLists();
 	void drawAvatar();
 	void CopyToThis();
 	void CopyToLocal();

@@ -159,6 +159,14 @@ public:
 	bool isEnd();
 };
 
+class ATM_TM_Continuity
+{
+	bool continuity[3] = { false };
+public:
+	void setState(bool state);
+	bool getIsContinuity();
+};
+
 class ATM_ThreadMatch
 {
 	Mat mapGray;
@@ -184,12 +192,13 @@ class ATM_ThreadMatch
 	//ATM_TM_Thread tempUID;
 public:
 	~ATM_ThreadMatch();
-
+	ATM_TM_Continuity continuityState;
 	Point pos = Point(1466, 3272);
 	bool isPaimonVisial = false;
 	bool isContinuity = false;
 	double rotationAngle = 0;
 	int uid = 0;
+	bool isStarExist = false;
 	bool isStarVisible = false;
 	Point starPos;
 
@@ -242,7 +251,7 @@ public:
 
 	//Template Match Star
 	void cThreadTemplateStarInit(Mat &TemplateStar);
-	void cThreadTemplateStarMatch(Mat &Template);
+	void cThreadTemplateStarMatch();
 	void setTemplateStar(Mat TemplateStarMat);
 	void setStar(Mat StarMat);
 
