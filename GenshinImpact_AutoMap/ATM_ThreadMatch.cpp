@@ -1007,17 +1007,41 @@ int ATM_TM_TemplateUID::getUID()
 
 void ATM_TM_TemplateStar::setStarTemplate(Mat starTemplateMat)
 {
+	_starTemplate = starTemplateMat;
 }
 
 void ATM_TM_TemplateStar::setStarMat(Mat starMat)
 {
+	_starMat = starMat;
 }
 
 void ATM_TM_TemplateStar::TemplateStar()
 {
+	Mat tmp;
+	cv::matchTemplate(_starTemplate, _starMat, tmp, cv::TM_CCOEFF_NORMED);
+
+	double minVal, maxVal;
+	cv::Point minLoc, maxLoc;
+	//—∞’“◊Óº—∆•≈‰Œª÷√
+	cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
+	cout << "Match Star MinVal & MaxVal : " << minVal << " , " << maxVal << endl;
+	if (minVal < 0.75 || maxVal == 1)
+	{
+		isStarVisible = false;
+	}
+	else
+	{
+		isStarVisible = true;
+		pos = maxLoc;
+	}
 }
 
 bool ATM_TM_TemplateStar::getStar()
 {
-	return false;
+	return isStarVisible;
+}
+
+Point ATM_TM_TemplateStar::getStarPos()
+{
+	return pos;
 }

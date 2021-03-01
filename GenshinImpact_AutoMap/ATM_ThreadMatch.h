@@ -118,12 +118,13 @@ class ATM_TM_TemplateStar
 	Mat _starTemplate;
 	Mat _starMat;
 	bool isStarVisible = false;
+	Point pos;
 public:
 	void setStarTemplate(Mat starTemplateMat);
 	void setStarMat(Mat starMat);
 	void TemplateStar();
 	bool getStar();
-
+	Point getStarPos();
 };
 
 //实现线程的单独控制
