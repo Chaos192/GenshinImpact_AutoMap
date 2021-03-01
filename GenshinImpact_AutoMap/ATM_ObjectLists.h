@@ -61,10 +61,15 @@ public:
 	ATM_Matrix _collectionStateFHYS = ATM_Matrix(1, 80);
 	ATM_Matrix _collectionStateFlag;
 	ATM_Matrix *collectionState[4];
+	vector<int> visualStarKlassList;
+	vector<int> visualStarIdList;
 
 	bool isSelect = false;
 	int selectID = -1;
 
+	bool isSelectObj = false;
+	int selectObjKlass = -1;
+	int selectObjID = -1;
 
 	ATM_ObjectLists();
 	~ATM_ObjectLists();

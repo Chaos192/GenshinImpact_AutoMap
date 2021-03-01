@@ -99,6 +99,7 @@ void AutomaticTrackingMap::BackEndUpdata()
 		{
 			if (TMS.continuityState.getIsContinuity())
 			{
+
 				//高连续性视为角色当前位置较为准确
 				//判断周围是否存在特殊标记，即神瞳是否应该出现在小地图视野之中
 				//如果应该存在，那么便去尝试匹配，匹配结果如果为没有，那么视为已收集，否则视为发现，并且获得其坐标。
@@ -577,6 +578,7 @@ void AutomaticTrackingMap::drawObjectLists()
 	Point p;
 	Mat ObjIconROIMat;
 	const int dx = 16, dy = 16;//图标顶点到图标中心的偏移
+	double minDist = 9999;
 	for (int objKlass = 0; objKlass < OLS.objectListsNumber(); objKlass++)
 	{
 		if (OLS.isShow(objKlass))
@@ -634,6 +636,39 @@ void AutomaticTrackingMap::drawObjectLists()
 						break;
 					}
 				}
+				double dis = ATM_Modules::dis(TMS.pos, p);
+				if (dis < 64)
+				{
+					TMS.isStarExist = true;
+					OLS.visualStarKlassList.push_back(objKlass);
+					OLS.visualStarIdList.push_back(objOrder);
+				}
+				if (dis < minDist)
+				{
+					minDist = dis;
+					OLS.selectObjKlass = objKlass;
+					OLS.selectObjID = objOrder;
+				}
+			}
+			if (minDist < 64)
+			{
+				for (int i = 0; i < OLS.visualStarIdList.size(); i++)
+				{
+					p = OLS.p(OLS.visualStarKlassList[i], OLS.visualStarIdList[i]);
+					x = (int)((p.x - minMapRect.x) / MET.scale) - dx;
+					y = (int)((p.y - minMapRect.y) / MET.scale) - dy;
+					ObjIconROIMat = MainMat(Rect(x, y, RES.GISTAR.cols, RES.GISTAR.rows));
+					addWeightedAlpha(ObjIconROIMat, RES.GISTAR, RES.GISTARMASK, 0.5);
+				}
+				OLS.isSelectObj = true;
+
+			}
+			else
+			{
+				OLS.isSelectObj = false;
+				OLS.selectObjKlass = -1;
+				OLS.selectObjID = -1;
+
 			}
 		}
 	}
