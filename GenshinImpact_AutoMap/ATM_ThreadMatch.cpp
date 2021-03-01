@@ -483,10 +483,10 @@ void ATM_ThreadMatch::GetMatchResults()
 	if (tIsEndTemplateStarMatch)
 	{
 		isStarVisible = tempStar.getStar();
-		if (isStarVisible)
-		{
+		//if (isStarVisible)
+		//{
 			starPos = tempStar.getStarPos();
-		}
+		//}
 	}
 }
 
@@ -1142,9 +1142,8 @@ void ATM_TM_TemplateStar::TemplateStar()
 	else
 	{
 		isLoopMatch = true;
-
 		isStarVisible = true;
-		pos.push_back(maxLoc + Point(_starTemplate.cols / 2, _starTemplate.rows / 2));
+		pos.push_back(maxLoc - Point(_starMat.cols / 2, _starMat.rows / 2) + Point(_starTemplate.cols / 2, _starTemplate.rows / 2));
 	}
 
 	while (isLoopMatch)
@@ -1159,7 +1158,7 @@ void ATM_TM_TemplateStar::TemplateStar()
 		}
 		else
 		{
-			pos.push_back(maxLoc + Point(_starTemplate.cols / 2, _starTemplate.rows / 2));
+			pos.push_back(maxLoc - Point(_starMat.cols / 2, _starMat.rows / 2) + Point(_starTemplate.cols / 2, _starTemplate.rows / 2));
 		}
 
 		MAXLOOP > 10 ? isLoopMatch = false : MAXLOOP++;

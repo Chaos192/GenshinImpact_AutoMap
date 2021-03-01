@@ -63,6 +63,7 @@ public:
 	ATM_Matrix *collectionState[4];
 	vector<int> visualStarKlassList;
 	vector<int> visualStarIdList;
+	vector<double> visualStarDisList;
 
 	bool isSelect = false;
 	int selectID = -1;
