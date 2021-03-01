@@ -39,6 +39,10 @@ ATM_ThreadMatch::~ATM_ThreadMatch()
 	}
 }
 
+void ATM_ThreadMatch::cThreadInit()
+{
+}
+
 void ATM_ThreadMatch::cThreadSurfMapInit(Mat &Map)
 {
 	if (tSurfMapInit == nullptr && surfMap.isInit == false)
@@ -142,11 +146,41 @@ void ATM_ThreadMatch::setUID(Mat UIDMat)
 	UIDMat.copyTo(objUID);
 }
 
+void ATM_ThreadMatch::cThreadTemplateStarInit(Mat & TemplateStar)
+{
+	if (tTemplateStarInit == nullptr && tempStar.isInit == false)
+	{
+		templateStar = TemplateStar;
+		tTemplateStarInit = new thread(&ATM_ThreadMatch::thread_TemplateStarInit, this, templateStar);
+		tIsEndTemplateStarInit = false;
+	}
+}
+
+void ATM_ThreadMatch::cThreadTemplateStarMatch(Mat & Template)
+{
+	if (tTemplateStarMatch == nullptr && isExistObjMinMap)
+	{
+		tTemplateStarMatch = new thread(&ATM_ThreadMatch::thread_TemplateStarMatch, this, ref(objStar));
+		tIsEndTemplateStarMatch = false;
+	}
+}
+
+void ATM_ThreadMatch::setTemplateStar(Mat TemplateStarMat)
+{
+	TemplateStarMat.copyTo(templateStar);
+}
+
+void ATM_ThreadMatch::setStar(Mat StarMat)
+{
+	StarMat.copyTo(objStar);
+}
+
 void ATM_ThreadMatch::getObjMinMap(Mat & obj)
 {
 	obj.copyTo(objMinMap);
 	cvtColor(objMinMap, objMinMap, CV_RGB2GRAY);
 	obj(Rect(obj.cols / 2 - 14, obj.rows / 2 - 14, 28, 28)).copyTo(objAvatar);
+	obj(Rect(36, 36, obj.cols - 72, obj.rows - 72)).copyTo(objStar);
 	isExistObjMinMap = true;
 }
 
@@ -191,6 +225,14 @@ void ATM_ThreadMatch::CheckThread()
 	if (tIsEndTemplateUIDMatch == false)
 	{
 		CheckThread_TemplateUIDMatch();
+	}
+	if (tIsEndTemplateStarInit == false)
+	{
+		CheckThread_TemplateStarInit();
+	}
+	if (tIsEndTemplateStarMatch == false)
+	{
+		CheckThread_TemplateStarMatch();
 	}
 }
 
@@ -364,6 +406,53 @@ void ATM_ThreadMatch::thread_TemplateUIDMatch(Mat & Obj)
 	}
 }
 
+void ATM_ThreadMatch::CheckThread_TemplateStarInit()
+{
+	DWORD exitCode;
+	if (tTemplateStarInit != nullptr)
+	{
+		GetExitCodeThread(tTemplateStarInit->native_handle(), &exitCode);
+		if (exitCode == 0)
+		{
+			tTemplateStarInit->join();
+			delete tTemplateStarInit;
+			tTemplateStarInit = nullptr;
+			tIsEndTemplateStarInit = true;
+		}
+	}
+}
+
+void ATM_ThreadMatch::thread_TemplateStarInit(Mat & tar)
+{
+	tempStar.setStarTemplate(tar);
+	tempStar.Init();
+}
+
+void ATM_ThreadMatch::CheckThread_TemplateStarMatch()
+{
+	DWORD exitCode;
+	if (tTemplateStarMatch != nullptr)
+	{
+		GetExitCodeThread(tTemplateStarMatch->native_handle(), &exitCode);
+		if (exitCode == 0)
+		{
+			tTemplateStarMatch->join();
+			delete tTemplateStarMatch;
+			tTemplateStarMatch = nullptr;
+			tIsEndTemplateStarMatch = true;
+		}
+	}
+}
+
+void ATM_ThreadMatch::thread_TemplateStarMatch(Mat & Obj)
+{
+	if (isExistObjMinMap)
+	{
+		tempStar.setStarMat(Obj);
+		tempStar.TemplateStar();
+	}
+}
+
 void ATM_ThreadMatch::GetMatchResults()
 {
 	if (tIsEndSurfMapMatch)
@@ -388,6 +477,14 @@ void ATM_ThreadMatch::GetMatchResults()
 	if (tIsEndTemplateUIDMatch)
 	{
 		uid = tempUID.getUID();
+	}
+	if (tIsEndTemplateStarMatch)
+	{
+		isStarVisible = tempStar.getStar();
+		if (isStarVisible)
+		{
+			starPos = tempStar.getStarPos();
+		}
 	}
 }
 
@@ -1003,6 +1100,13 @@ void ATM_TM_TemplateUID::TemplateUID()
 int ATM_TM_TemplateUID::getUID()
 {
 	return _uid;
+}
+
+void ATM_TM_TemplateStar::Init()
+{
+	if (isInit)return;
+
+	isInit = true;
 }
 
 void ATM_TM_TemplateStar::setStarTemplate(Mat starTemplateMat)

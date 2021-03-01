@@ -120,6 +120,9 @@ class ATM_TM_TemplateStar
 	bool isStarVisible = false;
 	Point pos;
 public:
+	bool isInit = false;
+
+	void Init();
 	void setStarTemplate(Mat starTemplateMat);
 	void setStarMat(Mat starMat);
 	void TemplateStar();
@@ -167,6 +170,9 @@ class ATM_ThreadMatch
 	Mat templatePaimon;
 	Mat objPaimon;
 
+	Mat templateStar;
+	Mat objStar;
+
 	Mat *templateUID;
 	Mat objUID;
 
@@ -174,6 +180,7 @@ class ATM_ThreadMatch
 	ATM_TM_TemplatePaimon tempPaimon;
 	ATM_TM_ORBAvatar orbAvatar;
 	ATM_TM_TemplateUID tempUID;
+	ATM_TM_TemplateStar tempStar;
 	//ATM_TM_Thread tempUID;
 public:
 	~ATM_ThreadMatch();
@@ -183,6 +190,8 @@ public:
 	bool isContinuity = false;
 	double rotationAngle = 0;
 	int uid = 0;
+	bool isStarVisible = false;
+	Point starPos;
 
 	bool isExistObjMinMap = false;
 	bool isExistObjPaimon = false;
@@ -195,6 +204,8 @@ public:
 	bool tIsEndOrbAvatarMatch = false;
 	bool tIsEndTemplateUIDInit = false;
 	bool tIsEndTemplateUIDMatch = false;
+	bool tIsEndTemplateStarInit = false;
+	bool tIsEndTemplateStarMatch = false;
 
 	thread * tSurfMapInit = nullptr;
 	thread * tSurfMapMatch = nullptr;
@@ -203,6 +214,8 @@ public:
 	thread * tOrbAvatarMatch = nullptr;	
 	thread * tTemplateUIDInit = nullptr;
 	thread * tTemplateUIDMatch = nullptr;
+	thread * tTemplateStarInit = nullptr;
+	thread * tTemplateStarMatch = nullptr;
 
 	//Init
 	void cThreadInit();
@@ -226,6 +239,12 @@ public:
 	void cThreadTemplateUIDInit(Mat * TemplateUID);
 	void cThreadTemplateUIDMatch();
 	void setUID(Mat UIDMat);
+
+	//Template Match Star
+	void cThreadTemplateStarInit(Mat &TemplateStar);
+	void cThreadTemplateStarMatch(Mat &Template);
+	void setTemplateStar(Mat TemplateStarMat);
+	void setStar(Mat StarMat);
 
 	//Set Some Mat
 	void getObjMinMap(Mat &obj);
@@ -263,6 +282,13 @@ public:
 	void CheckThread_TemplateUIDMatch();
 	void thread_TemplateUIDMatch(Mat& Obj);
 
+	//Template Star Init
+	void CheckThread_TemplateStarInit();
+	void thread_TemplateStarInit(Mat & tar);
+
+	//Template Star Match
+	void CheckThread_TemplateStarMatch();
+	void thread_TemplateStarMatch(Mat& Obj);
 
 	void GetMatchResults();
 };
