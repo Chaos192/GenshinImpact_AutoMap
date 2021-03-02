@@ -687,6 +687,7 @@ void AutomaticTrackingMap::setThreadMatchMat()
 void AutomaticTrackingMap::drawObjectLists()
 {
 	//draw Star
+	static Point avatarPos = zerosMinMap;
 	int x = 0, y = 0;
 	Point p;
 	Mat ObjIconROIMat;
@@ -771,7 +772,7 @@ void AutomaticTrackingMap::drawObjectLists()
 					OLS.selectObjID = objOrder;
 				}
 			}
-			if (minDist < 64)
+			if (minDist < 64 && isAutoMode)
 			{
 				for (int i = 0; i < OLS.visualStarIdList.size(); i++)
 				{
@@ -794,13 +795,21 @@ void AutomaticTrackingMap::drawObjectLists()
 			}
 		}
 	}
+	if (isAutoMode)
+	{
+		avatarPos = zerosMinMap;
+	}
 	for (int i = 0; i < TMS.starPos.size(); i++)
 	{
-		p = TMS.starPos[i] * 1.3 + (Point)zerosMinMap;
+		p = TMS.starPos[i] * 1.3 + avatarPos;
 		x = (int)((p.x - minMapRect.x) / MET.scale) - RES.GISTAR.cols / 2;
 		y = (int)((p.y - minMapRect.y) / MET.scale) - RES.GISTAR.rows / 2;
-		ObjIconROIMat = MainMat(Rect(x, y, RES.GISTAR.cols, RES.GISTAR.rows));
-		addWeightedAlpha(ObjIconROIMat, RES.GISTAR, RES.GISTARMASK);
+		//该x，y周围要有足够的空间来填充图标
+		if (x > 0 && y > 0 && x + RES.GISTAR.cols < autoMapSize.width&&y + RES.GISTAR.rows < autoMapSize.height)
+		{
+			ObjIconROIMat = MainMat(Rect(x, y, RES.GISTAR.cols, RES.GISTAR.rows));
+			addWeightedAlpha(ObjIconROIMat, RES.GISTAR, RES.GISTARMASK);
+		}
 	}
 
 }
