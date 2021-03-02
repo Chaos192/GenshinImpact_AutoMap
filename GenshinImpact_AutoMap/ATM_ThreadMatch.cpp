@@ -92,11 +92,20 @@ void ATM_ThreadMatch::cThreadOrbAvatarInit(Mat & TemplateAvatar)
 {
 	if (tOrbAvatarInit == nullptr && orbAvatar.isInit == false)
 	{
-		//templateAvatar = Mat(300, 300, CV_8UC1,Scalar(0,0,0));
-		//cvtColor(TemplateAvatar(Rect(TemplateAvatar.cols/2-16, TemplateAvatar.rows/2-16,32,32)), templateAvatar(Rect(134,134,32,32)), CV_RGB2GRAY);
-		//threshold(templateAvatar, templateAvatar, 185, 255, THRESH_TOZERO);
-		////resize(templateAvatar, templateAvatar, Size(0, 0), 1, 1, 3);//INTER_CUBIC INTER_AREAz
-		resize(TemplateAvatar, templateAvatar, Size(150, 150), 0, 0, INTER_LANCZOS4);//INTER_CUBIC INTER_AREAz
+		//templateAvatar = Mat(300, 300, CV_8UC3,Scalar(128,128,128));
+		//Mat reSizeMap;
+
+		//resize(TemplateAvatar, reSizeMap, Size(), 3 * 1.3, 3 * 1.3, 3);
+		//int len = 36 * 3 * 1.3;
+
+		////templateAvatar(Rect(templateAvatar.cols / 2 - TemplateAvatar.cols / 2, templateAvatar.rows / 2 - TemplateAvatar.rows / 2, TemplateAvatar.cols, TemplateAvatar.rows)) = TemplateAvatar;
+		//reSizeMap.copyTo(templateAvatar(Rect(templateAvatar.cols / 2 - reSizeMap.cols/2, templateAvatar.rows / 2 - reSizeMap.rows/2, reSizeMap.cols, reSizeMap.rows)));
+		//
+
+		resize(TemplateAvatar, templateAvatar, Size(), 3, 3, 5);
+
+		cvtColor(templateAvatar, templateAvatar, CV_RGB2GRAY);
+
 		tOrbAvatarInit = new thread(&ATM_ThreadMatch::thread_OrbAvatarInit, this, ref(templateAvatar));
 		tIsEndOrbAvatarInit = false;
 	}
@@ -106,12 +115,23 @@ void ATM_ThreadMatch::cThreadOrbAvatarMatch()
 {
 	if (tOrbAvatarMatch == nullptr && tIsEndOrbAvatarInit && isExistObjMinMap && isPaimonVisial)
 	{
-		//Mat temp = Mat(300, 300, CV_8UC1, Scalar(0, 0, 0));
-		//objAvatar.copyTo(temp(Rect(138, 138, 24, 24)));
-		//objAvatar = temp;
-		//threshold(objAvatar, objAvatar, 185, 255, THRESH_TOZERO);
-		////resize(objAvatar, objAvatar, Size(0, 0), 1*1.3, 1*1.3, 3);//INTER_CUBIC INTER_AREAz
-		resize(objAvatar, objAvatar, Size(150, 150), 0, 0, INTER_LANCZOS4);//INTER_CUBIC INTER_AREAz
+		//Mat temp = Mat(300, 300, CV_8UC4, Scalar(128,128,128,255));
+		//
+		//Mat reSizeMap;
+
+		//resize(objAvatar, reSizeMap, Size(), 3 * 1.3, 3 * 1.3, 3);
+		//int len = 36 * 3 * 1.3;
+		////objAvatar(Rect(objAvatar.cols / 2 - 36 / 2, objAvatar.rows / 2 - 36 / 2, 36, 36)).copyTo(temp(Rect(temp.cols / 2 - 36 / 2, temp.rows / 2 - 36 / 2, 36, 36)));
+		//reSizeMap(Rect(reSizeMap.cols/2- len /2, reSizeMap.rows/2- len /2, len, len)).copyTo(temp(Rect(temp.cols/2-len /2, temp.rows / 2 - len / 2, len, len)));
+		//
+		Mat temp;
+		objAvatar(Rect(objAvatar.cols / 2 - 36 / 2, objAvatar.rows / 2 - 36 / 2, 36, 36)).copyTo(temp);
+		
+		resize(temp, temp, Size(), 3 * 1.3, 3 * 1.3, 5);
+
+		cvtColor(temp, objAvatar,CV_RGB2GRAY);
+
+		//tOrbAvatarMatch = new thread(&ATM_ThreadMatch::thread_OrbAvatarMatch, this, ref(objAvatar));
 		tOrbAvatarMatch = new thread(&ATM_ThreadMatch::thread_OrbAvatarMatch, this, ref(objAvatar));
 		tIsEndOrbAvatarMatch = false;
 	}
@@ -180,7 +200,8 @@ void ATM_ThreadMatch::getObjMinMap(Mat & obj)
 {
 	//obj.copyTo(objMinMap);
 	cvtColor(obj, objMinMap, CV_RGB2GRAY);
-	obj(Rect(obj.cols / 2 - 14, obj.rows / 2 - 14, 28, 28)).copyTo(objAvatar);
+	//obj(Rect(obj.cols / 2 - 14, obj.rows / 2 - 14, 28, 28)).copyTo(objAvatar);
+	obj.copyTo(objAvatar);
 	//obj(Rect(36, 36, obj.cols - 72, obj.rows - 72)).copyTo(objStar);
 	cvtColor(obj(Rect(36, 36, obj.cols - 72, obj.rows - 72)), objStar, CV_RGBA2GRAY);
 	isExistObjMinMap = true;
@@ -353,7 +374,7 @@ void ATM_ThreadMatch::CheckThread_OrbAvatarMatch()
 
 void ATM_ThreadMatch::thread_OrbAvatarMatch(Mat & Obj)
 {
-	if (isExistObjMinMap)
+	if (isExistObjMinMap&&!Obj.empty())
 	{
 		orbAvatar.setAvatarMat(Obj);
 		orbAvatar.ORBMatch();
@@ -762,7 +783,7 @@ void ATM_TM_ORBAvatar::ORBMatch()
 	surf->detect(imageL, keyPointL);
 	surf->detect(imageR, keyPointR);
 
-	if (keyPointR.empty())
+	if (keyPointL.empty()|| keyPointR.empty())
 	{
 		return;
 	}
@@ -810,12 +831,24 @@ void ATM_TM_ORBAvatar::ORBMatch()
 
 	//挑选好的匹配点
 	std::vector< cv::DMatch > good_matches;
+	double minDis = 9999;
+	int id = 0;
+	double dis = 0;
 	for (int i = 0; i < despL.rows; i++)
 	{
 		if (matches[i].distance < /*0.66*maxDist*/minDist+( maxDist- minDist )/4)
 		{
+			
 			good_matches.push_back(matches[i]);
-			res =res+ keyPointR[matches[i].trainIdx].angle - keyPointL[matches[i].queryIdx].angle;
+			res = res + keyPointR[matches[i].trainIdx].angle - keyPointL[matches[i].queryIdx].angle;
+
+			if (matches[i].distance < minDis)
+			{
+				minDis = matches[i].distance;
+				id = good_matches.size() - 1;
+				dis = keyPointR[matches[i].trainIdx].angle - keyPointL[matches[i].queryIdx].angle;
+
+			}
 		}
 	}
 	cv::Mat imageOutput;
@@ -823,7 +856,7 @@ void ATM_TM_ORBAvatar::ORBMatch()
 	//rotationAngle=0;
 	if (good_matches.size() != 0)
 	{
-		rotationAngle = -res / good_matches.size();
+		rotationAngle = -dis;//-res / good_matches.size();
 	}
 	///////////////////////////
 
