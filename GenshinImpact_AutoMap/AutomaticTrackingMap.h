@@ -160,6 +160,7 @@ private:
 	void addWeightedAlpha(Mat &backgroundImage, Mat& Image, Mat &maskImage,double alpha);
 	void addWeightedPNG(Mat &backgroundImage, Mat& Image);
 	Mat rotateAvatar(double angle);
+	Mat rotateAvatar(double angle,double scale);
 };
 
 typedef AutomaticTrackingMap ATmap;

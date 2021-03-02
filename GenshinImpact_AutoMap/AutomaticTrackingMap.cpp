@@ -870,7 +870,7 @@ void AutomaticTrackingMap::drawAvatar()
 {
 	if (isAutoMode)
 	{
-		Mat avatar= rotateAvatar(TMS.rotationAngle);
+		Mat avatar= rotateAvatar(TMS.rotationAngle,1.0/1.3);//大地图与小地图之比
 		
 		addWeightedPNG(MainMat(Rect(autoMapCenter.x - RES.GIAVATARMASK.cols / 2, autoMapCenter.y - avatar.rows / 2, avatar.cols, avatar.rows)), avatar);
 	}
@@ -966,5 +966,14 @@ Mat AutomaticTrackingMap::rotateAvatar(double angle)
 	Point2f pt(RES.GIAVATARMASK.cols / 2., RES.GIAVATARMASK.rows / 2.);
 	Mat r = getRotationMatrix2D(pt, angle, 1.0);
 	warpAffine(RES.GIAVATARMASK, avatar, r, Size(pt*2));
+	return avatar;
+}
+
+Mat AutomaticTrackingMap::rotateAvatar(double angle, double scale)
+{
+	Mat avatar;
+	Point2f pt(RES.GIAVATARMASK.cols / 2., RES.GIAVATARMASK.rows / 2.);
+	Mat r = getRotationMatrix2D(pt, angle, scale);
+	warpAffine(RES.GIAVATARMASK, avatar, r, Size(pt * 2));
 	return avatar;
 }
