@@ -3,7 +3,6 @@
 
 目前做成了原神的PC端内嵌地图工具，神瞳自动标记+资源地图
 
-# 20210303_0350 角色朝向识别不准，醒了再改，顺便添加清心+塞西莉亚花
 # 使用要点，确定分辨率是1920x1080
 
 目前只对键盘模式下的1920x1080的有边框和无边框进行了处理，关于其他分辨率还正在收集匹配的图片资源。（等到考完教资吧）
@@ -65,8 +64,6 @@
 ![修改快捷方式](https://github.com/GengGode/GenshinImpact_AutoMap/blob/master/GenshinImpact_Map_Test_1/Img/Snipaste_2021-01-31_22-57-14.png)
 
 启动之后按`Alt + Enter`即可切换为无边框模式
-
-详见 https://www.bilibili.com/video/BV1u54y1W7Dg
 
 ## 开发环境
 
