@@ -4,10 +4,13 @@
 目前做成了原神的PC端内嵌地图工具，神瞳自动标记+资源地图
 
 QQ群：538198823
-
+使用说明吧算是：https://www.bilibili.com/video/BV1Wy4y1x754
+正常效果：https://www.bilibili.com/video/BV1ar4y1A7c5
 解压即用
 链接：https://pan.baidu.com/s/1AoI-xSitv7O-u2D72zoJyg 
 提取码：tf16
+
+# 最近太忙了，原神1.5版之后更新
 
 # 使用要点，确定分辨率是1920x1080
 
