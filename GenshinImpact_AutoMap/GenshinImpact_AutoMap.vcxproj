@@ -81,25 +81,28 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='D452T1_C|x64'">
-    <IncludePath>$(VS_VC_opencv_INCLUDE);$(VS_VC_opencv_INCLUDE)\opencv2;$(IncludePath)</IncludePath>
-    <LibraryPath>$(VS_VC_OPENCV_LIB);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(opencvinc);$(opencvinc)\opencv2;$(VC_IncludePath);$(IncludePath)</IncludePath>
+    <LibraryPath>$(opencvlib);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <IncludePath>$(VS_VC_opencv_INCLUDE);$(VS_VC_opencv_INCLUDE)\opencv2;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
-    <LibraryPath>$(VS_VC_OPENCV_LIB);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+    <IncludePath>$(opencvinc);$(opencvinc)\opencv2;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(opencvlib);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release动态库|x64'">
     <IncludePath>$(VS_VC_opencv_INCLUDE);$(VS_VC_opencv_INCLUDE)\opencv2;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <LibraryPath>$(VS_VC_OPENCV_LIB);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='R450T1_W|x64'">
-    <IncludePath>$(VS_VC_opencv_INCLUDE);$(VS_VC_opencv_INCLUDE)\opencv2;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
-    <LibraryPath>$(VS_VC_OPENCV_LIB);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+    <IncludePath>$(opencvinc);$(opencvinc)\opencv2;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(opencvlib);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='D452T1_C|x64'">
     <Link>
       <AdditionalDependencies>opencv_world450d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <ClCompile>
+      <AdditionalOptions>/Zm1000 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
@@ -224,6 +227,9 @@
     <ClCompile Include="QtClassMyHotKeyObject.cpp" />
     <ClCompile Include="QtWidgetsClassMySelectGenshinImpactHandle.cpp" />
     <QtRcc Include="GenshinImpact_AutoMap.qrc" />
+    <QtRcc Include="GenshinImpact_AutoMap_Icon.qrc" />
+    <QtRcc Include="GenshinImpact_AutoMap_Items.qrc" />
+    <QtRcc Include="GenshinImpact_AutoMap_UI.qrc" />
     <QtUic Include="GenshinImpact_AutoMap.ui" />
     <QtMoc Include="GenshinImpact_AutoMap.h" />
     <ClCompile Include="ATM_GiState.cpp" />

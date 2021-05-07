@@ -36,6 +36,9 @@
     <ClCompile Include="GenshinImpact_AutoMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <QtRcc Include="GenshinImpact_AutoMap_Icon.qrc" />
+    <QtRcc Include="GenshinImpact_AutoMap_Items.qrc" />
+    <QtRcc Include="GenshinImpact_AutoMap_UI.qrc" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

@@ -138,6 +138,8 @@ public:
 
 	void setGenshinImpactWndHandle(HWND giHandle);
 
+	void testSaveScreen();
+
 	int getUID();
 	void saveLocal();
 	void loadLocal();

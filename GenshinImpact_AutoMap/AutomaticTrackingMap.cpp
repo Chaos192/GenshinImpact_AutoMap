@@ -269,7 +269,7 @@ void AutomaticTrackingMap::Mat2QImage()
 
 void AutomaticTrackingMap::CustomProcess(int i)
 {
-
+	
 }
 
 Mat AutomaticTrackingMap::getViewMap()
@@ -491,6 +491,7 @@ void AutomaticTrackingMap::setAddFlagOnPos()
 
 void AutomaticTrackingMap::setKongYingJiuGuanState()
 {
+	
 	if (AKY.isRunKYJG)
 	{
 		AKY.setState(GIS.giHandle);
@@ -500,6 +501,15 @@ void AutomaticTrackingMap::setKongYingJiuGuanState()
 void AutomaticTrackingMap::setGenshinImpactWndHandle(HWND giHandle)
 {
 	GIS.setGiHandle(giHandle);
+}
+
+void AutomaticTrackingMap::testSaveScreen()
+{
+	if (GIS.isRun())
+	{
+		imwrite("TestOutput.png", GIS.giFrame);
+
+	}
 }
 
 int AutomaticTrackingMap::getUID()

@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/new/prefix1"/>
+  <qresource prefix="Avatar">
+    <file>resource/UI/Avatar.png</file>
+  </qresource>
+</RCC>

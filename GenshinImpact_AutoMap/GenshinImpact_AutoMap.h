@@ -46,6 +46,12 @@ protected:
 
 private:
 	void displayUID(int uid);
+
+private:
+	void uiHideButton();
+	void uiShowButton();
+	void uiConnectButton();
+	void uiButtonToMap();
 private:
 	int Fps = 42;//ms
 	QTimer *mapMessageLoopTimer;

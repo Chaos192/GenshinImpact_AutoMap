@@ -4,18 +4,8 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
-	ui.UIObjFlagButton->setVisible(false);
-	ui.UIObjList0Button->setVisible(false);
-	ui.UIObjList1Button->setVisible(false);
-	ui.UIObjList2Button->setVisible(false);
-	ui.UIObjList999Button->setVisible(false);
-
-	connect(ui.UIObjFlagButton, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
-	connect(ui.UIObjList0Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
-	connect(ui.UIObjList1Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
-	connect(ui.UIObjList2Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
-	connect(ui.UIObjList999Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
-
+	uiHideButton();
+	uiConnectButton();
 
 	//创建刷新定时器
 	mapMessageLoopTimer = new QTimer(this);
@@ -148,6 +138,56 @@ void GenshinImpact_AutoMap::displayUID(int uid)
 	}
 }
 
+void GenshinImpact_AutoMap::uiHideButton()
+{
+	ui.UIObjFlagButton->setVisible(false);
+	ui.UIObjList0Button->setVisible(false);
+	ui.UIObjList1Button->setVisible(false);
+	ui.UIObjList2Button->setVisible(false);
+	ui.UIObjList93Button->setVisible(false);
+	ui.UIObjList94Button->setVisible(false);
+	ui.UIObjList101Button->setVisible(false);
+	ui.UIObjList102Button->setVisible(false);
+	ui.UIObjList103Button->setVisible(false);
+	ui.UIObjList104Button->setVisible(false);
+	ui.UIObjList105Button->setVisible(false);
+	ui.UIObjList205Button->setVisible(false);
+	ui.UIDLabel->setVisible(true);
+}
+
+void GenshinImpact_AutoMap::uiShowButton()
+{
+	ui.UIObjFlagButton->setVisible(true);
+	ui.UIObjList0Button->setVisible(true);
+	ui.UIObjList1Button->setVisible(true);
+	ui.UIObjList2Button->setVisible(true);
+	ui.UIObjList93Button->setVisible(true);
+	ui.UIObjList94Button->setVisible(true);
+	ui.UIObjList101Button->setVisible(true);
+	ui.UIObjList102Button->setVisible(true);
+	ui.UIObjList103Button->setVisible(true);
+	ui.UIObjList104Button->setVisible(true);
+	ui.UIObjList105Button->setVisible(true);
+	ui.UIObjList205Button->setVisible(true);
+	ui.UIDLabel->setVisible(false);
+}
+
+void GenshinImpact_AutoMap::uiConnectButton()
+{
+	connect(ui.UIObjFlagButton, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
+	connect(ui.UIObjList0Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
+	connect(ui.UIObjList1Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
+	connect(ui.UIObjList2Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
+	connect(ui.UIObjList93Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
+	connect(ui.UIObjList94Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
+	connect(ui.UIObjList101Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
+	connect(ui.UIObjList102Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
+	connect(ui.UIObjList103Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
+	connect(ui.UIObjList104Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
+	connect(ui.UIObjList105Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
+	connect(ui.UIObjList205Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
+}
+
 void GenshinImpact_AutoMap::runMap()
 {
 	static bool isUpdataEnd = true;
@@ -206,6 +246,7 @@ void GenshinImpact_AutoMap::setAddFlag()
 
 void GenshinImpact_AutoMap::setActivationKongYingJiuGuan()
 {
+	map.testSaveScreen();
 	map.setKongYingJiuGuanState();
 }
 
@@ -229,25 +270,14 @@ void GenshinImpact_AutoMap::setUIObjListShow()
 {
 	ui.UIButton->setIcon(QIcon(":/IconUI/resource/UI1.ico"));
 
-	ui.UIObjFlagButton->setVisible(true);
-	ui.UIObjList0Button->setVisible(true);
-	ui.UIObjList1Button->setVisible(true);
-	ui.UIObjList2Button->setVisible(true);
-	ui.UIObjList999Button->setVisible(true);
+	uiShowButton();
 
 	uiObjListSleepTimer->start(2000);
-
-
 }
 
 void GenshinImpact_AutoMap::setUIObjListHide()
 {
-	ui.UIObjFlagButton->setVisible(false);
-	ui.UIObjList0Button->setVisible(false);
-	ui.UIObjList1Button->setVisible(false);
-	ui.UIObjList2Button->setVisible(false);
-	ui.UIObjList999Button->setVisible(false);
-
+	uiHideButton();
 
 	if (map.isAutoMode)
 	{
@@ -278,7 +308,7 @@ void GenshinImpact_AutoMap::setUIObjListToMapData()
 	{
 		map.setObjIsShow(2);
 	}
-	if (btn == ui.UIObjList999Button)
+	if (btn == ui.UIObjList101Button)
 	{
 		map.setObjIsShow(3);
 	}

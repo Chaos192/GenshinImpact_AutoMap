@@ -1,0 +1,16 @@
+<RCC>
+  <qresource prefix="GenshinImpact_AutoMap_Items"/>
+  <qresource prefix="png">
+    <file>resource/ItemsPng/UIObjList0.png</file>
+    <file>resource/ItemsPng/UIObjList1.png</file>
+    <file>resource/ItemsPng/UIObjList2.png</file>
+    <file>resource/ItemsPng/UIObjList93.png</file>
+    <file>resource/ItemsPng/UIObjList94.png</file>
+    <file>resource/ItemsPng/UIObjList101.png</file>
+    <file>resource/ItemsPng/UIObjList102.png</file>
+    <file>resource/ItemsPng/UIObjList103.png</file>
+    <file>resource/ItemsPng/UIObjList104.png</file>
+    <file>resource/ItemsPng/UIObjList105.png</file>
+    <file>resource/ItemsPng/UIObjList205.png</file>
+  </qresource>
+</RCC>
