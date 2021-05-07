@@ -9,6 +9,7 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 	ui.UIObjList1Button->setVisible(false);
 	ui.UIObjList2Button->setVisible(false);
 	ui.UIObjList999Button->setVisible(false);
+
 	connect(ui.UIObjFlagButton, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
 	connect(ui.UIObjList0Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
 	connect(ui.UIObjList1Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
