@@ -30,10 +30,10 @@
    <widget class="QLabel" name="MainView">
     <property name="geometry">
      <rect>
-      <x>-11</x>
-      <y>-1</y>
-      <width>311</width>
-      <height>301</height>
+      <x>0</x>
+      <y>0</y>
+      <width>300</width>
+      <height>300</height>
      </rect>
     </property>
     <property name="mouseTracking">
@@ -43,13 +43,19 @@
      <enum>Qt::LeftToRight</enum>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:rgba(128,128,128)</string>
+     <string notr="true">background-color:rgba(128,128,128,0)</string>
     </property>
     <property name="text">
      <string/>
     </property>
+    <property name="pixmap">
+     <pixmap resource="GenshinImpact_AutoMap.qrc">:/Initing/resource/UI/Initing.png</pixmap>
+    </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QtClassMyExitButton" name="ExitButton">
@@ -522,6 +528,8 @@
  </customwidgets>
  <resources>
   <include location="GenshinImpact_AutoMap.qrc"/>
+  <include location="GenshinImpact_AutoMap_UI.qrc"/>
+  <include location="GenshinImpact_AutoMap_Items.qrc"/>
   <include location="GenshinImpact_AutoMap_Icon.qrc"/>
  </resources>
  <connections/>

@@ -38,7 +38,8 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
 	//设置半透明无边框窗口
 	this->setWindowFlags(Qt::FramelessWindowHint);
 	this->setAttribute(Qt::WA_TranslucentBackground, true);
-	ui.MainView->setAttribute(Qt::WA_TranslucentBackground);
+	//ui.MainView->setAttribute(Qt::WA_TranslucentBackground);
+	ui.MainView->setVisible(false);
 
 	//设置UID字体
 	int UIDFontId = QFontDatabase::addApplicationFont(":/UIDFont/resource/UIDFont.ttf");
@@ -130,11 +131,27 @@ void GenshinImpact_AutoMap::paintEvent(QPaintEvent * event)
 
 void GenshinImpact_AutoMap::displayUID(int uid)
 {
-	static int uidTmp=0;
+	static int uidTmp = 0;
+	static bool isInitDrawFinish = false;
 	if (uidTmp != uid)
 	{
 		ui.UIDLabel->setText(QString::QString("UID: %1").arg(uid));
 		uidTmp = uid;
+	}
+	if (!isInitDrawFinish)
+	{
+		if (map.isAutoMode)
+		{
+			if (map.isAutoInitFinish)
+			{
+				ui.MainView->setVisible(false);
+				isInitDrawFinish = true;
+			}
+			else
+			{
+				ui.MainView->setVisible(true);
+			}
+		}
 	}
 }
 

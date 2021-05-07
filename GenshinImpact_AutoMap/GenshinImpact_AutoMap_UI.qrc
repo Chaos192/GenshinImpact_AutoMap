@@ -1,5 +1,24 @@
 <RCC>
   <qresource prefix="/new/prefix1"/>
+  <qresource prefix="GrayBackground">
+    <file>resource/UI/GrayBackground.png</file>
+  </qresource>
+  <qresource prefix="NumUID1k">
+    <file>resource/NumUID/UID_.bmp</file>
+    <file>resource/NumUID/uid0.bmp</file>
+    <file>resource/NumUID/uid1.bmp</file>
+    <file>resource/NumUID/uid2.bmp</file>
+    <file>resource/NumUID/uid3.bmp</file>
+    <file>resource/NumUID/uid4.bmp</file>
+    <file>resource/NumUID/uid5.bmp</file>
+    <file>resource/NumUID/uid6.bmp</file>
+    <file>resource/NumUID/uid7.bmp</file>
+    <file>resource/NumUID/uid8.bmp</file>
+    <file>resource/NumUID/uid9.bmp</file>
+  </qresource>
+  <qresource prefix="Loading">
+    <file>resource/UI/Loading.png</file>
+  </qresource>
   <qresource prefix="Avatar">
     <file>resource/UI/Avatar.png</file>
   </qresource>
