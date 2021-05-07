@@ -23,7 +23,7 @@ class ATM_TM_SurfMap
 	int minHessian = 400;
 	float ratio_thresh = 0.66f;
 	float mapScale = 1.3;//1.3;
-	int someSizeR = 100;
+	int someSizeR = 106;
 	float MatchMatScale = 2.0;
 
 	Ptr<cv::xfeatures2d::SURF> detector, detectorSomeMap;

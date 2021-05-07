@@ -6,6 +6,7 @@ TEMPLATE = app
 TARGET = GenshinImpact_AutoMap
 DESTDIR = ../x64/Debug
 CONFIG += debug
+CONFIG += resources_big
 LIBS += -L"."
 DEPENDPATH += .
 MOC_DIR += .

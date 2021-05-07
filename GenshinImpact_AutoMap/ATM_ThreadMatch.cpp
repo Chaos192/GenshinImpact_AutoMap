@@ -524,7 +524,7 @@ void ATM_TM_SurfMap::SURFMatch()
 	//static Point hisP[3];
 
 	Mat img_scene(_mapMat);
-	Mat img_object(_minMapMat);
+	Mat img_object(_minMapMat(Rect(30,30, _minMapMat.cols-60, _minMapMat.rows-60)));
 
 	isContinuity = false;
 
@@ -545,7 +545,7 @@ void ATM_TM_SurfMap::SURFMatch()
 				detectorSomeMap->detectAndCompute(minMap, noArray(), Kp_MinMap, Dp_MinMap);
 				Ptr<DescriptorMatcher> matcherTmp = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
 				std::vector< std::vector<DMatch> > KNN_mTmp;
-				//std::vector<DMatch> good_matchesTmp;
+				std::vector<DMatch> good_matchesTmp;
 				matcherTmp->knnMatch(Dp_MinMap, Dp_SomeMap, KNN_mTmp, 2);
 				std::vector<double> lisx;
 				std::vector<double> lisy;
@@ -555,13 +555,18 @@ void ATM_TM_SurfMap::SURFMatch()
 				{
 					if (KNN_mTmp[i][0].distance < ratio_thresh * KNN_mTmp[i][1].distance)
 					{
-						//good_matchesTmp.push_back(KNN_mTmp[i][0]);
+						good_matchesTmp.push_back(KNN_mTmp[i][0]);
 						lisx.push_back(((minMap.cols / 2 - Kp_MinMap[KNN_mTmp[i][0].queryIdx].pt.x)*mapScale + Kp_SomeMap[KNN_mTmp[i][0].trainIdx].pt.x));
 						lisy.push_back(((minMap.rows / 2 - Kp_MinMap[KNN_mTmp[i][0].queryIdx].pt.y)*mapScale + Kp_SomeMap[KNN_mTmp[i][0].trainIdx].pt.y));
 						sumx += lisx.back();
 						sumy += lisy.back();
 					}
 				}
+				Mat img_matches, imgmap, imgminmap;
+				drawKeypoints(someMap, Kp_SomeMap, imgmap, Scalar::all(-1), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+				drawKeypoints(img_object, Kp_MinMap, imgminmap, Scalar::all(-1), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+
+				drawMatches(img_object, Kp_MinMap, someMap, Kp_SomeMap, good_matchesTmp, img_matches, Scalar::all(-1), Scalar::all(-1), std::vector<char>(), DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS);
 
 				if (min(lisx.size(), lisy.size()) <= 4)
 				{
