@@ -508,7 +508,21 @@ void AutomaticTrackingMap::testSaveScreen()
 	if (GIS.isRun())
 	{
 		imwrite("TestOutput.png", GIS.giFrame);
-
+		//CURSORINFO hCur;
+		//ZeroMemory(&hCur, sizeof(hCur));
+		//hCur.cbSize = sizeof(hCur);
+		//GetCursorInfo(&hCur);
+		//ICONINFO iconinfo;
+		//GetIconInfo(hCur.hCursor, &iconinfo);
+		//BITMAP bmp;
+		//::GetObject(iconinfo.hbmColor, sizeof(BITMAP), &bmp);
+		//int nChannels = bmp.bmBitsPixel == 1 ? 1 : bmp.bmBitsPixel / 8;
+		//int depth = bmp.bmBitsPixel == 1 ? IPL_DEPTH_1U : IPL_DEPTH_8U;
+		////mat²Ù×÷
+		//cv::Mat v_mat;
+		//v_mat.create(cvSize(bmp.bmWidth, bmp.bmHeight), CV_MAKETYPE(CV_8UC3, nChannels));
+		//GetBitmapBits(iconinfo.hbmColor, bmp.bmHeight*bmp.bmWidth*nChannels, v_mat.data);
+		//imwrite("Cur.png", v_mat);
 	}
 }
 

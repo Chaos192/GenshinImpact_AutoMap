@@ -731,7 +731,6 @@ void ATM_TM_TemplatePaimon::TemplatePaimon()
 	if (minVal < 0.51 || maxVal == 1)
 	{
 		isPaimonVisible = false;
-
 	}
 	else
 	{
