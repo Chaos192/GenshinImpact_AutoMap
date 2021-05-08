@@ -51,6 +51,8 @@ public:
 	bool getIsContinuity();
 private:
 	double dis(Point &p);
+	Point SPC(vector<double> lisx,double sumx, vector<double> lisy, double sumy);
+	Point SPC2(vector<double> lisx, double sumx, vector<double> lisy, double sumy);
 };
 
 class ATM_TM_TemplatePaimon

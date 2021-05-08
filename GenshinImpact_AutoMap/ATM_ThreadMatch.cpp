@@ -577,9 +577,15 @@ void ATM_TM_SurfMap::SURFMatch()
 				{
 					double meanx = sumx / lisx.size(); //均值
 					double meany = sumy / lisy.size(); //均值
+					Point p = SPC(lisx, sumx, lisy, sumy);
+
 					int x = (int)meanx;
 					int y = (int)meany;
-					pos = Point(x + hisP[2].x - someSizeR, y + hisP[2].y - someSizeR);
+
+					x = p.x;
+					y = p.y;
+
+ 					pos = Point(x + hisP[2].x - someSizeR, y + hisP[2].y - someSizeR);
 				}
 			}
 		}
@@ -616,48 +622,7 @@ void ATM_TM_SurfMap::SURFMatch()
 		{
 			cout << "SURF Match Point Number: " << lisx.size() << "," << lisy.size() << endl;
 
-			double meanx = sumx / lisx.size(); //均值
-			double meany = sumy / lisy.size(); //均值
-			int x = (int)meanx;
-			int y = (int)meany;
-			if (min(lisx.size(), lisy.size()) > 15)
-			{
-				double accumx = 0.0;
-				double accumy = 0.0;
-				for (int i = 0; i < min(lisx.size(), lisy.size()); i++)
-				{
-					accumx += (lisx[i] - meanx)*(lisx[i] - meanx);
-					accumy += (lisy[i] - meany)*(lisy[i] - meany);
-				}
-
-				double stdevx = sqrt(accumx / (lisx.size() - 1)); //标准差
-				double stdevy = sqrt(accumy / (lisy.size() - 1)); //标准差
-
-				sumx = 0;
-				sumy = 0;
-				int numx = 0;
-				int numy = 0;
-				for (int i = 0; i < min(lisx.size(), lisy.size()); i++)
-				{
-					if (abs(lisx[i] - meanx) < 3 * stdevx)
-					{
-						sumx += lisx[i];
-						numx++;
-					}
-					if (abs(lisy[i] - meany) < 3 * stdevy)
-					{
-						sumy += lisy[i];
-						numy++;
-					}
-				}
-				int x = (int)(sumx / numx);
-				int y = (int)(sumy / numy);
-				pos = Point(x, y);
-			}
-			else
-			{
-				pos = Point(x, y);
-			}
+			pos=SPC(lisx, sumx, lisy, sumy);
 		}
 	}
 
@@ -685,6 +650,62 @@ bool ATM_TM_SurfMap::getIsContinuity()
 double ATM_TM_SurfMap::dis(Point & p)
 {
 	return sqrt(p.x*p.x + p.y*p.y);
+}
+
+Point ATM_TM_SurfMap::SPC(vector<double> lisx, double sumx, vector<double> lisy, double sumy)
+{
+	Point pos;
+	double meanx = sumx / lisx.size(); //均值
+	double meany = sumy / lisy.size(); //均值
+	int x = (int)meanx;
+	int y = (int)meany;
+	if (min(lisx.size(), lisy.size()) > 3)
+	{
+		double accumx = 0.0;
+		double accumy = 0.0;
+		for (int i = 0; i < min(lisx.size(), lisy.size()); i++)
+		{
+			accumx += (lisx[i] - meanx)*(lisx[i] - meanx);
+			accumy += (lisy[i] - meany)*(lisy[i] - meany);
+		}
+
+		double stdevx = sqrt(accumx / (lisx.size() - 1)); //标准差
+		double stdevy = sqrt(accumy / (lisy.size() - 1)); //标准差
+
+		sumx = 0;
+		sumy = 0;
+		int numx = 0;
+		int numy = 0;
+		for (int i = 0; i < min(lisx.size(), lisy.size()); i++)
+		{
+			if (abs(lisx[i] - meanx) < 1 * stdevx)
+			{
+				sumx += lisx[i];
+				numx++;
+			}
+
+			if (abs(lisy[i] - meany) < 1 * stdevy)
+			{
+				sumy += lisy[i];
+				numy++;
+			}
+		}
+		int x = (int)(sumx / numx);
+		int y = (int)(sumy / numy);
+		pos = Point(x, y);
+	}
+	else
+	{
+		pos = Point(x, y);
+	}
+	return pos;
+}
+
+Point ATM_TM_SurfMap::SPC2(vector<double> lisx, double sumx, vector<double> lisy, double sumy)
+{
+	Point p;
+
+	return Point();
 }
 
 void ATM_TM_TemplatePaimon::setPaimonTemplate(Mat paimonTemplateMat)
