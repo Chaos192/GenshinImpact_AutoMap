@@ -556,7 +556,6 @@ void ATM_TM_SurfMap::SURFMatch()
 					if (KNN_mTmp[i][0].distance < ratio_thresh * KNN_mTmp[i][1].distance)
 					{
 						good_matchesTmp.push_back(KNN_mTmp[i][0]);
-						// 这里有个bug回卡进来，进入副本或者切换放大招时偶尔触发
 						lisx.push_back(((minMap.cols / 2 - Kp_MinMap[KNN_mTmp[i][0].queryIdx].pt.x)*mapScale + Kp_SomeMap[KNN_mTmp[i][0].trainIdx].pt.x));
 						lisy.push_back(((minMap.rows / 2 - Kp_MinMap[KNN_mTmp[i][0].queryIdx].pt.y)*mapScale + Kp_SomeMap[KNN_mTmp[i][0].trainIdx].pt.y));
 						sumx += lisx.back();
