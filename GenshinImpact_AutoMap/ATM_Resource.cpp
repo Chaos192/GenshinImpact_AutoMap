@@ -144,6 +144,11 @@ void ATM_Resource::loadGiObjFlagIconMask()
 
 void ATM_Resource::loadGiNumUID()
 {
+	for (int i = 0; i < 11; i++)
+	{
+		hGINUMUID[i] = LoadBitmap(GetModuleHandle(i), MAKEINTRESOURCE(IDB_GINUMUID0_ARGB));
+		HBitmap2MatAlpha(hGINUMUID[i], GINUMUID[i]);
+	}
 	hGINUMUID[0] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_GINUMUID0_ARGB));
 	HBitmap2MatAlpha(hGINUMUID[0], GINUMUID[0]);
 	hGINUMUID[1] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_GINUMUID1_ARGB));
@@ -166,6 +171,11 @@ void ATM_Resource::loadGiNumUID()
 	HBitmap2MatAlpha(hGINUMUID[9], GINUMUID[9]);
 	hGINUMUID[10] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_GINUMUID_ARGB));
 	HBitmap2MatAlpha(hGINUMUID[10], GINUMUID[10]);
+}
+
+void ATM_Resource::loadFromResource()
+{
+	//:/png/resource/ItemsPng/UIObjList0.png
 }
 
 bool ATM_Resource::HBitmap2Mat(HBITMAP & _hBmp, cv::Mat & _mat)
@@ -212,4 +222,27 @@ bool ATM_Resource::Mat2MaskMat(Mat & in, Mat & out)
 	out = mv0[0];
 
 	return false;
+}
+
+QPixmap ATM_Resource::QImage2QPixmap(QImage & in)
+{
+	QPixmap out;
+	return out.fromImage(in);
+}
+
+QImage ATM_Resource::QPixmap2QImage(QPixmap & in)
+{
+	return in.toImage();
+}
+
+Mat ATM_Resource::QImage2Mat(QImage & in)
+{
+	return Mat(in.height(), in.width(), CV_8UC4, (uchar*)in.bits(), in.bytesPerLine());
+}
+
+QImage ATM_Resource::Mat2QImage(Mat & in)
+{
+	Mat rgb;
+	cvtColor(in, rgb, CV_BGR2RGB);
+	return QImage((const unsigned char*)(rgb.data), rgb.cols, rgb.rows, QImage::Format_RGB888);
 }

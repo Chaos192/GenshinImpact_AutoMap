@@ -33,7 +33,7 @@ private:
 	QtClassMyHotKeyObject *hotKeyActivationKongYingJiuGuan;
 	QtClassMyHotKeyObject *hotKeyActivationSelectGenshinImpact;
 	QtWidgetsClassMySelectGenshinImpactHandle *widgetsSelectGI = nullptr;
-
+	vector<QPushButton*> UIObjList;
 	void mapInit();
 
 protected:

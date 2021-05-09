@@ -191,6 +191,31 @@ void GenshinImpact_AutoMap::uiShowButton()
 
 void GenshinImpact_AutoMap::uiConnectButton()
 {
+	//UIObjList = new QPushButton*[11];
+	//UIObjList[0] = ui.UIObjList0Button;
+	//UIObjList[1] = ui.UIObjList1Button;
+	//UIObjList[2] = ui.UIObjList2Button;
+	//UIObjList[3] = ui.UIObjList93Button;
+	//UIObjList[4] = ui.UIObjList94Button;
+	//UIObjList[0] = ui.UIObjList101Button;
+	//UIObjList[0] = ui.UIObjList6Button;
+	//UIObjList[0] = ui.UIObjList0Button;
+	//UIObjList[0] = ui.UIObjList0Button;
+	//UIObjList[0] = ui.UIObjList0Button;
+	//UIObjList[0] = ui.UIObjList0Button;
+	UIObjList.clear();
+	UIObjList.push_back(ui.UIObjList0Button);
+	UIObjList.push_back(ui.UIObjList1Button);
+	UIObjList.push_back(ui.UIObjList2Button);
+	UIObjList.push_back(ui.UIObjList93Button);
+	UIObjList.push_back(ui.UIObjList94Button);
+	UIObjList.push_back(ui.UIObjList101Button);
+	UIObjList.push_back(ui.UIObjList102Button);
+	UIObjList.push_back(ui.UIObjList103Button);
+	UIObjList.push_back(ui.UIObjList104Button);
+	UIObjList.push_back(ui.UIObjList105Button);
+	UIObjList.push_back(ui.UIObjList205Button);
+
 	connect(ui.UIObjFlagButton, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
 	connect(ui.UIObjList0Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
 	connect(ui.UIObjList1Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
@@ -313,22 +338,29 @@ void GenshinImpact_AutoMap::setUIObjListToMapData()
 	{
 		map.setObjFlagIsShow();
 	}
-	if (btn == ui.UIObjList0Button) 
+	for (int i = 0; i < UIObjList.size(); i++)
 	{
-		map.setObjIsShow(0);
+		if (btn == UIObjList[i])
+		{
+			map.setObjIsShow(i);
+		}
 	}
-	if (btn == ui.UIObjList1Button) 
-	{
-		map.setObjIsShow(1);
-	}
-	if (btn == ui.UIObjList2Button) 
-	{
-		map.setObjIsShow(2);
-	}
-	if (btn == ui.UIObjList101Button)
-	{
-		map.setObjIsShow(3);
-	}
+	//if (btn == ui.UIObjList0Button) 
+	//{
+	//	map.setObjIsShow(0);
+	//}
+	//if (btn == ui.UIObjList1Button) 
+	//{
+	//	map.setObjIsShow(1);
+	//}
+	//if (btn == ui.UIObjList2Button) 
+	//{
+	//	map.setObjIsShow(2);
+	//}
+	//if (btn == ui.UIObjList101Button)
+	//{
+	//	map.setObjIsShow(3);
+	//}
 }
 
 void GenshinImpact_AutoMap::getGenshinImpactWndHandleFromWidgets(HWND giHandle)

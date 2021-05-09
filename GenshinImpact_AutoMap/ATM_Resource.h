@@ -1,4 +1,5 @@
 #pragma once
+#include <QtWidgets/QMainWindow>
 #include <vector>
 #include <Windows.h>
 #include <opencv2/opencv.hpp>
@@ -53,8 +54,15 @@ private:
 	void loadGiObjFlagIconMask();
 	void loadGiNumUID();
 
+	void loadFromResource();
+
 	bool HBitmap2Mat(HBITMAP& _hBmp, cv::Mat& _mat);
 	bool HBitmap2MatAlpha(HBITMAP& _hBmp, cv::Mat& _mat);
 	bool Mat2MaskMat(Mat &in, Mat &out);
+
+	QPixmap QImage2QPixmap(QImage &in);
+	QImage QPixmap2QImage(QPixmap &in);
+	Mat QImage2Mat(QImage &in);
+	QImage Mat2QImage(Mat &in);
 };
 
