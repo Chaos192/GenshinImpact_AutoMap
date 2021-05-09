@@ -158,52 +158,28 @@ void GenshinImpact_AutoMap::displayUID(int uid)
 void GenshinImpact_AutoMap::uiHideButton()
 {
 	ui.UIObjFlagButton->setVisible(false);
-	ui.UIObjList0Button->setVisible(false);
-	ui.UIObjList1Button->setVisible(false);
-	ui.UIObjList2Button->setVisible(false);
-	ui.UIObjList93Button->setVisible(false);
-	ui.UIObjList94Button->setVisible(false);
-	ui.UIObjList101Button->setVisible(false);
-	ui.UIObjList102Button->setVisible(false);
-	ui.UIObjList103Button->setVisible(false);
-	ui.UIObjList104Button->setVisible(false);
-	ui.UIObjList105Button->setVisible(false);
-	ui.UIObjList205Button->setVisible(false);
+	for (int i = 0; i < UIObjList.size(); i++)
+	{
+		UIObjList[i]->setVisible(false);
+	}
 	ui.UIDLabel->setVisible(true);
 }
 
 void GenshinImpact_AutoMap::uiShowButton()
 {
 	ui.UIObjFlagButton->setVisible(true);
-	ui.UIObjList0Button->setVisible(true);
-	ui.UIObjList1Button->setVisible(true);
-	ui.UIObjList2Button->setVisible(true);
-	ui.UIObjList93Button->setVisible(true);
-	ui.UIObjList94Button->setVisible(true);
-	ui.UIObjList101Button->setVisible(true);
-	ui.UIObjList102Button->setVisible(true);
-	ui.UIObjList103Button->setVisible(true);
-	ui.UIObjList104Button->setVisible(true);
-	ui.UIObjList105Button->setVisible(true);
-	ui.UIObjList205Button->setVisible(true);
+	for (int i = 0; i < UIObjList.size(); i++)
+	{
+		UIObjList[i]->setVisible(true);
+	}
 	ui.UIDLabel->setVisible(false);
 }
 
 void GenshinImpact_AutoMap::uiConnectButton()
 {
-	//UIObjList = new QPushButton*[11];
-	//UIObjList[0] = ui.UIObjList0Button;
-	//UIObjList[1] = ui.UIObjList1Button;
-	//UIObjList[2] = ui.UIObjList2Button;
-	//UIObjList[3] = ui.UIObjList93Button;
-	//UIObjList[4] = ui.UIObjList94Button;
-	//UIObjList[0] = ui.UIObjList101Button;
-	//UIObjList[0] = ui.UIObjList6Button;
-	//UIObjList[0] = ui.UIObjList0Button;
-	//UIObjList[0] = ui.UIObjList0Button;
-	//UIObjList[0] = ui.UIObjList0Button;
-	//UIObjList[0] = ui.UIObjList0Button;
 	UIObjList.clear();
+
+	// 在此：添加新的按钮
 	UIObjList.push_back(ui.UIObjList0Button);
 	UIObjList.push_back(ui.UIObjList1Button);
 	UIObjList.push_back(ui.UIObjList2Button);
@@ -217,17 +193,10 @@ void GenshinImpact_AutoMap::uiConnectButton()
 	UIObjList.push_back(ui.UIObjList205Button);
 
 	connect(ui.UIObjFlagButton, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
-	connect(ui.UIObjList0Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
-	connect(ui.UIObjList1Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
-	connect(ui.UIObjList2Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
-	connect(ui.UIObjList93Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
-	connect(ui.UIObjList94Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
-	connect(ui.UIObjList101Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
-	connect(ui.UIObjList102Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
-	connect(ui.UIObjList103Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
-	connect(ui.UIObjList104Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
-	connect(ui.UIObjList105Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
-	connect(ui.UIObjList205Button, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
+	for (int i = 0; i < UIObjList.size(); i++)
+	{
+		connect(UIObjList[i], SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
+	}
 }
 
 void GenshinImpact_AutoMap::runMap()
@@ -248,8 +217,6 @@ void GenshinImpact_AutoMap::runMap()
 		//启动下一帧
 		mapMessageLoopTimer->start(Fps);
 	}
-
-
 }
 
 void GenshinImpact_AutoMap::updataFrontEnd()
@@ -277,7 +244,6 @@ void GenshinImpact_AutoMap::setAutoMode()
 	{
 		ui.UIButton->setIcon(QIcon(":/IconUI/resource/UI.ico"));
 	}
-
 }
 
 void GenshinImpact_AutoMap::setAddFlag()
@@ -304,16 +270,13 @@ void GenshinImpact_AutoMap::setActivationSelectGenshinImpact()
 	else
 	{
 		widgetsSelectGI->show();
-
 	}
 }
 
 void GenshinImpact_AutoMap::setUIObjListShow()
 {
 	ui.UIButton->setIcon(QIcon(":/IconUI/resource/UI1.ico"));
-
 	uiShowButton();
-
 	uiObjListSleepTimer->start(2000);
 }
 
@@ -345,22 +308,6 @@ void GenshinImpact_AutoMap::setUIObjListToMapData()
 			map.setObjIsShow(i);
 		}
 	}
-	//if (btn == ui.UIObjList0Button) 
-	//{
-	//	map.setObjIsShow(0);
-	//}
-	//if (btn == ui.UIObjList1Button) 
-	//{
-	//	map.setObjIsShow(1);
-	//}
-	//if (btn == ui.UIObjList2Button) 
-	//{
-	//	map.setObjIsShow(2);
-	//}
-	//if (btn == ui.UIObjList101Button)
-	//{
-	//	map.setObjIsShow(3);
-	//}
 }
 
 void GenshinImpact_AutoMap::getGenshinImpactWndHandleFromWidgets(HWND giHandle)

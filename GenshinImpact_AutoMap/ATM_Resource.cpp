@@ -122,6 +122,7 @@ void ATM_Resource::loadGiObjIconMask()
 	hGIOBJICONMASK[3] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_OBJICON999MASK));
 	HBitmap2Mat(hGIOBJICONMASK[3], GIOBJICONMASK[3]);
 	Mat2MaskMat(GIOBJICONMASK[3], GIOBJICONMASK[3]);
+
 }
 
 void ATM_Resource::loadGiObjFlagIcon()

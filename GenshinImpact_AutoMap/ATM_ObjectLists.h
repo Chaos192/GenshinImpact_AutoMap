@@ -47,9 +47,10 @@ public:
 
 class ATM_ObjectLists
 {
-	int _objectListsNumber = 4;
-	int _objectMaxNumbers[4] = { 65,131,80,120 };
-	bool _isShow[4] = { false };
+	// 在此：添加新的物品需改数量
+	int _objectListsNumber = 11;
+	int _objectMaxNumbers[11] = { 65,131,80,120 };
+	bool _isShow[11] = { false };
 	bool _isShowFlag = false;
 	ATM_ObjectList *_objList = nullptr;
 	ATM_ObjectFlag _objFlag;
