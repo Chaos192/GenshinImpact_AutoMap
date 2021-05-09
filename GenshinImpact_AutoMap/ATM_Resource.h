@@ -1,6 +1,7 @@
 #pragma once
 #include <QtWidgets/QMainWindow>
 #include <vector>
+#include <string>
 #include <Windows.h>
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/types_c.h>

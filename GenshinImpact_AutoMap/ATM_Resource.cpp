@@ -144,11 +144,6 @@ void ATM_Resource::loadGiObjFlagIconMask()
 
 void ATM_Resource::loadGiNumUID()
 {
-	for (int i = 0; i < 11; i++)
-	{
-		hGINUMUID[i] = LoadBitmap(GetModuleHandle(i), MAKEINTRESOURCE(IDB_GINUMUID0_ARGB));
-		HBitmap2MatAlpha(hGINUMUID[i], GINUMUID[i]);
-	}
 	hGINUMUID[0] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_GINUMUID0_ARGB));
 	HBitmap2MatAlpha(hGINUMUID[0], GINUMUID[0]);
 	hGINUMUID[1] = LoadBitmap(GetModuleHandle(0), MAKEINTRESOURCE(IDB_GINUMUID1_ARGB));

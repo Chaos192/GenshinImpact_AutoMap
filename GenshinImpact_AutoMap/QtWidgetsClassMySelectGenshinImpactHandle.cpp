@@ -14,7 +14,7 @@ QtWidgetsClassMySelectGenshinImpactHandle::~QtWidgetsClassMySelectGenshinImpactH
 
 void QtWidgetsClassMySelectGenshinImpactHandle::displayWndInfo()
 {
-	unsigned int nHandle = (int)giHandle;
+	long long int nHandle = (long long int)giHandle;
 	ui.lineEditName->setText(QString::fromLocal8Bit(giName.data()));
 	ui.lineEditHandle->setText(QString::number(nHandle));
 	ui.lineEditClass->setText(QString::fromLocal8Bit(giClass.data()));
