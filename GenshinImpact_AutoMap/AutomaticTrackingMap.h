@@ -152,6 +152,7 @@ private:
 	void setThisState();
 	void setThreadMatchMat();
 
+	void drawStarObjectLists();
 	void drawObjectLists();
 	void drawFlagLists();
 	void drawAvatar();

@@ -4,8 +4,9 @@ GenshinImpact_AutoMap::GenshinImpact_AutoMap(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
-	uiHideButton();
 	uiConnectButton();
+	uiHideButton();
+
 
 	//创建刷新定时器
 	mapMessageLoopTimer = new QTimer(this);
@@ -180,17 +181,17 @@ void GenshinImpact_AutoMap::uiConnectButton()
 	UIObjList.clear();
 
 	// 在此：添加新的按钮
-	UIObjList.push_back(ui.UIObjList0Button);
-	UIObjList.push_back(ui.UIObjList1Button);
-	UIObjList.push_back(ui.UIObjList2Button);
-	UIObjList.push_back(ui.UIObjList93Button);
-	UIObjList.push_back(ui.UIObjList94Button);
-	UIObjList.push_back(ui.UIObjList101Button);
-	UIObjList.push_back(ui.UIObjList102Button);
-	UIObjList.push_back(ui.UIObjList103Button);
-	UIObjList.push_back(ui.UIObjList104Button);
-	UIObjList.push_back(ui.UIObjList105Button);
-	UIObjList.push_back(ui.UIObjList205Button);
+	UIObjList.push_back(ui.UIObjList0Button); // 风神瞳
+	UIObjList.push_back(ui.UIObjList1Button); // 岩神瞳
+	UIObjList.push_back(ui.UIObjList2Button); // 绯红玉髓
+	UIObjList.push_back(ui.UIObjList93Button); // 水晶矿
+	UIObjList.push_back(ui.UIObjList94Button); // 石珀
+	UIObjList.push_back(ui.UIObjList101Button); // 琉璃百合
+	UIObjList.push_back(ui.UIObjList102Button); // 清心
+	UIObjList.push_back(ui.UIObjList103Button); // 琉璃袋
+	UIObjList.push_back(ui.UIObjList104Button); // 钩钩果
+	UIObjList.push_back(ui.UIObjList105Button); // 小灯草
+	UIObjList.push_back(ui.UIObjList205Button); // 星螺
 
 	connect(ui.UIObjFlagButton, SIGNAL(clicked()), this, SLOT(setUIObjListToMapData()));
 	for (int i = 0; i < UIObjList.size(); i++)

@@ -182,12 +182,6 @@
     <Image Include="resource\ObjectIcons\ObjectList2Mask.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="resource\ObjectIcons\ObjectList999.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\ObjectIcons\ObjectList999Mask.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="resource\ObjectIcons\ObjectFlagList0.bmp">
       <Filter>Resource Files</Filter>
     </Image>
@@ -243,6 +237,54 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="resource\GISTARMASK.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList93.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList93Mask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList94.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList94Mask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList101.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList101Mask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList102.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList102Mask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList103.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList103Mask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList104.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList104Mask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList105.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList105Mask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList205.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\ObjectIcons\ObjectList205Mask.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

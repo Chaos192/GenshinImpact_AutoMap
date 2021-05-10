@@ -44,8 +44,11 @@ void AutomaticTrackingMap::FrontEndUpdata()
 
 	//获取显示区域地图
 	MainMat = getViewMap();
+	//添加可匹配物品图标
+	drawStarObjectLists();
 	//添加物品图标
 	drawObjectLists();
+	//添加自定义标记
 	drawFlagLists();
 	//添加当前位置图标
 	drawAvatar();
@@ -708,7 +711,7 @@ void AutomaticTrackingMap::setThreadMatchMat()
 	}
 }
 
-void AutomaticTrackingMap::drawObjectLists()
+void AutomaticTrackingMap::drawStarObjectLists()
 {
 	//draw Star
 	static Point avatarPos = zerosMinMap;
@@ -720,7 +723,7 @@ void AutomaticTrackingMap::drawObjectLists()
 	OLS.visualStarKlassList.clear();
 	OLS.visualStarIdList.clear();
 	OLS.visualStarDisList.clear();
-	for (int objKlass = 0; objKlass < OLS.objectListsNumber(); objKlass++)
+	for (int objKlass = 0; objKlass < 3; objKlass++)
 	{
 		if (OLS.isShow(objKlass))
 		{
@@ -836,6 +839,37 @@ void AutomaticTrackingMap::drawObjectLists()
 		}
 	}
 
+}
+
+void AutomaticTrackingMap::drawObjectLists()
+{
+	//draw obj
+	int x = 0, y = 0;
+	Point p;
+	Mat ObjIconROIMat;
+	const int dx = 16, dy = 16;//图标顶点到图标中心的偏移
+	double minDist = 9999;
+	for (int objKlass = 3; objKlass < OLS.objectListsNumber(); objKlass++)
+	{
+		if (OLS.isShow(objKlass))
+		{
+			for (int objOrder = 0; objOrder < OLS.objectsNumber(objKlass); objOrder++)
+			{
+					p = OLS.p(objKlass, objOrder);
+					if (ATM_Modules::isContains(minMapRect, p))
+					{
+						x = (int)((p.x - minMapRect.x) / MET.scale) - dx;
+						y = (int)((p.y - minMapRect.y) / MET.scale) - dy;
+						//该x，y周围要有足够的空间来填充图标
+						if (x > 0 && y > 0 && x + RES.GIOBJICON[objKlass].cols < autoMapSize.width&&y + RES.GIOBJICON[objKlass].rows < autoMapSize.height)
+						{
+							ObjIconROIMat = MainMat(Rect(x, y, RES.GIOBJICON[objKlass].cols, RES.GIOBJICON[objKlass].rows));
+							addWeightedAlpha(ObjIconROIMat, RES.GIOBJICON[objKlass], RES.GIOBJICONMASK[objKlass]);
+						}
+					}
+			}
+		}
+	}
 }
 
 void AutomaticTrackingMap::drawFlagLists()
