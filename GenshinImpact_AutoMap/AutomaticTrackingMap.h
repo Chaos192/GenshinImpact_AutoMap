@@ -46,7 +46,7 @@ class AutomaticTrackingMap
 	int thisStateMode = 0;
 	int thisStateModeNext = 0;
 	bool isFristChangeThisState = true;
-
+	bool isUpdataDraw = true;
 public:
 	AutomaticTrackingMap();
 	~AutomaticTrackingMap();
@@ -100,6 +100,7 @@ public:
 
 	void CustomProcess(int i);
 
+	void updataDraw();
 public:
 	Mat getViewMap();
 

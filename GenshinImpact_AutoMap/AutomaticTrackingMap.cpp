@@ -41,21 +41,27 @@ void AutomaticTrackingMap::FrontEndUpdata()
 	setThreadMatchMat();
 
 	//显示部分
+	if (isUpdataDraw)
+	{
+		//获取显示区域地图
+		MainMat = getViewMap();
+		//添加可匹配物品图标
+		drawStarObjectLists();
+		//添加物品图标
+		drawObjectLists();
+		//添加自定义标记
+		drawFlagLists();
+		//添加当前位置图标
+		drawAvatar();
+		//显示输出部分
 
-	//获取显示区域地图
-	MainMat = getViewMap();
-	//添加可匹配物品图标
-	drawStarObjectLists();
-	//添加物品图标
-	drawObjectLists();
-	//添加自定义标记
-	drawFlagLists();
-	//添加当前位置图标
-	drawAvatar();
-	//显示输出部分
+		//图片输出到Qt显示
+		Mat2QImage();
 
-	//图片输出到Qt显示
-	Mat2QImage();
+		isUpdataDraw = false;
+	}
+
+
 }
 
 //后端状态数据
@@ -95,6 +101,7 @@ void AutomaticTrackingMap::BackEndUpdata()
 					SST.AutoMapUdpSocketSend(zerosMinMap.x, zerosMinMap.y, TMS.rotationAngle, TMS.uid);
 				}
 			}
+			updataDraw();
 		}
 	}
 	//神瞳识别部分
@@ -225,6 +232,7 @@ void AutomaticTrackingMap::BackEndUpdata()
 		if (isSave)
 		{
 			saveLocal();
+			updataDraw();
 		}
 	}
 
@@ -273,6 +281,11 @@ void AutomaticTrackingMap::Mat2QImage()
 void AutomaticTrackingMap::CustomProcess(int i)
 {
 	
+}
+
+void AutomaticTrackingMap::updataDraw()
+{
+	isUpdataDraw = true;
 }
 
 Mat AutomaticTrackingMap::getViewMap()
@@ -366,6 +379,7 @@ void AutomaticTrackingMap::getThisOffset()
 		if (offGiMinMap != offGiMinMapTmp)
 		{
 			offGiMinMap = offGiMinMapTmp;
+			updataDraw();
 		}
 	}
 }
@@ -398,6 +412,7 @@ void AutomaticTrackingMap::setWindowsPos(HWND _thisHandle)
 void AutomaticTrackingMap::setMoveMapDownPos(int x, int y)
 {
 	MET.setMouseLeftDownPos(x, y);
+	updataDraw();
 }
 
 void AutomaticTrackingMap::setMoveMapUpPos(int x, int y)
@@ -405,6 +420,7 @@ void AutomaticTrackingMap::setMoveMapUpPos(int x, int y)
 	MET.setMouseLeftUpPos(x, y);
 	MET.normalizationZerosMinMap(Rect(0, 0, mapSize.width, mapSize.width));
 	zerosMinMap = MET.zerosMinMap;
+	updataDraw();
 }
 
 void AutomaticTrackingMap::setMoveMapMovePos(int x, int y)
@@ -412,7 +428,7 @@ void AutomaticTrackingMap::setMoveMapMovePos(int x, int y)
 	MET.setMouseLeftMovePos(x, y);
 	MET.normalizationZerosMinMap(Rect(0,0,mapSize.width,mapSize.width));
 	zerosMinMap = MET.zerosMinMap;
-	
+	updataDraw();
 }
 
 void AutomaticTrackingMap::setOffsetDownPos(int x, int y)
@@ -457,6 +473,7 @@ void AutomaticTrackingMap::setScaleMapDelta(int x, int y,int delta)
 			zerosMinMap = MET.zerosMinMap;
 		}
 	}
+	updataDraw();
 }
 
 void AutomaticTrackingMap::setAutoMode()
@@ -472,11 +489,13 @@ bool AutomaticTrackingMap::getAutoMode()
 void AutomaticTrackingMap::setObjIsShow(int klass)
 {
 	OLS.setShow(klass);
+	updataDraw();
 }
 
 void AutomaticTrackingMap::setObjFlagIsShow()
 {
 	OLS.setShowFlag();
+	updataDraw();
 }
 
 void AutomaticTrackingMap::setAddFlagOnPos()
@@ -490,6 +509,7 @@ void AutomaticTrackingMap::setAddFlagOnPos()
 		OLS.appendFlag(zerosMinMap.x, zerosMinMap.y);
 	}
 	saveLocal();
+	updataDraw();
 }
 
 void AutomaticTrackingMap::setKongYingJiuGuanState()

@@ -297,7 +297,10 @@ void GenshinImpact_AutoMap::setUIObjListHide()
 
 void GenshinImpact_AutoMap::setUIObjListToMapData()
 {
-	QPushButton *btn = qobject_cast<QPushButton*>(sender());
+	QPushButton *btn = qobject_cast<QPushButton*>(sender());	
+
+	uiObjListSleepTimer->start(2000);
+
 	if (btn == ui.UIObjFlagButton) 
 	{
 		map.setObjFlagIsShow();
