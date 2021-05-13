@@ -526,6 +526,13 @@ void ATM_TM_SurfMap::SURFMatch()
 	Mat img_scene(_mapMat);
 	Mat img_object(_minMapMat(Rect(30,30, _minMapMat.cols-60, _minMapMat.rows-60)));
 
+	//someSizeR = cvCeil(img_object.rows / 2);
+
+	if (img_object.empty())
+	{
+		return;
+	}
+
 	isContinuity = false;
 
 	if ((dis(hisP[1] - hisP[0]) + dis(hisP[2] - hisP[1])) < 2000)

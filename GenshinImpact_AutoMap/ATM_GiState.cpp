@@ -148,7 +148,11 @@ Point ATM_GiState::getOffset()
 		}
 		
 		default:
+		{
+
 			break;
+
+		}
 	}
 	return res;
 }
@@ -302,7 +306,7 @@ void ATM_GiState::getGiFramePaimon()
 		case W_1400x1050:
 		{
 
-			PaimonRect = Rect(20, 9, 59, 67);//???
+			PaimonRect = Rect(20, 9, 59, 68);//???
 			break;
 		}
 		case F_1366x768:
@@ -315,7 +319,7 @@ void ATM_GiState::getGiFramePaimon()
 		}
 		default:
 		{
-			PaimonRect = Rect(26, 12, 68, 77);
+			PaimonRect = Rect(cvCeil(giSize.width*0.0135), cvCeil(giSize.width*0.006075), cvCeil(giSize.width*0.035), cvCeil(giSize.width*0.0406));
 			resIdPaimon = 0;
 			break;
 		}
@@ -338,41 +342,12 @@ void ATM_GiState::getGiFrameMap()
 		case F_1680x1050:
 		case W_1680x1050:
 		{
-
-			mapRect = Rect(54, 17, 185, 185);
-			break;
-		}
-		case F_1600x900:
-		case W_1600x900:
-		{
-
-			mapRect = Rect(54, 17, 185, 185);
-			break;
-		}
-		case F_1440x900:
-		case W_1440x900:
-		{
-
-			mapRect = Rect(54, 17, 185, 185);
-			break;
-		}
-		case F_1400x1050:
-		case W_1400x1050:
-		{
-
-			mapRect = Rect(54, 17, 185, 185);
-			break;
-		}
-		case F_1366x768:
-		case W_1366x768:
-		{
-
 			mapRect = Rect(54, 17, 185, 185);
 			break;
 		}
 		default:
 		{
-			mapRect = Rect(62, 19, 212, 212);
+			mapRect = Rect(cvCeil(giSize.width*0.032), cvCeil(giSize.width*0.01), cvCeil(giSize.width *0.11), cvCeil(giSize.width*0.11));
 			break;
 		}
 	}
