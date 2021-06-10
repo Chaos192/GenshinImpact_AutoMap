@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>GenshinImpactNaturalLawClass</class>
+ <widget class="QMainWindow" name="GenshinImpactNaturalLawClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>730</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>QtGenshinImpactNaturalLaw</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QLabel" name="MainBackgroundImageRect">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1280</width>
+      <height>730</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(225, 225, 225)</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="GenshinImpactNaturalLaw.qrc">:/BackgroundImage/resource/bg.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="TitleLabelRect">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1280</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(20, 20, 20);
+color:rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string>  原神</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>916</x>
+      <y>626</y>
+      <width>238</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>微软雅黑</family>
+      <pointsize>18</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+background-color:rgb(255, 199, 9);
+color:rgb(134, 77, 29);
+border:none;
+border-radius:3px;
+}
+QPushButton:hover {
+background-color:rgb(255, 204, 33);
+}
+QPushButton:pressed {
+background-color:rgb(255, 204, 33);
+}</string>
+    </property>
+    <property name="text">
+     <string>开始游戏</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_TitleMin">
+    <property name="geometry">
+     <rect>
+      <x>1211</x>
+      <y>0</y>
+      <width>30</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+background-color:rgb(0, 0, 0);
+border:none;
+border-image:url(:/TitleButtonImage/resource/titlebutton/bmin0.png)
+}
+QPushButton:hover {
+border-image:url(:/TitleButtonImage/resource/titlebutton/bmin1.png)
+}
+QPushButton:pressed {
+border-image:url(:/TitleButtonImage/resource/titlebutton/bmin1.png)
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_TitleSet">
+    <property name="geometry">
+     <rect>
+      <x>1172</x>
+      <y>0</y>
+      <width>30</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+background-color:rgb(255, 0, 0);
+border:none;
+border-image:url(:/TitleButtonImage/resource/titlebutton/bset0.png)
+}
+QPushButton:hover {
+border-image:url(:/TitleButtonImage/resource/titlebutton/bset1.png)
+}
+QPushButton:pressed {
+border-image:url(:/TitleButtonImage/resource/titlebutton/bset1.png)
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_TitleExit">
+    <property name="geometry">
+     <rect>
+      <x>1250</x>
+      <y>0</y>
+      <width>30</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+background-color:rgb(0, 0, 0);
+border:none;
+border-image:url(:/TitleButtonImage/resource/titlebutton/bexit0.png)
+}
+QPushButton:hover {
+border-image:url(:/TitleButtonImage/resource/titlebutton/bexit1.png)
+}
+QPushButton:pressed {
+border-image:url(:/TitleButtonImage/resource/titlebutton/bexit1.png)
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="GenshinImpactNaturalLaw.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>pushButton_TitleExit</sender>
+   <signal>clicked()</signal>
+   <receiver>GenshinImpactNaturalLawClass</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1268</x>
+     <y>15</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1060</x>
+     <y>-11</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

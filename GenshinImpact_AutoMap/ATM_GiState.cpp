@@ -321,6 +321,10 @@ void ATM_GiState::getGiFramePaimon()
 		{
 			PaimonRect = Rect(cvCeil(giSize.width*0.0135), cvCeil(giSize.width*0.006075), cvCeil(giSize.width*0.035), cvCeil(giSize.width*0.0406));
 			resIdPaimon = 0;
+			if (giSize.width / giSize.height == 64 / 27)
+			{
+				PaimonRect = Rect(cvCeil(giSize.width*0.038), cvCeil(giSize.height*0.012), cvCeil(giSize.height / 9 * 16 *0.035), cvCeil(giSize.height / 9 * 16 *0.0406));
+			}
 			break;
 		}
 	}
@@ -348,6 +352,10 @@ void ATM_GiState::getGiFrameMap()
 		default:
 		{
 			mapRect = Rect(cvCeil(giSize.width*0.032), cvCeil(giSize.width*0.01), cvCeil(giSize.width *0.11), cvCeil(giSize.width*0.11));
+			if (giSize.width / giSize.height == 64 / 27)
+			{
+				mapRect = Rect(cvCeil(giSize.width*0.051), cvCeil(giSize.height / 9 * 16 *0.01), cvCeil(giSize.height/9*16 *0.11), cvCeil(giSize.height / 9 * 16 *0.11));
+			}
 			break;
 		}
 	}

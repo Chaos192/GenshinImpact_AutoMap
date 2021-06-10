@@ -292,6 +292,7 @@ void GenshinImpact_AutoMap::setUIObjListHide()
 	else
 	{
 		ui.UIButton->setIcon(QIcon(":/IconUI/resource/UI.ico"));
+		
 	}
 }
 

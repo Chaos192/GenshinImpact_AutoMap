@@ -1,0 +1,14 @@
+<RCC>
+  <qresource prefix="GenshinImpactNaturalLaw"/>
+  <qresource prefix="BackgroundImage">
+    <file>resource/bg.png</file>
+  </qresource>
+  <qresource prefix="TitleButtonImage">
+    <file>resource/titlebutton/bexit0.png</file>
+    <file>resource/titlebutton/bexit1.png</file>
+    <file>resource/titlebutton/bmin0.png</file>
+    <file>resource/titlebutton/bmin1.png</file>
+    <file>resource/titlebutton/bset0.png</file>
+    <file>resource/titlebutton/bset1.png</file>
+  </qresource>
+</RCC>
