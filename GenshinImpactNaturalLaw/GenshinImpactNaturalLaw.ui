@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>QtGenshinImpactNaturalLaw</string>
+   <string>天理</string>
+  </property>
+  <property name="windowIcon">
+   <iconset theme="TrayIcon" resource="GenshinImpactNaturalLaw.qrc">
+    <normaloff>:/icon/resource/icon/ICON.png</normaloff>:/icon/resource/icon/ICON.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QLabel" name="MainBackgroundImageRect">
@@ -47,10 +51,10 @@
 color:rgb(255, 255, 255);</string>
     </property>
     <property name="text">
-     <string>  原神</string>
+     <string>  天理</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="pushButton_StartGame">
     <property name="geometry">
      <rect>
       <x>916</x>
@@ -161,6 +165,157 @@ border-image:url(:/TitleButtonImage/resource/titlebutton/bexit1.png)
      <string/>
     </property>
    </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>1204</x>
+      <y>30</y>
+      <width>76</width>
+      <height>700</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(0, 0, 0,38);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>1222</x>
+      <y>66</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+background-color:rgb(0,0,0,120);
+color:rgb(255, 255, 255);
+border:rgb(82, 92, 115);
+border-radius:20px;
+}
+QPushButton:hover {
+border:2px solid rgb(255, 210, 132);
+}
+QPushButton:pressed {
+border:2px solid rgb(255, 210, 132);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>1222</x>
+      <y>136</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+background-color:rgb(0,0,0,120);
+color:rgb(255, 255, 255);
+border:rgb(82, 92, 115);
+border-radius:20px;
+}
+QPushButton:hover {
+border:2px solid rgb(255, 210, 132);
+}
+QPushButton:pressed {
+border:2px solid rgb(255, 210, 132);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_3">
+    <property name="geometry">
+     <rect>
+      <x>1222</x>
+      <y>206</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+background-color:rgb(0,0,0,120);
+color:rgb(255, 255, 255);
+border:rgb(82, 92, 115);
+border-radius:20px;
+}
+QPushButton:hover {
+border:2px solid rgb(255, 210, 132);
+}
+QPushButton:pressed {
+border:2px solid rgb(255, 210, 132);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_4">
+    <property name="geometry">
+     <rect>
+      <x>1222</x>
+      <y>276</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+background-color:rgb(0,0,0,120);
+color:rgb(255, 255, 255);
+border:rgb(82, 92, 115);
+border-radius:20px;
+}
+QPushButton:hover {
+border:2px solid rgb(255, 210, 132);
+}
+QPushButton:pressed {
+border:2px solid rgb(255, 210, 132);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_5">
+    <property name="geometry">
+     <rect>
+      <x>1222</x>
+      <y>346</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+background-color:rgb(0,0,0,120);
+color:rgb(255, 255, 255);
+border:rgb(82, 92, 115);
+border-radius:20px;
+}
+QPushButton:hover {
+border:2px solid rgb(255, 210, 132);
+}
+QPushButton:pressed {
+border:2px solid rgb(255, 210, 132);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
@@ -181,6 +336,22 @@ border-image:url(:/TitleButtonImage/resource/titlebutton/bexit1.png)
     <hint type="destinationlabel">
      <x>1060</x>
      <y>-11</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_TitleMin</sender>
+   <signal>clicked()</signal>
+   <receiver>GenshinImpactNaturalLawClass</receiver>
+   <slot>showMinimized()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1220</x>
+     <y>10</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1344</x>
+     <y>87</y>
     </hint>
    </hints>
   </connection>

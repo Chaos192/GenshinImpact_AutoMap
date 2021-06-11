@@ -1,4 +1,11 @@
 #pragma once
+#include <windows.h>
+#include <QTextCodec>
+#include <QSystemTrayIcon>
+#include <QDesktopServices>
+#include <QAction>
+#include <QMenu>
+#include <QProcess>
 #include <QMouseEvent>
 #include <QtWidgets/QMainWindow>
 #include "ui_GenshinImpactNaturalLaw.h"
@@ -11,6 +18,7 @@ class GenshinImpactNaturalLaw : public QMainWindow
 
 public:
     GenshinImpactNaturalLaw(QWidget *parent = Q_NULLPTR);
+	~GenshinImpactNaturalLaw();
 
 private:
     Ui::GenshinImpactNaturalLawClass ui;
@@ -23,6 +31,11 @@ private:
 	bool leftBtnClk = false;
 	QtWidgetsSetting *WidgetsSetting = nullptr;
 	QLabel *MainMaskLabel = nullptr;
+	QMenu *TrayMenu;//托盘菜单
+	QSystemTrayIcon *Tray;//托盘图标添加成员
+	QAction *ShowMainAction;//托盘图标右键点击时弹出选项
+	QAction *ExitAction;//托盘图标右键点击时弹出选项
+
 private:
 	void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 	void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
@@ -30,6 +43,9 @@ private:
 
 private slots:
 	void NewWidgetsSetting();
+	void StartGame();
+
+	void TrayMenuClickEvent(QSystemTrayIcon::ActivationReason reason);
 	// Receive Setting From WidgetsSetting
 	void ReceiveSettingFromWidgetsSetting(SettingData *setting);
 	void ReceiveCloseSelfSignalFromWidgetsSetting();

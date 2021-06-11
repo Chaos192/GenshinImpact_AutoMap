@@ -1,5 +1,10 @@
 <RCC>
   <qresource prefix="GenshinImpactNaturalLaw"/>
+  <qresource prefix="icon">
+    <file>resource/icon/TrayIcon.ico</file>
+    <file>resource/icon/TrayIcon.png</file>
+    <file>resource/icon/ICON.png</file>
+  </qresource>
   <qresource prefix="BackgroundImage">
     <file>resource/bg.png</file>
   </qresource>

@@ -1,13 +1,38 @@
 #include "GenshinImpactNaturalLaw.h"
+#pragma execution_character_set("utf-8")
 
 GenshinImpactNaturalLaw::GenshinImpactNaturalLaw(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
 	setWindowFlags(Qt::FramelessWindowHint);
-	connect(ui.pushButton_TitleSet, SIGNAL(clicked()), this, SLOT(NewWidgetsSetting()));
-}
 
+	Tray = new QSystemTrayIcon(this);
+	Tray->setIcon(QIcon(QPixmap(":/icon/resource/icon/ICON.png")));
+	Tray->setToolTip("天理");
+	QString title = "天理";
+	QString text = "原神天理系统";
+	Tray->show();//让托盘图标显示在系统托盘上
+	Tray->showMessage(title, text, QSystemTrayIcon::Information, 1000); //最后一个参数为提示时长，默认10000，即10s
+	connect(Tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(TrayMenuClickEvent(QSystemTrayIcon::ActivationReason)));
+
+	ShowMainAction = new QAction("显示主界面", this);
+	connect(ShowMainAction, SIGNAL(triggered()), this, SLOT(show()));
+	ExitAction = new QAction("退出", this);
+	connect(ExitAction, SIGNAL(triggered()), this, SLOT(close()));
+
+	TrayMenu = new QMenu(this);
+	TrayMenu->addAction(ShowMainAction);
+	TrayMenu->addAction(ExitAction);
+	Tray->setContextMenu(TrayMenu);
+
+	connect(ui.pushButton_TitleSet, SIGNAL(clicked()), this, SLOT(NewWidgetsSetting()));
+	connect(ui.pushButton_StartGame, SIGNAL(clicked()), this, SLOT(StartGame()));
+}
+GenshinImpactNaturalLaw::~GenshinImpactNaturalLaw()
+{
+
+}
 void GenshinImpactNaturalLaw::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton &&
@@ -65,12 +90,50 @@ void GenshinImpactNaturalLaw::NewWidgetsSetting()
 		MainMaskLabel->show();
 	}
 }
+void GenshinImpactNaturalLaw::StartGame()
+{
+	QString command = setting.Command_NoBorderStartGame();
+	//TCHAR szCmdLine[] = { TEXT("E:\\Genshin Impact\\Genshin Impact Game\\yuanshen.exe -popupwindow") };
+	TCHAR szCmdLine[1024] = {};
 
+	command.toWCharArray(szCmdLine);
+	STARTUPINFO si;
+	memset(&si, 0, sizeof(STARTUPINFO));
+	si.cb = sizeof(STARTUPINFO);
+	si.dwFlags = STARTF_USESHOWWINDOW;
+	si.wShowWindow = SW_SHOW;
+	PROCESS_INFORMATION pi;
+
+	bool res = CreateProcess(NULL, szCmdLine, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+
+	if (!res)
+	{
+		DWORD err = GetLastError();
+		if (err != 0)
+		{
+			res = 0;
+		}
+	}
+
+	this->hide();
+}
+void GenshinImpactNaturalLaw::TrayMenuClickEvent(QSystemTrayIcon::ActivationReason reason)
+{
+	switch (reason)
+	{
+	case QSystemTrayIcon::Trigger://单击托盘图标
+		break;
+	case QSystemTrayIcon::DoubleClick://双击托盘图标
+		this->showNormal();
+		break;
+	default:
+		break;
+	}
+}
 void GenshinImpactNaturalLaw::ReceiveSettingFromWidgetsSetting(SettingData * setting)
 {
 }
 void GenshinImpactNaturalLaw::ReceiveCloseSelfSignalFromWidgetsSetting()
 {
 	MainMaskLabel->hide();
-
 }

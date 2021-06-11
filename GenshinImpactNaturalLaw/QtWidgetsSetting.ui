@@ -443,7 +443,7 @@ height: 0px;
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-429</y>
+      <y>0</y>
       <width>561</width>
       <height>1000</height>
      </rect>
@@ -631,13 +631,39 @@ background-color:rgb(236, 233, 224);
      </property>
     </widget>
     <widget class="QLineEdit" name="lineEdit">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>270</y>
-       <width>521</width>
-       <height>20</height>
+       <width>520</width>
+       <height>32</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit
+{
+border:none;
+
+background: rgb(246, 245, 243);
+
+border-radius: 0px;
+spacing: 5px;
+}
+
+QLineEdit::disabled
+{
+border:none;
+
+background: rgb(246, 245, 243);
+spacing: 5px;
+border-radius: 0px;
+}</string>
+     </property>
+     <property name="text">
+      <string>E:\asdasdasd\asdasdasd\asd.exe</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_5">
