@@ -255,7 +255,7 @@ void GenshinImpact_AutoMap::setAddFlag()
 
 void GenshinImpact_AutoMap::setActivationKongYingJiuGuan()
 {
-	map.testSaveScreen();
+	//map.testSaveScreen();
 	map.setKongYingJiuGuanState();
 }
 

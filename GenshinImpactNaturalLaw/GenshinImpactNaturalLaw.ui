@@ -181,7 +181,7 @@ border-image:url(:/TitleButtonImage/resource/titlebutton/bexit1.png)
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="pushButton_Linke_1">
     <property name="geometry">
      <rect>
       <x>1222</x>
@@ -194,6 +194,7 @@ border-image:url(:/TitleButtonImage/resource/titlebutton/bexit1.png)
      <string notr="true">QPushButton{
 background-color:rgb(0,0,0,120);
 color:rgb(255, 255, 255);
+border-image:url(:/LinkeIcon/resource/LinkeIcon/Bilibili.png);
 border:rgb(82, 92, 115);
 border-radius:20px;
 }
@@ -208,7 +209,7 @@ border:2px solid rgb(255, 210, 132);
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="pushButton_Linke_2">
     <property name="geometry">
      <rect>
       <x>1222</x>
@@ -223,6 +224,7 @@ background-color:rgb(0,0,0,120);
 color:rgb(255, 255, 255);
 border:rgb(82, 92, 115);
 border-radius:20px;
+border-image:url(:/LinkeIcon/resource/LinkeIcon/QQ_icon.png);
 }
 QPushButton:hover {
 border:2px solid rgb(255, 210, 132);
@@ -235,7 +237,7 @@ border:2px solid rgb(255, 210, 132);
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="pushButton_Linke_3">
     <property name="geometry">
      <rect>
       <x>1222</x>
@@ -250,6 +252,7 @@ background-color:rgb(0,0,0,120);
 color:rgb(255, 255, 255);
 border:rgb(82, 92, 115);
 border-radius:20px;
+border-image:url(:/LinkeIcon/resource/LinkeIcon/GitHub_icon.png);
 }
 QPushButton:hover {
 border:2px solid rgb(255, 210, 132);
@@ -262,7 +265,7 @@ border:2px solid rgb(255, 210, 132);
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="pushButton_Linke_4">
     <property name="geometry">
      <rect>
       <x>1222</x>
@@ -289,7 +292,7 @@ border:2px solid rgb(255, 210, 132);
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_5">
+   <widget class="QPushButton" name="pushButton_Linke_5">
     <property name="geometry">
      <rect>
       <x>1222</x>
@@ -304,6 +307,7 @@ background-color:rgb(0,0,0,120);
 color:rgb(255, 255, 255);
 border:rgb(82, 92, 115);
 border-radius:20px;
+border-image:url(:/LinkeIcon/resource/LinkeIcon/KYJG_yuanshen.png);
 }
 QPushButton:hover {
 border:2px solid rgb(255, 210, 132);
@@ -315,6 +319,102 @@ border:2px solid rgb(255, 210, 132);
     <property name="text">
      <string/>
     </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>234</y>
+      <width>460</width>
+      <height>213</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>微软雅黑</family>
+      <pointsize>63</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(200, 200, 200);
+border:1px solid rgb(248, 250, 251);
+border-radius:0px;
+color:rgb(255, 255, 255)</string>
+    </property>
+    <property name="text">
+     <string>广告位招租</string>
+    </property>
+   </widget>
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>463</y>
+      <width>460</width>
+      <height>120</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QTabWidget{
+color:rgb(255, 255, 255);
+	background:rgba(0, 0, 0, 50);
+}
+QTabWidget::pane /* The tab widget frame */  
+{	
+    font-family:&quot;微软雅黑&quot;;
+	font-size:14px;
+	top:20px;
+	border:none;
+
+
+
+}
+
+QTabBar::tab{
+	font-family:&quot;微软雅黑&quot;;
+	font-size:14px;
+	width:69px;
+	height:38px;
+	color:rgb(255, 255, 255);
+	background:rgba(0, 0, 0, 100);
+border:none;
+}
+ 
+QTabBar::tab:selected, QTabBar::tab:hover
+{
+	color:rgb(255, 210, 132);
+	background:rgba(0, 0, 0, 100);
+	border-bottom:0px solid rgb(255, 210, 132);
+}
+ 
+QTabWidget::tab-bar {  		/*整个最上面的tab栏*/
+
+left:10px;
+} 
+ QTabWidget.QWidget{
+color:rgb(255, 255, 255);
+	background:rgba(0, 0, 0, 50);
+}</string>
+    </property>
+    <property name="currentIndex">
+     <number>1</number>
+    </property>
+    <widget class="QWidget" name="tab">
+     <property name="styleSheet">
+      <string notr="true">QWidget{
+color:rgb(255, 255, 255);
+	background:rgba(0, 0, 0, 50);
+}</string>
+     </property>
+     <attribute name="title">
+      <string>活动</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>更新</string>
+     </attribute>
+    </widget>
    </widget>
   </widget>
  </widget>

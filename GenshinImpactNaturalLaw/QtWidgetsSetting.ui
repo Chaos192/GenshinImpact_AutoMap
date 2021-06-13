@@ -156,10 +156,23 @@ color:rgb(57, 59, 63);
 QPushButton:pressed {
 background-color:rgb(233, 233, 233);
 color:rgb(57, 59, 63);
+}
+QPushButton:checked {
+background-color:rgb(233, 233, 233);
+color:rgb(57, 59, 63);
 }</string>
    </property>
    <property name="text">
     <string>通用设置              </string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="autoExclusive">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_UI_GameSetting">
@@ -190,10 +203,20 @@ color:rgb(57, 59, 63);
 QPushButton:pressed {
 background-color:rgb(233, 233, 233);
 color:rgb(57, 59, 63);
+}
+QPushButton:checked {
+background-color:rgb(233, 233, 233);
+color:rgb(57, 59, 63);
 }</string>
    </property>
    <property name="text">
     <string>游戏设置              </string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="autoExclusive">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_UI_ModuleSetting">
@@ -224,10 +247,20 @@ color:rgb(57, 59, 63);
 QPushButton:pressed {
 background-color:rgb(233, 233, 233);
 color:rgb(57, 59, 63);
+}
+QPushButton:checked {
+background-color:rgb(233, 233, 233);
+color:rgb(57, 59, 63);
 }</string>
    </property>
    <property name="text">
     <string>模组设置              </string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="autoExclusive">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QLabel" name="TitleImageRect">
@@ -287,10 +320,20 @@ color:rgb(57, 59, 63);
 QPushButton:pressed {
 background-color:rgb(233, 233, 233);
 color:rgb(57, 59, 63);
+}
+QPushButton:checked {
+background-color:rgb(233, 233, 233);
+color:rgb(57, 59, 63);
 }</string>
    </property>
    <property name="text">
     <string>模组资源              </string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="autoExclusive">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_UI_VersionInformation">
@@ -321,10 +364,20 @@ color:rgb(57, 59, 63);
 QPushButton:pressed {
 background-color:rgb(233, 233, 233);
 color:rgb(57, 59, 63);
+}
+QPushButton:checked {
+background-color:rgb(233, 233, 233);
+color:rgb(57, 59, 63);
 }</string>
    </property>
    <property name="text">
     <string>版本信息              </string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="autoExclusive">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QScrollArea" name="scrollArea">
@@ -335,6 +388,11 @@ color:rgb(57, 59, 63);
      <width>561</width>
      <height>339</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+    </font>
    </property>
    <property name="styleSheet">
     <string notr="true">QScrollArea{
@@ -443,15 +501,15 @@ height: 0px;
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>0</y>
+      <y>-1127</y>
       <width>561</width>
-      <height>1000</height>
+      <height>1465</height>
      </rect>
     </property>
     <property name="minimumSize">
      <size>
       <width>561</width>
-      <height>1000</height>
+      <height>1465</height>
      </size>
     </property>
     <property name="styleSheet">
@@ -459,148 +517,353 @@ height: 0px;
 background-color:rgb(255, 255, 255);
 }</string>
     </property>
-    <widget class="QCheckBox" name="checkBox">
+    <widget class="QWidget" name="verticalLayoutWidget_2">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>40</y>
-       <width>531</width>
-       <height>16</height>
+       <x>0</x>
+       <y>0</y>
+       <width>536</width>
+       <height>1462</height>
       </rect>
      </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QCheckBox{
-color:rgb(57, 59, 64);
-spacing: 5px;
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>12</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label_Title_0">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(57, 59, 64);</string>
+        </property>
+        <property name="text">
+         <string>启动设置</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_Setting_0">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QCheckBox{
+	font: 10pt &quot;微软雅黑&quot;;
+	color: rgb(57, 59, 64);
+	spacing: 10px;
 }
 QCheckBox::indicator {
-        width: 24px;
-        height: 24px;
+	width: 24px;
+	height: 24px;
+}
+QCheckBox::indicator:unchecked {
+    image: url(:/CheckBox/resource/QtWidgetsSetting/CheckBox/checkbox_unchecked.png);
+}
 
+QCheckBox::indicator:unchecked:hover {
+    image: url(:/CheckBox/resource/QtWidgetsSetting/CheckBox/checkbox_unchecked_hover.png);
+}
+
+QCheckBox::indicator:unchecked:pressed {
+    image: url(:/CheckBox/resource/QtWidgetsSetting/CheckBox/checkbox_unchecked_pressed.png);
+}
+
+QCheckBox::indicator:checked {
+    image: url(:/CheckBox/resource/QtWidgetsSetting/CheckBox/checkbox_checked.png);
+}
+
+QCheckBox::indicator:checked:hover {
+    image: url(:/CheckBox/resource/QtWidgetsSetting/CheckBox/checkbox_checked_hover.png);
+}
+
+QCheckBox::indicator:checked:pressed {
+    image: url(:/CheckBox/resource/QtWidgetsSetting/CheckBox/checkbox_checked_pressed.png);
 }
 </string>
-     </property>
-     <property name="text">
-      <string>开机自动启动</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>541</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color:rgb(57, 59, 64);</string>
-     </property>
-     <property name="text">
-      <string>启动设置</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_2">
-     <property name="geometry">
-      <rect>
-       <x>9</x>
-       <y>79</y>
-       <width>541</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color:rgb(57, 59, 64);</string>
-     </property>
-     <property name="text">
-      <string>关闭设置</string>
-     </property>
-    </widget>
-    <widget class="QWidget" name="verticalLayoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>100</y>
-       <width>531</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
+        </property>
+        <property name="text">
+         <string>开机自动启动</string>
+        </property>
+       </widget>
+      </item>
       <item>
-       <widget class="QRadioButton" name="radioButton">
+       <widget class="QCheckBox" name="checkBox_Setting_1">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QCheckBox{
+	font: 10pt &quot;微软雅黑&quot;;
+	color: rgb(57, 59, 64);
+	spacing: 10px;
+}
+QCheckBox::indicator {
+	width: 24px;
+	height: 24px;
+}
+QCheckBox::indicator:unchecked {
+    image: url(:/CheckBox/resource/QtWidgetsSetting/CheckBox/checkbox_unchecked.png);
+}
+
+QCheckBox::indicator:unchecked:hover {
+    image: url(:/CheckBox/resource/QtWidgetsSetting/CheckBox/checkbox_unchecked_hover.png);
+}
+
+QCheckBox::indicator:unchecked:pressed {
+    image: url(:/CheckBox/resource/QtWidgetsSetting/CheckBox/checkbox_unchecked_pressed.png);
+}
+
+QCheckBox::indicator:checked {
+    image: url(:/CheckBox/resource/QtWidgetsSetting/CheckBox/checkbox_checked.png);
+}
+
+QCheckBox::indicator:checked:hover {
+    image: url(:/CheckBox/resource/QtWidgetsSetting/CheckBox/checkbox_checked_hover.png);
+}
+
+QCheckBox::indicator:checked:pressed {
+    image: url(:/CheckBox/resource/QtWidgetsSetting/CheckBox/checkbox_checked_pressed.png);
+}
+</string>
+        </property>
+        <property name="text">
+         <string>无边框模式启动</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_Setting_2">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QCheckBox{
+	font: 10pt &quot;微软雅黑&quot;;
+	color: rgb(57, 59, 64);
+	spacing: 10px;
+}
+QCheckBox::indicator {
+	width: 24px;
+	height: 24px;
+}
+QCheckBox::indicator:unchecked {
+    image: url(:/CheckBox/resource/QtWidgetsSetting/CheckBox/checkbox_unchecked.png);
+}
+
+QCheckBox::indicator:unchecked:hover {
+    image: url(:/CheckBox/resource/QtWidgetsSetting/CheckBox/checkbox_unchecked_hover.png);
+}
+
+QCheckBox::indicator:unchecked:pressed {
+    image: url(:/CheckBox/resource/QtWidgetsSetting/CheckBox/checkbox_unchecked_pressed.png);
+}
+
+QCheckBox::indicator:checked {
+    image: url(:/CheckBox/resource/QtWidgetsSetting/CheckBox/checkbox_checked.png);
+}
+
+QCheckBox::indicator:checked:hover {
+    image: url(:/CheckBox/resource/QtWidgetsSetting/CheckBox/checkbox_checked_hover.png);
+}
+
+QCheckBox::indicator:checked:pressed {
+    image: url(:/CheckBox/resource/QtWidgetsSetting/CheckBox/checkbox_checked_pressed.png);
+}
+</string>
+        </property>
+        <property name="text">
+         <string>启用模组</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_Space_1">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_Title_6">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(57, 59, 64);</string>
+        </property>
+        <property name="text">
+         <string>关闭设置</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton_Setting_0">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QRadioButton{
+	font: 10pt &quot;微软雅黑&quot;;
+	color: rgb(57, 59, 64);
+	spacing: 10px;
+}
+
+QRadioButton::indicator {
+    width: 24px;
+    height: 24px;
+}
+QRadioButton::indicator::unchecked {
+    image: url(:/RadioButton/resource/QtWidgetsSetting/RadioButton/radiobutton_unchecked.png);
+}
+QRadioButton::indicator:unchecked:hover {
+    image: url(:/RadioButton/resource/QtWidgetsSetting/RadioButton/radiobutton_unchecked_hover.png);
+}
+QRadioButton::indicator:unchecked:pressed {
+    image: url(:/RadioButton/resource/QtWidgetsSetting/RadioButton/radiobutton_unchecked_pressed.png);
+}
+QRadioButton::indicator::checked {
+    image: url(:/RadioButton/resource/QtWidgetsSetting/RadioButton/radiobutton_checked.png);
+}
+QRadioButton::indicator:checked:hover {
+    image: url(:/RadioButton/resource/QtWidgetsSetting/RadioButton/radiobutton_checked_hover.png);
+}
+QRadioButton::indicator:checked:pressed {
+    image: url(:/RadioButton/resource/QtWidgetsSetting/RadioButton/radiobutton_checked_pressed.png);
+}</string>
+        </property>
         <property name="text">
          <string>最小化到系统托盘</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_2">
+       <widget class="QRadioButton" name="radioButton_Setting_1">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QRadioButton{
+	font: 10pt &quot;微软雅黑&quot;;
+	color: rgb(57, 59, 64);
+	spacing: 10px;
+}
+
+QRadioButton::indicator {
+    width: 24px;
+    height: 24px;
+}
+QRadioButton::indicator::unchecked {
+    image: url(:/RadioButton/resource/QtWidgetsSetting/RadioButton/radiobutton_unchecked.png);
+}
+QRadioButton::indicator:unchecked:hover {
+    image: url(:/RadioButton/resource/QtWidgetsSetting/RadioButton/radiobutton_unchecked_hover.png);
+}
+QRadioButton::indicator:unchecked:pressed {
+    image: url(:/RadioButton/resource/QtWidgetsSetting/RadioButton/radiobutton_unchecked_pressed.png);
+}
+QRadioButton::indicator::checked {
+    image: url(:/RadioButton/resource/QtWidgetsSetting/RadioButton/radiobutton_checked.png);
+}
+QRadioButton::indicator:checked:hover {
+    image: url(:/RadioButton/resource/QtWidgetsSetting/RadioButton/radiobutton_checked_hover.png);
+}
+QRadioButton::indicator:checked:pressed {
+    image: url(:/RadioButton/resource/QtWidgetsSetting/RadioButton/radiobutton_checked_pressed.png);
+}</string>
+        </property>
         <property name="text">
          <string>退出启动器</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
-     </layout>
-    </widget>
-    <widget class="QLabel" name="label_3">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>170</y>
-       <width>541</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color:rgb(57, 59, 64);</string>
-     </property>
-     <property name="text">
-      <string>本地文件</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>200</y>
-       <width>254</width>
-       <height>40</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>12</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton{
+      <item>
+       <widget class="QLabel" name="label_Space_2">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_Title_1">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(57, 59, 64);</string>
+        </property>
+        <property name="text">
+         <string>本地文件</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_Check_1">
+        <property name="minimumSize">
+         <size>
+          <width>254</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>254</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
 background-color:rgb(255, 255, 255);
 color:rgb(220, 188, 96);
 border:1px solid rgb(204, 204, 204);
@@ -612,124 +875,101 @@ background-color:rgb(251, 248, 239);
 QPushButton:pressed {
 background-color:rgb(236, 233, 224);
 }</string>
-     </property>
-     <property name="text">
-      <string>查找游戏启动器</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_4">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>250</y>
-       <width>54</width>
-       <height>12</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>270</y>
-       <width>520</width>
-       <height>32</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QLineEdit
+        </property>
+        <property name="text">
+         <string>查找游戏启动器</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_Label_1">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>11</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 11pt &quot;微软雅黑&quot;;
+color:rgb(148, 150, 153);</string>
+        </property>
+        <property name="text">
+         <string>当前游戏启动器安装路径</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QLineEdit" name="lineEdit_Path_1">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLineEdit
 {
 border:none;
-
+padding: 0 20px;
 background: rgb(246, 245, 243);
-
 border-radius: 0px;
-spacing: 5px;
+font: 11pt &quot;微软雅黑&quot;;
+color:rgb(148, 150, 153);
 }
 
 QLineEdit::disabled
 {
 border:none;
-
+padding: 0 20px;
 background: rgb(246, 245, 243);
-spacing: 5px;
 border-radius: 0px;
 }</string>
-     </property>
-     <property name="text">
-      <string>E:\asdasdasd\asdasdasd\asd.exe</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_5">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>350</y>
-       <width>54</width>
-       <height>12</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit_2">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>370</y>
-       <width>521</width>
-       <height>20</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_6">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>410</y>
-       <width>541</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color:rgb(57, 59, 64);</string>
-     </property>
-     <property name="text">
-      <string>本地模组</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_3">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>440</y>
-       <width>254</width>
-       <height>40</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>12</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton{
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_Check_2">
+        <property name="minimumSize">
+         <size>
+          <width>254</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>254</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
 background-color:rgb(255, 255, 255);
 color:rgb(220, 188, 96);
 border:1px solid rgb(204, 204, 204);
@@ -741,53 +981,109 @@ background-color:rgb(251, 248, 239);
 QPushButton:pressed {
 background-color:rgb(236, 233, 224);
 }</string>
-     </property>
-     <property name="text">
-      <string>选择模组文件夹</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_7">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>490</y>
-       <width>54</width>
-       <height>12</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit_3">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>510</y>
-       <width>521</width>
-       <height>20</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_4">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>540</y>
-       <width>254</width>
-       <height>40</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>12</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton{
+        </property>
+        <property name="text">
+         <string>查找游戏本体</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_Label_2">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 11pt &quot;微软雅黑&quot;;
+color:rgb(148, 150, 153);</string>
+        </property>
+        <property name="text">
+         <string>当前游戏安装路径</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <widget class="QLineEdit" name="lineEdit_Path_2">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLineEdit
+{
+border:none;
+padding: 0 20px;
+background: rgb(246, 245, 243);
+border-radius: 0px;
+font: 11pt &quot;微软雅黑&quot;;
+color:rgb(148, 150, 153);
+}
+
+QLineEdit::disabled
+{
+border:none;
+padding: 0 20px;
+background: rgb(246, 245, 243);
+border-radius: 0px;
+}</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_Space_3">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_Title_2">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(57, 59, 64);</string>
+        </property>
+        <property name="text">
+         <string>本地模组</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_Check_3">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>254</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
 background-color:rgb(255, 255, 255);
 color:rgb(220, 188, 96);
 border:1px solid rgb(204, 204, 204);
@@ -799,53 +1095,78 @@ background-color:rgb(251, 248, 239);
 QPushButton:pressed {
 background-color:rgb(236, 233, 224);
 }</string>
-     </property>
-     <property name="text">
-      <string>刷新所有模组</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_8">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>590</y>
-       <width>54</width>
-       <height>12</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-    <widget class="QListView" name="listView">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>610</y>
-       <width>521</width>
-       <height>121</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_5">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>300</y>
-       <width>254</width>
-       <height>40</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>12</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton{
+        </property>
+        <property name="text">
+         <string>选择模组文件夹</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_Label_3">
+        <property name="styleSheet">
+         <string notr="true">font: 11pt &quot;微软雅黑&quot;;
+color:rgb(148, 150, 153);</string>
+        </property>
+        <property name="text">
+         <string>当前模组安装路径</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QLineEdit" name="lineEdit_Path_3">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLineEdit
+{
+border:none;
+padding: 0 20px;
+background: rgb(246, 245, 243);
+border-radius: 0px;
+}
+
+QLineEdit::disabled
+{
+border:none;
+padding: 0 20px;
+background: rgb(246, 245, 243);
+border-radius: 0px;
+}</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_Check_4">
+        <property name="minimumSize">
+         <size>
+          <width>254</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>254</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
 background-color:rgb(255, 255, 255);
 color:rgb(220, 188, 96);
 border:1px solid rgb(204, 204, 204);
@@ -857,10 +1178,311 @@ background-color:rgb(251, 248, 239);
 QPushButton:pressed {
 background-color:rgb(236, 233, 224);
 }</string>
-     </property>
-     <property name="text">
-      <string>查找游戏本体</string>
-     </property>
+        </property>
+        <property name="text">
+         <string>刷新所有模组</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_Label_4">
+        <property name="styleSheet">
+         <string notr="true">font: 11pt &quot;微软雅黑&quot;;
+color:rgb(148, 150, 153);</string>
+        </property>
+        <property name="text">
+         <string>当前模组列表</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QScrollArea" name="scrollArea_2">
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents_2">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>534</width>
+           <height>113</height>
+          </rect>
+         </property>
+         <widget class="QWidget" name="verticalLayoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>291</width>
+            <height>101</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_4"/>
+         </widget>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_Space_4">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_Title_3">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(57, 59, 64);</string>
+        </property>
+        <property name="text">
+         <string>启动器版本</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_Check_5">
+        <property name="minimumSize">
+         <size>
+          <width>254</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>254</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+background-color:rgb(255, 255, 255);
+color:rgb(220, 188, 96);
+border:1px solid rgb(204, 204, 204);
+border-radius:4px;
+}
+QPushButton:hover {
+background-color:rgb(251, 248, 239);
+}
+QPushButton:pressed {
+background-color:rgb(236, 233, 224);
+}</string>
+        </property>
+        <property name="text">
+         <string>启动器更新</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_Label_5">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>11</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 11pt &quot;微软雅黑&quot;;
+color:rgb(148, 150, 153);</string>
+        </property>
+        <property name="text">
+         <string>当前版本：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_Space_5">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_Title_4">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(57, 59, 64);</string>
+        </property>
+        <property name="text">
+         <string>游戏启动器版本</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_Check_6">
+        <property name="minimumSize">
+         <size>
+          <width>254</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>254</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+background-color:rgb(255, 255, 255);
+color:rgb(220, 188, 96);
+border:1px solid rgb(204, 204, 204);
+border-radius:4px;
+}
+QPushButton:hover {
+background-color:rgb(251, 248, 239);
+}
+QPushButton:pressed {
+background-color:rgb(236, 233, 224);
+}</string>
+        </property>
+        <property name="text">
+         <string>游戏启动器更新</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_Label_6">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>11</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 11pt &quot;微软雅黑&quot;;
+color:rgb(148, 150, 153);</string>
+        </property>
+        <property name="text">
+         <string>当前版本：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_Space_6">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_Title_5">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:rgb(57, 59, 64);</string>
+        </property>
+        <property name="text">
+         <string>游戏版本</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_Check_7">
+        <property name="minimumSize">
+         <size>
+          <width>254</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>254</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+background-color:rgb(255, 255, 255);
+color:rgb(220, 188, 96);
+border:1px solid rgb(204, 204, 204);
+border-radius:4px;
+}
+QPushButton:hover {
+background-color:rgb(251, 248, 239);
+}
+QPushButton:pressed {
+background-color:rgb(236, 233, 224);
+}</string>
+        </property>
+        <property name="text">
+         <string>游戏更新</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_Label_7">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>11</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 11pt &quot;微软雅黑&quot;;
+color:rgb(148, 150, 153);</string>
+        </property>
+        <property name="text">
+         <string>当前版本：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_Space_7">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </widget>
   </widget>

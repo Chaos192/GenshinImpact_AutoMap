@@ -9,6 +9,7 @@ class SettingData
 {
 	QSettings *IniSettingFile = nullptr;
 
+public:
 	// [General]
 	bool is_start_pupowindows = false;
 	QString launcher_install_path = "E:/Genshin Impact/";
@@ -17,6 +18,7 @@ class SettingData
 	QString game_start_name = "yuanshen.exe";
 	QString parm_borderless = " -popupwindow";
 	bool is_first_exit = false;
+
 public:
 	SettingData();
 	~SettingData();

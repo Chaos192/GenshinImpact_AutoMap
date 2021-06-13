@@ -10,6 +10,12 @@ SettingData::SettingData()
 	game_install_path = IniSettingFile->value("General/game_install_path").toString();
 	game_start_name = IniSettingFile->value("General/game_start_name").toString();
 	is_first_exit = IniSettingFile->value("General/is_first_exit").toBool();
+	if (launcher_install_path != "")
+	{
+		QSettings *launcherIniFile;
+		launcherIniFile = new QSettings(launcher_install_path + "config.ini", QSettings::IniFormat);
+
+	}
 }
 
 SettingData::~SettingData()
@@ -33,7 +39,7 @@ QString SettingData::Command_NoBorderStartGame()
 	QString res(game_install_path);
 	res.append(game_start_name);
 	res.append(parm_borderless);
-	return res.replace(QRegExp("/"), "\\");;// game_install_path + game_start_name + parm_borderless;
+	return res.replace(QRegExp("/"), "\\");// game_install_path + game_start_name + parm_borderless;
 }
 
 QString SettingData::Command_StartGame()

@@ -6,6 +6,8 @@ GenshinImpactNaturalLaw::GenshinImpactNaturalLaw(QWidget *parent)
 {
     ui.setupUi(this);
 	setWindowFlags(Qt::FramelessWindowHint);
+	
+	uiConnectButton();
 
 	Tray = new QSystemTrayIcon(this);
 	Tray->setIcon(QIcon(QPixmap(":/icon/resource/icon/ICON.png")));
@@ -13,7 +15,7 @@ GenshinImpactNaturalLaw::GenshinImpactNaturalLaw(QWidget *parent)
 	QString title = "天理";
 	QString text = "原神天理系统";
 	Tray->show();//让托盘图标显示在系统托盘上
-	Tray->showMessage(title, text, QSystemTrayIcon::Information, 1000); //最后一个参数为提示时长，默认10000，即10s
+	//Tray->showMessage(title, text, QSystemTrayIcon::Information, 1000); //最后一个参数为提示时长，默认10000，即10s
 	connect(Tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(TrayMenuClickEvent(QSystemTrayIcon::ActivationReason)));
 
 	ShowMainAction = new QAction("显示主界面", this);
@@ -68,6 +70,8 @@ void GenshinImpactNaturalLaw::NewWidgetsSetting()
 		WidgetsSetting = new QtWidgetsSetting();
 		connect(WidgetsSetting, SIGNAL(SendSettingToMainWidgets(SettingData)), this, SLOT(ReceiveSettingFromWidgetsSetting(SettingData)));
 		connect(WidgetsSetting, SIGNAL(SendCloseSelfSignalToMainWidgets()), this, SLOT(ReceiveCloseSelfSignalFromWidgetsSetting()));
+		WidgetsSetting->SetSetting(&setting);
+
 		WidgetsSetting->setWindowModality(Qt::ApplicationModal);
 		WidgetsSetting->move(this->x()+230, this->y()+103);
 		WidgetsSetting->show();
@@ -82,12 +86,33 @@ void GenshinImpactNaturalLaw::NewWidgetsSetting()
 		MainMaskLabel = new QLabel(this);
 		MainMaskLabel->setText("");
 		MainMaskLabel->setGeometry(QRect(0, 0, 1280, 730));
-		MainMaskLabel->setStyleSheet("background-color:rgb(0, 0, 0,120);");
+		MainMaskLabel->setStyleSheet("background-color:rgb(0, 0, 0, 120);");
 		MainMaskLabel->show();
 	}
 	else
 	{
 		MainMaskLabel->show();
+	}
+}
+void GenshinImpactNaturalLaw::uiConnectButton()
+{
+	LinkeButtonList.clear();
+	LinkeButtonList.push_back(ui.pushButton_Linke_1);
+	LinkeButtonList.push_back(ui.pushButton_Linke_2);
+	LinkeButtonList.push_back(ui.pushButton_Linke_3);
+	LinkeButtonList.push_back(ui.pushButton_Linke_4);
+	LinkeButtonList.push_back(ui.pushButton_Linke_5);
+
+	LinkeUrlList.clear();
+	LinkeUrlList.push_back(QUrl(QLatin1String("https://space.bilibili.com/135774602")));
+	LinkeUrlList.push_back(QUrl(QLatin1String("https://qm.qq.com/cgi-bin/qm/qr?k=3bd3tolWoA9vX-AdYzo-ynX_zUUB18oX&jump_from=webapi")));
+	LinkeUrlList.push_back(QUrl(QLatin1String("https://github.com/GengGode/GenshinImpact_AutoMap")));
+	LinkeUrlList.push_back(QUrl(QLatin1String("")));
+	LinkeUrlList.push_back(QUrl(QLatin1String("https://yuanshen.site/")));
+
+	for (int i = 0; i < LinkeButtonList.size(); i++)
+	{
+		connect(LinkeButtonList[i], SIGNAL(clicked()), this, SLOT(OpenLinkeUrl()));
 	}
 }
 void GenshinImpactNaturalLaw::StartGame()
@@ -116,6 +141,17 @@ void GenshinImpactNaturalLaw::StartGame()
 	}
 
 	this->hide();
+}
+void GenshinImpactNaturalLaw::OpenLinkeUrl()
+{
+	QPushButton *btn = qobject_cast<QPushButton*>(sender());
+	for (int i = 0; i < LinkeButtonList.size(); i++)
+	{
+		if (btn == LinkeButtonList[i])
+		{
+			QDesktopServices::openUrl(LinkeUrlList[i]);
+		}
+	}
 }
 void GenshinImpactNaturalLaw::TrayMenuClickEvent(QSystemTrayIcon::ActivationReason reason)
 {

@@ -514,7 +514,6 @@ void AutomaticTrackingMap::setAddFlagOnPos()
 
 void AutomaticTrackingMap::setKongYingJiuGuanState()
 {
-	
 	if (AKY.isRunKYJG)
 	{
 		AKY.setState(GIS.giHandle);
