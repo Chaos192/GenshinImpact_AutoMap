@@ -14,8 +14,8 @@ GenshinImpactNaturalLaw::GenshinImpactNaturalLaw(QWidget *parent)
 	Tray->setToolTip("天理");
 	QString title = "天理";
 	QString text = "原神天理系统";
-	Tray->show();//让托盘图标显示在系统托盘上
-	//Tray->showMessage(title, text, QSystemTrayIcon::Information, 1000); //最后一个参数为提示时长，默认10000，即10s
+	Tray->show();
+	//Tray->showMessage(title, text, QSystemTrayIcon::Information, 1000); 
 	connect(Tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(TrayMenuClickEvent(QSystemTrayIcon::ActivationReason)));
 
 	ShowMainAction = new QAction("显示主界面", this);
@@ -29,7 +29,10 @@ GenshinImpactNaturalLaw::GenshinImpactNaturalLaw(QWidget *parent)
 	Tray->setContextMenu(TrayMenu);
 
 	connect(ui.pushButton_TitleSet, SIGNAL(clicked()), this, SLOT(NewWidgetsSetting()));
+	connect(ui.pushButton_TitleExit, SIGNAL(clicked()), this, SLOT(CloseEvent()));
 	connect(ui.pushButton_StartGame, SIGNAL(clicked()), this, SLOT(StartGame()));
+
+	connect(ui.pushButton_Page_1, SIGNAL(clicked()), this, SLOT(OpenLabelLinkeUrl()));
 }
 GenshinImpactNaturalLaw::~GenshinImpactNaturalLaw()
 {
@@ -68,7 +71,7 @@ void GenshinImpactNaturalLaw::NewWidgetsSetting()
 	if (WidgetsSetting == nullptr)
 	{
 		WidgetsSetting = new QtWidgetsSetting();
-		connect(WidgetsSetting, SIGNAL(SendSettingToMainWidgets(SettingData)), this, SLOT(ReceiveSettingFromWidgetsSetting(SettingData)));
+		connect(WidgetsSetting, SIGNAL(SendSettingToMainWidgets()), this, SLOT(ReceiveSettingFromWidgetsSetting()));
 		connect(WidgetsSetting, SIGNAL(SendCloseSelfSignalToMainWidgets()), this, SLOT(ReceiveCloseSelfSignalFromWidgetsSetting()));
 		WidgetsSetting->SetSetting(&setting);
 
@@ -86,7 +89,7 @@ void GenshinImpactNaturalLaw::NewWidgetsSetting()
 		MainMaskLabel = new QLabel(this);
 		MainMaskLabel->setText("");
 		MainMaskLabel->setGeometry(QRect(0, 0, 1280, 730));
-		MainMaskLabel->setStyleSheet("background-color:rgb(0, 0, 0, 120);");
+		MainMaskLabel->setStyleSheet("background-color:rgba(0, 0, 0, 120);");
 		MainMaskLabel->show();
 	}
 	else
@@ -115,9 +118,20 @@ void GenshinImpactNaturalLaw::uiConnectButton()
 		connect(LinkeButtonList[i], SIGNAL(clicked()), this, SLOT(OpenLinkeUrl()));
 	}
 }
+void GenshinImpactNaturalLaw::CloseEvent()
+{
+	if (setting.is_exit_ismini)
+	{
+		this->hide();
+	}
+	else
+	{
+		close();
+	}
+}
 void GenshinImpactNaturalLaw::StartGame()
 {
-	QString command = setting.Command_NoBorderStartGame();
+	QString command = setting.Command_StartGame();
 	//TCHAR szCmdLine[] = { TEXT("E:\\Genshin Impact\\Genshin Impact Game\\yuanshen.exe -popupwindow") };
 	TCHAR szCmdLine[1024] = {};
 
@@ -139,8 +153,10 @@ void GenshinImpactNaturalLaw::StartGame()
 			res = 0;
 		}
 	}
-
-	this->hide();
+	else
+	{
+		this->hide();
+	}
 }
 void GenshinImpactNaturalLaw::OpenLinkeUrl()
 {
@@ -152,6 +168,10 @@ void GenshinImpactNaturalLaw::OpenLinkeUrl()
 			QDesktopServices::openUrl(LinkeUrlList[i]);
 		}
 	}
+}
+void GenshinImpactNaturalLaw::OpenLabelLinkeUrl()
+{
+	QDesktopServices::openUrl(QUrl(QLatin1String("https://www.bilibili.com/video/BV1ar4y1A7c5")));
 }
 void GenshinImpactNaturalLaw::TrayMenuClickEvent(QSystemTrayIcon::ActivationReason reason)
 {
@@ -166,8 +186,9 @@ void GenshinImpactNaturalLaw::TrayMenuClickEvent(QSystemTrayIcon::ActivationReas
 		break;
 	}
 }
-void GenshinImpactNaturalLaw::ReceiveSettingFromWidgetsSetting(SettingData * setting)
+void GenshinImpactNaturalLaw::ReceiveSettingFromWidgetsSetting()
 {
+	
 }
 void GenshinImpactNaturalLaw::ReceiveCloseSelfSignalFromWidgetsSetting()
 {

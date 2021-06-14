@@ -58,11 +58,17 @@
     <TargetName>天理系统</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <TargetName>天理系统</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
+    <Link>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
@@ -108,7 +114,15 @@
     <QtMoc Include="QtWidgetsSetting.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="SettingData.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GenshinImpactNaturalLaw1.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resource\icon\MainIcon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

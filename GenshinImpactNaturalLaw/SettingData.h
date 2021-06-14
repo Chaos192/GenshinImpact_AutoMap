@@ -11,11 +11,14 @@ class SettingData
 
 public:
 	// [General]
-	bool is_start_pupowindows = false;
+	bool is_auto_run = false;
+	bool is_start_pupowindows = true;
+	bool is_start_module = true;
+	bool is_exit_ismini = false;
 	QString launcher_install_path = "E:/Genshin Impact/";
 	QString game_dynamic_bg_name = "c4b0adcdaa7afebdffa0a4d4d661dc43_7732044710342326225.png";
 	QString game_install_path = "E:/Genshin Impact/Genshin Impact Game/";
-	QString game_start_name = "yuanshen.exe";
+	QString game_start_name = "YuanShen.exe";
 	QString parm_borderless = " -popupwindow";
 	bool is_first_exit = false;
 

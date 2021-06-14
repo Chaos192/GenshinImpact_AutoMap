@@ -1,20 +1,24 @@
 <RCC>
-  <qresource prefix="GenshinImpactNaturalLaw"/>
-  <qresource prefix="LinkeIcon">
+  <qresource prefix="/GenshinImpactNaturalLaw"/>
+  <qresource prefix="page">
+    <file>resource/page/page1.png</file>
+  </qresource>
+  <qresource prefix="/LinkeIcon">
     <file>resource/LinkeIcon/Bilibili.png</file>
     <file>resource/LinkeIcon/GitHub_icon.png</file>
     <file>resource/LinkeIcon/QQ_icon.png</file>
     <file>resource/LinkeIcon/KYJG_yuanshen.png</file>
   </qresource>
-  <qresource prefix="icon">
+  <qresource prefix="/icon">
     <file>resource/icon/TrayIcon.ico</file>
     <file>resource/icon/TrayIcon.png</file>
+    <file>resource/icon/icon.ico</file>
     <file>resource/icon/ICON.png</file>
   </qresource>
-  <qresource prefix="BackgroundImage">
+  <qresource prefix="/BackgroundImage">
     <file>resource/bg.png</file>
   </qresource>
-  <qresource prefix="TitleButtonImage">
+  <qresource prefix="/TitleButtonImage">
     <file>resource/titlebutton/bexit0.png</file>
     <file>resource/titlebutton/bexit1.png</file>
     <file>resource/titlebutton/bmin0.png</file>

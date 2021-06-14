@@ -18,8 +18,23 @@ void ATM_GiState::getRect()
 	if (giHandle != NULL)
 	{
 		GetWindowRect(giHandle, &giRect);
+		GetClientRect(giHandle, &giClientRect);
+		int x_offset = GetSystemMetrics(SM_CXDLGFRAME);
+		int y_offset = GetSystemMetrics(SM_CYDLGFRAME) + GetSystemMetrics(SM_CYCAPTION);
+
+		/*SetWindowPos(
+			hwnd, 
+			0, 
+			margins_xy.cxLeftWidth + (isNoBorder ? 0 : x_offset), 
+			margins_xy.cxRightWidth + (isNoBorder ? 0 : y_offset), 
+			margins_size.cyTopHeight, 
+			margins_size.cyBottomHeight, 
+			SWP_NOACTIVATE | SWP_FRAMECHANGED
+			);
+		*/
 		giSize.width = giRect.right - giRect.left;//+6
 		giSize.height = giRect.bottom - giRect.top;//+29
+
 		getGiRectMode();
 	}
 	else
@@ -40,6 +55,7 @@ int ATM_GiState::getGiRectMode()
 	static const cv::Size size1680x1050uf(1689, 1079);
 	static const cv::Size size1440x900uf(1449, 929);
 	static const cv::Size size1366x768uf(1375, 797);
+
 	if (giHandle != NULL)
 	{
 

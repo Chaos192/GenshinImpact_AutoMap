@@ -1,5 +1,7 @@
 #pragma once
 #include <vector>
+#include <QFileInfo>
+#include <QFileDialog>
 #include <QPropertyAnimation>
 #include <QScrollBar>
 #include <QScrollArea>
@@ -45,7 +47,20 @@ private slots:
 	void OK();
 	void SwitchOptions();
 
+	void CheckBox_SettingAutoRun(int arg);
+	void CheckBox_SettingPupoGame(int arg);
+	void CheckBox_SettingRunModule(int arg);
+
+	void RadioButton_SettingExitOrMini();
+
+	void CheckOptions_CheckGameLauncher();
+	void CheckOptions_CheckGame();
+	void CheckOptions_CheckModule();
+	void CheckOptions_RefreshModule();
+	void CheckOptions_UpdataLauncher();
+	void CheckOptions_UpdataGameLauncher();
+	void CheckOptions_UpdataGame();
 signals:
-	void SendSettingToMainWidgets(SettingData *setting);
+	void SendSettingToMainWidgets();
 	void SendCloseSelfSignalToMainWidgets();
 };

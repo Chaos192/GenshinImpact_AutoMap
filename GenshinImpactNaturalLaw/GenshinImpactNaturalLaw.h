@@ -50,12 +50,14 @@ private:
 
 private slots:
 	void NewWidgetsSetting();
+	void CloseEvent();
 	void StartGame();
 	void OpenLinkeUrl();
+	void OpenLabelLinkeUrl();
 	
 	void TrayMenuClickEvent(QSystemTrayIcon::ActivationReason reason);
 	// Receive Setting From WidgetsSetting
-	void ReceiveSettingFromWidgetsSetting(SettingData *setting);
+	void ReceiveSettingFromWidgetsSetting();
 	void ReceiveCloseSelfSignalFromWidgetsSetting();
 // signals:
 };

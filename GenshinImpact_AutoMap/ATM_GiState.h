@@ -34,6 +34,7 @@ public:
 	RECT giRect;
 	//原神窗口区域保存对比用
 	RECT giRectTmp;
+	RECT giClientRect;
 
 	//原神游戏窗口截图
 	Mat giFrame;

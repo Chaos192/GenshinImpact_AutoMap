@@ -145,7 +145,7 @@ background-color:rgb(57, 59, 64);
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
-background-color:rgb(246, 245, 243, 0);
+background-color:rgba(246, 245, 243, 0);
 color:rgb(117, 118, 121);
 border:none;
 }
@@ -192,7 +192,7 @@ color:rgb(57, 59, 63);
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
-background-color:rgb(246, 245, 243, 0);
+background-color:rgba(246, 245, 243, 0);
 color:rgb(117, 118, 121);
 border:none;
 }
@@ -236,7 +236,7 @@ color:rgb(57, 59, 63);
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
-background-color:rgb(246, 245, 243, 0);
+background-color:rgba(246, 245, 243, 0);
 color:rgb(117, 118, 121);
 border:none;
 }
@@ -309,7 +309,7 @@ color:rgb(57, 59, 63);
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
-background-color:rgb(246, 245, 243, 0);
+background-color:rgba(246, 245, 243, 0);
 color:rgb(117, 118, 121);
 border:none;
 }
@@ -353,7 +353,7 @@ color:rgb(57, 59, 63);
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
-background-color:rgb(246, 245, 243, 0);
+background-color:rgba(246, 245, 243, 0);
 color:rgb(117, 118, 121);
 border:none;
 }
@@ -501,7 +501,7 @@ height: 0px;
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-1127</y>
+      <y>0</y>
       <width>561</width>
       <height>1465</height>
      </rect>
@@ -1515,8 +1515,8 @@ color:rgb(148, 150, 153);</string>
      <y>69</y>
     </hint>
     <hint type="destinationlabel">
-     <x>703</x>
-     <y>170</y>
+     <x>676</x>
+     <y>81</y>
     </hint>
    </hints>
   </connection>

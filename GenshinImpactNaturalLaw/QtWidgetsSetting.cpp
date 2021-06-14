@@ -11,7 +11,20 @@ QtWidgetsSetting::QtWidgetsSetting(QWidget *parent)
 	connect(ui.pushButton_Cancel, SIGNAL(clicked()), this, SLOT(Cancel()));
 	connect(ui.pushButton_OK, SIGNAL(clicked()), this, SLOT(OK()));
 
-
+	connect(ui.radioButton_Setting_0, SIGNAL(clicked()), this, SLOT(RadioButton_SettingExitOrMini()));
+	connect(ui.radioButton_Setting_1, SIGNAL(clicked()), this, SLOT(RadioButton_SettingExitOrMini()));
+	
+	connect(ui.checkBox_Setting_0, SIGNAL(stateChanged(int)), this, SLOT(CheckBox_SettingAutoRun(int)));
+	connect(ui.checkBox_Setting_1, SIGNAL(stateChanged(int)), this, SLOT(CheckBox_SettingPupoGame(int)));
+	connect(ui.checkBox_Setting_2, SIGNAL(stateChanged(int)), this, SLOT(CheckBox_SettingRunModule(int)));
+	
+	connect(ui.pushButton_Check_1, SIGNAL(clicked()), this, SLOT(CheckOptions_CheckGameLauncher()));
+	connect(ui.pushButton_Check_2, SIGNAL(clicked()), this, SLOT(CheckOptions_CheckGame()));
+	connect(ui.pushButton_Check_3, SIGNAL(clicked()), this, SLOT(CheckOptions_CheckModule()));
+	connect(ui.pushButton_Check_4, SIGNAL(clicked()), this, SLOT(CheckOptions_RefreshModule()));
+	connect(ui.pushButton_Check_5, SIGNAL(clicked()), this, SLOT(CheckOptions_UpdataLauncher()));
+	connect(ui.pushButton_Check_6, SIGNAL(clicked()), this, SLOT(CheckOptions_UpdataGameLauncher()));
+	connect(ui.pushButton_Check_7, SIGNAL(clicked()), this, SLOT(CheckOptions_UpdataGame()));
 }
 
 QtWidgetsSetting::~QtWidgetsSetting()
@@ -71,7 +84,14 @@ void QtWidgetsSetting::mouseMoveEvent(QMouseEvent *event)
 void QtWidgetsSetting::SetSetting(SettingData *setting)
 {
 	this->setting = setting;
+	ui.checkBox_Setting_0->setChecked(setting->is_auto_run);
+	ui.checkBox_Setting_1->setChecked(setting->is_start_pupowindows);
+	ui.checkBox_Setting_2->setChecked(setting->is_start_module);
+	ui.radioButton_Setting_0->setChecked(setting->is_exit_ismini);
+	ui.radioButton_Setting_1->setChecked(!setting->is_exit_ismini);
 	ui.lineEdit_Path_1->setText(setting->launcher_install_path.replace(QRegExp("/"), "\\"));
+	ui.lineEdit_Path_2->setText(setting->game_install_path.replace(QRegExp("/"), "\\"));
+
 }
 void QtWidgetsSetting::CloseSelf()
 {
@@ -104,5 +124,138 @@ void QtWidgetsSetting::SwitchOptions()
 			scrBarAni->start();
 		}
 	}
+}
+
+void QtWidgetsSetting::CheckBox_SettingAutoRun(int arg)
+{
+	if (arg == 2)
+	{
+		setting->is_auto_run = true;
+	}
+	else if (arg == 0)
+	{
+		setting->is_auto_run = false;
+	}
+}
+
+void QtWidgetsSetting::CheckBox_SettingPupoGame(int arg)
+{
+	if (arg == 2)
+	{
+		setting->is_start_pupowindows = true;
+	}
+	else if (arg == 0)
+	{
+		setting->is_start_pupowindows = false;
+	}
+}
+
+void QtWidgetsSetting::CheckBox_SettingRunModule(int arg)
+{
+	if (arg == 2)
+	{
+		setting->is_start_module = true;
+	}
+	else if (arg == 0)
+	{
+		setting->is_start_module = false;
+	}
+}
+
+void QtWidgetsSetting::RadioButton_SettingExitOrMini()
+{
+	QRadioButton *btn = qobject_cast<QRadioButton*>(sender());
+	if (btn == ui.radioButton_Setting_0)
+	{
+		if (btn->isChecked() == true)
+		{
+			setting->is_exit_ismini = true;
+		}
+	}
+	if (btn == ui.radioButton_Setting_1)
+	{
+		if (btn->isChecked() == true)
+		{
+			setting->is_exit_ismini = false;
+		}
+	}
+}
+
+void QtWidgetsSetting::CheckOptions_CheckGameLauncher()
+{
+	QString FileDialogPath = "./";
+	if (setting->launcher_install_path != "")
+	{
+		FileDialogPath = setting->launcher_install_path;
+	}
+	QString GameLauncherPath = QFileDialog::getExistingDirectory(this, "选择原神启动器所在目录", FileDialogPath, QFileDialog::ShowDirsOnly);
+	if (!GameLauncherPath.isEmpty())
+	{
+		QFileInfo file(GameLauncherPath+"/launcher.exe");
+		if (file.exists() == false)
+		{
+
+		}
+		else
+		{
+			ui.lineEdit_Path_1->setText(GameLauncherPath);
+			setting->launcher_install_path = GameLauncherPath;
+			QFileInfo file(GameLauncherPath + "/Genshin Impact Game/YuanShen.exe");
+			if (file.exists() == true)
+			{
+				ui.lineEdit_Path_2->setText(GameLauncherPath + "/Genshin Impact Game");
+				setting->game_install_path = GameLauncherPath + "/Genshin Impact Game";
+				setting->game_start_name = "YuanShen.exe";
+			}
+		}
+	}
+}
+
+void QtWidgetsSetting::CheckOptions_CheckGame()
+{
+	QString FileDialogPath = "./";
+	if (setting->game_install_path != "")
+	{
+		FileDialogPath = setting->game_install_path;
+	}
+	QString GamePath = QFileDialog::getExistingDirectory(this, "选择原神所在目录", FileDialogPath, QFileDialog::ShowDirsOnly);
+	if (!GamePath.isEmpty())
+	{
+		QFileInfo file(GamePath + "/YuanShen.exe");
+		if (file.exists() == false)
+		{
+
+		}
+		else
+		{
+			ui.lineEdit_Path_2->setText(GamePath);
+			setting->game_install_path = GamePath;
+		}
+	}
+}
+
+void QtWidgetsSetting::CheckOptions_CheckModule()
+{
+
+}
+
+void QtWidgetsSetting::CheckOptions_RefreshModule()
+{
+
+}
+
+void QtWidgetsSetting::CheckOptions_UpdataLauncher()
+{
+
+}
+
+void QtWidgetsSetting::CheckOptions_UpdataGameLauncher()
+{
+
+}
+
+void QtWidgetsSetting::CheckOptions_UpdataGame()
+{
+
 }
 

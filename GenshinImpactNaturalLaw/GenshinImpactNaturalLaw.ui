@@ -14,8 +14,11 @@
    <string>天理</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="TrayIcon" resource="GenshinImpactNaturalLaw.qrc">
-    <normaloff>:/icon/resource/icon/ICON.png</normaloff>:/icon/resource/icon/ICON.png</iconset>
+   <iconset theme="MainIcon" resource="GenshinImpactNaturalLaw.qrc">
+    <normaloff>:/icon/resource/icon/icon.ico</normaloff>:/icon/resource/icon/icon.ico</iconset>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QLabel" name="MainBackgroundImageRect">
@@ -26,6 +29,9 @@
       <width>1280</width>
       <height>730</height>
      </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:rgb(225, 225, 225)</string>
@@ -100,13 +106,13 @@ background-color:rgb(255, 204, 33);
      <string notr="true">QPushButton{
 background-color:rgb(0, 0, 0);
 border:none;
-border-image:url(:/TitleButtonImage/resource/titlebutton/bmin0.png)
+background-image:url(:/TitleButtonImage/resource/titlebutton/bmin0.png)
 }
 QPushButton:hover {
-border-image:url(:/TitleButtonImage/resource/titlebutton/bmin1.png)
+background-image:url(:/TitleButtonImage/resource/titlebutton/bmin1.png)
 }
 QPushButton:pressed {
-border-image:url(:/TitleButtonImage/resource/titlebutton/bmin1.png)
+background-image:url(:/TitleButtonImage/resource/titlebutton/bmin1.png)
 }</string>
     </property>
     <property name="text">
@@ -126,13 +132,13 @@ border-image:url(:/TitleButtonImage/resource/titlebutton/bmin1.png)
      <string notr="true">QPushButton{
 background-color:rgb(255, 0, 0);
 border:none;
-border-image:url(:/TitleButtonImage/resource/titlebutton/bset0.png)
+background-image:url(:/TitleButtonImage/resource/titlebutton/bset0.png)
 }
 QPushButton:hover {
-border-image:url(:/TitleButtonImage/resource/titlebutton/bset1.png)
+background-image:url(:/TitleButtonImage/resource/titlebutton/bset1.png)
 }
 QPushButton:pressed {
-border-image:url(:/TitleButtonImage/resource/titlebutton/bset1.png)
+background-image:url(:/TitleButtonImage/resource/titlebutton/bset1.png)
 }</string>
     </property>
     <property name="text">
@@ -152,13 +158,13 @@ border-image:url(:/TitleButtonImage/resource/titlebutton/bset1.png)
      <string notr="true">QPushButton{
 background-color:rgb(0, 0, 0);
 border:none;
-border-image:url(:/TitleButtonImage/resource/titlebutton/bexit0.png)
+background-image:url(:/TitleButtonImage/resource/titlebutton/bexit0.png)
 }
 QPushButton:hover {
-border-image:url(:/TitleButtonImage/resource/titlebutton/bexit1.png)
+background-image:url(:/TitleButtonImage/resource/titlebutton/bexit1.png)
 }
 QPushButton:pressed {
-border-image:url(:/TitleButtonImage/resource/titlebutton/bexit1.png)
+background-image:url(:/TitleButtonImage/resource/titlebutton/bexit1.png)
 }</string>
     </property>
     <property name="text">
@@ -175,7 +181,7 @@ border-image:url(:/TitleButtonImage/resource/titlebutton/bexit1.png)
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:rgb(0, 0, 0,38);</string>
+     <string notr="true">background-color:rgba(0, 0, 0, 38);</string>
     </property>
     <property name="text">
      <string/>
@@ -192,11 +198,11 @@ border-image:url(:/TitleButtonImage/resource/titlebutton/bexit1.png)
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
-background-color:rgb(0,0,0,120);
+background-color:rgba(0,0,0,120);
 color:rgb(255, 255, 255);
-border-image:url(:/LinkeIcon/resource/LinkeIcon/Bilibili.png);
 border:rgb(82, 92, 115);
 border-radius:20px;
+border-image:url(:/LinkeIcon/resource/LinkeIcon/Bilibili.png);
 }
 QPushButton:hover {
 border:2px solid rgb(255, 210, 132);
@@ -220,7 +226,7 @@ border:2px solid rgb(255, 210, 132);
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
-background-color:rgb(0,0,0,120);
+background-color:rgba(0,0,0,120);
 color:rgb(255, 255, 255);
 border:rgb(82, 92, 115);
 border-radius:20px;
@@ -248,7 +254,7 @@ border:2px solid rgb(255, 210, 132);
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
-background-color:rgb(0,0,0,120);
+background-color:rgba(0,0,0,120);
 color:rgb(255, 255, 255);
 border:rgb(82, 92, 115);
 border-radius:20px;
@@ -276,7 +282,7 @@ border:2px solid rgb(255, 210, 132);
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
-background-color:rgb(0,0,0,120);
+background-color:rgba(0,0,0,120);
 color:rgb(255, 255, 255);
 border:rgb(82, 92, 115);
 border-radius:20px;
@@ -303,7 +309,7 @@ border:2px solid rgb(255, 210, 132);
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
-background-color:rgb(0,0,0,120);
+background-color:rgba(0,0,0,120);
 color:rgb(255, 255, 255);
 border:rgb(82, 92, 115);
 border-radius:20px;
@@ -336,13 +342,14 @@ border:2px solid rgb(255, 210, 132);
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:rgb(200, 200, 200);
+     <string notr="true">background-color:rgba(200, 200, 200,50);
 border:1px solid rgb(248, 250, 251);
 border-radius:0px;
-color:rgb(255, 255, 255)</string>
+color:rgb(255, 255, 255);
+background-image:url(:/page/resource/page/page1.png);</string>
     </property>
     <property name="text">
-     <string>广告位招租</string>
+     <string/>
     </property>
    </widget>
    <widget class="QTabWidget" name="tabWidget">
@@ -354,68 +361,173 @@ color:rgb(255, 255, 255)</string>
       <height>120</height>
      </rect>
     </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
     <property name="styleSheet">
      <string notr="true">QTabWidget{
-color:rgb(255, 255, 255);
-	background:rgba(0, 0, 0, 50);
-}
-QTabWidget::pane /* The tab widget frame */  
-{	
     font-family:&quot;微软雅黑&quot;;
-	font-size:14px;
-	top:20px;
+	font-size:20px;
+	color:rgb(255, 255, 255);
+	background-color:rgba(0,0, 0,100);
+}
+
+QTabWidget::pane
+{
 	border:none;
-
-
-
 }
 
 QTabBar::tab{
-	font-family:&quot;微软雅黑&quot;;
-	font-size:14px;
+ 	margin-top: 0px; 
+	margin-left: 0px; 
 	width:69px;
-	height:38px;
+	height:36px;
 	color:rgb(255, 255, 255);
-	background:rgba(0, 0, 0, 100);
-border:none;
+	border:none;
 }
  
-QTabBar::tab:selected, QTabBar::tab:hover
+QTabBar::tab:selected
 {
+	width:69px;
+	height:36px;
 	color:rgb(255, 210, 132);
-	background:rgba(0, 0, 0, 100);
-	border-bottom:0px solid rgb(255, 210, 132);
+	border:none;
+	border-bottom:2px solid rgb(255, 210, 132);
+}
+ QTabBar::tab:hover
+{
+	width:69px;
+	height:36px;
+	color:rgb(255, 210, 132);
+	border:none;
+	border-bottom:2px solid rgb(255, 210, 132);
 }
  
-QTabWidget::tab-bar {  		/*整个最上面的tab栏*/
-
-left:10px;
+QTabWidget::tab-bar {
+	border:none;
+	left:10px;
 } 
- QTabWidget.QWidget{
-color:rgb(255, 255, 255);
-	background:rgba(0, 0, 0, 50);
-}</string>
+</string>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <property name="styleSheet">
-      <string notr="true">QWidget{
-color:rgb(255, 255, 255);
-	background:rgba(0, 0, 0, 50);
-}</string>
+      <string notr="true">background-color:rgba(0,0, 0,0);</string>
      </property>
      <attribute name="title">
-      <string>活动</string>
+      <string>帮助</string>
      </attribute>
+     <widget class="QWidget" name="verticalLayoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>10</y>
+        <width>421</width>
+        <height>66</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QPushButton" name="pushButton_Page_1">
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+ font-family:&quot;微软雅黑&quot;;
+	font-size:16px;
+text-align: left;
+	color:rgb(255, 255, 255);
+}
+QPushButton:hover{
+   font-family:&quot;微软雅黑&quot;;
+	font-size:16px;
+	color:rgb(255, 210, 132);
+}
+QPushButton:pressed{
+    font-family:&quot;微软雅黑&quot;;
+	font-size:16px;
+color:rgb(255, 210, 132);
+}</string>
+         </property>
+         <property name="text">
+          <string>原神 [ PC端 ] 悬浮窗地图工具</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_Page_2">
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+ font-family:&quot;微软雅黑&quot;;
+	font-size:16px;
+text-align: left;
+	color:rgb(255, 255, 255);
+}
+QPushButton:hover{
+   font-family:&quot;微软雅黑&quot;;
+	font-size:16px;
+	color:rgb(255, 210, 132);
+}
+QPushButton:pressed{
+    font-family:&quot;微软雅黑&quot;;
+	font-size:16px;
+color:rgb(255, 210, 132);
+}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
+     <property name="styleSheet">
+      <string notr="true">QWidget{
+background-color:rgba(0,0, 0,0);
+
+}</string>
+     </property>
      <attribute name="title">
       <string>更新</string>
      </attribute>
     </widget>
    </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>463</y>
+      <width>460</width>
+      <height>120</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgba(0,0, 0,100);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <zorder>MainBackgroundImageRect</zorder>
+   <zorder>TitleLabelRect</zorder>
+   <zorder>pushButton_StartGame</zorder>
+   <zorder>pushButton_TitleMin</zorder>
+   <zorder>pushButton_TitleSet</zorder>
+   <zorder>pushButton_TitleExit</zorder>
+   <zorder>label</zorder>
+   <zorder>pushButton_Linke_1</zorder>
+   <zorder>pushButton_Linke_2</zorder>
+   <zorder>pushButton_Linke_3</zorder>
+   <zorder>pushButton_Linke_4</zorder>
+   <zorder>pushButton_Linke_5</zorder>
+   <zorder>label_2</zorder>
+   <zorder>label_3</zorder>
+   <zorder>tabWidget</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
@@ -423,22 +535,6 @@ color:rgb(255, 255, 255);
   <include location="GenshinImpactNaturalLaw.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>pushButton_TitleExit</sender>
-   <signal>clicked()</signal>
-   <receiver>GenshinImpactNaturalLawClass</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1268</x>
-     <y>15</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1060</x>
-     <y>-11</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>pushButton_TitleMin</sender>
    <signal>clicked()</signal>
