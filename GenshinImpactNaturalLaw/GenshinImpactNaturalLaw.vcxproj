@@ -100,29 +100,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="QtWidgetsMessageBox.cpp" />
     <ClCompile Include="QtWidgetsSetting.cpp" />
     <ClCompile Include="SettingData.cpp" />
     <QtRcc Include="GenshinImpactNaturalLaw.qrc" />
+    <QtRcc Include="QtWidgetsMessageBox.qrc" />
     <QtRcc Include="QtWidgetsSetting.qrc" />
     <QtUic Include="GenshinImpactNaturalLaw.ui" />
     <QtMoc Include="GenshinImpactNaturalLaw.h" />
     <ClCompile Include="GenshinImpactNaturalLaw.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="QtWidgetsMessageBox.ui" />
     <QtUic Include="QtWidgetsSetting.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtWidgetsSetting.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="QtWidgetsMessageBox.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="resource1.h" />
     <ClInclude Include="SettingData.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="GenshinImpactNaturalLaw1.rc" />
+    <Image Include="resource\icon\MainIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="resource\icon\MainIcon.ico" />
+    <ResourceCompile Include="GenshinImpactNaturalLawIcon.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

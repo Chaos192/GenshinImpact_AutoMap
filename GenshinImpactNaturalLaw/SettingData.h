@@ -26,9 +26,12 @@ public:
 	SettingData();
 	~SettingData();
 
+	bool tryGetGamePath();
+
 	QString gamepath();
 	QString Command_NoBorderStartGame();
 	QString Command_StartGame();
+
 
 };
 

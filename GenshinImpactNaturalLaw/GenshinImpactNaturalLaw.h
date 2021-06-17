@@ -32,6 +32,7 @@ private:
 	QPoint m_Press;
 	QPoint m_Move;
 	bool leftBtnClk = false;
+
 	QtWidgetsSetting *WidgetsSetting = nullptr;
 	QLabel *MainMaskLabel = nullptr;
 	QMenu *TrayMenu;//Õ–≈Ã≤Àµ•

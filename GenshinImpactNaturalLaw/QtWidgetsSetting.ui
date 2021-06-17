@@ -501,7 +501,7 @@ height: 0px;
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>0</y>
+      <y>-327</y>
       <width>561</width>
       <height>1465</height>
      </rect>
@@ -1000,7 +1000,7 @@ background-color:rgb(236, 233, 224);
 color:rgb(148, 150, 153);</string>
         </property>
         <property name="text">
-         <string>当前游戏安装路径</string>
+         <string>当前游戏应用路径</string>
         </property>
        </widget>
       </item>

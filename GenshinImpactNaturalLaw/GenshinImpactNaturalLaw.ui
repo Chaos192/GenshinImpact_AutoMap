@@ -493,6 +493,17 @@ background-color:rgba(0,0, 0,0);
       <string>更新</string>
      </attribute>
     </widget>
+    <widget class="QWidget" name="tab_3">
+     <property name="styleSheet">
+      <string notr="true">QWidget{
+background-color:rgba(0,0, 0,0);
+
+}</string>
+     </property>
+     <attribute name="title">
+      <string>公告</string>
+     </attribute>
+    </widget>
    </widget>
    <widget class="QLabel" name="label_3">
     <property name="geometry">

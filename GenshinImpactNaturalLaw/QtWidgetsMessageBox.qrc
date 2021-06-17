@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/QtWidgetsMessageBox"/>
+  <qresource prefix="/BackgroundImage">
+    <file>resource/QMessageBox/bg.png</file>
+  </qresource>
+</RCC>

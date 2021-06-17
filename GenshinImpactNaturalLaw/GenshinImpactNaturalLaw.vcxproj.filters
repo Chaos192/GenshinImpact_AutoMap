@@ -38,6 +38,9 @@
     <QtRcc Include="QtWidgetsSetting.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
+    <QtRcc Include="QtWidgetsMessageBox.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -49,14 +52,23 @@
     <ClCompile Include="SettingData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QtWidgetsMessageBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtWidgetsSetting.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="QtWidgetsMessageBox.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtWidgetsSetting.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="QtWidgetsMessageBox.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -67,18 +79,15 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="GenshinImpactNaturalLaw1.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resource\icon\MainIcon.ico">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GenshinImpactNaturalLawIcon.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

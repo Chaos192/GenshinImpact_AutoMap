@@ -16,15 +16,6 @@ SettingData::SettingData()
 	game_start_name = IniSettingFile->value("Game/game_start_name").toString();
 	
 	is_first_exit = IniSettingFile->value("Module/is_first_exit").toBool();
-	
-	if (launcher_install_path != "")
-	{
-		QSettings *launcherIniFile;
-		launcherIniFile = new QSettings(launcher_install_path + "/config.ini", QSettings::IniFormat);
-		QString gameinstallpath = launcherIniFile->value("launcher/game_install_path").toString();
-		QString gamedynamicbgname = launcherIniFile->value("launcher/game_dynamic_bg_name").toString();
-		QString gamestartname = launcherIniFile->value("launcher/game_start_name").toString();
-	}
 }
 
 SettingData::~SettingData()
@@ -43,6 +34,23 @@ SettingData::~SettingData()
 	IniSettingFile->setValue("Module/is_first_exit", is_first_exit);
 	
 	IniSettingFile->sync();
+}
+
+bool SettingData::tryGetGamePath()
+{
+	if (launcher_install_path != "")
+	{
+		return false;
+	}
+	else
+	{
+		QSettings *launcherIniFile;
+		launcherIniFile = new QSettings(launcher_install_path + "/config.ini", QSettings::IniFormat);
+		game_install_path = launcherIniFile->value("launcher/game_install_path").toString();
+		game_dynamic_bg_name = launcherIniFile->value("launcher/game_dynamic_bg_name").toString();
+		game_start_name = launcherIniFile->value("launcher/game_start_name").toString();
+	}
+	return true;
 }
 
 QString SettingData::gamepath()

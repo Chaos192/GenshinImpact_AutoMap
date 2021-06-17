@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QtWidgetsMessageBox</class>
+ <widget class="QWidget" name="QtWidgetsMessageBox">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>530</width>
+    <height>354</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>提示</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QPushButton" name="pushButton_OK">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>273</y>
+     <width>190</width>
+     <height>48</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>13</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+background-color:rgb(57, 59, 64);
+color:rgb(244, 216, 168);
+border:none;
+border-radius:4px;
+}
+QPushButton:hover {
+background-color:rgb(77, 79, 83);
+}
+QPushButton:pressed {
+background-color:rgb(57, 59, 64);
+}</string>
+   </property>
+   <property name="text">
+    <string>确认</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Title">
+   <property name="geometry">
+    <rect>
+     <x>241</x>
+     <y>39</y>
+     <width>48</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>18</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel{
+color:rgb(57, 59, 64);
+}</string>
+   </property>
+   <property name="text">
+    <string>提示</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Message">
+   <property name="geometry">
+    <rect>
+     <x>58</x>
+     <y>132</y>
+     <width>414</width>
+     <height>90</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>13</pointsize>
+     <stylestrategy>PreferDefault</stylestrategy>
+     <kerning>true</kerning>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel{
+color:rgb(57, 59, 64);
+}</string>
+   </property>
+   <property name="text">
+    <string>未能找到游戏资源，建议确认路径是否正确或获取最新游戏资源</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignHCenter|Qt::AlignTop</set>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="BackgrouundImageRect">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>550</width>
+     <height>354</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel{
+background-image:url(:/BackgroundImage/resource/QMessageBox/bg.png);
+}
+</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <zorder>BackgrouundImageRect</zorder>
+  <zorder>pushButton_OK</zorder>
+  <zorder>label_Title</zorder>
+  <zorder>label_Message</zorder>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="QtWidgetsMessageBox.qrc"/>
+ </resources>
+ <connections/>
+</ui>

@@ -8,6 +8,7 @@
 #include <QMouseEvent>
 #include <QWidget>
 #include "ui_QtWidgetsSetting.h"
+#include "QtWidgetsMessageBox.h"
 #include "SettingData.h"
 
 class QtWidgetsSetting : public QWidget
@@ -28,6 +29,9 @@ private:
 	QPoint m_Press;
 	QPoint m_Move;
 	bool leftBtnClk = false;
+
+	QtWidgetsMessageBox *WidgetsMessageBox = nullptr;
+	QLabel *MainMaskLabel = nullptr;
 private:
 	std::vector<QPushButton*> UIButtonList;
 	std::vector<QLabel*> ScrollLabelList;
@@ -40,12 +44,15 @@ private:
 
 public slots:
 	void SetSetting(SettingData *setting);
+	void UpdataShowOptions();
 
 private slots:
 	void CloseSelf();
 	void Cancel();
 	void OK();
 	void SwitchOptions();
+
+	void ShowMessageBox();
 
 	void CheckBox_SettingAutoRun(int arg);
 	void CheckBox_SettingPupoGame(int arg);
@@ -60,6 +67,8 @@ private slots:
 	void CheckOptions_UpdataLauncher();
 	void CheckOptions_UpdataGameLauncher();
 	void CheckOptions_UpdataGame();
+
+	void ReceiveCloseSelfSignalFromWidgetsMessageBox();
 signals:
 	void SendSettingToMainWidgets();
 	void SendCloseSelfSignalToMainWidgets();

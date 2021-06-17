@@ -1,3 +1,7 @@
+#if defined(_MSC_VER) && (_MSC_VER >= 1600)    
+# pragma execution_character_set("utf-8")    
+#endif
+
 #include "QtWidgetsSetting.h"
 
 QtWidgetsSetting::QtWidgetsSetting(QWidget *parent)
@@ -84,6 +88,12 @@ void QtWidgetsSetting::mouseMoveEvent(QMouseEvent *event)
 void QtWidgetsSetting::SetSetting(SettingData *setting)
 {
 	this->setting = setting;
+
+	emit UpdataShowOptions();
+}
+
+void QtWidgetsSetting::UpdataShowOptions()
+{
 	ui.checkBox_Setting_0->setChecked(setting->is_auto_run);
 	ui.checkBox_Setting_1->setChecked(setting->is_start_pupowindows);
 	ui.checkBox_Setting_2->setChecked(setting->is_start_module);
@@ -91,8 +101,8 @@ void QtWidgetsSetting::SetSetting(SettingData *setting)
 	ui.radioButton_Setting_1->setChecked(!setting->is_exit_ismini);
 	ui.lineEdit_Path_1->setText(setting->launcher_install_path.replace(QRegExp("/"), "\\"));
 	ui.lineEdit_Path_2->setText(setting->game_install_path.replace(QRegExp("/"), "\\"));
-
 }
+
 void QtWidgetsSetting::CloseSelf()
 {
 	this->SendCloseSelfSignalToMainWidgets();
@@ -104,11 +114,13 @@ void QtWidgetsSetting::Cancel()
 	this->SendCloseSelfSignalToMainWidgets();
 	this->close();
 }
+
 void QtWidgetsSetting::OK()
 {
 	this->SendCloseSelfSignalToMainWidgets();
 	this->close();
 }
+
 void QtWidgetsSetting::SwitchOptions()
 {
 	QPushButton *btn = qobject_cast<QPushButton*>(sender());
@@ -123,6 +135,36 @@ void QtWidgetsSetting::SwitchOptions()
 			scrBarAni->setDuration(150);
 			scrBarAni->start();
 		}
+	}
+}
+
+void QtWidgetsSetting::ShowMessageBox()
+{
+	if (WidgetsMessageBox == nullptr)
+	{
+		WidgetsMessageBox = new QtWidgetsMessageBox();
+		connect(WidgetsMessageBox, SIGNAL(SendCloseSelfSignalToSettingWidgets()), this, SLOT(ReceiveCloseSelfSignalFromWidgetsMessageBox()));
+
+		WidgetsMessageBox->setWindowModality(Qt::ApplicationModal);
+		WidgetsMessageBox->move(this->x() + 145, this->y() + 85);
+		WidgetsMessageBox->show();
+	}
+	else
+	{
+		WidgetsMessageBox->move(this->x() + 145, this->y() + 85);
+		WidgetsMessageBox->show();
+	}
+	if (MainMaskLabel == nullptr)
+	{
+		MainMaskLabel = new QLabel(this);
+		MainMaskLabel->setText("");
+		MainMaskLabel->setGeometry(QRect(0, 0, 820, 524));
+		MainMaskLabel->setStyleSheet("background-color:rgba(0, 0, 0, 120);");
+		MainMaskLabel->show();
+	}
+	else
+	{
+		MainMaskLabel->show();
 	}
 }
 
@@ -189,26 +231,30 @@ void QtWidgetsSetting::CheckOptions_CheckGameLauncher()
 		FileDialogPath = setting->launcher_install_path;
 	}
 	QString GameLauncherPath = QFileDialog::getExistingDirectory(this, "选择原神启动器所在目录", FileDialogPath, QFileDialog::ShowDirsOnly);
+	
 	if (!GameLauncherPath.isEmpty())
 	{
 		QFileInfo file(GameLauncherPath+"/launcher.exe");
 		if (file.exists() == false)
 		{
-
+			emit ShowMessageBox();//未能找到游戏本体，请重新选择游戏本体路径
+			return;
 		}
 		else
 		{
-			ui.lineEdit_Path_1->setText(GameLauncherPath);
 			setting->launcher_install_path = GameLauncherPath;
-			QFileInfo file(GameLauncherPath + "/Genshin Impact Game/YuanShen.exe");
-			if (file.exists() == true)
+			if (!setting->tryGetGamePath())
 			{
-				ui.lineEdit_Path_2->setText(GameLauncherPath + "/Genshin Impact Game");
-				setting->game_install_path = GameLauncherPath + "/Genshin Impact Game";
-				setting->game_start_name = "YuanShen.exe";
+				emit ShowMessageBox();//未能找到游戏本体，请手动选择游戏本体路径
+				return;
 			}
 		}
 	}
+	else
+	{
+		return;
+	}
+	emit UpdataShowOptions();
 }
 
 void QtWidgetsSetting::CheckOptions_CheckGame()
@@ -218,20 +264,18 @@ void QtWidgetsSetting::CheckOptions_CheckGame()
 	{
 		FileDialogPath = setting->game_install_path;
 	}
-	QString GamePath = QFileDialog::getExistingDirectory(this, "选择原神所在目录", FileDialogPath, QFileDialog::ShowDirsOnly);
-	if (!GamePath.isEmpty())
+	QString GamePath = QFileDialog::getOpenFileName(this, "选择原神所在目录", FileDialogPath, "应用程序 (*.exe);;");
+	if (!GamePath.isEmpty()) 
 	{
-		QFileInfo file(GamePath + "/YuanShen.exe");
-		if (file.exists() == false)
-		{
-
-		}
-		else
-		{
-			ui.lineEdit_Path_2->setText(GamePath);
-			setting->game_install_path = GamePath;
-		}
+		setting->game_start_name = GamePath.section('/', -1);
+		setting->game_install_path = GamePath.section('/', 0, -2);
 	}
+	else
+	{
+		return;
+	}
+
+	emit UpdataShowOptions();
 }
 
 void QtWidgetsSetting::CheckOptions_CheckModule()
@@ -257,5 +301,10 @@ void QtWidgetsSetting::CheckOptions_UpdataGameLauncher()
 void QtWidgetsSetting::CheckOptions_UpdataGame()
 {
 
+}
+
+void QtWidgetsSetting::ReceiveCloseSelfSignalFromWidgetsMessageBox()
+{
+	MainMaskLabel->hide();
 }
 
