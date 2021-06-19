@@ -1,6 +1,7 @@
 #pragma once
 #include <windows.h>
 #include <vector>
+#include <QGraphicsDropShadowEffect>
 #include <QDesktopServices>
 #include <QTextCodec>
 #include <QSystemTrayIcon>
@@ -41,9 +42,13 @@ private:
 	QAction *ExitAction;//托盘图标右键点击时弹出选项
 private:
 	std::vector<QPushButton*> LinkeButtonList;
-	std::vector<QUrl> LinkeUrlList;
+	std::vector<QUrl> LinkeButtonUrlList;
+
+	std::vector<QPushButton*> LinkeButtonLabelList;
+	std::vector<QUrl> LinkeButtonLabelUrlList;
 private:
 	void uiConnectButton();
+	void uiConnectButtonLabel();
 private:
 	void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 	void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
@@ -54,7 +59,8 @@ private slots:
 	void CloseEvent();
 	void StartGame();
 	void OpenLinkeUrl();
-	void OpenLabelLinkeUrl();
+	void OpenPageLinkeUrl();
+	void OpenButtonLabelLinkeUrl();
 	
 	void TrayMenuClickEvent(QSystemTrayIcon::ActivationReason reason);
 	// Receive Setting From WidgetsSetting

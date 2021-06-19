@@ -8,6 +8,7 @@ GenshinImpactNaturalLaw::GenshinImpactNaturalLaw(QWidget *parent)
 	setWindowFlags(Qt::FramelessWindowHint);
 	
 	uiConnectButton();
+	uiConnectButtonLabel();
 
 	Tray = new QSystemTrayIcon(this);
 	Tray->setIcon(QIcon(QPixmap(":/icon/resource/icon/ICON.png")));
@@ -28,11 +29,17 @@ GenshinImpactNaturalLaw::GenshinImpactNaturalLaw(QWidget *parent)
 	TrayMenu->addAction(ExitAction);
 	Tray->setContextMenu(TrayMenu);
 
+	QGraphicsDropShadowEffect *Shadow_LabelPage = new QGraphicsDropShadowEffect();
+	Shadow_LabelPage->setBlurRadius(5);
+	Shadow_LabelPage->setColor(QColor(0, 0, 0, 120));
+	Shadow_LabelPage->setOffset(0.0);
+	ui.label_Page_Rect->setGraphicsEffect(Shadow_LabelPage);
+
 	connect(ui.pushButton_TitleSet, SIGNAL(clicked()), this, SLOT(NewWidgetsSetting()));
 	connect(ui.pushButton_TitleExit, SIGNAL(clicked()), this, SLOT(CloseEvent()));
 	connect(ui.pushButton_StartGame, SIGNAL(clicked()), this, SLOT(StartGame()));
-
-	connect(ui.pushButton_Page_1, SIGNAL(clicked()), this, SLOT(OpenLabelLinkeUrl()));
+	
+	connect(ui.pushButton, SIGNAL(clicked()), this, SLOT(OpenPageLinkeUrl()));
 }
 GenshinImpactNaturalLaw::~GenshinImpactNaturalLaw()
 {
@@ -106,16 +113,40 @@ void GenshinImpactNaturalLaw::uiConnectButton()
 	LinkeButtonList.push_back(ui.pushButton_Linke_4);
 	LinkeButtonList.push_back(ui.pushButton_Linke_5);
 
-	LinkeUrlList.clear();
-	LinkeUrlList.push_back(QUrl(QLatin1String("https://space.bilibili.com/135774602")));
-	LinkeUrlList.push_back(QUrl(QLatin1String("https://qm.qq.com/cgi-bin/qm/qr?k=3bd3tolWoA9vX-AdYzo-ynX_zUUB18oX&jump_from=webapi")));
-	LinkeUrlList.push_back(QUrl(QLatin1String("https://github.com/GengGode/GenshinImpact_AutoMap")));
-	LinkeUrlList.push_back(QUrl(QLatin1String("")));
-	LinkeUrlList.push_back(QUrl(QLatin1String("https://yuanshen.site/")));
+	LinkeButtonUrlList.clear();
+	LinkeButtonUrlList.push_back(QUrl(QLatin1String("https://space.bilibili.com/135774602")));
+	LinkeButtonUrlList.push_back(QUrl(QLatin1String("https://qm.qq.com/cgi-bin/qm/qr?k=3bd3tolWoA9vX-AdYzo-ynX_zUUB18oX&jump_from=webapi")));
+	LinkeButtonUrlList.push_back(QUrl(QLatin1String("https://github.com/GengGode/GenshinImpact_AutoMap")));
+	LinkeButtonUrlList.push_back(QUrl(QLatin1String("")));
+	LinkeButtonUrlList.push_back(QUrl(QLatin1String("https://yuanshen.site/")));
 
 	for (int i = 0; i < LinkeButtonList.size(); i++)
 	{
 		connect(LinkeButtonList[i], SIGNAL(clicked()), this, SLOT(OpenLinkeUrl()));
+	}
+}
+
+void GenshinImpactNaturalLaw::uiConnectButtonLabel()
+{
+	LinkeButtonLabelList.clear();
+	LinkeButtonLabelList.push_back(ui.pushButton_Page_1);
+	LinkeButtonLabelList.push_back(ui.pushButton_Page_2);
+	LinkeButtonLabelList.push_back(ui.pushButton_Page_3);
+	LinkeButtonLabelList.push_back(ui.pushButton_Page_4);
+	LinkeButtonLabelList.push_back(ui.pushButton_Page_5);
+	LinkeButtonLabelList.push_back(ui.pushButton_Page_6);
+
+	LinkeButtonLabelUrlList.clear();
+	LinkeButtonLabelUrlList.push_back(QUrl(QLatin1String("https://www.bilibili.com/read/cv11018357")));
+	LinkeButtonLabelUrlList.push_back(QUrl(QLatin1String("")));
+	LinkeButtonLabelUrlList.push_back(QUrl(QLatin1String("")));
+	LinkeButtonLabelUrlList.push_back(QUrl(QLatin1String("")));
+	LinkeButtonLabelUrlList.push_back(QUrl(QLatin1String("")));
+	LinkeButtonLabelUrlList.push_back(QUrl(QLatin1String("")));
+
+	for (int i = 0; i < LinkeButtonLabelList.size(); i++)
+	{
+		connect(LinkeButtonLabelList[i], SIGNAL(clicked()), this, SLOT(OpenButtonLabelLinkeUrl()));
 	}
 }
 void GenshinImpactNaturalLaw::CloseEvent()
@@ -165,13 +196,26 @@ void GenshinImpactNaturalLaw::OpenLinkeUrl()
 	{
 		if (btn == LinkeButtonList[i])
 		{
-			QDesktopServices::openUrl(LinkeUrlList[i]);
+			QDesktopServices::openUrl(LinkeButtonUrlList[i]);
 		}
 	}
 }
-void GenshinImpactNaturalLaw::OpenLabelLinkeUrl()
+
+void GenshinImpactNaturalLaw::OpenPageLinkeUrl()
 {
-	QDesktopServices::openUrl(QUrl(QLatin1String("https://www.bilibili.com/video/BV1ar4y1A7c5")));
+QDesktopServices::openUrl(QUrl(QLatin1String("https://www.bilibili.com/video/BV1ar4y1A7c5")));
+}
+
+void GenshinImpactNaturalLaw::OpenButtonLabelLinkeUrl()
+{
+	QPushButton *btn = qobject_cast<QPushButton*>(sender());
+	for (int i = 0; i < LinkeButtonLabelList.size(); i++)
+	{
+		if (btn == LinkeButtonLabelList[i])
+		{
+			QDesktopServices::openUrl(LinkeButtonLabelUrlList[i]);
+		}
+	}
 }
 void GenshinImpactNaturalLaw::TrayMenuClickEvent(QSystemTrayIcon::ActivationReason reason)
 {

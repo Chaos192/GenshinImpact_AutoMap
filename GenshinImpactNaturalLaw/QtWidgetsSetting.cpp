@@ -1,8 +1,5 @@
-#if defined(_MSC_VER) && (_MSC_VER >= 1600)    
-# pragma execution_character_set("utf-8")    
-#endif
-
 #include "QtWidgetsSetting.h"
+#pragma execution_character_set("utf-8")
 
 QtWidgetsSetting::QtWidgetsSetting(QWidget *parent)
 	: QWidget(parent)

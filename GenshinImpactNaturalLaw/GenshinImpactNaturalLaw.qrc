@@ -4,7 +4,7 @@
     <file>resource/page/page1.png</file>
   </qresource>
   <qresource prefix="/LinkeIcon">
-    <file>resource/LinkeIcon/Bilibili.png</file>
+    <file>resource/LinkeIcon/Bilibili_icon.png</file>
     <file>resource/LinkeIcon/GitHub_icon.png</file>
     <file>resource/LinkeIcon/QQ_icon.png</file>
     <file>resource/LinkeIcon/KYJG_yuanshen.png</file>
