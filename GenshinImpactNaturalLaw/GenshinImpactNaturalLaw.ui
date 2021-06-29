@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset theme="MainIcon" resource="GenshinImpactNaturalLaw.qrc">
-    <normaloff>:/icon/resource/icon/icon.ico</normaloff>:/icon/resource/icon/icon.ico</iconset>
+    <normaloff>:/icon/resource/icon/MainIcon.ico</normaloff>:/icon/resource/icon/MainIcon.ico</iconset>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
@@ -428,7 +428,7 @@ QTabWidget::tab-bar {
 </string>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <property name="styleSheet">

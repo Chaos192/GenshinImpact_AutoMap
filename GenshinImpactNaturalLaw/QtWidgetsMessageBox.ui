@@ -135,6 +135,7 @@ background-image:url(:/BackgroundImage/resource/QMessageBox/bg.png);
  <layoutdefault spacing="6" margin="11"/>
  <resources>
   <include location="QtWidgetsMessageBox.qrc"/>
+  <include location="GenshinImpactNaturalLaw.qrc"/>
  </resources>
  <connections/>
 </ui>

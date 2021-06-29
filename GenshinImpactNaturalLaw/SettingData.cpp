@@ -38,7 +38,8 @@ SettingData::~SettingData()
 
 bool SettingData::tryGetGamePath()
 {
-	if (launcher_install_path != "")
+	QFileInfo file(launcher_install_path + "/launcher.exe");
+	if (file.exists() == false)
 	{
 		return false;
 	}

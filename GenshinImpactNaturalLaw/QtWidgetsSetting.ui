@@ -501,7 +501,7 @@ height: 0px;
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-327</y>
+      <y>-630</y>
       <width>561</width>
       <height>1465</height>
      </rect>
@@ -1205,20 +1205,30 @@ color:rgb(148, 150, 153);</string>
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>534</width>
-           <height>113</height>
+           <width>528</width>
+           <height>200</height>
           </rect>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>200</height>
+          </size>
          </property>
          <widget class="QWidget" name="verticalLayoutWidget">
           <property name="geometry">
            <rect>
-            <x>10</x>
+            <x>0</x>
             <y>10</y>
-            <width>291</width>
-            <height>101</height>
+            <width>532</width>
+            <height>117</height>
            </rect>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_4"/>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <widget class="QTableView" name="tableView"/>
+           </item>
+          </layout>
          </widget>
         </widget>
        </widget>

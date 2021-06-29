@@ -16,7 +16,6 @@ GenshinImpactNaturalLaw::GenshinImpactNaturalLaw(QWidget *parent)
 	QString title = "天理";
 	QString text = "原神天理系统";
 	Tray->show();
-	//Tray->showMessage(title, text, QSystemTrayIcon::Information, 1000); 
 	connect(Tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(TrayMenuClickEvent(QSystemTrayIcon::ActivationReason)));
 
 	ShowMainAction = new QAction("显示主界面", this);
@@ -138,7 +137,7 @@ void GenshinImpactNaturalLaw::uiConnectButtonLabel()
 
 	LinkeButtonLabelUrlList.clear();
 	LinkeButtonLabelUrlList.push_back(QUrl(QLatin1String("https://www.bilibili.com/read/cv11018357")));
-	LinkeButtonLabelUrlList.push_back(QUrl(QLatin1String("")));
+	LinkeButtonLabelUrlList.push_back(QUrl(QLatin1String("https://www.bilibili.com/read/cv11803430")));
 	LinkeButtonLabelUrlList.push_back(QUrl(QLatin1String("")));
 	LinkeButtonLabelUrlList.push_back(QUrl(QLatin1String("")));
 	LinkeButtonLabelUrlList.push_back(QUrl(QLatin1String("")));
@@ -175,6 +174,9 @@ void GenshinImpactNaturalLaw::StartGame()
 	PROCESS_INFORMATION pi;
 
 	bool res = CreateProcess(NULL, szCmdLine, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+
+
+
 
 	if (!res)
 	{

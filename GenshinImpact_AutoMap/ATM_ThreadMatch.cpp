@@ -111,7 +111,8 @@ void ATM_ThreadMatch::cThreadOrbAvatarMatch()
 		//objAvatar = temp;
 		//threshold(objAvatar, objAvatar, 185, 255, THRESH_TOZERO);
 		////resize(objAvatar, objAvatar, Size(0, 0), 1*1.3, 1*1.3, 3);//INTER_CUBIC INTER_AREAz
-		resize(objAvatar, objAvatar, Size(150, 150), 0, 0, INTER_LANCZOS4);//INTER_CUBIC INTER_AREAz
+
+		//resize(objAvatar, objAvatar, Size(150, 150), 0, 0, INTER_LANCZOS4);//INTER_CUBIC INTER_AREAz
 		tOrbAvatarMatch = new thread(&ATM_ThreadMatch::thread_OrbAvatarMatch, this, ref(objAvatar));
 		tIsEndOrbAvatarMatch = false;
 	}
@@ -180,7 +181,14 @@ void ATM_ThreadMatch::getObjMinMap(Mat & obj)
 {
 	//obj.copyTo(objMinMap);
 	cvtColor(obj, objMinMap, CV_RGB2GRAY);
-	obj(Rect(obj.cols / 2 - 14, obj.rows / 2 - 14, 28, 28)).copyTo(objAvatar);
+	int Avatar_Rect_x = cvRound(obj.cols*0.4);
+	int Avatar_Rect_y = cvRound(obj.rows*0.4);
+	int Avatar_Rect_w = cvRound(obj.cols*0.2);
+	int Avatar_Rect_h = cvRound(obj.rows*0.2);
+
+	obj(cv::Rect(Avatar_Rect_x, Avatar_Rect_y, Avatar_Rect_w, Avatar_Rect_h)).copyTo(objAvatar);
+
+	//obj(Rect(obj.cols / 2 - 14, obj.rows / 2 - 14, 28, 28)).copyTo(objAvatar);
 	//obj(Rect(36, 36, obj.cols - 72, obj.rows - 72)).copyTo(objStar);
 	cvtColor(obj(Rect(36, 36, obj.cols - 72, obj.rows - 72)), objStar, CV_RGBA2GRAY);
 	isExistObjMinMap = true;
@@ -514,7 +522,7 @@ void ATM_TM_SurfMap::setMinMap(Mat minMapMat)
 void ATM_TM_SurfMap::Init()
 {
 	if (isInit)return;
-	detector = cv::xfeatures2d::SURF::create(minHessian);
+	detector = xfeatures2d::SURF::create(minHessian);
 	detector->detectAndCompute(_mapMat, noArray(), Kp_Map, Dp_Map);
 	isInit = true;
 }
@@ -547,7 +555,7 @@ void ATM_TM_SurfMap::SURFMatch()
 				//resize(someMap, someMap, Size(), MatchMatScale, MatchMatScale, 1);
 				//resize(minMap, minMap, Size(), MatchMatScale, MatchMatScale, 1);
 
-				detectorSomeMap = cv::xfeatures2d::SURF::create(minHessian);
+				detectorSomeMap = xfeatures2d::SURF::create(minHessian);
 				detectorSomeMap->detectAndCompute(someMap, noArray(), Kp_SomeMap, Dp_SomeMap);
 				detectorSomeMap->detectAndCompute(minMap, noArray(), Kp_MinMap, Dp_MinMap);
 				Ptr<DescriptorMatcher> matcherTmp = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
@@ -728,12 +736,12 @@ void ATM_TM_TemplatePaimon::setPaimonMat(Mat paimonMat)
 void ATM_TM_TemplatePaimon::TemplatePaimon()
 {
 	Mat tmp;
-	cv::matchTemplate(_paimonTemplate, _paimonMat, tmp, cv::TM_CCOEFF_NORMED);
+	matchTemplate(_paimonTemplate, _paimonMat, tmp, TM_CCOEFF_NORMED);
 
 	double minVal, maxVal;
-	cv::Point minLoc, maxLoc;
+	Point minLoc, maxLoc;
 	//寻找最佳匹配位置
-	cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
+	minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
 	cout <<"Match Template MinVal & MaxVal" <<minVal << " , "<< maxVal<<endl;
 	if (minVal < 0.51 || maxVal == 1)
 	{
@@ -775,188 +783,110 @@ bool GreaterSort(DMatch a, DMatch b)
 
 void ATM_TM_ORBAvatar::ORBMatch()
 {
+	Mat giAvatarRef = _avatarMat;
 
-	///////////////////////////
-	//cv::Mat imageL = _avatarTemplate;
-	//cv::Mat imageR = _avatarMat;
-	//double res = 0;
-	////提取特征点方法
-	////SIFT
-	////cv::Ptr<cv::xfeatures2d::SIFT> sift = cv::xfeatures2d::SIFT::create();
-	////cv::Ptr<cv::SIFT> sift = cv::SIFT::Creat(); //OpenCV 4.4.0 及之后版本
-	////ORB
-	//cv::Ptr<cv::ORB> surf = cv::ORB::create();//(100,1.05);
-	////SURF
-	////cv::Ptr<cv::xfeatures2d::SURF> surf = cv::xfeatures2d::SURF::create(400);
+	resize(giAvatarRef, giAvatarRef, Size(), 2, 2);
+	std::vector<Mat> lis;
+	split(giAvatarRef, lis);
 
-	////特征点
-	//std::vector<cv::KeyPoint> keyPointL, keyPointR;
-	////单独提取特征点
-	//surf->detect(imageL, keyPointL);
-	//surf->detect(imageR, keyPointR);
+	Mat gray0;
+	Mat gray1;
+	Mat gray2;
 
-	//if (keyPointR.empty())
-	//{
-	//	return;
-	//}
+	threshold(lis[0], gray0, 240, 255, THRESH_BINARY);
+	threshold(lis[1], gray1, 212, 255, THRESH_BINARY);
+	threshold(lis[2], gray2, 25, 255, THRESH_BINARY_INV);
 
-	////画特征点
-	//cv::Mat keyPointImageL;
-	//cv::Mat keyPointImageR;
-	//drawKeypoints(imageL, keyPointL, keyPointImageL, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-	//drawKeypoints(imageR, keyPointR, keyPointImageR, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+	Mat and12;
+	bitwise_and(gray1, gray2, and12, gray0);
+	resize(and12, and12, Size(), 1.2, 1.2, 3);
+	Canny(and12, and12, 20, 3 * 20, 3);
+	circle(and12, Point(cvCeil(and12.cols / 2), cvCeil(and12.rows / 2)), 24, Scalar(0, 0, 0), -1);
+	Mat dilate_element = getStructuringElement(MORPH_RECT, Size(2, 2));
+	dilate(and12, and12, dilate_element);
+	Mat erode_element = getStructuringElement(MORPH_RECT, Size(2, 2));
+	erode(and12, and12, erode_element);
 
-	////特征点匹配
-	//cv::Mat despL, despR;
-	////提取特征点并计算特征描述子
-	//surf->detectAndCompute(imageL, cv::Mat(), keyPointL, despL);
-	//surf->detectAndCompute(imageR, cv::Mat(), keyPointR, despR);
+	std::vector<std::vector<Point>> contours;
+	std::vector<Vec4i> hierarcy;
 
-	////Struct for DMatch: query descriptor index, train descriptor index, train image index and distance between descriptors.
-	////int queryIdx –>是测试图像的特征点描述符（descriptor）的下标，同时也是描述符对应特征点（keypoint)的下标。
-	////int trainIdx –> 是样本图像的特征点描述符的下标，同样也是相应的特征点的下标。
-	////int imgIdx –>当样本是多张图像的话有用。
-	////float distance –>代表这一对匹配的特征点描述符（本质是向量）的欧氏距离，数值越小也就说明两个特征点越相像。
-	//std::vector<cv::DMatch> matches;
+	findContours(and12, contours, hierarcy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
 
-	////如果采用flannBased方法 那么 desp通过orb的到的类型不同需要先转换类型
-	//if (despL.type() != CV_32F || despR.type() != CV_32F)
-	//{
-	//	despL.convertTo(despL, CV_32F);
-	//	despR.convertTo(despR, CV_32F);
-	//}
+	std::vector<Rect> boundRect(contours.size());  //定义外接矩形集合
+	//std::vector<RotatedRect> box(contours.size()); //定义最小外接矩形集合
+	Point2f rect[4];
 
-	//cv::Ptr<cv::DescriptorMatcher> matcher = cv::DescriptorMatcher::create(DescriptorMatcher::BRUTEFORCE);
-	//matcher->match(despL, despR, matches);
+	std::vector<Point2d> AvatarKeyPoint;
+	double AvatarKeyPointLine[3] = { 0 };
+	std::vector<Point2f> AvatarKeyLine;
+	Point2f KeyLine;
 
-	////计算特征点距离的最大值 
-	//double maxDist = 0;
-	//double minDist = 1000;
-	//for (int i = 0; i < despL.rows; i++)
-	//{
-	//	double dist = matches[i].distance;
-	//	if (dist > maxDist)
-	//		maxDist = dist;
-	//	if (dist < minDist)
-	//		minDist = dist;
-	//}
-
-	////挑选好的匹配点
-	//std::vector< cv::DMatch > good_matches;
-	//for (int i = 0; i < despL.rows; i++)
-	//{
-	//	if (matches[i].distance < /*0.66*maxDist*/minDist+( maxDist- minDist )/4)
-	//	{
-	//		good_matches.push_back(matches[i]);
-	//		res =res+ keyPointR[matches[i].trainIdx].angle - keyPointL[matches[i].queryIdx].angle;
-	//	}
-	//}
-	//cv::Mat imageOutput;
-	//cv::drawMatches(imageL, keyPointL, imageR, keyPointR, good_matches, imageOutput);
-	////rotationAngle=0;
-	//if (good_matches.size() != 0)
-	//{
-	//	rotationAngle = -res / good_matches.size();
-	//}
-	///////////////////////////
-
-
-	/////////////////////////////
-	//using namespace cv;
-	//using namespace cv::cuda;
-	//cv::cuda::printShortCudaDeviceInfo(cv::cuda::getDevice());
-
-	//Mat t1;
-	//_avatarTemplate.copyTo(t1);
-
-	//GpuMat src_gpu;
-	//GpuMat dst_gpu; 
-	//src_gpu.upload(t1);
-	//dst_gpu.upload(_avatarMat);
-	//std::vector<KeyPoint> keypoints_src;
-	//std::vector<KeyPoint> keypoints_dst;
-	//std::vector<DMatch> matches;
-	//SURF_CUDA surf(400);
-
-	//GpuMat keypoints1GPU, keypoints2GPU;
-	//GpuMat descriptors1GPU, descriptors2GPU;
-	//surf(src_gpu, GpuMat(), keypoints1GPU, descriptors1GPU);
-	//surf(dst_gpu, GpuMat(), keypoints2GPU, descriptors2GPU);
-
-	//cout << "FOUND " << keypoints1GPU.cols << " keypoints on first image" << endl;
-	//cout << "FOUND " << keypoints2GPU.cols << " keypoints on second image" << endl;
-
-	//// matching descriptors
-	//Ptr<DescriptorMatcher> matcher =DescriptorMatcher::create(DescriptorMatcher::BRUTEFORCE_HAMMING);
-	////vector<DMatch> matches;
-	//matcher->match(descriptors1GPU, descriptors2GPU, matches);
-
-	//// downloading results
-	//vector<KeyPoint> keypoints1, keypoints2;
-	//vector<float> descriptors1, descriptors2;
-	//surf.downloadKeypoints(keypoints1GPU, keypoints1);
-	//surf.downloadKeypoints(keypoints2GPU, keypoints2);
-	//surf.downloadDescriptors(descriptors1GPU, descriptors1);
-	//surf.downloadDescriptors(descriptors2GPU, descriptors2);
-
-	//// drawing the results
-	//Mat img_matches;
-	//drawMatches(Mat(src_gpu), keypoints1, Mat(dst_gpu), keypoints2, matches, img_matches);
-	////////////////////////////////////
-
-	////ORB
-	////////////////////////////////////
-	orb->detectAndCompute(_avatarMat, Mat(), Kp_Avatar, Dp_Avatar, false);
-	if(Kp_Avatar.size()==0)
+	if (contours.size() != 3)
 	{
-		return;
-	}
-	Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::BRUTEFORCE);
-	std::vector< std::vector<DMatch> > KNN_m;
-	vector<DMatch> KNN_m2;
-	std::vector<DMatch> good_matches;
-	matcher->knnMatch(Dp_Template, Dp_Avatar, KNN_m,1);
-
-	double max_dist = 0; double min_dist = 1000;
-	std::vector<double> angle;
-	//-- Quick calculation of max and min distances between keypoints     
-	for (int i = 0; i < Dp_Template.rows; i++)
-	{
-		double dist = KNN_m[i][0].distance;
-		KNN_m2.push_back( KNN_m[i][0]);
-		
-		if (dist < min_dist) min_dist = dist;
-		if (dist > max_dist) max_dist = dist;
+		return ;
 	}
 
-	sort(KNN_m2.begin(), KNN_m2.end(), GreaterSort);
-
-	double res = 0;
-	for (size_t i = 0; i < KNN_m.size(); i++)
+	for (int i = 0; i < 3; i++)
 	{
-		if (KNN_m[i][0].distance < 0.66 * max_dist)
-		{
-			good_matches.push_back(KNN_m[i][0]);
-			angle.push_back(Kp_Avatar[KNN_m[i][0].trainIdx].angle - Kp_Template[KNN_m[i][0].queryIdx].angle);
-			res =res+ angle[angle.size()-1];
-		}
+		//box[i] = minAreaRect(Mat(contours[i]));  //计算每个轮廓最小外接矩形
+		boundRect[i] = boundingRect(Mat(contours[i]));
+		AvatarKeyPoint.push_back(Point(cvRound(boundRect[i].x + boundRect[i].width / 2), cvRound(boundRect[i].y + boundRect[i].height / 2)));
 	}
 
-	Mat img_matches;
-	drawMatches(_avatarTemplate, Kp_Template, _avatarMat, Kp_Avatar,
-		good_matches, img_matches, Scalar::all(-1), Scalar::all(-1),
-		vector<char>());
-	if (good_matches.size() != 0)
-	{
-		rotationAngle = -res/ good_matches.size();
-	}
-	////////////////////////////////////
+	AvatarKeyPointLine[0] = dis(AvatarKeyPoint[2] - AvatarKeyPoint[1]);
+	AvatarKeyPointLine[1] = dis(AvatarKeyPoint[2] - AvatarKeyPoint[0]);
+	AvatarKeyPointLine[2] = dis(AvatarKeyPoint[1] - AvatarKeyPoint[0]);
 
+
+
+	if (AvatarKeyPointLine[0] >= AvatarKeyPointLine[2] && AvatarKeyPointLine[1] >= AvatarKeyPointLine[2])
+	{
+		AvatarKeyLine.push_back(AvatarKeyPoint[2] - AvatarKeyPoint[1]);
+		AvatarKeyLine.push_back(AvatarKeyPoint[2] - AvatarKeyPoint[0]);
+	}
+	if (AvatarKeyPointLine[0] >= AvatarKeyPointLine[1] && AvatarKeyPointLine[2] >= AvatarKeyPointLine[1])
+	{
+		AvatarKeyLine.push_back(AvatarKeyPoint[1] - AvatarKeyPoint[0]);
+		AvatarKeyLine.push_back(AvatarKeyPoint[1] - AvatarKeyPoint[2]);
+	}
+	if (AvatarKeyPointLine[1] >= AvatarKeyPointLine[0] && AvatarKeyPointLine[2] >= AvatarKeyPointLine[0])
+	{
+		AvatarKeyLine.push_back(AvatarKeyPoint[0] - AvatarKeyPoint[1]);
+		AvatarKeyLine.push_back(AvatarKeyPoint[0] - AvatarKeyPoint[2]);
+	}
+
+	AvatarKeyLine = Vector2UnitVector(AvatarKeyLine);
+	KeyLine = AvatarKeyLine[0] + AvatarKeyLine[1];
+	rotationAngle = Line2Angle(KeyLine);
 }
 
 double ATM_TM_ORBAvatar::getRotationAngle()
 {
 	return rotationAngle;
+}
+
+double ATM_TM_ORBAvatar::dis(Point p)
+{
+	return sqrt(p.x*p.x + p.y*p.y);
+}
+std::vector<Point2f> ATM_TM_ORBAvatar::Vector2UnitVector(std::vector<Point2f> pLis)
+{
+	double length = 1;
+	std::vector<Point2f> res;
+	for (int i = 0; i < pLis.size(); i++)
+	{
+		length = sqrt(pLis[i].x*pLis[i].x + pLis[i].y*pLis[i].y);
+		res.push_back(Point2f((float)(pLis[i].x / length), (float)(pLis[i].y / length)));
+	}
+	return res;
+}
+
+double ATM_TM_ORBAvatar::Line2Angle(Point2f p)
+{
+	const double rad2degScale = 180 / CV_PI;
+	double res = atan2(-p.y, p.x)*rad2degScale;
+	res = res - 90; //从屏幕空间左侧水平线为0度转到竖直向上为0度
+	return res;
 }
 
 void ATM_TM_Thread::run()
@@ -1069,12 +999,12 @@ void ATM_TM_TemplateUID::TemplateUID()
 	Mat checkUID = giNumUID.UID;
 	Mat Roi(_uidMat);
 
-	cv::matchTemplate(Roi, checkUID, tmp, cv::TM_CCOEFF_NORMED);
+	matchTemplate(Roi, checkUID, tmp, TM_CCOEFF_NORMED);
 
 	double minVal, maxVal;
-	cv::Point minLoc, maxLoc;
+	Point minLoc, maxLoc;
 	//寻找最佳匹配位置
-	cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
+	minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
 	if (maxVal > 0.75)
 	{
 		int x = maxLoc.x + checkUID.cols + 7;
@@ -1095,12 +1025,12 @@ void ATM_TM_TemplateUID::TemplateUID()
 				Mat numCheckUID = giNumUID.n[i];
 				Roi = _uidMat(r);
 
-				cv::matchTemplate(Roi, numCheckUID, tmp, cv::TM_CCOEFF_NORMED);
+				matchTemplate(Roi, numCheckUID, tmp, TM_CCOEFF_NORMED);
 
 				double minVali, maxVali;
-				cv::Point minLoci, maxLoci;
+				Point minLoci, maxLoci;
 				//寻找最佳匹配位置
-				cv::minMaxLoc(tmp, &minVali, &maxVali, &minLoci, &maxLoci);
+				minMaxLoc(tmp, &minVali, &maxVali, &minLoci, &maxLoci);
 
 				tmplis[i] = maxVali;
 				tmplisx[i] = maxLoci.x + numCheckUID.cols - 1;
@@ -1160,12 +1090,12 @@ void ATM_TM_TemplateStar::TemplateStar()
 	bool isLoopMatch = false;
 	Mat tmp;
 	double minVal, maxVal;
-	cv::Point minLoc, maxLoc;
+	Point minLoc, maxLoc;
 
 	pos.clear();
 	
-	cv::matchTemplate(_starTemplate, _starMat, tmp, cv::TM_CCOEFF_NORMED);
-	cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
+	matchTemplate(_starTemplate, _starMat, tmp, TM_CCOEFF_NORMED);
+	minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
 	cout << "Match Star MinVal & MaxVal : " << minVal << " , " << maxVal << endl;
 
 	if (maxVal < 0.66)
@@ -1182,8 +1112,8 @@ void ATM_TM_TemplateStar::TemplateStar()
 	while (isLoopMatch)
 	{
 		_starMat(Rect(maxLoc.x, maxLoc.y, _starTemplate.cols, _starTemplate.rows)) = Scalar(0, 0, 0);
-		cv::matchTemplate(_starTemplate, _starMat, tmp, cv::TM_CCOEFF_NORMED);
-		cv::minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
+		matchTemplate(_starTemplate, _starMat, tmp, TM_CCOEFF_NORMED);
+		minMaxLoc(tmp, &minVal, &maxVal, &minLoc, &maxLoc);
 		cout << "Match Star MinVal & MaxVal : " << minVal << " , " << maxVal << endl;
 		if (maxVal < 0.66)
 		{

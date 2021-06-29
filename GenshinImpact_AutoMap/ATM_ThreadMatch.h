@@ -26,7 +26,7 @@ class ATM_TM_SurfMap
 	int someSizeR = 106;
 	float MatchMatScale = 2.0;
 
-	Ptr<cv::xfeatures2d::SURF> detector, detectorSomeMap;
+	Ptr<xfeatures2d::SURF> detector, detectorSomeMap;
 	std::vector<KeyPoint> Kp_MinMap, Kp_Map, Kp_SomeMap;
 	Mat Dp_MinMap, Dp_Map, Dp_SomeMap;
 
@@ -87,6 +87,10 @@ public:
 	void Init();
 	void ORBMatch();
 	double getRotationAngle();
+private:
+	double dis(Point p);
+	std::vector<Point2f> Vector2UnitVector(std::vector<Point2f> pLis);
+	double Line2Angle(Point2f p);
 };
 
 class ATM_TM_TemplateUID

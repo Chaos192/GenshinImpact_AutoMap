@@ -277,7 +277,36 @@ void QtWidgetsSetting::CheckOptions_CheckGame()
 
 void QtWidgetsSetting::CheckOptions_CheckModule()
 {
+	QString FileDialogPath = "./";
+	if (setting->launcher_install_path != "")
+	{
+		FileDialogPath = setting->launcher_install_path;
+	}
+	QString GameLauncherPath = QFileDialog::getExistingDirectory(this, "选择原神启动器所在目录", FileDialogPath, QFileDialog::ShowDirsOnly);
 
+	if (!GameLauncherPath.isEmpty())
+	{
+		QFileInfo file(GameLauncherPath + "/launcher.exe");
+		if (file.exists() == false)
+		{
+			emit ShowMessageBox();//未能找到游戏本体，请重新选择游戏本体路径
+			return;
+		}
+		else
+		{
+			setting->launcher_install_path = GameLauncherPath;
+			if (!setting->tryGetGamePath())
+			{
+				emit ShowMessageBox();//未能找到游戏本体，请手动选择游戏本体路径
+				return;
+			}
+		}
+	}
+	else
+	{
+		return;
+	}
+	emit UpdataShowOptions();
 }
 
 void QtWidgetsSetting::CheckOptions_RefreshModule()
