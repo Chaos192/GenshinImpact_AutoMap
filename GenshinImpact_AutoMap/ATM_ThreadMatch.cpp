@@ -799,9 +799,9 @@ void ATM_TM_ORBAvatar::ORBMatch()
 
 	Mat and12;
 	bitwise_and(gray1, gray2, and12, gray0);
-	resize(and12, and12, Size(), 1.2, 1.2, 3);
+	resize(and12, and12, Size(), 2, 2, 3);
 	Canny(and12, and12, 20, 3 * 20, 3);
-	circle(and12, Point(cvCeil(and12.cols / 2), cvCeil(and12.rows / 2)), 24, Scalar(0, 0, 0), -1);
+	circle(and12, Point(cvCeil(and12.cols / 2), cvCeil(and12.rows / 2)), cvCeil(and12.cols / 4.5), Scalar(0, 0, 0), -1);
 	Mat dilate_element = getStructuringElement(MORPH_RECT, Size(2, 2));
 	dilate(and12, and12, dilate_element);
 	Mat erode_element = getStructuringElement(MORPH_RECT, Size(2, 2));
