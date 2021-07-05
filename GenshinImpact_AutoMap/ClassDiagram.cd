@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ATM_TM_SurfMap">
+    <Position X="15" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QQAAAAIgIaAGBIgBAACAAIACAIgBQAAmgAACJAAAAQA=</HashCode>
+      <FileName>ATM_ThreadMatch.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ATM_TM_TemplatePaimon">
+    <Position X="13.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAKABAgAAAAAAAAAAgQAAgA=</HashCode>
+      <FileName>ATM_ThreadMatch.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ATM_TM_ORBAvatar">
+    <Position X="7.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAECAAAADAgAAQAEAAAACAAACAgAAAgAAACAEAAAEQ=</HashCode>
+      <FileName>ATM_ThreadMatch.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ATM_TM_TemplateUID">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Struct Name="ATM_TM_TemplateUID::ATM_TM_Template_NumUID" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ATM_ThreadMatch.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AACAAAIAAQAAAEAIGAAAAAAABAAAEAAgAAACAAAAAAA=</HashCode>
+      <FileName>ATM_ThreadMatch.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ATM_TM_TemplateStar">
+    <Position X="5.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAACEAAAAAAAAAAAAAJAAAAAAAASgAQACAAAAAAI=</HashCode>
+      <FileName>ATM_ThreadMatch.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ATM_TM_Thread">
+    <Position X="9.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAwAAAAAAAIAhACQAAAAAABAAAEggAAABAAAAAAI=</HashCode>
+      <FileName>ATM_ThreadMatch.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ATM_TM_Continuity">
+    <Position X="11.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAQAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>ATM_ThreadMatch.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ATM_ThreadMatch">
+    <Position X="3.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KKUADCQGAABgHgyeE6CnCIII0QYWmHSpIUMLEDBEAKY=</HashCode>
+      <FileName>ATM_ThreadMatch.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>
