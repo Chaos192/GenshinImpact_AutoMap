@@ -3,14 +3,71 @@
 # ------------------------------------------------------
 
 TEMPLATE = app
-TARGET = GenshinImpact_AutoMap
-DESTDIR = ../x64/Debug
-CONFIG += debug
-CONFIG += resources_big
-LIBS += -L"."
+TARGET = TianLi_Map
+DESTDIR = ../x64/Release
+CONFIG += release
+LIBS += -L"." \
+    -lopencv_world450 \
+    -lade \
+    -lIlmImf \
+    -lippicvmt \
+    -lippiw \
+    -littnotify \
+    -llibjpeg-turbo \
+    -llibopenjp2 \
+    -llibpng \
+    -llibprotobuf \
+    -llibtiff \
+    -llibwebp \
+    -lopencv_img_hash450 \
+    -lquirc \
+    -lzlib \
+    -l$(Qt_LIBS_)
 DEPENDPATH += .
 MOC_DIR += .
-OBJECTS_DIR += debug
+OBJECTS_DIR += release
 UI_DIR += .
 RCC_DIR += .
-include(GenshinImpact_AutoMap.pri)
+win32:RC_FILE = GenshinImpact_AutoMap.rc
+HEADERS += ./ATM_ActivationKYJG.h \
+    ./ATM_GiState.h \
+    ./ATM_GI_ScreenResolution.h \
+    ./ATM_Matrix.h \
+    ./ATM_Modules.h \
+    ./ATM_MouseEvent.h \
+    ./ATM_ObjectLists.h \
+    ./ATM_Resource.h \
+    ./ATM_SaveLoadFile.h \
+    ./ATM_SendSocket.h \
+    ./ATM_ThreadMatch.h \
+    ./AutomaticTrackingMap.h \
+    ./QtClassMyHotKayNativeEventFilter.h \
+    ./resource.h \
+    ./GenshinImpact_AutoMap.h \
+    ./QtClassMyExitButton.h \
+    ./QtClassMyHotKeyObject.h \
+    ./QtWidgetsClassMySelectGenshinImpactHandle.h
+SOURCES += ./ATM_ActivationKYJG.cpp \
+    ./ATM_GI_ScreenResolution.cpp \
+    ./ATM_Matrix.cpp \
+    ./ATM_Modules.cpp \
+    ./ATM_ObjectLists.cpp \
+    ./ATM_SaveLoadFile.cpp \
+    ./ATM_SendSocket.cpp \
+    ./ATM_ThreadMatch.cpp \
+    ./QtClassMyExitButton.cpp \
+    ./QtClassMyHotKayNativeEventFilter.cpp \
+    ./QtClassMyHotKeyObject.cpp \
+    ./QtWidgetsClassMySelectGenshinImpactHandle.cpp \
+    ./ATM_GiState.cpp \
+    ./ATM_MouseEvent.cpp \
+    ./ATM_Resource.cpp \
+    ./AutomaticTrackingMap.cpp \
+    ./GenshinImpact_AutoMap.cpp \
+    ./main.cpp
+FORMS += ./GenshinImpact_AutoMap.ui \
+    ./QtWidgetsClassMySelectGenshinImpactHandle.ui
+RESOURCES += GenshinImpact_AutoMap_Icon.qrc \
+    GenshinImpact_AutoMap_Items.qrc \
+    GenshinImpact_AutoMap_UI.qrc \
+    GenshinImpact_AutoMap.qrc
