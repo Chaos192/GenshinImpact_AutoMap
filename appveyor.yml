@@ -14,7 +14,7 @@ environment:
     QTDIR: C:\Qt\5.14.2\msvc2017_64
     ProjectName: GenshinImpact_AutoMap
     ProJectExeName: TianLi_Map
-    MyProjectDir: C:\projects\GenshinImpact_AutoMap
+    MyProjectDir: C:\projects\genshinimpact-automap
     OpenCvDir: C:\projects\opencv\
     OpenCvUrl: https://github.com/GengGode/opencv450Release/releases/download/v1.0/Release.zip
 skip_tags: true
